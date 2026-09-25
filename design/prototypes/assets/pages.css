@@ -286,6 +286,27 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 .rev .who{margin-top:auto;display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--muted)}
 .mcard h3 a:hover{color:var(--sea-deep)}
 
+/* ---------- как проходит покупка ---------- */
+.psteps{display:grid;gap:16px;counter-reset:ps}
+.pstep{display:grid;grid-template-columns:260px 1fr;gap:28px;border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;scroll-margin-top:90px}
+.pstep>*{min-width:0}
+.pstep .n{font:700 40px/1 var(--f-display);color:var(--sea)}
+.pstep h3{font-size:21px;margin:10px 0 8px}
+.pstep .t{display:inline-block;font-size:13px;font-weight:600;background:var(--mist);border-radius:6px;padding:4px 10px}
+.pstep p{color:#2B323C}
+.pstep .who{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.pstep .who>div{background:var(--mist);border-radius:8px;padding:14px 16px}
+.pstep .who b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
+.pstep .who ul{padding-left:18px;display:grid;gap:4px;font-size:15px}
+.pstep .more{margin-top:12px;font-size:15px}
+.calc{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+.calc>*{min-width:0}
+.calc .box{display:grid;gap:14px}
+.calc .total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:16px;border-radius:8px;background:var(--ink);color:#fff;margin-top:12px}
+.calc .total b{font:700 26px var(--f-body)}
+.calc .total span{color:rgba(255,255,255,.7);font-size:14px}
+.ptable td small{display:block;color:var(--muted);font-size:13px}
+
 /* ---------- политика ---------- */
 .legal h2{font-size:22px}
 .legal table{width:100%;border-collapse:collapse;font-size:15px}
@@ -343,6 +364,8 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .cols2{grid-template-columns:1fr}
   .kfacts.k4{grid-template-columns:1fr 1fr}
   .ccards{grid-template-columns:repeat(2,1fr)}
+  .pstep{grid-template-columns:200px 1fr;gap:20px}
+  .calc{grid-template-columns:1fr}
   .mhero-grid{grid-template-columns:220px 1fr;gap:28px}
   .offices{grid-template-columns:1fr 1fr}
   .offices .map-box{grid-column:1/-1}
@@ -359,6 +382,8 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .feat{grid-template-columns:1fr;gap:0}
   .timeline{grid-template-columns:1fr}
   .ccards,.offices,.xrow{grid-template-columns:1fr}
+  .pstep{grid-template-columns:1fr;gap:10px;padding:18px}
+  .pstep .who{grid-template-columns:1fr}
   .mhero-grid,.revs{grid-template-columns:1fr}
   .mhero-grid>img{max-width:220px}
   .req{grid-template-columns:1fr;gap:2px}

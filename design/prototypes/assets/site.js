@@ -152,5 +152,23 @@
       <span class="by">${a ? `<img src="${KH.IMG(a.img, 80)}" alt="">` : ''}${esc(p.author || 'Редакция Kleo Homes')}</span></div></article>`;
   }
 
-  window.KHS = { RATES, postCard, leadOf, authorOf, coverOf, textOf, safeHtml, ruDate, fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
+  // Расходы сверх цены при покупке (ДЕМО-ставки, проверит юрист; см. статью post.html?id=502).
+  // price — в €; resale — вторичка (комиссия агентства 2% + KDV 20%), новостройки партнёров — комиссию платит застройщик;
+  // split — налог ТАПУ пополам с продавцом; remote — покупка по доверенности
+  function buyCosts(price, { resale = true, split = false, remote = false } = {}) {
+    const rows = [
+      ['Налог на регистрацию ТАПУ', price * (split ? 0.02 : 0.04), split ? '2% — вторую половину платит продавец' : '4% от стоимости в документах'],
+      ['Сбор кадастра за оформление', 150, 'фиксированный, обновляется каждый год'],
+      ['Отчёт об оценке', 400, 'обязателен для покупателей-иностранцев'],
+      ['Налоговый номер, перевод паспорта, нотариус', 250, ''],
+      ...(remote ? [['Доверенность на сделку', 150, 'у нотариуса в Турции или с апостилем в вашей стране']] : []),
+      ['Страховка DASK', 60, 'обязательная, от землетрясений, за первый год'],
+      ['Подключение воды и электричества', 150, 'депозиты поставщикам'],
+      ['Услуги агентства', resale ? price * 0.024 : 0, resale ? '2% + НДС (KDV) 20%' : 'в новостройках партнёров платит застройщик']
+    ];
+    const total = rows.reduce((s, r) => s + r[1], 0);
+    return { rows, total, pct: price ? total / price * 100 : 0 };
+  }
+
+  window.KHS = { buyCosts, RATES, postCard, leadOf, authorOf, coverOf, textOf, safeHtml, ruDate, fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
 })();
