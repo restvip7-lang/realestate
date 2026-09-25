@@ -110,7 +110,7 @@
     <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="home-v2.html#districts">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a></nav>
     <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
     <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
-    <div class="contacts"><a class="btn btn-wa" href="#" data-wa>WhatsApp</a><a class="btn btn-tg" href="#">Telegram</a></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111" data-wa>WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a></div>
   </div>
 </div>
 
@@ -129,7 +129,7 @@
   </div>
 </footer>
 
-<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#view" class="pick">Просмотр</a><a href="#" class="wa" data-wa>WhatsApp</a></nav>
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#view" class="pick">Просмотр</a><a href="https://wa.me/905001111111" class="wa" data-wa>WhatsApp</a></nav>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Фотографии объекта">
   <img alt="">
@@ -163,7 +163,7 @@
   const photos = KH.gallery(o, 1400);
   const esc = KHS.esc, title = esc(o.title);
   const closed = ['sold', 'rented'].includes(o.status); // проданный / сданный: страница остаётся ради SEO, но без записи на просмотр
-  const wa = `https://wa.me/900000000000?text=${encodeURIComponent(`Здравствуйте! Интересует объект ID ${o.id}: ${o.title}. ${location.href}`)}`;
+  const wa = `https://wa.me/${KH.COMPANY.wa}?text=${encodeURIComponent(`Здравствуйте! Интересует объект ID ${o.id}: ${o.title}. ${location.href}`)}`;
   document.querySelectorAll('[data-wa]').forEach(a => a.href = wa);
 
   const statusBadge = { reserved: 'Забронирован', sold: 'Продан', rented: 'Сдан', draft: 'Черновик (предпросмотр)' }[o.status];

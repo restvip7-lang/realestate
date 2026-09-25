@@ -161,8 +161,16 @@
     return [o.cover || IMG(o.img, w)].concat(EXTRA.filter(x => x !== o.img).map(x => IMG(x, w)));
   }
 
+  // Контакты и реквизиты агентства — ВЫДУМАННЫЕ, для прототипа (список замен: docs/demo-data.md).
+  // Телефон с кодом 500 в Турции не выдаётся, поэтому ссылка WhatsApp никуда не ведёт.
+  const COMPANY = {
+    phone: '+90 500 111 11 11', tel: '+905001111111', wa: '905001111111', tg: 'kleohomes',
+    email: 'info@kleohomes.com', address: 'Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya',
+    hours: 'Пн–сб 9:00–19:00', license: '1111111'
+  };
+
   window.KH = {
-    gallery,
+    COMPANY, gallery,
     IMG, TYPES, DISTRICTS, SEED, POSTS, TEAM, PHOTOS, agentFor, get, set, COAST, MOUNTAINS,
     airportKm: d => Math.max(4, Math.round(Math.abs(38 - d.pos))) + (d.inland ? 2 : 0), // аэропорт GZP ~38 км на восток от центра
     member: id => TEAM.find(t => t.id === id),
