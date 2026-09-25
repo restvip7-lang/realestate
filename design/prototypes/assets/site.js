@@ -127,5 +127,30 @@
     return ok;
   }
 
-  window.KHS = { fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
+  // текст публикации из админки: оставляем разметку, но убираем скрипты и обработчики событий
+  function safeHtml(html) {
+    const doc = new DOMParser().parseFromString(`<div>${html || ''}</div>`, 'text/html');
+    doc.querySelectorAll('script,style,iframe,object,embed,form,link,meta').forEach(n => n.remove());
+    doc.querySelectorAll('*').forEach(el => [...el.attributes].forEach(at => {
+      if (/^on/i.test(at.name) || (/^(href|src)$/i.test(at.name) && /^\s*(javascript|data):/i.test(at.value) && el.tagName !== 'IMG')) el.removeAttribute(at.name);
+    }));
+    return doc.body.firstChild.innerHTML;
+  }
+  const ruDate = (s, long) => { const d = new Date(s); return isNaN(d) ? '' : d.toLocaleDateString('ru-RU', long ? { day: 'numeric', month: 'long', year: 'numeric' } : undefined); };
+
+  // карточка статьи или новости (blog.html, post.html, team.html)
+  // DOMParser создаёт «инертный» документ: картинки не грузятся и onerror не срабатывает
+  const textOf = html => (new DOMParser().parseFromString(`<div>${html || ''}</div>`, 'text/html').body.textContent || '').replace(/\s+/g, ' ').trim();
+  const leadOf = p => p.lead || (t => t.length > 170 ? t.slice(0, 167).replace(/\s\S*$/, '') + '…' : t)(textOf(p.body).replace(/^Демо-текст[^.]*\.\s*/, ''));
+  const authorOf = p => KH.TEAM.find(t => t.name === p.author);
+  const coverOf = (p, w = 640) => p.cover || KH.IMG(p.img || '1560518883-ce09059eeffa', w);
+  function postCard(p) {
+    const a = authorOf(p);
+    return `<article class="pcard rv"><img src="${coverOf(p)}" alt="" loading="lazy" width="640" height="360"><div class="bd">
+      <span class="meta-line">${p.pinned ? '<span class="pin-tag">Закреплено</span>' : ''}<span class="cat">${esc(p.cat)}</span><span>${ruDate(p.date)}</span>${p.mins ? `<span>${p.mins} мин</span>` : ''}</span>
+      <h3><a href="post.html?id=${p.id}">${esc(p.title)}</a></h3><p>${esc(leadOf(p))}</p>
+      <span class="by">${a ? `<img src="${KH.IMG(a.img, 80)}" alt="">` : ''}${esc(p.author || 'Редакция Kleo Homes')}</span></div></article>`;
+  }
+
+  window.KHS = { RATES, postCard, leadOf, authorOf, coverOf, textOf, safeHtml, ruDate, fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
 })();
