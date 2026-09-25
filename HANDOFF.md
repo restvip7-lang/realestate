@@ -7,6 +7,15 @@
 
 ---
 
+## 2026-09-25 · Claude · Прототипы онлайн на GitHub Pages
+
+- По просьбе владельца («давай на git запустим») прототипы публикуются на https://restvip7-lang.github.io/realestate/.
+- `.github/workflows/pages.yml`: после каждого слияния в `main` (если менялся `design/prototypes/`) копирует прототипы и добавляет во все страницы `noindex, nofollow`, потому что данные выдуманные. Можно запустить вручную: Actions → «Прототипы на GitHub Pages» → Run workflow.
+- `design/prototypes/index.html` перенаправляет на `home-v2.html`.
+- Нужно один раз включить Pages в настройках репозитория (Settings → Pages → Source: GitHub Actions) — делает владелец.
+
+---
+
 ## 2026-09-25 · Claude · Страницы районов (пакет A, часть 1)
 
 - Владелец выбрал следующим шагом страницы районов. Решение по заявкам: сначала письмом на e-mail, Telegram позже (записано в `docs/PLAN.md`).
