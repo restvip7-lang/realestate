@@ -13,12 +13,16 @@ import { payloadClient } from './payload'
 const pub = { overrideAccess: false, fallbackLocale: 'ru' as const }
 
 export async function getCompany(locale: Locale): Promise<Company> {
-  return (await payloadClient()).findGlobal({ slug: 'company', locale, ...pub })
+  const c = await (await payloadClient()).findGlobal({ slug: 'company', locale, ...pub })
+  // до первого заполнения (новая база) обязательные поля пустые — страницы не должны падать
+  return { ...c, phone: c.phone ?? '', whatsapp: c.whatsapp ?? '', email: c.email ?? '', address: c.address ?? '' }
 }
 
 export async function getRates(): Promise<Record<string, number>> {
   const r: Rate = await (await payloadClient()).findGlobal({ slug: 'rates', ...pub })
-  return { EUR: 1, USD: r.USD, TRY: r.TRY, RUB: r.RUB, KZT: r.KZT, GBP: r.GBP }
+  const rates: Record<string, number> = { EUR: 1 }
+  for (const k of ['USD', 'TRY', 'RUB', 'KZT', 'GBP'] as const) if (r[k]) rates[k] = r[k]
+  return rates
 }
 
 export async function getTeamPage(locale: Locale): Promise<TeamPage> {

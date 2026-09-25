@@ -45,8 +45,9 @@ export const useCurrency = () => useContext(CurrencyCtx)
 export const formatNum = (n: number) => Math.round(n).toLocaleString('ru-RU').replace(/[  ,]/g, ' ')
 
 export function useMoney() {
-  const { cur, rates } = useCurrency()
-  const rate = rates[cur] || 1
+  const ctx = useCurrency()
+  const cur: Currency = ctx.rates[ctx.cur] ? ctx.cur : 'EUR' // курса нет в настройках — показываем в евро
+  const rate = ctx.rates[cur] || 1
   return {
     cur,
     rate,
@@ -62,10 +63,10 @@ export function Price({ eur, suffix = '' }: { eur: number; suffix?: string }) {
 }
 
 export function CurrencySelect({ className, label }: { className?: string; label: string }) {
-  const { cur, setCur } = useCurrency()
+  const { cur, rates, setCur } = useCurrency()
   return (
-    <select className={className} aria-label={label} value={cur} onChange={(e) => setCur(e.target.value as Currency)}>
-      {CURRENCIES.map((c) => (
+    <select className={className} aria-label={label} value={rates[cur] ? cur : 'EUR'} onChange={(e) => setCur(e.target.value as Currency)}>
+      {CURRENCIES.filter((c) => rates[c]).map((c) => (
         <option key={c} value={c}>
           {CURRENCY_SYMBOL[c]} {c}
         </option>

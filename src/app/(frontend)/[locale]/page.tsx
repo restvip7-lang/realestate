@@ -39,6 +39,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   ])
   const heroImg = mediaUrl(districts.find((d) => d.slug === HERO_IMG)?.image, 'large')
   const minPm = Math.min(...districts.map((d) => d.pricePerM2 || Infinity))
+  const hasPm = Number.isFinite(minPm)
   const cat = (v: string) => (POST_CATEGORIES.some((c) => c.value === v) ? tc(v) : v)
   const trust = t.raw('trust') as { b: string; s: string }[]
   const svc = t.raw('services') as { b: string; p: string }[]
@@ -74,7 +75,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           <Link className="hero-ph" href="/districts">
             {heroImg && <Image src={heroImg} alt={t('heroAlt')} width={1100} height={733} priority sizes="(max-width: 760px) 100vw, 50vw" />}
             <span className="tagline">
-              <span>{t('heroTag', { n: districts.length })} <b><Price eur={minPm} suffix={t('perM2')} /></b>{company.isDemo && <> <span className="demo-tag">{t('demo')}</span></>}</span>
+              <span>{t('heroTag', { n: districts.length })} {hasPm && <b><Price eur={minPm} suffix={t('perM2')} /></b>}{company.isDemo && <> <span className="demo-tag">{t('demo')}</span></>}</span>
               <span className="more" style={{ color: 'var(--sea-light)' }}>{t('compare')}</span>
             </span>
           </Link>
