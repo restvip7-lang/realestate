@@ -223,6 +223,25 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 .cta-box{background:var(--ink);color:#fff;border-radius:var(--r);padding:20px;display:grid;gap:12px}
 .cta-box p{color:rgba(255,255,255,.75);font-size:15px}
 
+/* ---------- лендинги: гражданство, ВНЖ ---------- */
+.kfacts.k4{grid-template-columns:repeat(4,1fr)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.cols2>*{min-width:0}
+.box{border:1px solid var(--line);border-radius:var(--r);padding:22px;background:#fff}
+.box h3{font-size:19px;margin-bottom:12px}
+.checklist{list-style:none;display:grid;gap:12px}
+.checklist li{display:grid;grid-template-columns:24px 1fr;gap:12px;font-size:16px}
+.checklist li::before{content:"✓";width:24px;height:24px;border-radius:999px;display:grid;place-items:center;font-weight:700;font-size:13px;background:#E9F7FA;color:var(--sea-deep)}
+.checklist.no li::before{content:"!";background:#FFF1C2;color:#6B5200}
+.timeline{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:st}
+.timeline li{counter-increment:st;border-top:2px solid var(--sea);padding-top:14px}
+.timeline li::before{content:counter(st, decimal-leading-zero);font:600 13px var(--f-body);color:var(--sea-deep)}
+.timeline b{display:block;font-size:16.5px;margin:6px 0 4px}
+.timeline p{font-size:14.5px;color:var(--muted)}
+.timeline .t{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:600;background:var(--mist);border-radius:6px;padding:3px 8px}
+.warn{background:#FFF6D6;color:#5C4700;border-radius:var(--r);padding:16px 18px;font-size:15px}
+.warn b{color:#3D2F00}
+
 /* ---------- команда ---------- */
 .founder{display:grid;grid-template-columns:380px 1fr;gap:40px;align-items:center}
 .founder>*{min-width:0}
@@ -266,6 +285,12 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 
 @media (max-width:1100px){
   .post-grid,.news-layout{grid-template-columns:1fr}
+  .timeline{grid-template-columns:repeat(2,1fr)}
+  .cols2{grid-template-columns:1fr}
+  .kfacts.k4{grid-template-columns:1fr 1fr}
+  .kfacts.k4 div{border-right:0;border-bottom:1px solid var(--line)}
+  .kfacts.k4 div:nth-child(odd){border-right:1px solid var(--line)}
+  .kfacts.k4 div:nth-last-child(-n+2){border-bottom:0}
   .post-side{position:static}
   .pgrid,.tgrid{grid-template-columns:repeat(2,1fr)}
   .founder{grid-template-columns:300px 1fr;gap:28px}
@@ -273,6 +298,7 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 }
 @media (max-width:760px){
   .feat{grid-template-columns:1fr;gap:0}
+  .timeline{grid-template-columns:1fr}
   .feat img{min-height:0;aspect-ratio:16/9}
   .feat .bd{padding:18px}
   .pgrid,.tgrid,.values,.office-b,.founder,.lic{grid-template-columns:1fr}
