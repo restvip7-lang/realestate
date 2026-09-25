@@ -242,6 +242,40 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 .warn{background:#FFF6D6;color:#5C4700;border-radius:var(--r);padding:16px 18px;font-size:15px}
 .warn b{color:#3D2F00}
 
+/* ---------- контакты ---------- */
+.ccards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ccards>*{min-width:0}
+.ccard{border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.ccard .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#E9F7FA;color:var(--sea-deep);font-size:20px}
+.ccard b{font-size:18px;word-break:break-word}
+.ccard span{font-size:14px;color:var(--muted)}
+.ccard .btn{margin-top:auto}
+.offices{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:18px;align-items:stretch}
+.offices>*{min-width:0}
+.offices .box dl{display:grid;grid-template-columns:90px 1fr;gap:8px 12px;font-size:15px;margin:10px 0 14px}
+.offices .box dt{color:var(--muted)}
+.offices .box dd{font-weight:600}
+.offices .map-box{min-height:260px}
+.req{display:grid;grid-template-columns:220px 1fr;gap:10px 20px;font-size:15.5px}
+.req dt{color:var(--muted)}
+.req dd{font-weight:600}
+.xrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.xrow a{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:12px;background:#fff}
+.xrow a:hover{border-color:var(--sea-deep)}
+.xrow img{width:48px;height:48px;border-radius:999px;object-fit:cover;background:var(--mist)}
+.xrow b{display:block;font-size:15px}
+.xrow span{font-size:13px;color:var(--muted)}
+
+/* ---------- политика ---------- */
+.legal h2{font-size:22px}
+.legal table{width:100%;border-collapse:collapse;font-size:15px}
+.legal th,.legal td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+.legal th{background:var(--mist);font-size:13.5px}
+.cset{display:grid;gap:10px;border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--mist)}
+.cset label{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;font-size:15px;cursor:pointer}
+.cset input{width:18px;height:18px;margin-top:3px;accent-color:var(--sea-deep)}
+.cset small{display:block;color:var(--muted);font-size:13.5px}
+
 /* ---------- команда ---------- */
 .founder{display:grid;grid-template-columns:380px 1fr;gap:40px;align-items:center}
 .founder>*{min-width:0}
@@ -288,6 +322,10 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .timeline{grid-template-columns:repeat(2,1fr)}
   .cols2{grid-template-columns:1fr}
   .kfacts.k4{grid-template-columns:1fr 1fr}
+  .ccards{grid-template-columns:repeat(2,1fr)}
+  .offices{grid-template-columns:1fr 1fr}
+  .offices .map-box{grid-column:1/-1}
+  .xrow{grid-template-columns:repeat(2,1fr)}
   .kfacts.k4 div{border-right:0;border-bottom:1px solid var(--line)}
   .kfacts.k4 div:nth-child(odd){border-right:1px solid var(--line)}
   .kfacts.k4 div:nth-last-child(-n+2){border-bottom:0}
@@ -299,6 +337,10 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 @media (max-width:760px){
   .feat{grid-template-columns:1fr;gap:0}
   .timeline{grid-template-columns:1fr}
+  .ccards,.offices,.xrow{grid-template-columns:1fr}
+  .req{grid-template-columns:1fr;gap:2px}
+  .req dd{margin-bottom:10px}
+  .legal table{font-size:13.5px}
   .feat img{min-height:0;aspect-ratio:16/9}
   .feat .bd{padding:18px}
   .pgrid,.tgrid,.values,.office-b,.founder,.lic{grid-template-columns:1fr}
