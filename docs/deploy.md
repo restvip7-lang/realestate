@@ -8,6 +8,14 @@
 - Хранилище фото **kleo-homes-media** (Vercel Blob, Франкфурт) подключено к проекту, `BLOB_READ_WRITE_TOKEN` добавлен автоматически.
 - Сборка на Vercel: скрипт `vercel-build` из `package.json` — сначала `payload migrate` (применяет новые миграции), потом `next build`.
 
+## Сделано 25.09.2026 вечером
+- Владелец подключил GitHub (Settings → Git) и создал базу Neon **neon-almond-marble** (Free, Frankfurt), префикс переменных `DATABASE` → `DATABASE_URL`.
+- Claude запустил первый деплой `main` (слияние PR #7): сборка и миграции прошли, сайт — https://kleo-homes.vercel.app
+- Функции перенесены в регион **fra1** (Франкфурт, рядом с базой), проект пересобран.
+- Защита «Vercel Authentication» оставлена только для превью; основной адрес открыт для всех (админка закрыта паролем Payload).
+- ⏳ Владелец: создать первого пользователя на /admin и нажать «Загрузить демо-данные».
+- Ограничение: у Claude нет доступа к логам сборки и к vercel.app из песочницы — проверку сайта делает владелец с телефона.
+
 ## Что делает владелец (один раз)
 1. **Подключить GitHub.** Vercel → проект kleo-homes → Settings → Git → Connect Git Repository → GitHub → установить приложение Vercel для аккаунта `restvip7-lang` (достаточно доступа к репозиторию `realestate`) → выбрать `restvip7-lang/realestate`. Production Branch — `main`.
 2. **Создать базу.** Vercel → Storage → Create Database → **Neon** (Serverless Postgres) → регион Frankfurt (`eu-central-1`) → бесплатный план → Connect Project → kleo-homes, все окружения (Production, Preview, Development). Интеграция сама добавит `DATABASE_URL`.
