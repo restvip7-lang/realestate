@@ -413,7 +413,7 @@
   <div class="wrap">
     <div class="sec-head"><div><span class="eyebrow">Документы</span><h2>Компания и документы</h2></div></div>
     <div class="docs">
-      <div class="doc rv"><img src="https://images.unsplash.com/photo-1590735627513-59a186ed0984?auto=format&fit=crop&w=640&h=360&q=70" alt="Основатель (фото для примера)" loading="lazy"><h3>Основатель</h3><p>Эмре Йылдыз — история компании и принципы работы.</p><a href="team.html#founder" class="link">Подробнее →</a></div>
+      <div class="doc rv"><img src="https://images.unsplash.com/photo-1590735627513-59a186ed0984?auto=format&fit=crop&w=640&h=360&q=70" alt="Основатель (фото для примера)" loading="lazy"><h3>Основатель</h3><p>Эмре Йылдыз — история компании и принципы работы.</p><a href="member.html?id=founder" class="link">Подробнее →</a></div>
       <div class="doc rv"><img src="https://images.unsplash.com/photo-1638636241638-aef5120c5153?auto=format&fit=crop&w=640&h=360&q=70" alt="Документ в рамке (пример вместо скана лицензии)" loading="lazy"><h3>Лицензия агентства</h3><p>Разрешение на деятельность с недвижимостью (TTYB) № 1111111. Номер можно проверить в реестре.</p><a href="team.html#license" class="link">Смотреть лицензию →</a></div>
       <div class="doc rv"><img src="https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=640&h=360&q=70" alt="Кубок (пример)" loading="lazy"><h3>Награды и партнёры</h3><p>«Агентство года — Аланья 2025», 12 застройщиков-партнёров, аккредитация у двух банков для ипотеки.</p><a href="team.html#license" class="link">Смотреть →</a></div>
     </div>
@@ -591,7 +591,7 @@
   $$('[data-open-compare]').forEach(a => a.addEventListener('click', () => toggleCompare(true)));
 
   // команда
-  $('#people').innerHTML = ['founder', 'expert1', 'lawyer'].map(KH.member).map(t => `<div class="person"><img src="${KH.IMG(t.img, 300)}" alt="${t.role} (фото для примера)" loading="lazy"><b>${t.name}</b><span>${t.role} · ${t.langs}</span></div>`).join('');
+  $('#people').innerHTML = KH.TEAM.slice(0, 3).map(t => `<a class="person" href="member.html?id=${t.id}"><img src="${KH.IMG(t.img, 300)}" alt="${t.role} (фото для примера)" loading="lazy"><b>${t.name}</b><span>${t.role} · ${t.langs}</span></a>`).join('');
 
   // статьи и новости (включая опубликованные из админки)
   function renderPosts() {

@@ -153,7 +153,7 @@
   }
 
   const d = KH.district(o.district);
-  const agent = KH.TEAM.find(t => t.name === o.agent) || KH.agentFor(o);
+  const agent = KH.byName(o.agent) || KH.agentFor(o);
   const rent = o.deal === 'rent';
   const typeName = KH.TYPES[o.type];
   document.title = `${o.title} — ${d.name}, Аланья | ID ${o.id} | Kleo Homes`;
@@ -244,7 +244,7 @@
         <a href="${wa}" class="btn btn-wa" target="_blank" rel="noopener">Подобрать похожий в WhatsApp</a>` : `<a href="#view" class="btn btn-coral">Записаться на просмотр</a>
         <a href="${wa}" class="btn btn-wa" target="_blank" rel="noopener">Спросить в WhatsApp</a>
         <button type="button" class="btn btn-line" id="ask-price">Получить актуальную цену</button>`}
-        <div class="agent"><img src="${KH.IMG(agent.img, 160)}" alt="${agent.role} (фото для примера)"><div><b><a href="team.html#${agent.id}">${agent.name}</a></b><span>${agent.role} · ${d.name} · ${agent.langs}</span></div></div>
+        <div class="agent"><img src="${KH.IMG(agent.img, 160)}" alt="${agent.role} (фото для примера)"><div><b><a href="${agent.id ? 'member.html?id=' + agent.id : 'team.html'}">${agent.name}</a></b><span>${agent.role} · ${d.name} · ${agent.langs}</span></div></div>
       </div>
       <form class="viewform" id="view" novalidate ${closed ? 'hidden' : ''}>
         <h2>Записаться на просмотр</h2>

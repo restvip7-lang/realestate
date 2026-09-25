@@ -52,7 +52,7 @@
     <div class="tab-pane" data-pane="meta" role="tabpanel">
       <div class="grid-f two">
         <div class="fld"><label for="cat">Рубрика <span class="req">*</span></label><select id="cat" required><option value="">Выберите</option></select><span class="err-msg">Выберите рубрику</span></div>
-        <div class="fld"><label for="author">Автор</label><select id="author"><option>Редакция Kleo Homes</option><option>Эмре Йылдыз</option><option>Анна Соколова</option><option>Мурат Кая</option><option>Елена Демир</option></select></div>
+        <div class="fld"><label for="author">Автор</label><select id="author"></select></div>
         <div class="fld wide" id="src-fld"><label for="source">Источник <span class="req" id="src-req">*</span></label><input id="source" placeholder="Ссылка на официальный источник, например goc.gov.tr"><span class="err-msg">Для новостей о законах, ВНЖ и курсах источник обязателен</span></div>
         <div class="fld"><label for="reviewed">Актуально на (проверено)</label><input id="reviewed" type="date"><span class="hint">Для правовых текстов показывается на сайте</span></div>
         <div class="fld"><label for="tags">Теги</label><input id="tags" placeholder="через запятую: ТАПУ, налоги"></div>
@@ -97,6 +97,12 @@
   const CATS = ['Рынок и цены', 'Законы', 'ВНЖ и гражданство', 'Жизнь в Алании', 'Курсы валют', 'Новости агентства'];
   const SRC_REQ = ['Законы', 'ВНЖ и гражданство', 'Курсы валют'];
   $('#cat').innerHTML += CATS.map(c => `<option>${c}</option>`).join('');
+  // авторы — из раздела «Команда»; бывший автор публикации остаётся в списке
+  const authors = ['Редакция Kleo Homes'].concat(KH.TEAM.map(t => t.name));
+  const rawAuthor = (KH.posts().find(p => p.id === +new URLSearchParams(location.search).get('id')) || {}).author;
+  const curAuthor = rawAuthor && ((KH.byName(rawAuthor) || {}).name || rawAuthor); // после переименования в «Команде» — текущее имя
+  if (curAuthor && !authors.includes(curAuthor)) authors.push(curAuthor);
+  $('#author').innerHTML = authors.map(n => `<option>${ADM.esc(n)}</option>`).join('');
   $('#rel-d').innerHTML = KH.DISTRICTS.map(d => `<option value="${d.slug}">${d.name}</option>`).join('');
 
   // языковые версии
@@ -202,7 +208,7 @@
     T.ru = { title: p.title, body: p.body || `<p>Демо-текст публикации «${ADM.esc(p.title)}».</p>` };
     if (p.i18n) { T.en = p.i18n.en; T.tr = p.i18n.tr; }
     $('#ptitle').value = T.ru.title; $('#rte').innerHTML = T.ru.body;
-    $('#cat').value = p.cat; $('#author').value = p.author || 'Редакция Kleo Homes'; $('#source').value = p.source || '';
+    $('#cat').value = p.cat; $('#author').value = (p.author && ((KH.byName(p.author) || {}).name || p.author)) || 'Редакция Kleo Homes'; $('#source').value = p.source || '';
     $('#reviewed').value = p.reviewed || ''; $('#tags').value = (p.tags || []).join(', '); $('#rel-o').value = (p.relatedProperties || []).join(', ');
     (p.relatedDistricts || []).forEach(s => { const o = $(`#rel-d option[value=${s}]`); if (o) o.selected = true; });
     $('#pinned').checked = !!p.pinned; $('#pdate').value = p.date.length > 10 ? p.date : p.date + 'T09:00';

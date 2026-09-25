@@ -2,7 +2,8 @@
    Всё здесь выдумано для показа. Объекты и публикации из админки
    сохраняются в localStorage браузера (ключи kh_*), сервер не нужен. */
 (function () {
-  const IMG = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+  // id фото Unsplash или готовая ссылка / загруженный в админке файл (data:)
+  const IMG = (id, w = 800) => /^(data:|https?:|blob:)/.test(id || '') ? id : `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
   const TYPES = {
     apartment: 'Квартира', penthouse: 'Пентхаус', villa: 'Вилла',
@@ -174,7 +175,7 @@
   })();
 
   // Команда: имена вымышленные, фото — стоковые снимки Unsplash «для примера». Заменить на реальных сотрудников
-  const TEAM = [
+  const TEAM_BASE = [
     { id: 'founder', name: 'Эмре Йылдыз', role: 'Основатель', langs: 'TR · RU · EN', img: '1590735627513-59a186ed0984', exp: 14, areas: ['center', 'oba', 'tepe'],
       spec: 'Стратегия, партнёрства с застройщиками, сложные сделки',
       bio: 'Родился в Аланье, 14 лет в недвижимости. Начинал менеджером у застройщика, в 2019 году основал Kleo Homes, чтобы иностранцам было проще покупать жильё честно и без сюрпризов. Лично ведёт сделки с виллами и объектами премиум-класса.' },
@@ -194,11 +195,37 @@
       spec: 'Новостройки и рассрочка от застройщиков',
       bio: 'Работает напрямую с застройщиками-партнёрами: знает сроки сдачи, условия рассрочки и репутацию каждого проекта. Проверяет разрешения на строительство до брони.' }
   ];
+  // Чем помогает эксперт и отзывы клиентов о нём — ДЕМО для страниц member.html
+  const TEAM_MORE = {
+    founder: { help: ['Сделки с виллами и объектами премиум-класса', 'Переговоры о цене с застройщиками и собственниками', 'Покупка нескольких объектов под гражданство', 'Сложные случаи: наследство, доли, перепланировки'],
+      reviews: [['Олег и Марина', '07.2026', 'Эмре лично вёл покупку виллы в Тепе: договорился о скидке 18 000 € и нашёл проблему с разрешением на бассейн до сделки.'], ['Stefan', '04.2026', 'Professional and honest. Emre explained every risk before we paid the deposit.']] },
+    expert1: { help: ['Подбор квартиры у моря под бюджет и цель', 'Показы по видеосвязи в реальном времени', 'Покупка удалённо по доверенности', 'Сравнение 2–3 районов под ваш образ жизни'],
+      reviews: [['Анна и Игорь', '08.2026', 'Купили квартиру в Махмутларе, ни разу не прилетев: Анна показала 6 квартир по видео и честно сказала, где сыро и где шумно.'], ['Дмитрий', '06.2026', 'Спокойно, по делу и без давления. Смета расходов совпала до евро.']] },
+    lawyer: { help: ['Проверка ТАПУ, долгов и обременений до брони', 'Договоры с застройщиками и собственниками', 'Регистрация права собственности', 'ВНЖ и гражданство для всей семьи'],
+      reviews: [['Светлана', '06.2026', 'Мурат нашёл долг по коммунальным у продавца и добился, чтобы его погасили до сделки.'], ['Азамат', '05.2026', 'Оформили ВНЖ на семью из четырёх человек за 5 недель, все документы подготовили за нас.']] },
+    expert2: { help: ['Квартиры для жизни круглый год', 'Выбор района рядом со школами и клиниками', 'Помощь с переездом: коммунальные услуги, страховка, школа', 'Поиск квартир с садом и для семей с детьми'],
+      reviews: [['Семья Ковалёвых', '08.2026', 'Елена подсказала, в какой школе есть русскоязычный класс, и подобрала квартиру в 10 минутах от неё.'], ['Ирина', '03.2026', 'Помогла не только купить, но и переехать: свет, вода, интернет — всё за два дня.']] },
+    expert3: { help: ['Расчёт доходности до покупки', 'Долгосрочная и сезонная аренда', 'Поиск арендаторов и проверка договоров', 'Управление квартирой, пока вы не в Турции'],
+      reviews: [['Markus', '07.2026', 'Daniel found long-term tenants in two weeks and sends a clear monthly report.'], ['Алексей', '02.2026', 'Честно посчитал доходность, без обещаний «10% годовых». Квартира сдаётся с первого месяца.']] },
+    expert4: { help: ['Новостройки напрямую от застройщиков-партнёров', 'Беспроцентная рассрочка на 12–36 месяцев', 'Проверка разрешений и репутации застройщика', 'Контроль стройки и приёмка квартиры'],
+      reviews: [['Гульнара', '05.2026', 'Амина показала три проекта и объяснила, почему один из них лучше не брать. Купили в рассрочку на 24 месяца.'], ['Павел', '01.2026', 'Каждый месяц присылала фото со стройки, приёмку провели вместе — все замечания исправили до ТАПУ.']] }
+  };
+  // kind: founder — отдельный блок на странице команды, expert — ведёт объекты, lawyer — юрист; order — порядок на сайте
+  TEAM_BASE.forEach((t, i) => Object.assign(t, TEAM_MORE[t.id], { kind: t.id === 'founder' ? 'founder' : t.id === 'lawyer' ? 'lawyer' : 'expert', order: i * 10 }));
+  const TEAM_PAGE = {
+    title: 'Команда Kleo Homes',
+    lead: 'Агентство недвижимости в Алании с 2019 года. Помогаем выбрать, проверить и купить жильё — лично или удалённо — и не пропадаем после сделки.',
+    quote: 'Хочу, чтобы покупка квартиры в Турции была такой же понятной, как дома: с честной ценой, проверенными документами и людьми, которые отвечают на звонки после сделки.',
+    stats: [['2019', 'год основания'], ['', 'специалистов в команде'], ['RU · EN · TR', 'языки общения'], ['12', 'застройщиков-партнёров']] // пустое значение — посчитать автоматически
+  };
   const PHOTOS = {
     office: '1559136555-9303baea8ebd', officeAlt: '1715593949273-09009558300a',
     license: '1638636241638-aef5120c5153', awards: '1578269174936-2709b6aeb913'
   };
-  const agentFor = o => { const experts = TEAM.filter(t => t.id.startsWith('expert')); return experts[(o.id || 0) % experts.length]; };
+  const NOBODY = { id: '', name: 'Kleo Homes', role: 'Агентство недвижимости', langs: 'RU · EN · TR', img: PHOTOS.office, areas: [], help: [], reviews: [] };
+  const agentFor = o => { const experts = TEAM.filter(t => t.kind === 'expert'); return experts.length ? experts[(o.id || 0) % experts.length] : TEAM[0] || NOBODY; };
+  // сотрудник по имени (с учётом прежних имён после переименования в админке)
+  const byName = name => name && TEAM.find(t => t.name === name || (t.aka || []).includes(name));
 
   const P = (o) => Object.assign({ status: 'published', lang: { ru: true, en: false, tr: false }, author: 'Редакция Kleo Homes' }, o);
   const POSTS = [
@@ -215,6 +242,20 @@
   // set возвращает false, если браузер не дал записать (закончилось место, приватный режим)
   const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
   const setOrThrow = (k, v) => { if (!set(k, v)) throw new Error('storage-full'); };
+
+  // команда: базовые данные + правки из админки (kh_team); скрытые не показываются на сайте
+  function teamAll() {
+    const byId = new Map(TEAM_BASE.map(t => [t.id, t]));
+    get('kh_team', []).forEach(t => byId.set(t.id, Object.assign({}, byId.get(t.id) || {}, t, { local: true, base: byId.has(t.id) })));
+    return [...byId.values()].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  }
+  const TEAM = teamAll().filter(t => !t.hidden);
+  function saveMember(m) {
+    const clean = Object.assign({}, m); delete clean.local; delete clean.base;
+    const local = get('kh_team', []).filter(x => x.id !== m.id); local.push(clean); setOrThrow('kh_team', local);
+  }
+  const resetMember = id => set('kh_team', get('kh_team', []).filter(x => x.id !== id));
+  const teamPage = () => Object.assign({}, TEAM_PAGE, get('kh_teampage', {}));
 
   function allObjects() {
     const local = get('kh_objects', []);
@@ -270,6 +311,8 @@
     aytKm: d => Math.round(125 + d.pos + (d.inland ? 3 : 0)), // аэропорт Анталии ~125 км на запад от центра
     airportKm: d => Math.max(4, Math.round(Math.abs(38 - d.pos))) + (d.inland ? 2 : 0), // аэропорт GZP ~38 км на восток от центра
     member: id => TEAM.find(t => t.id === id),
+    teamAll, memberAny: id => teamAll().find(t => t.id === id), byName, saveMember, resetMember, isBaseMember: id => TEAM_BASE.some(t => t.id === id), baseMember: id => TEAM_BASE.find(t => t.id === id),
+    TEAM_PAGE, teamPage, saveTeamPage: p => setOrThrow('kh_teampage', p), resetTeamPage: () => localStorage.removeItem('kh_teampage'),
     coords: o => { if (o.lat && o.lng && +o.lat > 30) return [+o.lat, +o.lng]; const d = DISTRICTS.find(x => x.slug === o.district) || DISTRICTS[4]; return nearCoast(d, o.sea, (o.id * 9301 + 49297) % 233280 / 233280); },
     district: slug => DISTRICTS.find(d => d.slug === slug) || { name: slug, slug, pm: 0, km: 0 },
     objects: allObjects,
@@ -278,6 +321,6 @@
     posts: allPosts,
     livePosts: () => allPosts().filter(p => postStatus(p) === 'published'),
     postStatus, savePost,
-    resetDemo: () => { ['kh_objects', 'kh_posts', 'kh_favs'].forEach(k => localStorage.removeItem(k)); } // пароль админки не сбрасываем
+    resetDemo: () => { ['kh_objects', 'kh_posts', 'kh_favs', 'kh_team', 'kh_teampage'].forEach(k => localStorage.removeItem(k)); } // пароль админки не сбрасываем
   };
 })();

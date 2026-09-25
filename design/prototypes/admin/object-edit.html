@@ -47,7 +47,7 @@
         <div class="fld"><label for="furnished">Мебель</label><select id="furnished" name="furnished"><option value="0">Без мебели</option><option value="1">С мебелью</option><option value="partial">Частично</option></select></div>
         <div class="fld"><label for="source">Источник</label><select id="source" name="source"><option value="developer">От застройщика</option><option value="owner">От собственника</option><option value="agency">Эксклюзив агентства</option></select></div>
         <div class="fld"><label for="newBuild">Состояние</label><select id="newBuild" name="newBuild"><option value="0">Вторичка</option><option value="1">Новостройка</option><option value="plan">На этапе строительства</option></select></div>
-        <div class="fld"><label for="agent">Ответственный менеджер</label><select id="agent" name="agent"><option>Анна Соколова</option><option>Елена Демир</option><option>Даниэль Мартен</option><option>Амина Арслан</option></select></div>
+        <div class="fld"><label for="agent">Ответственный менеджер</label><select id="agent" name="agent"></select><span class="hint">Список — из раздела «Команда»</span></div>
       </div>
     </div>
 
@@ -177,6 +177,11 @@
   // справочники
   $('#type').innerHTML += Object.entries(KH.TYPES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
   $('#district').innerHTML += KH.DISTRICTS.map(d => `<option value="${d.slug}">${d.name}</option>`).join('');
+  // менеджеры — из раздела «Команда» (эксперты и основатель); если у объекта бывший сотрудник, оставляем его в списке
+  const agents = KH.TEAM.filter(t => t.kind !== 'lawyer').map(t => t.name);
+  const curAgent = existing && existing.agent && ((KH.byName(existing.agent) || {}).name || existing.agent); // после переименования — текущее имя
+  if (curAgent && !agents.includes(curAgent)) agents.push(curAgent);
+  $('#agent').innerHTML = agents.map(n => `<option>${ADM.esc(n)}</option>`).join('');
   $('#status').innerHTML = Object.entries(ADM.OBJ_ST).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
   const FEATS = ['Открытый бассейн', 'Закрытый бассейн', 'Детский бассейн', 'Аквапарк', 'Фитнес-зал', 'Финская сауна', 'Турецкий хамам', 'Паровая баня', 'Джакузи', 'Массажный кабинет', 'Спа-центр', 'Теннисный корт', 'Баскетбольная площадка', 'Волейбольная площадка', 'Настольный теннис', 'Бильярд', 'Боулинг', 'Кинотеатр', 'Игровая комната', 'Детская площадка', 'Мини-клуб', 'Кафе / ресторан', 'Бар у бассейна', 'Маркет', 'Парикмахерская', 'Конференц-зал', 'Зелёная территория', 'Прогулочные дорожки', 'Зоны барбекю', 'Беседки', 'Собственный пляж', 'Шаттл до пляжа', 'Охрана 24/7', 'Видеонаблюдение', 'Консьерж', 'Генератор', 'Крытая парковка', 'Открытая парковка', 'Лифт', 'Спутниковое ТВ', 'Wi-Fi на территории', 'Тёплый пол', 'Кондиционеры', 'Встроенная кухня', 'Солнечный водонагреватель'];
   $('#feats').innerHTML = FEATS.map(f => `<label class="check" data-f="${f.toLowerCase()}"><input type="checkbox" name="feat" value="${f}">${f}</label>`).join('');
@@ -329,6 +334,7 @@
   function load(o) {
     F.querySelector(`[name=deal][value=${o.deal}]`).checked = true;
     ['type', 'district', 'complex', 'rooms', 'area', 'year', 'floor', 'floors', 'sea', 'airport', 'source', 'agent', 'video', 'tour', 'address', 'descRu', 'descEn', 'descTr'].forEach(n => { if (o[n] != null && F[n]) F[n].value = o[n]; });
+    if (o.agent) F.agent.value = ((KH.byName(o.agent) || {}).name || o.agent);
     F.otitle.value = o.title || '';
     F.view.value = o.view || (o.seaView ? 'sea' : 'city');
     F.furnished.value = o.furnishedRaw || (o.furnished ? '1' : '0');

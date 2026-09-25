@@ -144,7 +144,7 @@
       <h1>${esc(p.title)}</h1>
       <p class="lead-p">${esc(lead)}</p>
       <div class="post-meta">
-        ${a ? `<a class="who" href="team.html#${a.id}"><img src="${KH.IMG(a.img, 96)}" alt=""><span>${esc(a.name)}<small>${esc(a.role)}</small></span></a>` : `<span class="who">${esc(p.author || 'Редакция Kleo Homes')}</span>`}
+        ${a ? `<a class="who" href="member.html?id=${a.id}"><img src="${KH.IMG(a.img, 96)}" alt=""><span>${esc(a.name)}<small>${esc(a.role)}</small></span></a>` : `<span class="who">${esc(p.author || 'Редакция Kleo Homes')}</span>`}
         <span>${KHS.ruDate(p.date, true)}</span>${p.mins && !news ? `<span>${p.mins} мин чтения</span>` : ''}
         ${p.reviewed ? `<span class="checked-b">✓ Актуально на ${KHS.ruDate(p.reviewed)}</span>` : ''}
       </div>
@@ -156,7 +156,7 @@
         ${src ? `<div class="src-box">Источник: <a href="${esc(src)}" target="_blank" rel="noopener nofollow">${esc(p.source)}</a></div>` : ''}
         ${(p.tags || []).length ? `<div class="tags">${p.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>` : ''}
         <div class="share"><button type="button" class="btn btn-line btn-sm" id="copy">Скопировать ссылку</button><a class="btn btn-wa btn-sm" href="${waShare}" target="_blank" rel="noopener">Отправить в WhatsApp</a><a class="btn btn-tg btn-sm" href="${tgShare}" target="_blank" rel="noopener">Telegram</a></div>
-        ${a ? `<div class="author-box"><img src="${KH.IMG(a.img, 160)}" alt="${esc(a.name)} (фото для примера)"><div><span class="hint">Автор</span><br><b>${esc(a.name)}</b> · <span class="hint">${esc(a.role)}, ${a.exp} лет опыта</span><p>${esc(a.bio)}</p><a href="team.html#${a.id}" class="link">Все эксперты →</a></div></div>` : ''}
+        ${a ? `<div class="author-box"><img src="${KH.IMG(a.img, 160)}" alt="${esc(a.name)} (фото для примера)"><div><span class="hint">Автор</span><br><b>${esc(a.name)}</b> · <span class="hint">${esc(a.role)}, ${a.exp} лет опыта</span><p>${esc(a.bio)}</p><a href="member.html?id=${a.id}" class="link">Профиль автора →</a></div></div>` : ''}
       </article>
       <aside class="post-side">
         <nav class="toc" id="toc" aria-label="Содержание" hidden><b>Содержание</b><ol></ol></nav>
@@ -194,7 +194,7 @@
 
   addLd([crumbsLd([['Главная', 'home-v2.html'], [section[0], section[1]], [p.title, location.href]]),
     { '@context': 'https://schema.org', '@type': news ? 'NewsArticle' : 'Article', headline: p.title, description: lead, image: [KHS.coverOf(p, 1400)], datePublished: p.date, dateModified: p.reviewed || p.date,
-      author: a ? { '@type': 'Person', name: a.name, jobTitle: a.role, url: new URL(`team.html#${a.id}`, location.href).href } : { '@type': 'Organization', name: 'Kleo Homes' },
+      author: a ? { '@type': 'Person', name: a.name, jobTitle: a.role, url: new URL(`member.html?id=${a.id}`, location.href).href } : { '@type': 'Organization', name: 'Kleo Homes' },
       publisher: { '@type': 'Organization', name: 'Kleo Homes' }, mainEntityOfPage: location.href.split('&preview')[0], ...(src ? { isBasedOn: src } : {}) }]);
 
   KHS.onCurrency(renderObjs);

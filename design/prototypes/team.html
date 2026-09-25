@@ -48,13 +48,13 @@
   <div class="wrap">
     <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">О компании и команда</span></nav>
     <span class="eyebrow">О компании</span>
-    <h1>Команда Kleo Homes</h1>
-    <p class="lead-t">Агентство недвижимости в Алании с 2019 года. Помогаем выбрать, проверить и купить жильё — лично или удалённо — и не пропадаем после сделки.</p>
+    <h1 id="tp-title">Команда Kleo Homes</h1>
+    <p class="lead-t" id="tp-lead">Агентство недвижимости в Алании с 2019 года. Помогаем выбрать, проверить и купить жильё — лично или удалённо — и не пропадаем после сделки.</p>
   </div>
 </section>
 
 <div class="wrap">
-  <div class="stats" role="list" aria-label="Коротко о компании">
+  <div class="stats" role="list" aria-label="Коротко о компании" id="tp-stats">
     <div role="listitem"><b>2019</b><span>год основания</span></div>
     <div role="listitem"><b id="st-team">6</b><span>специалистов в команде</span></div>
     <div role="listitem"><b>RU · EN · TR</b><span>языки общения</span></div>
@@ -178,33 +178,36 @@
   const addLd = data => { const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify(data); document.head.appendChild(ld); };
   const crumbsLd = items => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) });
 
-  const T = KH.TEAM, f = KH.member('founder');
+  const T = KH.TEAM, f = T.find(t => t.kind === 'founder'), P = KH.teamPage();
   const arts = KH.livePosts().filter(p => p.kind === 'article');
-  const byAuthor = name => arts.filter(p => p.author === name);
+  const byAuthor = name => arts.filter(p => KH.byName(p.author)?.name === name);
   const wa = t => `https://wa.me/${KH.COMPANY.wa}?text=${encodeURIComponent(`Здравствуйте! Хочу проконсультироваться с экспертом ${t.name}.`)}`;
-  const areaLinks = t => t.areas.map(s => KH.district(s)).map(d => `<a href="district.html?d=${d.slug}">${d.name}</a>`).join('');
-  $('#st-team').textContent = T.length;
+  const areaLinks = t => (t.areas || []).map(s => KH.district(s)).map(d => `<a href="district.html?d=${d.slug}">${d.name}</a>`).join('');
+  // тексты страницы — из админки (раздел «Команда» → «Страница команды»)
+  $('#tp-title').textContent = P.title; $('#tp-lead').textContent = P.lead;
+  $('#tp-stats').innerHTML = P.stats.map(([v, l]) => `<div role="listitem"><b>${esc(v || String(T.length))}</b><span>${esc(l)}</span></div>`).join('');
 
-  $('#founder').innerHTML = `<div class="wrap founder">
+  if (!f) $('#founder').hidden = true;
+  else $('#founder').innerHTML = `<div class="wrap founder">
     <img src="${KH.IMG(f.img, 760)}" alt="${esc(f.name)}, основатель Kleo Homes (фото для примера)" width="760" height="950" loading="lazy">
     <div>
       <span class="eyebrow">Основатель</span>
       <h2 style="margin-top:8px">${esc(f.name)}</h2>
       <p class="hint" style="margin-top:4px">${esc(f.role)} · ${f.exp} лет в недвижимости · ${esc(f.langs)}</p>
-      <blockquote>«Хочу, чтобы покупка квартиры в Турции была такой же понятной, как дома: с честной ценой, проверенными документами и людьми, которые отвечают на звонки после сделки».</blockquote>
+      ${P.quote ? `<blockquote>«${esc(P.quote.replace(/^[«"]|[»"]$/g, ''))}»</blockquote>` : ''}
       <p>${esc(f.bio)}</p>
       <p>Сегодня в команде ${T.length} специалистов: эксперты по районам, аренде и новостройкам и штатный юрист. Каждую сделку ведёт один эксперт — от первой подборки до получения ТАПУ и ключей.</p>
-      <div class="contacts" style="margin-top:18px"><a href="${wa(f)}" class="btn btn-wa">Написать основателю</a><a href="#team" class="btn btn-line">Вся команда</a></div>
+      <div class="contacts" style="margin-top:18px"><a href="${wa(f)}" class="btn btn-wa">Написать основателю</a><a href="member.html?id=${f.id}" class="btn btn-dark">Подробнее</a><a href="#team" class="btn btn-line">Вся команда</a></div>
     </div></div>`;
 
-  $('#tgrid').innerHTML = T.filter(t => t.id !== 'founder').map(t => {
+  $('#tgrid').innerHTML = T.filter(t => t !== f).map(t => {
     const n = byAuthor(t.name).length;
     return `<article class="mcard rv" id="${t.id}"><img src="${KH.IMG(t.img, 600)}" alt="${esc(t.name)} (фото для примера)" loading="lazy" width="600" height="450"><div class="bd">
-      <h3>${esc(t.name)}</h3><span class="role">${esc(t.role)}</span>
+      <h3><a href="member.html?id=${t.id}">${esc(t.name)}</a></h3><span class="role">${esc(t.role)}</span>
       <span class="facts-m"><span>${t.exp} лет опыта</span><span>${esc(t.langs)}</span></span>
       <span class="spec">${esc(t.spec)}</span><p>${esc(t.bio)}</p>
-      ${t.areas.length ? `<div class="areas" aria-label="Районы эксперта">${areaLinks(t)}</div>` : ''}
-      <div class="acts"><a href="${wa(t)}" class="btn btn-wa btn-sm">WhatsApp</a>${n ? `<a href="blog.html" class="btn btn-line btn-sm">Статьи · ${n}</a>` : ''}</div></div></article>`;
+      ${(t.areas || []).length ? `<div class="areas" aria-label="Районы эксперта">${areaLinks(t)}</div>` : ''}
+      <div class="acts"><a href="member.html?id=${t.id}" class="btn btn-dark btn-sm">Профиль</a><a href="${wa(t)}" class="btn btn-wa btn-sm">WhatsApp</a>${n ? `<a href="member.html?id=${t.id}#arts" class="btn btn-line btn-sm">Статьи · ${n}</a>` : ''}</div></div></article>`;
   }).join('');
 
   $('#office-img').src = KH.IMG(KH.PHOTOS.office, 900);
@@ -215,7 +218,7 @@
   addLd([crumbsLd([['Главная', 'home-v2.html'], ['О компании и команда', location.pathname]]),
     { '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: 'Kleo Homes', foundingDate: '2019', telephone: KH.COMPANY.phone, email: KH.COMPANY.email,
       address: { '@type': 'PostalAddress', streetAddress: 'Saray Mah., Atatürk Cad. № 11', postalCode: '07400', addressLocality: 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' },
-      founder: { '@type': 'Person', name: f.name }, employee: T.map(t => ({ '@type': 'Person', name: t.name, jobTitle: t.role, knowsLanguage: t.langs.split(' · ') })) }]);
+      ...(f ? { founder: { '@type': 'Person', name: f.name } } : {}), employee: T.map(t => ({ '@type': 'Person', name: t.name, jobTitle: t.role, knowsLanguage: t.langs.split(' · ') })) }]);
   // если пришли по ссылке на эксперта (#lawyer), прокрутить после отрисовки
   if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
   KHS.initHeader();

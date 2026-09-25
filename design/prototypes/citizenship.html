@@ -217,7 +217,7 @@
   const esc = KHS.esc;
   const addLd = data => { const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify(data); document.head.appendChild(ld); };
   const usd = KHS.RATES.USD[0]; // демо-курс: 1 € = usd $
-  const lawyer = KH.member('lawyer');
+  const lawyer = KH.TEAM.find(t => t.kind === 'lawyer') || KH.TEAM[0];
   const waLawyer = t => `https://wa.me/${KH.COMPANY.wa}?text=${encodeURIComponent(t)}`;
   function renderFaq() { $('#faq').innerHTML = FAQ.map(([q, a], i) => `<details${i ? '' : ' open'}><summary>${q}</summary><p>${a}</p></details>`).join(''); }
   function renderObjs() {
@@ -229,7 +229,7 @@
     $$('[data-usd]').forEach(el => { el.textContent = `≈ ${KHS.fmt(+el.dataset.usd / usd)}`; });
     KHS.reveal($('#objs'));
   }
-  $('#lawyer').innerHTML = `<img src="${KH.IMG(lawyer.img, 160)}" alt="${esc(lawyer.name)} (фото для примера)"><div><span class="hint">Консультирует</span><br><b>${esc(lawyer.name)}</b> · <span class="hint">${esc(lawyer.role)}, ${lawyer.exp} лет опыта</span><p>${esc(lawyer.bio)}</p><div class="contacts"><a href="${waLawyer(WA_TEXT)}" class="btn btn-wa btn-sm">Спросить юриста в WhatsApp</a><a href="team.html#lawyer" class="btn btn-line btn-sm">О юристе</a></div></div>`;
+  if (!lawyer) $('#lawyer').hidden = true; else $('#lawyer').innerHTML = `<img src="${KH.IMG(lawyer.img, 160)}" alt="${esc(lawyer.name)} (фото для примера)"><div><span class="hint">Консультирует</span><br><b>${esc(lawyer.name)}</b> · <span class="hint">${esc(lawyer.role)}, ${lawyer.exp} лет опыта</span><p>${esc(lawyer.bio)}</p><div class="contacts"><a href="${waLawyer(WA_TEXT)}" class="btn btn-wa btn-sm">Спросить юриста в WhatsApp</a><a href="member.html?id=${lawyer.id}" class="btn btn-line btn-sm">Профиль</a></div></div>`;
   renderFaq();
   addLd([{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], [PAGE_NAME, location.pathname]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') } })) }]);
