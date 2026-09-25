@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Команда Kleo Homes: эксперты по недвижимости в Алании</title>
+<meta name="description" content="Кто поможет вам купить жильё в Алании: основатель, эксперты по районам, аренде и новостройкам, юрист. Офис, лицензия TTYB, как мы работаем.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css">
+<link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+<div class="demo-strip">Прототип: имена вымышлены, фото — примеры со стока, цифры — демо</div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="home-v2.html" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="13" r="6.5" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="wm"><b>KLEO</b><small>HOMES</small></span>
+    </a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="team.html" aria-current="page">О компании</a><a href="blog.html">Журнал</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
+      <select class="cur-sel hide-t" aria-label="Валюта"></select>
+      <a class="icon-btn" href="catalog.html" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
+      <a href="#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
+      <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
+    <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
+    <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
+  </div>
+</div>
+
+<main>
+<section class="dhero short">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">О компании и команда</span></nav>
+    <span class="eyebrow">О компании</span>
+    <h1>Команда Kleo Homes</h1>
+    <p class="lead-t">Агентство недвижимости в Алании с 2019 года. Помогаем выбрать, проверить и купить жильё — лично или удалённо — и не пропадаем после сделки.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="stats" role="list" aria-label="Коротко о компании">
+    <div role="listitem"><b>2019</b><span>год основания</span></div>
+    <div role="listitem"><b id="st-team">6</b><span>специалистов в команде</span></div>
+    <div role="listitem"><b>RU · EN · TR</b><span>языки общения</span></div>
+    <div role="listitem"><b>12</b><span>застройщиков-партнёров</span></div>
+  </div>
+</div>
+
+<section class="sec" id="founder"></section>
+
+<section class="sec" style="background:var(--mist)" id="team">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Эксперты</span><h2>Кто поможет с покупкой</h2></div><p>У каждого эксперта свои районы и специализация. Напишите напрямую тому, кто вам подходит.</p></div>
+    <div class="tgrid" id="tgrid"></div>
+    <p class="hint" style="margin-top:14px">Имена вымышлены, фото — примеры со стока. Заменим на реальных сотрудников.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Как мы работаем</span><h2>Четыре правила Kleo Homes</h2></div></div>
+    <div class="values">
+      <div class="rv"><b>Честная цена</b><p>Показываем дату проверки цены и говорим о минусах объекта до просмотра.</p></div>
+      <div class="rv"><b>Проверка до брони</b><p>Юрист проверяет ТАПУ, долги, разрешения и статус квартала для ВНЖ до того, как вы внесёте залог.</p></div>
+      <div class="rv"><b>Сделка удалённо</b><p>Показ по видео, доверенность, оплата через банк — можно купить, не прилетая в Турцию.</p></div>
+      <div class="rv"><b>Рядом после покупки</b><p>Коммунальные услуги, страховка DASK, ВНЖ, мебель и управление арендой.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0" id="office">
+  <div class="wrap office-b">
+    <img id="office-img" alt="Офис Kleo Homes (фото для примера)" loading="lazy" width="900" height="560">
+    <div>
+      <span class="eyebrow">Офис</span><h2 style="margin-top:8px">Приходите в гости</h2>
+      <dl>
+        <dt>Офис</dt><dd>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya</dd>
+        <dt>Шоурум</dt><dd>Махмутлар, у набережной</dd>
+        <dt>Часы</dt><dd>Пн–сб 9:00–19:00</dd>
+        <dt>Телефон</dt><dd><a href="tel:+905001111111">+90 500 111 11 11</a></dd>
+        <dt>E-mail</dt><dd><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></dd>
+      </dl>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa">WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="#lead" class="btn btn-line">Записаться на встречу</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="lic" id="license">
+      <img id="lic-img" alt="Лицензия агентства (пример вместо скана)" loading="lazy" width="520" height="390">
+      <div>
+        <h3>Лицензия TTYB № 1111111</h3>
+        <p>Kleo Homes работает по разрешению на деятельность с недвижимостью (Taşınmaz Ticareti Yetki Belgesi). Номер можно проверить в реестре Министерства торговли Турции.</p>
+        <p style="margin-top:10px"><b>Награды и партнёры:</b> «Агентство года — Аланья 2025», 12 застройщиков-партнёров, аккредитация у двух банков для ипотеки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--mist)" id="arts-sec">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Журнал</span><h2>Пишут наши эксперты</h2></div><a href="blog.html" class="link">Все статьи →</a></div>
+    <div class="pgrid" id="arts"></div>
+  </div>
+</section>
+</main>
+
+<section class="sec lead" id="lead">
+  <div class="wrap lead-grid">
+    <div class="intro">
+      <span class="eyebrow">Подбор</span>
+      <h2 id="lead-h">Выберите эксперта или напишите нам</h2>
+      <p>Расскажите о бюджете и планах — эксперт по району пришлёт варианты с плюсами и минусами. Или напишите напрямую:</p>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa" data-wa>WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
+    </div>
+    <form class="lform" id="lead-form" novalidate>
+      <div class="row2">
+        <div class="fld"><label for="l-name">Имя</label><input id="l-name" required autocomplete="name"><span class="err-msg">Укажите имя</span></div>
+        <div class="fld"><label for="l-way">Как связаться</label><select id="l-way"><option>WhatsApp</option><option>Telegram</option><option>Звонок</option><option>E-mail</option></select></div>
+      </div>
+      <div class="fld"><label for="l-phone">Номер телефона</label><div class="phone"><select id="l-code" aria-label="Код страны"><option>+7</option><option>+90</option><option>+49</option><option>+380</option><option>+375</option><option>+44</option><option>+1</option></select><input id="l-phone" type="tel" required autocomplete="tel-national" placeholder="900 000 00 00"></div><span class="err-msg">Укажите номер в международном формате</span></div>
+      <div class="row2">
+        <div class="fld"><label for="l-goal">Цель <span class="hint">(необязательно)</span></label><select id="l-goal"><option>Пока не решил</option><option>Для жизни</option><option>Для отдыха</option><option>Сдавать в аренду</option><option>ВНЖ / гражданство</option></select></div>
+        <div class="fld"><label for="l-budget">Бюджет <span class="hint">(необязательно)</span></label><select id="l-budget"><option>Пока не определён</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+      </div>
+      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish">Хочу консультацию эксперта: </textarea></div>
+      <div class="fld"><label class="check"><input type="checkbox" id="l-ok" required>Согласен с <a href="#" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие на обработку данных</span></div>
+      <button class="btn btn-coral" type="submit">Получить подборку</button>
+      <div class="notice ok" id="l-ok-msg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <span class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>HOMES</small></span></span>
+        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya<br>Пн–сб 9:00–19:00 · TTYB № 1111111</p>
+        <p style="margin-top:10px"><a href="tel:+905001111111">+90 500 111 11 11</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
+        <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
+      </div>
+      <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
+      <div><h4>Услуги</h4><ul><li><a href="#lead">Подбор и просмотр</a></li><li><a href="home-v2.html#services">Проверка документов</a></li><li><a href="home-v2.html#services">Гражданство</a></li><li><a href="home-v2.html#services">ВНЖ</a></li><li><a href="home-v2.html#services">Управление арендой</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="team.html">О нас и команда</a></li><li><a href="blog.html">Статьи</a></li><li><a href="news.html">Новости</a></li><li><a href="#lead">Контакты</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 Kleo Homes</span><a href="#">Политика конфиденциальности</a><a href="admin/login.html">Вход для сотрудников</a></div>
+  </div>
+</footer>
+
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#lead" class="pick">Подбор</a><a href="https://wa.me/905001111111" class="wa" data-wa>WhatsApp</a></nav>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/posts.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = KHS.esc;
+  const addLd = data => { const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify(data); document.head.appendChild(ld); };
+  const crumbsLd = items => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) });
+
+  const T = KH.TEAM, f = KH.member('founder');
+  const arts = KH.livePosts().filter(p => p.kind === 'article');
+  const byAuthor = name => arts.filter(p => p.author === name);
+  const wa = t => `https://wa.me/${KH.COMPANY.wa}?text=${encodeURIComponent(`Здравствуйте! Хочу проконсультироваться с экспертом ${t.name}.`)}`;
+  const areaLinks = t => t.areas.map(s => KH.district(s)).map(d => `<a href="district.html?d=${d.slug}">${d.name}</a>`).join('');
+  $('#st-team').textContent = T.length;
+
+  $('#founder').innerHTML = `<div class="wrap founder">
+    <img src="${KH.IMG(f.img, 760)}" alt="${esc(f.name)}, основатель Kleo Homes (фото для примера)" width="760" height="950" loading="lazy">
+    <div>
+      <span class="eyebrow">Основатель</span>
+      <h2 style="margin-top:8px">${esc(f.name)}</h2>
+      <p class="hint" style="margin-top:4px">${esc(f.role)} · ${f.exp} лет в недвижимости · ${esc(f.langs)}</p>
+      <blockquote>«Хочу, чтобы покупка квартиры в Турции была такой же понятной, как дома: с честной ценой, проверенными документами и людьми, которые отвечают на звонки после сделки».</blockquote>
+      <p>${esc(f.bio)}</p>
+      <p>Сегодня в команде ${T.length} специалистов: эксперты по районам, аренде и новостройкам и штатный юрист. Каждую сделку ведёт один эксперт — от первой подборки до получения ТАПУ и ключей.</p>
+      <div class="contacts" style="margin-top:18px"><a href="${wa(f)}" class="btn btn-wa">Написать основателю</a><a href="#team" class="btn btn-line">Вся команда</a></div>
+    </div></div>`;
+
+  $('#tgrid').innerHTML = T.filter(t => t.id !== 'founder').map(t => {
+    const n = byAuthor(t.name).length;
+    return `<article class="mcard rv" id="${t.id}"><img src="${KH.IMG(t.img, 600)}" alt="${esc(t.name)} (фото для примера)" loading="lazy" width="600" height="450"><div class="bd">
+      <h3>${esc(t.name)}</h3><span class="role">${esc(t.role)}</span>
+      <span class="facts-m"><span>${t.exp} лет опыта</span><span>${esc(t.langs)}</span></span>
+      <span class="spec">${esc(t.spec)}</span><p>${esc(t.bio)}</p>
+      ${t.areas.length ? `<div class="areas" aria-label="Районы эксперта">${areaLinks(t)}</div>` : ''}
+      <div class="acts"><a href="${wa(t)}" class="btn btn-wa btn-sm">WhatsApp</a>${n ? `<a href="blog.html" class="btn btn-line btn-sm">Статьи · ${n}</a>` : ''}</div></div></article>`;
+  }).join('');
+
+  $('#office-img').src = KH.IMG(KH.PHOTOS.office, 900);
+  $('#lic-img').src = KH.IMG(KH.PHOTOS.license, 520);
+  $('#arts').innerHTML = arts.filter(p => KHS.authorOf(p)).slice(0, 3).map(KHS.postCard).join('');
+  KHS.reveal(document);
+
+  addLd([crumbsLd([['Главная', 'home-v2.html'], ['О компании и команда', location.pathname]]),
+    { '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: 'Kleo Homes', foundingDate: '2019', telephone: KH.COMPANY.phone, email: KH.COMPANY.email,
+      address: { '@type': 'PostalAddress', streetAddress: 'Saray Mah., Atatürk Cad. № 11', postalCode: '07400', addressLocality: 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' },
+      founder: { '@type': 'Person', name: f.name }, employee: T.map(t => ({ '@type': 'Person', name: t.name, jobTitle: t.role, knowsLanguage: t.langs.split(' · ') })) }]);
+  // если пришли по ссылке на эксперта (#lawyer), прокрутить после отрисовки
+  if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+  KHS.initHeader();
+
+  // форма заявки (демо): в рабочей версии письмо уходит на почту агентства
+  document.querySelector('#lead-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!KHS.validate(e.target)) return;
+    const n = document.querySelector('#l-ok-msg'); n.textContent = 'Демо: заявка не отправлена. В рабочей версии она придёт на почту агентства.'; n.style.display = 'block';
+    e.target.querySelector('button[type=submit]').disabled = true;
+  });
+})();
+</script>
+</body>
+</html>
