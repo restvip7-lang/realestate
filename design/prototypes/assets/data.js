@@ -243,6 +243,19 @@
   const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
   const setOrThrow = (k, v) => { if (!set(k, v)) throw new Error('storage-full'); };
 
+  // Отзывы об агентстве (ДЕМО). Вместе с отзывами о сотрудниках (TEAM[].reviews) показываются на reviews.html и главной.
+  // service: buy — покупка, rent — аренда и управление, docs — ВНЖ и документы, sell — продажа
+  const REVIEWS_EXTRA = [
+    { who: 'Markus', country: 'Германия', date: '07.2026', rating: 5, service: 'buy', expert: 'expert2', text: 'Показали и минусы объекта, и расходы до брони. Никаких сюрпризов на сделке.' },
+    { who: 'Светлана', country: 'Россия', date: '06.2026', rating: 5, service: 'docs', expert: 'lawyer', text: 'Помогли после покупки: подключили свет и воду, оформили страховку и ВНЖ.' },
+    { who: 'Ерлан', country: 'Казахстан', date: '09.2026', rating: 5, service: 'buy', expert: 'expert4', text: 'Купили 2+1 в Кестеле в рассрочку на 24 месяца. Застройщика проверили заранее, дом сдали в срок.' },
+    { who: 'Ольга', country: 'Беларусь', date: '05.2026', rating: 4, service: 'rent', expert: 'expert3', text: 'Сняли квартиру в Оба на год. Всё быстро и честно, но договор на английском пришлось ждать несколько дней.' },
+    { who: 'Jonas', country: 'Швеция', date: '04.2026', rating: 5, service: 'sell', expert: 'founder', text: 'Продали мою квартиру в Тосмуре за два месяца. Фото, видео и показы — без моего участия, я был в Стокгольме.' },
+    { who: 'Татьяна', country: 'Россия', date: '03.2026', rating: 5, service: 'buy', expert: 'expert1', text: 'Выбирали между Махмутларом и Каргыджаком. Анна честно сравнила районы и отговорила от квартиры у шумной дороги.' },
+    { who: 'Ахмет', country: 'Турция', date: '02.2026', rating: 4, service: 'sell', expert: 'founder', text: 'Продажа прошла быстро и прозрачно. Хотелось бы больше показов в первый месяц, но итоговой ценой доволен.' },
+    { who: 'Игорь', country: 'Украина', date: '01.2026', rating: 5, service: 'docs', expert: 'lawyer', text: 'Оформили гражданство за покупку двух квартир. Юрист вёл всё от оценки до паспорта, сроки совпали с обещанными.' }
+  ];
+
   // команда: базовые данные + правки из админки (kh_team); скрытые не показываются на сайте
   function teamAll() {
     const byId = new Map(TEAM_BASE.map(t => [t.id, t]));
@@ -256,6 +269,15 @@
   }
   const resetMember = id => set('kh_team', get('kh_team', []).filter(x => x.id !== id));
   const teamPage = () => Object.assign({}, TEAM_PAGE, get('kh_teampage', {}));
+  // все отзывы: о сотрудниках (редактируются в админке «Команда») + об агентстве; без повторов, новые сверху
+  const ym = d => { const [m, y] = String(d || '').split('.'); return (+y || 0) * 100 + (+m || 0); };
+  function reviews() {
+    const SVC = { lawyer: 'docs', expert3: 'rent' };
+    const list = TEAM.flatMap(t => (t.reviews || []).map(([who, date, text]) => ({ who, date, text, rating: 5, service: SVC[t.id] || (t.kind === 'lawyer' ? 'docs' : 'buy'), expert: t.id })))
+      .concat(REVIEWS_EXTRA.map(r => Object.assign({}, r, { expert: TEAM.some(t => t.id === r.expert) ? r.expert : null })));
+    const seen = new Set();
+    return list.filter(r => { const k = r.who + r.date; if (seen.has(k)) return false; seen.add(k); return true; }).sort((a, b) => ym(b.date) - ym(a.date));
+  }
 
   function allObjects() {
     const local = get('kh_objects', []);
@@ -312,6 +334,7 @@
     airportKm: d => Math.max(4, Math.round(Math.abs(38 - d.pos))) + (d.inland ? 2 : 0), // аэропорт GZP ~38 км на восток от центра
     member: id => TEAM.find(t => t.id === id),
     teamAll, memberAny: id => teamAll().find(t => t.id === id), byName, saveMember, resetMember, isBaseMember: id => TEAM_BASE.some(t => t.id === id), baseMember: id => TEAM_BASE.find(t => t.id === id),
+    reviews, REVIEW_SERVICES: { buy: 'Покупка', rent: 'Аренда и управление', docs: 'ВНЖ и документы', sell: 'Продажа' },
     TEAM_PAGE, teamPage, saveTeamPage: p => setOrThrow('kh_teampage', p), resetTeamPage: () => localStorage.removeItem('kh_teampage'),
     coords: o => { if (o.lat && o.lng && +o.lat > 30) return [+o.lat, +o.lng]; const d = DISTRICTS.find(x => x.slug === o.district) || DISTRICTS[4]; return nearCoast(d, o.sea, (o.id * 9301 + 49297) % 233280 / 233280); },
     district: slug => DISTRICTS.find(d => d.slug === slug) || { name: slug, slug, pm: 0, km: 0 },

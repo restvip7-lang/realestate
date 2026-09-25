@@ -91,7 +91,7 @@
 
 ## SEO
 - SSR/ISR у всех публичных страниц, `generateMetadata` из CMS, canonical, hreflang, `sitemap.xml` (разбит по языкам и типам), `robots.txt`, `llms.txt`.
-- JSON-LD: `RealEstateAgent` + `LocalBusiness` (адрес в Алании), `RealEstateListing`/`Offer` на карточке, `BreadcrumbList`, `ItemList` в каталоге, `FAQPage` на лендингах, `Article` в блоге, `Review`/`AggregateRating`.
+- JSON-LD: `RealEstateAgent` + `LocalBusiness` (адрес в Алании), `RealEstateListing`/`Offer` на карточке, `BreadcrumbList`, `ItemList` в каталоге, `FAQPage` на лендингах, `Article` в блоге. `AggregateRating` для отзывов о себе на своём сайте не размечаем: Google не показывает такие звёзды для LocalBusiness/Organization. Рейтинг собираем в Google Business Profile и Яндекс Бизнесе, на сайте — страница отзывов.
 - Core Web Vitals: `next/image`, AVIF, lazy-загрузка карты, шрифты через `next/font`. Цель — Lighthouse 90+ на мобильных.
 - Проданные объекты не удаляются: страница остаётся с бейджем «Продано» и блоком похожих объектов, так ссылочный вес не теряется. Снятые с публикации отдают 301 на каталог района.
 - Внутренняя перелинковка: карточка ↔ район ↔ ЖК ↔ подборки, блок «Похожие объекты».
