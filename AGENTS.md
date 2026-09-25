@@ -8,9 +8,11 @@
 Закончил работу — допиши запись в начало `HANDOFF.md`.
 
 ## Стек
-- Next.js 15 (App Router) + Payload CMS 3 в одном приложении, TypeScript strict
-- PostgreSQL (локально поднимается в Docker), Tailwind CSS, next-intl
-- Маршруты с языковым префиксом: `/ru/...`, `/en/...`, `/tr/...`
+- Next.js 16 (App Router) + Payload CMS 3.90 в одном приложении, TypeScript strict. Next 16 отличается от прежних версий (например, `middleware` → `proxy.ts`): прежде чем писать код, сверяйся с `node_modules/next/dist/docs/`.
+- PostgreSQL: локально Docker (`docker compose up -d db`), в продакшене Neon через Vercel. Схема меняется только миграциями (`src/migrations`).
+- Хостинг: Vercel (сайт и админка), фото в Vercel Blob. Подключение и переменные описаны в `docs/deploy.md`.
+- next-intl, маршруты с языковым префиксом: `/ru/...`, `/en/...`, `/tr/...`.
+- Стили: CSS прототипа, перенесённый в `src/app/(frontend)/styles/` (токены — CSS-переменные в `base.css`). Tailwind пока не подключён: см. `docs/CLAUDE-NOTES.md`.
 
 ## Как работаем вдвоём
 1. Перед началом работы открой `docs/TASKS.md`, возьми свободную задачу и впиши в неё свою метку: `[claude]` или `[gpt]`.
@@ -34,27 +36,49 @@
 - для своей задачи создавай отдельную рабочую копию: `git worktree add ../RealEstate-<агент> -b <агент>/<задача> main`;
 - перед коммитом проверь `git branch` и `git status`.
 
-## Структура (целевая)
+## Структура
 ```
-src/app/(frontend)/[locale]/   публичный сайт
-src/app/(payload)/admin/       админка Payload
-src/collections/               коллекции Payload (Properties, Districts, ...)
-src/components/                UI-компоненты
-src/i18n/                      словари ru/en/tr
-docs/                          план, бриф, дизайн-система, тексты, SEO
+src/app/(frontend)/[locale]/   публичный сайт (главная, /sale, /rent, /property/[id-slug])
+src/app/(frontend)/styles/     CSS, перенесённый из прототипов
+src/app/(payload)/             админка Payload (/admin), REST API (/api), загрузка демо (/next/seed)
+src/collections/, src/globals/ коллекции и глобалы Payload
+src/components/site/           компоненты сайта; src/components/admin/ — дополнения админки
+src/lib/                       данные для страниц (data.ts), SEO, форматирование, расходы
+src/i18n/                      языки, маршрутизация, словари messages/{ru,en,tr}.json
+src/migrations/                миграции БД (только добавлять новые)
+src/seed/                      импорт демо-данных прототипа (prototype-data.json)
+design/prototypes/             HTML-прототипы (GitHub Pages)
+docs/                          план, бриф, дизайн-система, тексты, SEO, деплой
 ```
 
 ## Стиль кода
 - Компоненты оформляем как функции, по умолчанию серверные; `"use client"` пишем только там, где без него не обойтись.
-- Цвета, отступы и шрифты берутся только из токенов в `docs/design-system.md` / Tailwind-конфига.
-- Каждая публичная страница задаёт `generateMetadata` (title, description, canonical, hreflang).
+- Цвета, отступы и шрифты берутся только из токенов (`docs/design-system.md` = CSS-переменные в `styles/base.css`).
+- Каждая публичная страница задаёт `generateMetadata` через `pageMeta()` из `src/lib/seo.ts` (title, description, canonical, hreflang).
 - Картинки подключаем только через `next/image`.
+- Данные на страницы берём только через `src/lib/data.ts`: там запросы с правами посетителя (`overrideAccess: false`), черновики и служебные поля на сайт не попадают.
+- Тексты интерфейса — в `src/i18n/messages/{ru,en,tr}.json`, набор ключей во всех трёх файлах одинаковый.
+- Изменил коллекцию или поле → `npm run migrate:create -- <имя>`, потом `npm run migrate`, `npm run generate:types`; миграцию коммитим вместе с кодом.
 
 ## Прототипы
 - Онлайн: https://restvip7-lang.github.io/realestate/ — GitHub Pages, обновляется автоматически после слияния в `main` (`.github/workflows/pages.yml`). Страницы закрыты от поисковиков (noindex).
 - Локально: `python -m http.server 8765` в папке `design/prototypes`, затем http://localhost:8765/
 
-## Команды (появятся на этапе 2)
-- `docker compose up -d db`: запустить Postgres
-- `npm run dev`: сайт на http://localhost:3000, админка на /admin
-- `npm run build`: сборка, перед мержем она должна проходить
+## Команды
+Первый запуск: `cp .env.example .env` (заполнить `PAYLOAD_SECRET`), `docker compose up -d db`, `npm install`, `npm run migrate`, `npm run seed`, `npm run dev`. Затем открыть http://localhost:3000/admin и создать первого пользователя: он станет администратором.
+- `npm run dev`: сайт на http://localhost:3000/ru, админка на /admin
+- `npm run build`: сборка, перед мержем она должна проходить (вместе с `npm run typecheck` и `npm run lint`)
+- `npm run migrate` / `npm run migrate:create -- <имя>`: применить / создать миграцию
+- `npm run seed` (`-- --reset` — заменить данные): загрузить демо-данные прототипа; то же самое делает кнопка на главной странице админки
+- `node scripts/export-prototype-data.mjs`: обновить `src/seed/prototype-data.json` после правок демо-данных в прототипе
+- `npm run generate:types`, `npm run generate:importmap`: после изменения коллекций или компонентов админки
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
