@@ -173,7 +173,7 @@
     ${KH.DISTRICTS.filter(d => d !== c && d !== m).map(d => `<circle cx="${d.x}" cy="${d.y}" r="4" fill="rgba(255,255,255,.3)"/>`).join('')}
     ${[[c, 'Офис · Центр', 'middle', 0], [m, 'Шоурум · Махмутлар', 'end', 14]].map(([d, t, anc, dx]) => `<g class="pin on"><circle class="dot" cx="${d.x}" cy="${d.y}" r="9"/><text x="${d.x + dx}" y="${d.y - 18}" text-anchor="${anc}">${t}</text></g>`).join('')}`;
 
-  $('#xrow').innerHTML = KH.TEAM.filter(t => t.id !== 'founder').map(t => `<a href="${waLink(`Здравствуйте, ${t.name}! Хочу проконсультироваться.`)}" target="_blank" rel="noopener"><img src="${KH.IMG(t.img, 120)}" alt=""><span><b>${esc(t.name)}</b><span>${esc(t.role)} · ${esc(t.langs)}</span></span></a>`).join('');
+  $('#xrow').innerHTML = KH.TEAM.filter(t => t.kind !== 'founder').map(t => `<a href="${waLink(`Здравствуйте, ${t.name}! Хочу проконсультироваться.`)}" target="_blank" rel="noopener"><img src="${KH.IMG(t.img, 120)}" alt=""><span><b>${esc(t.name)}</b><span>${esc(t.role)} · ${esc(t.langs)}</span></span></a>`).join('');
 
   addLd([{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Контакты', location.pathname]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) },
     { '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: 'Kleo Homes', legalName: C.legal, telephone: C.phone, email: C.email,

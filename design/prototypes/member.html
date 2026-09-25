@@ -99,7 +99,8 @@
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const esc = KHS.esc, C = KH.COMPANY;
   const id = new URLSearchParams(location.search).get('id') || 'expert1';
-  const m = KH.member(id);
+  const preview = new URLSearchParams(location.search).get('preview') === '1';
+  const m = KH.member(id) || (preview ? KH.memberAny(id) : null);
   if (!m) {
     $('#app').innerHTML = `<div class="wrap notfound"><h1 style="font-size:28px">Такого сотрудника нет</h1><p class="hint" style="margin:12px 0 20px">Возможно, он больше не работает в агентстве. В рабочей версии — 301 на страницу команды.</p><a href="team.html" class="btn btn-dark">Вся команда</a></div>`;
     KHS.initHeader(); return;
@@ -107,13 +108,13 @@
 
   const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? b : c;
   const wa = `https://wa.me/${C.wa}?text=${encodeURIComponent(`Здравствуйте, ${m.name}! Хочу проконсультироваться.`)}`;
-  const agentOf = o => KH.TEAM.find(x => x.name === o.agent) || KH.agentFor(o);
+  const agentOf = o => KH.byName(o.agent) || KH.agentFor(o);
   const pub = KH.published();
   // объекты эксперта: как на странице объекта; основатель ведёт виллы и премиум, юрист объектов не ведёт
   let objs = pub.filter(o => agentOf(o).id === m.id);
-  if (m.id === 'founder') objs = pub.filter(o => o.deal === 'sale' && (o.type === 'villa' || o.price >= 250000));
+  if (m.kind === 'founder') objs = pub.filter(o => o.deal === 'sale' && (o.type === 'villa' || o.price >= 250000));
   objs.sort((a, b) => b.id - a.id);
-  const arts = KH.livePosts().filter(p => p.author === m.name);
+  const arts = KH.livePosts().filter(p => KH.byName(p.author) === m || p.author === m.name);
   const areas = (m.areas || []).map(s => KH.district(s));
   document.title = `${m.name} — ${m.role.toLowerCase()} Kleo Homes | Недвижимость в Алании`;
   document.querySelector('meta[name=description]').content = `${m.name}, ${m.role.toLowerCase()} агентства Kleo Homes: ${m.exp} лет опыта, ${m.langs}. ${m.spec}.`;
@@ -127,7 +128,7 @@
         <div class="mhero-grid">
           <img src="${KH.IMG(m.img, 600)}" alt="${esc(m.name)} (фото для примера)" width="600" height="750">
           <div>
-            <span class="eyebrow">${m.id === 'founder' ? 'Основатель' : 'Эксперт Kleo Homes'}</span>
+            <span class="eyebrow">${m.hidden ? 'Скрыт на сайте (предпросмотр) · ' : ''}${m.kind === 'founder' ? 'Основатель' : 'Эксперт Kleo Homes'}</span>
             <h1>${esc(m.name)}</h1>
             <span class="role">${esc(m.role)} · ${m.exp} ${plural(m.exp, 'год', 'года', 'лет')} опыта · ${esc(m.langs)}</span>
             <p class="spec">${esc(m.spec)}</p>
@@ -142,15 +143,15 @@
       <div class="kfacts k4" role="list" aria-label="Коротко об эксперте">
         <div role="listitem"><span>Опыт</span><b>${m.exp} ${plural(m.exp, 'год', 'года', 'лет')}</b><small>в недвижимости</small></div>
         <div role="listitem"><span>Языки</span><b>${esc(m.langs)}</b><small>консультации и показы</small></div>
-        <div role="listitem"><span>${m.id === 'lawyer' ? 'Проверяет' : 'Ведёт объектов'}</span><b>${m.id === 'lawyer' ? 'каждую сделку' : objs.length}</b><small>${m.id === 'lawyer' ? 'до брони' : 'в каталоге сейчас'}</small></div>
+        <div role="listitem"><span>${m.kind === 'lawyer' ? 'Проверяет' : 'Ведёт объектов'}</span><b>${m.kind === 'lawyer' ? 'каждую сделку' : objs.length}</b><small>${m.kind === 'lawyer' ? 'до брони' : 'в каталоге сейчас'}</small></div>
         <div role="listitem"><span>Статьи</span><b>${arts.length}</b><small>${arts.length ? 'в журнале' : 'пока нет'}</small></div>
       </div>
     </div>
 
     <section class="sec">
       <div class="wrap cols2">
-        <div class="box"><h3>Чем помогу</h3><ul class="checklist">${m.help.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-        <div class="box"><h3>О себе</h3><p style="color:#2B323C">${esc(m.bio)}</p>
+        <div class="box"><h3>Чем помогу</h3><ul class="checklist">${(m.help || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="box"><h3>О себе</h3><p style="color:#2B323C">${esc(m.bio || m.spec)}</p>
           <p class="hint" style="margin-top:12px">Отвечает в WhatsApp в рабочее время в течение 15 минут. Консультация и подбор — бесплатно.</p></div>
       </div>
     </section>
@@ -161,7 +162,7 @@
     </div></section>` : ''}
 
     ${objs.length ? `<section class="sec" id="objs"><div class="wrap">
-      <div class="sec-head"><div><span class="eyebrow">Объекты</span><h2>${m.id === 'founder' ? 'Виллы и премиум, которые ведёт лично' : 'Объекты, которые ведёт эксперт'}</h2></div><span class="hint">${objs.length} ${plural(objs.length, 'объект', 'объекта', 'объектов')}</span></div>
+      <div class="sec-head"><div><span class="eyebrow">Объекты</span><h2>${m.kind === 'founder' ? 'Виллы и премиум, которые ведёт лично' : 'Объекты, которые ведёт эксперт'}</h2></div><span class="hint">${objs.length} ${plural(objs.length, 'объект', 'объекта', 'объектов')}</span></div>
       <div class="grid3 limit4">${objs.slice(0, 6).map(KHS.card).join('')}</div>
     </div></section>` : ''}
 
@@ -170,12 +171,12 @@
       <div class="pgrid">${arts.slice(0, 3).map(KHS.postCard).join('')}</div>
     </div></section>` : ''}
 
-    <section class="sec">
+    ${(m.reviews || []).length ? `<section class="sec">
       <div class="wrap">
         <div class="sec-head"><div><span class="eyebrow">Отзывы <span class="demo-tag">демо</span></span><h2>Что говорят клиенты</h2></div></div>
-        <div class="revs">${m.reviews.map(([who, date, text]) => `<div class="rev rv"><div class="stars" aria-label="5 из 5">★★★★★</div><p>«${esc(text)}»</p><div class="who"><span>${esc(who)}</span><span>${date}</span></div></div>`).join('')}</div>
+        <div class="revs">${m.reviews.map(([who, date, text]) => `<div class="rev rv"><div class="stars" aria-label="5 из 5">★★★★★</div><p>«${esc(text)}»</p><div class="who"><span>${esc(who)}</span><span>${esc(date)}</span></div></div>`).join('')}</div>
       </div>
-    </section>
+    </section>` : ''}
 
     <section class="sec" style="padding-top:0">
       <div class="wrap">
@@ -189,7 +190,7 @@
   const ld = document.createElement('script'); ld.type = 'application/ld+json';
   ld.textContent = JSON.stringify([
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Команда', 'team.html'], [m.name, location.href]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) },
-    { '@context': 'https://schema.org', '@type': 'Person', name: m.name, jobTitle: m.role, image: KH.IMG(m.img, 600), description: m.bio, knowsLanguage: m.langs.split(' · '), knowsAbout: areas.map(d => `${d.name}, Аланья`).concat(m.help),
+    { '@context': 'https://schema.org', '@type': 'Person', name: m.name, jobTitle: m.role, image: KH.IMG(m.img, 600), description: m.bio, knowsLanguage: m.langs.split(' · '), knowsAbout: areas.map(d => `${d.name}, Аланья`).concat(m.help || []),
       worksFor: { '@type': 'RealEstateAgent', name: 'Kleo Homes', telephone: C.phone }, url: location.href }
   ]);
   document.head.appendChild(ld);

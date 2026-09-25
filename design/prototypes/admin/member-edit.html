@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Сотрудник — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+<script src="auth.js" data-guard></script>
+<style>
+.photo-ed{display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center}
+.photo-ed img{width:160px;aspect-ratio:4/5;object-fit:cover;object-position:top;border-radius:10px;background:var(--mist)}
+.photo-ed .toolbar{flex-wrap:wrap}
+.langs-ch{display:flex;flex-wrap:wrap;gap:8px 16px}
+.rev-row{display:grid;grid-template-columns:1fr 120px auto;gap:8px;align-items:start;border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.rev-row textarea{grid-column:1/-1;min-height:70px}
+.rev-list{display:grid;gap:10px}
+.fld .check input{min-height:0;width:18px;height:18px;padding:0}
+.rev-row input,.rev-row textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:40px;background:#fff;font-size:15px}
+.rev-row input:focus,.rev-row textarea:focus{outline:none;border-color:var(--sea)}
+.panel-b>*,.grid-f>*,.rev-row>*,.photo-ed>*{min-width:0}
+@media (max-width:860px){.photo-ed{grid-template-columns:1fr}.rev-row{grid-template-columns:1fr 1fr}.rev-row .mini-btn{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<form id="adm-content" class="ed" novalidate>
+  <section class="panel" style="min-width:0">
+    <div class="panel-b" style="display:grid;gap:18px">
+      <div class="box">
+        <h3>Основное</h3>
+        <div class="grid-f">
+          <div class="fld"><label for="name">Имя и фамилия <span class="req">*</span></label><input id="name" required maxlength="60" autocomplete="off"><span class="err-msg">Укажите имя</span></div>
+          <div class="fld"><label for="role">Должность на сайте <span class="req">*</span></label><input id="role" required maxlength="60" list="roles"><datalist id="roles"><option>Эксперт по недвижимости</option><option>Эксперт по аренде</option><option>Эксперт по новостройкам</option><option>Юрист</option><option>Основатель</option></datalist><span class="err-msg">Укажите должность</span></div>
+          <div class="fld"><label for="kind">Тип</label><select id="kind"><option value="expert">Эксперт — ведёт объекты</option><option value="lawyer">Юрист — проверяет сделки</option><option value="founder">Основатель — отдельный блок на странице команды</option></select></div>
+          <div class="fld"><label for="exp">Опыт, лет</label><input id="exp" type="number" min="0" max="60" inputmode="numeric"></div>
+          <div class="fld wide"><span class="lbl">Языки <span class="req">*</span></span><div class="langs-ch" id="langs"></div><span class="err-msg">Отметьте хотя бы один язык</span></div>
+          <div class="fld wide"><label for="spec">Специализация (одна строка) <span class="req">*</span></label><input id="spec" required maxlength="120" placeholder="Например: квартиры у моря, покупка удалённо"><span class="err-msg">Укажите специализацию</span></div>
+          <div class="fld wide"><label for="bio">О себе <span class="req">*</span></label><textarea id="bio" rows="4" maxlength="600" placeholder="2–3 предложения: опыт, в чём сильнее всего, кому помогает"></textarea><span class="err-msg">Напишите хотя бы 60 символов</span><div class="counter" id="bio-c"></div></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>Фото</h3>
+        <div class="photo-ed">
+          <img id="ph" alt="Фото сотрудника">
+          <div>
+            <div class="toolbar"><button type="button" class="mini-btn" id="ph-btn">Загрузить фото</button><button type="button" class="mini-btn" id="ph-reset">Вернуть исходное</button><input type="file" id="ph-file" accept="image/*" hidden></div>
+            <p class="hint" style="margin-top:8px">Портрет, вертикальный (4:5), лицо в верхней трети. Фото уменьшается до 600 px, чтобы страница грузилась быстро.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>Районы</h3>
+        <p class="hint" style="margin-bottom:10px">Показываются в профиле и на странице команды. Лучше 2–4 района, которые сотрудник знает лучше всего.</p>
+        <div class="checks-grid" id="areas"></div>
+      </div>
+
+      <div class="box">
+        <h3>Чем помогу</h3>
+        <div class="fld"><label for="help">По одному пункту в строке (до 6)</label><textarea id="help" rows="5" placeholder="Подбор квартиры у моря&#10;Показы по видеосвязи"></textarea></div>
+      </div>
+
+      <div class="box">
+        <h3>Отзывы клиентов</h3>
+        <p class="hint" style="margin-bottom:10px">Только настоящие отзывы и с согласия клиента. На сайте показываются в профиле сотрудника.</p>
+        <div class="rev-list" id="revs"></div>
+        <button type="button" class="mini-btn" id="rev-add" style="margin-top:10px">+ Добавить отзыв</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="side-card">
+    <section class="panel">
+      <div class="panel-h"><h2>Публикация</h2><span class="st" id="st-badge"></span></div>
+      <div class="panel-b">
+        <div class="fld"><label for="status">Статус</label><select id="status"><option value="shown">На сайте</option><option value="hidden">Скрыт</option></select></div>
+        <div class="errs" id="errs" role="alert"></div>
+        <button type="button" class="btn btn-coral" id="save">Сохранить</button>
+        <button type="button" class="btn btn-line" id="preview">Сохранить и открыть на сайте</button>
+        <button type="button" class="btn btn-line" id="reset" hidden>Отменить все правки</button>
+        <button type="button" class="btn btn-line" id="del" hidden style="color:var(--err)">Удалить сотрудника</button>
+        <p class="hint" id="meta-line"></p>
+      </div>
+    </section>
+  </aside>
+</form>
+<div class="mobile-save"><button type="button" class="btn btn-line" data-alias="preview">На сайте</button><button type="button" class="btn btn-coral" data-alias="save">Сохранить</button></div>
+
+<script src="../assets/data.js"></script>
+<script src="admin.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)], { esc } = ADM;
+  const qid = new URLSearchParams(location.search).get('id');
+  const existing = qid ? KH.memberAny(qid) : null;
+  const isBase = existing && KH.isBaseMember(existing.id);
+  ADM.shell('team', existing ? existing.name : 'Новый сотрудник', '<a href="team.html" class="btn btn-line btn-sm">← К команде</a>');
+  if (qid && !existing) { ADM.toast('Сотрудник не найден — создаём нового'); }
+
+  const LANGS = ['RU', 'EN', 'TR', 'DE', 'UK', 'KZ', 'AR', 'FA'];
+  $('#langs').innerHTML = LANGS.map(l => `<label class="check"><input type="checkbox" value="${l}">${l}</label>`).join('');
+  $('#areas').innerHTML = KH.DISTRICTS.map(d => `<label class="check"><input type="checkbox" value="${d.slug}">${d.name}${d.inland ? ' (горы)' : ''}</label>`).join('');
+
+  let photo = existing ? existing.img : '';
+  const showPhoto = () => { $('#ph').src = photo ? KH.IMG(photo, 400) : KH.IMG(KH.PHOTOS.office, 400); };
+  let reviews = existing ? (existing.reviews || []).map(r => r.slice()) : [];
+
+  function renderRevs() {
+    $('#revs').innerHTML = reviews.length ? reviews.map(([who, date, text], i) => `<div class="rev-row">
+      <input data-r="${i}" data-k="0" value="${esc(who)}" placeholder="Имя клиента" aria-label="Имя клиента ${i + 1}" maxlength="40">
+      <input data-r="${i}" data-k="1" value="${esc(date)}" placeholder="ММ.ГГГГ" aria-label="Дата отзыва ${i + 1}" maxlength="7">
+      <button type="button" class="mini-btn" data-rm="${i}">Удалить</button>
+      <textarea data-r="${i}" data-k="2" placeholder="Текст отзыва" aria-label="Текст отзыва ${i + 1}" maxlength="400">${esc(text)}</textarea></div>`).join('') : '<p class="hint">Отзывов пока нет.</p>';
+    $('#rev-add').disabled = reviews.length >= 6;
+  }
+  $('#revs').addEventListener('input', e => { const el = e.target.closest('[data-r]'); if (el) reviews[+el.dataset.r][+el.dataset.k] = el.value; });
+  $('#revs').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { reviews.splice(+b.dataset.rm, 1); renderRevs(); } });
+  $('#rev-add').onclick = () => { reviews.push(['', new Date().toLocaleDateString('ru-RU', { month: '2-digit', year: 'numeric' }), '']); renderRevs(); $$('#revs [data-k="0"]').pop().focus(); };
+
+  // загрузка существующего
+  if (existing) {
+    $('#name').value = existing.name; $('#role').value = existing.role; $('#kind').value = existing.kind || 'expert';
+    $('#exp').value = existing.exp ?? ''; $('#spec').value = existing.spec || ''; $('#bio').value = existing.bio || '';
+    const langs = (existing.langs || '').split(/\s*·\s*/);
+    $$('#langs input').forEach(i => i.checked = langs.includes(i.value));
+    $$('#areas input').forEach(i => i.checked = (existing.areas || []).includes(i.value));
+    $('#help').value = (existing.help || []).join('\n');
+    $('#status').value = existing.hidden ? 'hidden' : 'shown';
+    $('#meta-line').textContent = existing.local ? 'Изменён в админке. Исходные данные можно вернуть кнопкой выше.' : 'Исходные данные прототипа.';
+  } else {
+    $$('#langs input').forEach(i => i.checked = i.value === 'RU');
+    $('#meta-line').textContent = 'Новый сотрудник появится на сайте после сохранения.';
+  }
+  $('#reset').hidden = !(isBase && existing.local);
+  $('#del').hidden = !existing || isBase;
+  const syncBadge = () => { const h = $('#status').value === 'hidden'; $('#st-badge').className = 'st ' + (h ? 'hidden' : 'published'); $('#st-badge').textContent = h ? 'Скрыт' : 'На сайте'; };
+  $('#status').onchange = syncBadge; syncBadge();
+  const bioCount = () => { const n = $('#bio').value.trim().length; $('#bio-c').textContent = `${n} / 600`; };
+  $('#bio').oninput = bioCount; bioCount();
+  showPhoto(); renderRevs();
+
+  // фото: уменьшаем до 600 px по ширине и сохраняем в браузере (в рабочей версии — Media в Payload)
+  $('#ph-btn').onclick = () => $('#ph-file').click();
+  $('#ph-file').onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    if (!file.type.startsWith('image/')) return ADM.toast('Нужен файл изображения');
+    const img = new Image();
+    img.onload = () => { const k = Math.min(1, 600 / img.width), c = document.createElement('canvas'); c.width = img.width * k; c.height = img.height * k; c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); photo = c.toDataURL('image/jpeg', .8); showPhoto(); URL.revokeObjectURL(img.src); };
+    img.onerror = () => ADM.toast('Не удалось прочитать изображение');
+    img.src = URL.createObjectURL(file);
+  };
+  // «Вернуть исходное» — только у сотрудников из исходных данных прототипа
+  $('#ph-reset').hidden = !isBase;
+  $('#ph-reset').onclick = () => { photo = KH.baseMember(existing.id).img; showPhoto(); };
+
+  function check() {
+    const errs = [];
+    const bad = (el, msg) => { el.closest('.fld').classList.add('invalid'); errs.push([el, msg]); };
+    $$('.fld.invalid').forEach(f => f.classList.remove('invalid'));
+    if (!$('#name').value.trim()) bad($('#name'), 'Имя');
+    else if (KH.teamAll().some(t => t.name.toLowerCase() === $('#name').value.trim().toLowerCase() && t.id !== (existing && existing.id))) bad($('#name'), 'Сотрудник с таким именем уже есть');
+    if (!$('#role').value.trim()) bad($('#role'), 'Должность');
+    if (!$$('#langs input:checked').length) bad($('#langs input'), 'Языки');
+    if (!$('#spec').value.trim()) bad($('#spec'), 'Специализация');
+    if ($('#bio').value.trim().length < 60) bad($('#bio'), 'О себе — от 60 символов');
+    const othersShown = KH.teamAll().filter(t => !t.hidden && t.id !== (existing && existing.id)).length;
+    if ($('#status').value === 'hidden' && !othersShown) errs.push([$('#status'), 'На сайте должен остаться хотя бы один сотрудник']);
+    $('#errs').classList.toggle('on', !!errs.length);
+    $('#errs').innerHTML = errs.length ? `<b>Исправьте и сохраните ещё раз:</b><ul>${errs.map(([, m]) => `<li>${esc(m)}</li>`).join('')}</ul>` : '';
+    if (errs.length) errs[0][0].focus();
+    return !errs.length;
+  }
+
+  function collect() {
+    const name = $('#name').value.trim();
+    const all = KH.teamAll();
+    const m = Object.assign({}, existing || { id: 'm' + Date.now().toString(36), order: Math.max(0, ...all.map(t => t.order || 0)) + 10 }, {
+      name, role: $('#role').value.trim(), kind: $('#kind').value, exp: +$('#exp').value || 0,
+      langs: $$('#langs input:checked').map(i => i.value).join(' · '), spec: $('#spec').value.trim(), bio: $('#bio').value.trim(),
+      img: photo || KH.PHOTOS.office, areas: $$('#areas input:checked').map(i => i.value),
+      help: $('#help').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 6),
+      reviews: reviews.map(r => r.map(s => String(s).trim())).filter(r => r[0] && r[2]),
+      hidden: $('#status').value === 'hidden'
+    });
+    // переименование: старое имя остаётся в aka, чтобы статьи и объекты не потеряли автора
+    if (existing && existing.name !== name) m.aka = [...new Set([...(existing.aka || []), existing.name])].filter(n => n !== name);
+    return m;
+  }
+
+  function save(open) {
+    if (!check()) return;
+    const m = collect();
+    try { KH.saveMember(m); } catch (e) { ADM.toast('Не хватает места в браузере: загрузите фото поменьше'); return; }
+    if (open) window.open(`../member.html?id=${m.id}&preview=1`, '_blank');
+    location.href = 'team.html?saved=' + encodeURIComponent(m.name);
+  }
+  $('#save').onclick = () => save(false);
+  $('#preview').onclick = () => save(true);
+  $$('[data-alias]').forEach(b => b.onclick = () => $('#' + b.dataset.alias).click());
+  $('#reset').onclick = () => { if (confirm('Вернуть исходные данные сотрудника? Все правки из админки пропадут.')) { KH.resetMember(existing.id); location.href = 'team.html?saved=' + encodeURIComponent(existing.name); } };
+  $('#del').onclick = () => {
+    if (KH.teamAll().filter(t => !t.hidden && t.id !== existing.id).length === 0) return ADM.toast('Нельзя удалить последнего сотрудника на сайте');
+    if (confirm(`Удалить сотрудника «${existing.name}»? Его объекты перейдут к другим экспертам.`)) { KH.resetMember(existing.id); location.href = 'team.html'; }
+  };
+})();
+</script>
+</body>
+</html>

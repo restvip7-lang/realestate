@@ -5,7 +5,7 @@
     ['posts', 'Новости и статьи', 'posts.html', '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
     ['leads', 'Заявки', '#', '<path d="M4 4h16v12H7l-3 3z"/>', true],
     ['districts', 'Районы', '#', '<path d="M12 21s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/>', true],
-    ['team', 'Команда', '#', '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M17 11a3 3 0 1 0 0-6M21 20c0-2-1-4-4-4.5"/>', true],
+    ['team', 'Команда', 'team.html', '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M17 11a3 3 0 1 0 0-6M21 20c0-2-1-4-4-4.5"/>'],
     ['reviews', 'Отзывы', '#', '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>', true],
     ['settings', 'Настройки', '#', '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 2.9a7 7 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.9h5l.3-2.9a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6c.1-.3.1-.7.1-1z"/>', true]
   ];
@@ -20,7 +20,7 @@
       <aside class="adm-side" id="adm-side" aria-label="Разделы админки">
         <a href="objects.html" class="logo"><span class="wm"><b>KLEO</b><small>ADMIN</small></span></a>
         <nav class="adm-nav">${NAV.map(([k, t, h, ic, soon]) => `<a href="${h}" ${k === active ? 'aria-current="page"' : ''} ${soon ? 'data-soon' : ''}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">${ic}</svg>${t}${soon ? '<span class="soon">позже</span>' : ''}</a>`).join('')}</nav>
-        <div class="me"><div style="display:flex;gap:10px;align-items:center;margin-bottom:10px"><img src="${KH.IMG(KH.member('expert1').img, 96)}" alt="" style="width:40px;height:40px;border-radius:999px;object-fit:cover"><div><b>${esc((window.KHA && KHA.account()?.name) || 'Администратор')}</b><span style="font-size:12.5px">${esc((window.KHA && KHA.account()?.email) || '')}</span></div></div><a href="account.html" style="color:var(--sea-light)">Сменить пароль</a> · <a href="#" id="logout" style="color:var(--sea-light)">Выйти</a><br><a href="../home-v2.html" style="color:rgba(255,255,255,.6)">← На сайт</a></div>
+        <div class="me"><div style="display:flex;gap:10px;align-items:center;margin-bottom:10px"><img src="${KH.IMG((KH.member('expert1') || KH.TEAM[0] || { img: KH.PHOTOS.office }).img, 96)}" alt="" style="width:40px;height:40px;border-radius:999px;object-fit:cover"><div><b>${esc((window.KHA && KHA.account()?.name) || 'Администратор')}</b><span style="font-size:12.5px">${esc((window.KHA && KHA.account()?.email) || '')}</span></div></div><a href="account.html" style="color:var(--sea-light)">Сменить пароль</a> · <a href="#" id="logout" style="color:var(--sea-light)">Выйти</a><br><a href="../home-v2.html" style="color:rgba(255,255,255,.6)">← На сайт</a></div>
       </aside>
       <div class="adm-main">
         <header class="adm-top">

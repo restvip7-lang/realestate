@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Команда — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+<script src="auth.js" data-guard></script>
+<style>
+.tbl td.c-thumb{width:64px}
+.tbl .thumb.face{border-radius:999px;width:48px;height:48px;max-width:none;flex-shrink:0;object-fit:cover;object-position:top}
+.ord{display:flex;gap:4px}
+.ord .mini-btn{min-width:32px;justify-content:center}
+.stat-rows{display:grid;grid-template-columns:1fr 2fr;gap:10px 12px}
+.pf-acts{display:flex;gap:8px;flex-wrap:wrap}
+.tbl .acts{flex-wrap:nowrap;justify-content:flex-end}
+@media (min-width:861px){.tbl td.c-acts{width:1%;white-space:nowrap}}
+@media (max-width:860px){.tbl .acts{flex-wrap:wrap;justify-content:flex-start}}
+.stat-rows>*{min-width:0}
+</style>
+</head>
+<body>
+<div id="adm-content" style="display:grid;gap:18px">
+  <div class="stats" id="stats"></div>
+  <section class="panel">
+    <div class="panel-h"><h2>Сотрудники</h2><span class="hint">Порядок стрелками ↑↓ — в таком же порядке сотрудники стоят на сайте</span></div>
+    <table class="tbl">
+      <thead><tr><th></th><th>Сотрудник</th><th>Районы</th><th>Объекты</th><th>Статус</th><th><span class="vh">Действия</span></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel" id="page">
+    <div class="panel-h"><h2>Страница «Команда»</h2><a href="../team.html" target="_blank" class="mini-btn">Открыть на сайте</a></div>
+    <form class="panel-b" id="pf" novalidate>
+      <div class="grid-f two">
+        <div class="fld wide"><label for="p-title">Заголовок <span class="req">*</span></label><input id="p-title" required maxlength="80"><span class="err-msg">Нужен заголовок</span></div>
+        <div class="fld wide"><label for="p-lead">Подзаголовок</label><textarea id="p-lead" rows="2" maxlength="260"></textarea></div>
+        <div class="fld wide"><label for="p-quote">Цитата основателя</label><textarea id="p-quote" rows="3" maxlength="300"></textarea><span class="hint">Без кавычек — они добавятся на сайте. Пусто — цитата не показывается.</span></div>
+        <div class="fld wide"><span class="lbl">Цифры под заголовком</span>
+          <div class="stat-rows" id="p-stats"></div>
+          <span class="hint">Пустое значение — посчитать автоматически (например, число сотрудников на сайте).</span>
+        </div>
+      </div>
+      <div class="pf-acts"><button type="submit" class="btn btn-coral btn-sm">Сохранить страницу</button><button type="button" class="btn btn-line btn-sm" id="p-reset">Вернуть исходный текст</button></div>
+    </form>
+  </section>
+</div>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/posts.js"></script>
+<script src="admin.js"></script>
+<script>
+(() => {
+  ADM.shell('team', 'Команда', '<a href="member-edit.html" class="btn btn-coral btn-sm">+ Добавить сотрудника</a>');
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)], { esc } = ADM;
+  const KIND = { founder: 'Основатель', expert: 'Эксперт', lawyer: 'Юрист' };
+  const pub = KH.published(), posts = KH.livePosts();
+
+  function render() {
+    const all = KH.teamAll(), vis = all.filter(t => !t.hidden);
+    // кто ведёт объект — как на сайте: выбранный менеджер или автоматическое распределение по экспертам
+    const objCount = t => pub.filter(o => (KH.byName(o.agent) || KH.agentFor(o)).id === t.id).length;
+    $('#stats').innerHTML = [['На сайте', vis.length], ['Скрыто', all.length - vis.length], ['Экспертов', vis.filter(t => t.kind === 'expert').length], ['Статей у авторов', posts.filter(p => KH.byName(p.author)).length]]
+      .map(([t, n]) => `<div class="stat"><span>${t}</span><b>${n}</b></div>`).join('');
+    $('#rows').innerHTML = all.map((t, i) => `<tr>
+      <td class="c-thumb"><img class="thumb face" src="${KH.IMG(t.img, 120)}" alt="" loading="lazy"></td>
+      <td class="ttl"><a href="member-edit.html?id=${t.id}">${esc(t.name)}</a><div class="sub">${esc(t.role)}${t.kind !== 'expert' && !t.role.toLowerCase().includes(KIND[t.kind].toLowerCase()) ? ` (${KIND[t.kind]})` : ''} · ${esc(t.langs || '')} · ${t.exp || 0} лет${t.local ? ' · изменён в админке' : ''}</div></td>
+      <td class="c-hide sub">${(t.areas || []).map(s => KH.district(s).name).join(', ') || '—'}</td>
+      <td class="num">${t.kind === 'lawyer' ? '—' : t.hidden ? 0 : objCount(t)}</td>
+      <td><span class="st ${t.hidden ? 'hidden' : 'published'}">${t.hidden ? 'Скрыт' : 'На сайте'}</span></td>
+      <td class="c-acts"><div class="acts">
+        <span class="ord"><button class="mini-btn" type="button" data-mv="${i}" data-d="-1" aria-label="Выше" ${i ? '' : 'disabled'}>↑</button><button class="mini-btn" type="button" data-mv="${i}" data-d="1" aria-label="Ниже" ${i < all.length - 1 ? '' : 'disabled'}>↓</button></span>
+        <a class="mini-btn" href="member-edit.html?id=${t.id}">Изменить</a>
+        <button class="mini-btn" type="button" data-vis="${t.id}">${t.hidden ? 'Показать' : 'Скрыть'}</button>
+        <a class="mini-btn" href="../member.html?id=${t.id}&preview=1" target="_blank" aria-label="Открыть профиль на сайте" title="Открыть профиль на сайте">↗</a>
+      </div></td></tr>`).join('');
+  }
+
+  document.addEventListener('click', e => {
+    const mv = e.target.closest('[data-mv]'), vis = e.target.closest('[data-vis]');
+    try {
+      if (mv) { // меняем местами с соседом и нумеруем порядок заново
+        const all = KH.teamAll(), i = +mv.dataset.mv, j = i + +mv.dataset.d;
+        [all[i], all[j]] = [all[j], all[i]];
+        all.forEach((t, k) => { if (t.order !== k * 10) KH.saveMember(Object.assign({}, t, { order: k * 10 })); });
+        render(); $(`[data-mv="${j}"][data-d="${mv.dataset.d}"]`)?.focus();
+      }
+      if (vis) {
+        const t = KH.memberAny(vis.dataset.vis);
+        if (!t.hidden && KH.teamAll().filter(x => !x.hidden).length === 1) return ADM.toast('На сайте должен остаться хотя бы один сотрудник');
+        KH.saveMember(Object.assign({}, t, { hidden: !t.hidden }));
+        location.href = 'team.html?saved=' + encodeURIComponent(t.name); // перезагрузка: объекты скрытого эксперта распределятся по остальным
+      }
+    } catch (err) { ADM.toast('Не хватает места в браузере: уменьшите фото сотрудников или нажмите «Сбросить демо»'); }
+  });
+
+  // страница «Команда»
+  const PF = $('#pf');
+  function fillPage(p) {
+    $('#p-title').value = p.title; $('#p-lead').value = p.lead; $('#p-quote').value = p.quote;
+    $('#p-stats').innerHTML = p.stats.map(([v, l], i) => `<input data-sv="${i}" value="${esc(v)}" placeholder="авто" aria-label="Цифра ${i + 1}"><input data-sl="${i}" value="${esc(l)}" aria-label="Подпись ${i + 1}" maxlength="40">`).join('');
+  }
+  fillPage(KH.teamPage());
+  PF.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!ADM_validate()) return;
+    const p = { title: $('#p-title').value.trim(), lead: $('#p-lead').value.trim(), quote: $('#p-quote').value.trim(),
+      stats: KH.TEAM_PAGE.stats.map((_, i) => [$(`[data-sv="${i}"]`).value.trim(), $(`[data-sl="${i}"]`).value.trim()]) };
+    try { KH.saveTeamPage(p); ADM.toast('Страница команды сохранена'); } catch (err) { ADM.toast('Не хватает места в браузере'); }
+  });
+  function ADM_validate() { const f = $('#p-title').closest('.fld'), bad = !$('#p-title').value.trim(); f.classList.toggle('invalid', bad); if (bad) $('#p-title').focus(); return !bad; }
+  $('#p-reset').onclick = () => { if (!confirm('Вернуть исходные тексты страницы команды?')) return; KH.resetTeamPage(); fillPage(KH.teamPage()); ADM.toast('Тексты возвращены'); };
+
+  const saved = new URLSearchParams(location.search).get('saved');
+  if (saved) ADM.toast(`Сотрудник «${saved}» сохранён`);
+  render();
+})();
+</script>
+</body>
+</html>
