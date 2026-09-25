@@ -212,7 +212,7 @@
       <span class="wm"><b>KLEO</b><small>HOMES</small></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="catalog.html">Каталог</a><a href="#districts">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a>
+      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a>
     </nav>
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
@@ -228,7 +228,7 @@
   <div class="scrim" data-close></div>
   <div class="panel">
     <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="#districts">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
     <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
     <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
     <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
@@ -316,7 +316,7 @@
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Районы Аланьи</span><h2>Выберите свой район</h2></div>
-      <button type="button" class="btn btn-line" id="cmp-btn" aria-expanded="false" aria-controls="compare">Сравнить районы</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="districts.html" class="btn btn-dark">Все 14 районов</a><button type="button" class="btn btn-line" id="cmp-btn" aria-expanded="false" aria-controls="compare">Сравнить районы</button></div>
     </div>
     <div class="dgrid" id="dgrid"></div>
     <p class="hint" style="margin-top:10px">Фото: виды Аланьи (иллюстрация, не обязательно этого района). Цены за м² — демо.</p>
@@ -466,7 +466,7 @@
         <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
       </div>
       <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li><li><a href="#">Проданные</a></li></ul></div>
-      <div><h4>Районы</h4><ul><li><a href="catalog.html?district=mahmutlar">Махмутлар</a></li><li><a href="catalog.html?district=oba">Оба</a></li><li><a href="catalog.html?district=kestel">Кестель</a></li><li><a href="catalog.html?district=kargicak">Каргыджак</a></li><li><a href="catalog.html?district=center">Центр</a></li><li><a href="#">Все районы</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
       <div><h4>Услуги</h4><ul><li><a href="#">Подбор и просмотр</a></li><li><a href="#">Проверка документов</a></li><li><a href="#">Гражданство</a></li><li><a href="#">ВНЖ</a></li><li><a href="#">Управление арендой</a></li></ul></div>
       <div><h4>Компания</h4><ul><li><a href="#">О нас</a></li><li><a href="#">Отзывы</a></li><li><a href="#">Статьи</a></li><li><a href="#">Новости</a></li><li><a href="#">Партнёрам</a></li><li><a href="#">Вакансии</a></li><li><a href="#">Контакты</a></li></ul></div>
     </div>
@@ -577,7 +577,7 @@
   function pickDistrict(slug) {
     sel = slug; const d = KH.district(slug);
     $('#dsel').classList.add('open');
-    $('#dsel').innerHTML = `<h3>${d.name}</h3><p>${d.about}</p><div class="stats"><span><b>${KHS.fmt(d.pm, '/м²')}</b> средняя цена (демо)</span><span><b>${d.km ? d.km + ' км' : '0 км'}</b> до центра</span><span><b>${counts(slug)}</b> ${plural(counts(slug))} в продаже</span></div><button type="button" class="btn btn-dark btn-sm" data-show-d="${slug}">Смотреть объекты в районе</button>`;
+    $('#dsel').innerHTML = `<h3>${d.name}</h3><p>${d.about}</p><div class="stats"><span><b>${KHS.fmt(d.pm, '/м²')}</b> средняя цена (демо)</span><span><b>${d.km ? d.km + ' км' : '0 км'}</b> до центра</span><span><b>${counts(slug)}</b> ${plural(counts(slug))} в продаже</span></div><button type="button" class="btn btn-dark btn-sm" data-show-d="${slug}">Смотреть объекты в районе</button> <a href="district.html?d=${slug}" class="btn btn-line btn-sm">Гид по району →</a>`;
     renderDistricts();
   }
   document.addEventListener('click', e => {

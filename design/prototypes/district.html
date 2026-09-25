@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Район Аланьи — Kleo Homes</title>
+<meta name="description" content="Гид по району Аланьи: кому подходит, цены на квартиры и аренду, инфраструктура, объекты в продаже.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css">
+<link rel="stylesheet" href="assets/districts.css">
+</head>
+<body>
+<div class="demo-strip">Прототип: описание района черновое, цены и объекты — демо-данные</div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="home-v2.html" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="13" r="6.5" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="wm"><b>KLEO</b><small>HOMES</small></span>
+    </a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="catalog.html">Каталог</a><a href="districts.html" aria-current="page">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
+      <select class="cur-sel hide-t" aria-label="Валюта"></select>
+      <a class="icon-btn" href="catalog.html" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
+      <a href="#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
+      <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
+    <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
+    <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
+  </div>
+</div>
+
+<main id="app"></main>
+
+<section class="sec lead" id="lead">
+  <div class="wrap lead-grid">
+    <div class="intro">
+      <span class="eyebrow">Подбор</span>
+      <h2 id="lead-h">Подберём жильё в этом районе</h2>
+      <p>Расскажите о бюджете и планах — эксперт по району пришлёт варианты с плюсами и минусами. Или напишите напрямую:</p>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa" data-wa>WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
+    </div>
+    <form class="lform" id="lead-form" novalidate>
+      <div class="row2">
+        <div class="fld"><label for="l-name">Имя</label><input id="l-name" required autocomplete="name"><span class="err-msg">Укажите имя</span></div>
+        <div class="fld"><label for="l-way">Как связаться</label><select id="l-way"><option>WhatsApp</option><option>Telegram</option><option>Звонок</option><option>E-mail</option></select></div>
+      </div>
+      <div class="fld"><label for="l-phone">Номер телефона</label><div class="phone"><select id="l-code" aria-label="Код страны"><option>+7</option><option>+90</option><option>+49</option><option>+380</option><option>+375</option><option>+44</option><option>+1</option></select><input id="l-phone" type="tel" required autocomplete="tel-national" placeholder="900 000 00 00"></div><span class="err-msg">Укажите номер в международном формате</span></div>
+      <div class="row2">
+        <div class="fld"><label for="l-goal">Цель <span class="hint">(необязательно)</span></label><select id="l-goal"><option>Пока не решил</option><option>Для жизни</option><option>Для отдыха</option><option>Сдавать в аренду</option><option>ВНЖ / гражданство</option></select></div>
+        <div class="fld"><label for="l-budget">Бюджет <span class="hint">(необязательно)</span></label><select id="l-budget"><option>Пока не определён</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+      </div>
+      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish"></textarea></div>
+      <div class="fld"><label class="check"><input type="checkbox" id="l-ok" required>Согласен с <a href="#" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие на обработку данных</span></div>
+      <button class="btn btn-coral" type="submit">Получить подборку</button>
+      <div class="notice ok" id="l-ok-msg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <span class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>HOMES</small></span></span>
+        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya<br>Пн–сб 9:00–19:00 · TTYB № 1111111</p>
+        <p style="margin-top:10px"><a href="tel:+905001111111">+90 500 111 11 11</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
+        <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
+      </div>
+      <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
+      <div><h4>Услуги</h4><ul><li><a href="#lead">Подбор и просмотр</a></li><li><a href="home-v2.html#services">Проверка документов</a></li><li><a href="home-v2.html#services">Гражданство</a></li><li><a href="home-v2.html#services">ВНЖ</a></li><li><a href="home-v2.html#services">Управление арендой</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="home-v2.html#company">О нас</a></li><li><a href="home-v2.html#journal">Статьи</a></li><li><a href="home-v2.html#journal">Новости</a></li><li><a href="#lead">Контакты</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 Kleo Homes</span><a href="#">Политика конфиденциальности</a><a href="admin/login.html">Вход для сотрудников</a></div>
+  </div>
+</footer>
+
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html" id="mb-cat">Объекты</a><a href="#lead" class="pick">Подбор</a><a href="https://wa.me/905001111111" class="wa" data-wa>WhatsApp</a></nav>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const slug = new URLSearchParams(location.search).get('d') || 'mahmutlar';
+  const d = KH.DISTRICTS.find(x => x.slug === slug);
+
+  if (!d) {
+    $('#app').innerHTML = `<div class="wrap notfound"><h1 style="font-size:28px">Такого района нет в справочнике</h1><p class="hint" style="margin:12px 0 20px">В рабочей версии этот адрес сделает 301-редирект на список районов.</p><a href="districts.html" class="btn btn-dark">Все районы Аланьи</a></div>`;
+    KHS.initHeader(); return;
+  }
+
+  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'объект' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'объекта' : 'объектов';
+  const objs = KH.published().filter(o => o.district === slug);
+  const sale = objs.filter(o => o.deal === 'sale'), rent = objs.filter(o => o.deal === 'rent');
+  const min = a => a.length ? Math.min(...a) : 0;
+  const rentFrom = min(rent.map(o => o.price)) || Math.round(d.pm * 0.38 / 10) * 10; // нет аренды в каталоге — оценка от цены м² (демо)
+  const seaTxt = d.inland ? (slug === 'tepe' ? '3–5 км' : '1,5–2,5 км') : objs.length ? `от ${min(objs.map(o => o.sea))} м` : 'у моря';
+  const where = `в ${d.in}`;
+  const SC = [['life', 'Жить круглый год'], ['rent', 'Сдавать в аренду'], ['beach', 'Пляж рядом'], ['infra', 'Инфраструктура'], ['quiet', 'Тишина']];
+  const nbrs = KH.DISTRICTS.filter(x => x !== d).sort((a, b) => Math.abs(a.pos - d.pos) - Math.abs(b.pos - d.pos) || (a.inland === d.inland ? -1 : 1)).slice(0, 3);
+  const state = { deal: 'sale' };
+  // схема приближена к району, чтобы подписи читались и на телефоне
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const vb = `${clamp(d.x - 260, 0, 480)} ${clamp(d.y - 150, 0, 160)} 520 280`;
+
+  // SEO: заголовок и описание (в рабочей версии — generateMetadata, адрес /ru/districts/{slug}/)
+  document.title = `${d.name}, Аланья: жизнь, цены на квартиры и аренду — гид по району | Kleo Homes`;
+  document.querySelector('meta[name=description]').content = `${d.lead} Кому подходит район ${d.name}, цены за м², ${sale.length} ${plural(sale.length)} в продаже, аренда и инфраструктура.`;
+
+  // средняя цена за м² и минимальная цена по планировкам (по объектам каталога)
+  function priceRows() {
+    const R = ['1+0', '1+1', '2+1', '3+1', '4+1', '5+1'];
+    return R.map(r => {
+      const list = sale.filter(o => o.rooms === r); if (!list.length) return '';
+      const ppm = list.reduce((s, o) => s + o.price / o.area, 0) / list.length;
+      const q = r === '4+1' || r === '5+1' ? '4+' : r;
+      return `<tr><td><a href="catalog.html?district=${slug}&rooms=${q}">${r === '1+0' ? 'Студия 1+0' : r}</a></td><td class="num">${list.length}</td><td class="num">${KHS.fmt(min(list.map(o => o.price)))}</td><td class="num">${KHS.fmt(ppm, '/м²')}</td></tr>`;
+    }).join('');
+  }
+
+  const faq = () => [
+    [`Сколько стоит квартира ${where}?`, `${sale.length ? `Сейчас в нашем каталоге ${sale.length} ${plural(sale.length)} в районе, цены от ${KHS.fmt(min(sale.map(o => o.price)))}. ` : ''}Средняя цена — около ${KHS.fmt(d.pm, ' за м²')} (демо). Стоимость зависит от расстояния до моря, вида из окна, этажа и возраста комплекса. Таблица по планировкам — выше на этой странице.`],
+    [`Сколько стоит аренда ${where}?`, `Долгосрочная аренда квартиры 1+1 — от ${KHS.fmt(rentFrom, ' в месяц')} (демо). Обычно просят депозит в размере месячной платы и договор от 6–12 месяцев; коммунальные платежи оплачиваются отдельно.`],
+    [`Можно ли оформить ВНЖ, если купить жильё ${where}?`, 'Миграционная служба Турции периодически закрывает отдельные кварталы для новых ВНЖ, и список меняется. Перед бронью мы проверяем статус конкретного адреса на дату сделки и говорим об этом заранее.'],
+    ['Как добраться до аэропорта?', `До аэропорта Газипаша-Аланья (GZP) около ${KH.airportKm(d)} км, до аэропорта Анталии (AYT) — около ${KH.aytKm(d)} км. Поможем организовать трансфер на просмотр и после покупки.`],
+    [`Подходит ли ${d.name} для сдачи в аренду?`, d.sc.rent >= 4 ? `Да: спрос на аренду ${where} стабильный, особенно на квартиры 1+1 и 2+1 рядом с морем. Посчитаем доходность конкретного объекта и расскажем об управлении арендой.` : d.sc.rent === 3 ? `Да, но в основном в сезон: летом спрос высокий, зимой ниже. Для круглогодичной аренды чаще выбирают районы ближе к центру. Посчитаем доходность конкретного объекта.` : `Для постоянной сдачи ${d.name} подходит хуже, чем районы у моря и ближе к центру: здесь покупают в основном для своей жизни. Если важен доход, подберём вариант в другом районе.`]
+  ];
+
+  function render() {
+    const list = state.deal === 'rent' ? rent : sale;
+    const rows = priceRows();
+    $('#app').innerHTML = `
+    <section class="dhero">
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<a href="districts.html">Районы Аланьи</a>›<span aria-current="page">${d.name}</span></nav>
+        <div class="dhero-grid">
+          <div class="dhero-txt">
+            <span class="eyebrow">Гид по району${d.inland ? '<span class="tag-inland">в горах</span>' : ''}</span>
+            <h1>${d.name}: жизнь и недвижимость</h1>
+            <p class="lead-t">${d.lead}</p>
+            <div class="cta"><a href="catalog.html?district=${slug}" class="btn btn-coral">Смотреть ${sale.length} ${plural(sale.length)}</a><a href="#lead" class="btn btn-ghost">Подобрать ${where}</a></div>
+          </div>
+          <div class="dhero-ph"><img src="${KH.IMG(d.img, 1100)}" alt="Вид на Аланью (иллюстрация к району ${d.name})" width="1100" height="733"><span class="cap">Фото: вид Аланьи, иллюстрация</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="kfacts" role="list" aria-label="Коротко о районе">
+        <div role="listitem"><span>До центра</span><b>${d.km ? d.km.toLocaleString('ru-RU') + ' км' : 'Это центр'}</b><small>${d.pos < 0 ? 'на запад' : d.pos > 0 ? (d.inland ? 'в горах' : 'на восток') : 'крепость, порт'}</small></div>
+        <div role="listitem"><span>До моря</span><b>${seaTxt}</b><small>${d.inland ? 'по серпантину' : 'по объектам каталога'}</small></div>
+        <div role="listitem"><span>Аэропорт GZP</span><b>≈ ${KH.airportKm(d)} км</b><small>Газипаша-Аланья</small></div>
+        <div role="listitem"><span>Аэропорт AYT</span><b>≈ ${KH.aytKm(d)} км</b><small>Анталия</small></div>
+        <div role="listitem"><span>Цена за м²</span><b data-eur="${d.pm}" data-sfx="/м²">${KHS.fmt(d.pm, '/м²')}</b><small>средняя, демо</small></div>
+        <div role="listitem"><span>В каталоге</span><b>${sale.length} / ${rent.length}</b><small>продажа / аренда</small></div>
+      </div>
+    </div>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head"><div><span class="eyebrow">Кому подходит</span><h2>${d.name}: плюсы и минусы</h2></div></div>
+        <div class="fit">
+          <div class="scores">
+            <h3>Оценка района</h3>
+            ${SC.map(([k, t]) => `<div class="sc-row"><span>${t}</span><span class="sc-bar" role="img" aria-label="${t}: ${d.sc[k]} из 5"><i style="width:${d.sc[k] * 20}%"></i></span><b>${d.sc[k]}/5</b></div>`).join('')}
+            <p class="hint">Оценка экспертов Kleo Homes (демо). Спросите эксперта, если важен конкретный критерий.</p>
+          </div>
+          <div class="pc">
+            <div><h3>Плюсы</h3><ul>${d.pros.map(p => `<li>${p}</li>`).join('')}</ul></div>
+            <div class="minus"><h3>Минусы</h3><ul>${d.cons.map(p => `<li>${p}</li>`).join('')}</ul></div>
+          </div>
+        </div>
+        <h3 style="font-size:18px;margin-top:32px">Что есть рядом</h3>
+        <div class="infra">${d.infra.map(x => `<span>${x}</span>`).join('')}</div>
+      </div>
+    </section>
+
+    <section class="sec" style="background:var(--mist)" id="objects">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="eyebrow">Объекты</span><h2>Недвижимость ${where}</h2></div>
+          <div class="dtabs" role="tablist" aria-label="Тип сделки"><button type="button" role="tab" data-deal="sale" aria-selected="${state.deal === 'sale'}">Продажа · ${sale.length}</button><button type="button" role="tab" data-deal="rent" aria-selected="${state.deal === 'rent'}">Аренда · ${rent.length}</button></div>
+        </div>
+        <div class="grid3 limit4" id="grid">${list.length ? list.slice(0, 6).map(KHS.card).join('') : `<div class="empty"><b>${state.deal === 'rent' ? 'Сейчас нет квартир в аренду' : 'Сейчас нет объектов в продаже'} ${where}</b>Оставьте заявку — подберём у застройщиков и собственников, с которыми работаем.<br><a href="#lead" class="btn btn-line btn-sm" style="margin-top:14px">Оставить заявку</a></div>`}</div>
+        ${list.length ? `<div class="res-actions"><a href="catalog.html?${state.deal === 'rent' ? 'deal=rent&' : ''}district=${slug}" class="btn btn-dark">${list.length > 6 ? `Все ${list.length} ${plural(list.length)} ${where}` : 'Открыть в каталоге'}</a><a href="catalog.html?${state.deal === 'rent' ? 'deal=rent&' : ''}district=${slug}&view=map" class="btn btn-line">На карте</a></div>` : ''}
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head"><div><span class="eyebrow">Цены и расположение</span><h2>Сколько стоит жильё ${where}</h2></div></div>
+        <div class="pm-grid">
+          <div>
+            ${rows ? `<table class="ptable"><caption class="vh">Цены на продажу по планировкам</caption><thead><tr><th scope="col">Планировка</th><th scope="col" class="num">Объектов</th><th scope="col" class="num">Цена от</th><th scope="col" class="num">Средняя за м²</th></tr></thead><tbody>${rows}</tbody></table>` : `<div class="empty" style="text-align:left"><b>Пока нет объектов в продаже</b>Средняя цена по району — около ${KHS.fmt(d.pm, '/м²')} (демо).</div>`}
+            <p class="hint" style="margin-top:10px">По объектам нашего каталога на ${new Date().toLocaleDateString('ru-RU')}. Аренда 1+1 — от ${KHS.fmt(rentFrom, ' / мес')}. Цены демо.</p>
+          </div>
+          <div class="map-box">
+            <svg viewBox="${vb}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Схема побережья Аланьи: ${d.name} и соседние районы" class="zoom">
+              <defs><pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(0,163,196,.28)"/></pattern></defs>
+              <path d="${KH.COAST} L1000 440 L0 440Z" fill="url(#dots)"/>
+              <g fill="none" stroke="rgba(255,255,255,.08)">${KH.MOUNTAINS.map(p => `<path d="${p}"/>`).join('')}</g>
+              <path d="${KH.COAST}" fill="none" stroke="#00A3C4" stroke-width="1.6"/>
+              <text x="930" y="392" fill="rgba(255,255,255,.55)" style="font:600 12px Onest" text-anchor="end">✈ GZP</text>
+              ${KH.DISTRICTS.map(x => x === d
+                ? `<g class="pin on ${x.inland ? 'inland' : ''}"><circle class="dot" cx="${x.x}" cy="${x.y}" r="10"/><text x="${x.x}" y="${x.y - 18}" text-anchor="middle">${x.name}</text></g>`
+                : `<a class="pin ${x.inland ? 'inland' : ''}" href="district.html?d=${x.slug}" aria-label="Район ${x.name}"><circle class="dot" cx="${x.x}" cy="${x.y}" r="6"/>${nbrs.includes(x) ? `<text x="${x.x}" y="${x.y - 14}" text-anchor="middle">${x.name}</text>` : ''}</a>`).join('')}
+            </svg>
+            <span class="map-note"><span>Схема не в масштабе</span><a href="catalog.html?district=${slug}&view=map">Объекты района на карте →</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" style="background:var(--mist)">
+      <div class="wrap">
+        <div class="sec-head"><div><span class="eyebrow">Рядом</span><h2>Соседние районы</h2></div><a href="districts.html" class="link">Все 14 районов →</a></div>
+        <div class="dgrid nbr">${nbrs.map(x => `<article class="dcard"><img src="${KH.IMG(x.img, 600)}" alt="" loading="lazy">${x.inland ? '<div class="tl"><span class="in">В горах</span></div>' : ''}<h3><a href="district.html?d=${x.slug}">${x.name}</a></h3><p class="about">${x.lead}</p><div class="meta"><span><b>${KHS.fmt(x.pm, '/м²')}</b> демо</span><span>${x.km ? x.km.toLocaleString('ru-RU') + ' км до центра' : 'центр'}</span></div></article>`).join('')}</div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap faq">
+        <div><span class="eyebrow">Вопросы</span><h2 style="margin-top:8px">Частые вопросы о районе ${d.name}</h2><p class="hint" style="margin-top:10px">Не нашли ответ? <a href="#lead" class="link">Спросите эксперта →</a></p></div>
+        <div>${faq().map(([q, a], i) => `<details${i ? '' : ' open'}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+      </div>
+    </section>
+
+    <section class="sec" style="padding-top:0">
+      <div class="wrap seo">
+        <h2>Недвижимость ${where}: что важно знать</h2>
+        <p>${d.lead} ${d.pros[0]}; ${d.pros[1].charAt(0).toLowerCase() + d.pros[1].slice(1)}. Средняя цена — около ${KHS.fmt(d.pm, ' за м²')} (демо), долгосрочная аренда 1+1 — от ${KHS.fmt(rentFrom, ' в месяц')}.</p>
+        <p>Перед покупкой проверьте ТАПУ и отсутствие долгов, разрешение на заселение (iskan), расходы на содержание комплекса (aidat) и возможность оформить ВНЖ по адресу. Эксперт Kleo Homes по району ${d.name} покажет объекты вживую или по видео.</p>
+        <div class="links"><a href="catalog.html?district=${slug}&type=apartment">Квартиры ${where}</a>${sale.some(o => o.type === 'villa') ? `<a href="catalog.html?district=${slug}&type=villa">Виллы ${where}</a>` : ''}${sale.some(o => o.newBuild) ? `<a href="catalog.html?district=${slug}&new=1">Новостройки ${where}</a>` : ''}<a href="catalog.html?deal=rent&district=${slug}">Аренда ${where}</a><a href="districts.html">Все районы Аланьи</a></div>
+        <p class="hint" style="margin-top:14px">Текст-шаблон. В рабочей версии у каждого района свой текст из админки; адрес страницы — /ru/districts/${slug}/.</p>
+      </div>
+    </section>`;
+    KHS.reveal($('#app'));
+  }
+
+  // вкладки продажа / аренда
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.dtabs [data-deal]'); if (!t) return;
+    state.deal = t.dataset.deal; render(); $(`.dtabs [data-deal="${state.deal}"]`).focus();
+  });
+
+  // форма заявки: район подставляется в пожелания
+  $('#lead-h').textContent = `Подберём жильё ${where}`;
+  $('#l-wish').value = `Интересует недвижимость в районе ${d.name}`;
+  $('#mb-cat').href = `catalog.html?district=${slug}`;
+  $('#lead-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!KHS.validate(e.target)) return;
+    const n = $('#l-ok-msg'); n.textContent = `Демо: заявка не отправлена. В рабочей версии она придёт на почту агентства с пометкой «Район: ${d.name}».`; n.style.display = 'block';
+    e.target.querySelector('button[type=submit]').disabled = true;
+  });
+
+  // JSON-LD: хлебные крошки, район как место, FAQ
+  const ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify([
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Районы Аланьи', 'districts.html'], [d.name, location.href]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) },
+    { '@context': 'https://schema.org', '@type': 'Place', name: `${d.name}, Аланья`, description: d.lead, geo: { '@type': 'GeoCoordinates', latitude: d.lat, longitude: d.lng }, containedInPlace: { '@type': 'City', name: 'Alanya' } },
+    { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq().map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+  ]);
+  document.head.appendChild(ld);
+
+  KHS.onCurrency(render);
+  KHS.initHeader(); // вызывает render через событие валюты
+})();
+</script>
+</body>
+</html>

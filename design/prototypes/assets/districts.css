@@ -1,0 +1,170 @@
+/* Kleo Homes — страницы районов: districts.html (все районы) и district.html (гид по району). Требует proto.css */
+.crumbs{font-size:14px;color:var(--muted);padding:18px 0 10px;display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a:hover{color:var(--sea-deep)}
+.dhero .crumbs{color:rgba(255,255,255,.6);padding-top:0}
+.dhero .crumbs a:hover{color:#fff}
+
+/* hero */
+.dhero{background:var(--ink);color:#fff;padding:22px 0 0}
+.dhero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:stretch}
+.dhero-txt{padding:10px 0 36px;display:flex;flex-direction:column;justify-content:center}
+.dhero .eyebrow{color:var(--sea-light)}
+.dhero h1{font-size:clamp(28px,3.6vw,46px);margin:10px 0 14px}
+.dhero p.lead-t{color:rgba(255,255,255,.8);font-size:18px;max-width:48ch}
+.dhero .cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.dhero-ph{position:relative;border-radius:var(--r) var(--r) 0 0;overflow:hidden;min-height:300px;max-height:380px}
+.dhero-ph img{width:100%;height:100%;object-fit:cover}
+.dhero-ph .cap{position:absolute;left:12px;bottom:12px;font-size:12px;background:rgba(14,17,22,.72);padding:4px 8px;border-radius:6px;color:rgba(255,255,255,.8)}
+.tag-inland{display:inline-block;margin-left:8px;vertical-align:middle;font:600 12px var(--f-body);background:#E3F3D6;color:#2F5A12;padding:3px 8px;border-radius:6px;letter-spacing:0;text-transform:none}
+
+/* key facts */
+.kfacts{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:var(--r);background:#fff;margin-top:-1px}
+.kfacts div{padding:16px 18px;border-right:1px solid var(--line)}
+.kfacts div:last-child{border-right:0}
+.kfacts span{display:block;font-size:13px;color:var(--muted)}
+.kfacts b{font-size:19px;display:block;margin-top:2px}
+.kfacts small{font-size:12px;color:var(--muted)}
+
+/* кому подходит + плюсы/минусы */
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.fit>*{min-width:0}
+.scores{border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:14px;align-content:start}
+.scores h3,.pc h3{font-size:18px;margin-bottom:4px}
+.sc-row{display:grid;grid-template-columns:170px 1fr 34px;gap:12px;align-items:center;font-size:15px}
+.sc-bar{height:8px;border-radius:999px;background:var(--mist);overflow:hidden}
+.sc-bar i{display:block;height:100%;border-radius:999px;background:var(--sea)}
+.sc-row b{text-align:right;font-size:14px}
+.pc{display:grid;gap:18px;align-content:start}
+.pc ul{list-style:none;display:grid;gap:10px}
+.pc li{display:grid;grid-template-columns:24px 1fr;gap:10px;font-size:15.5px}
+.pc li::before{content:"+";width:24px;height:24px;border-radius:999px;display:grid;place-items:center;font-weight:700;background:#E7F6EE;color:var(--ok)}
+.pc .minus li::before{content:"–";background:#FCEBEA;color:var(--err)}
+.infra{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.infra span{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14.5px;background:#fff}
+
+/* объекты района */
+.dtabs{display:flex;gap:6px}
+.dtabs button{border:1px solid var(--line);background:#fff;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;min-height:40px}
+.dtabs button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.res-actions{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}
+
+/* цены + схема */
+.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.pm-grid>*{min-width:0}
+.ptable{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ptable th,.ptable td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.ptable th{font-size:13px;color:var(--muted);font-weight:600;background:var(--mist)}
+.ptable td.num,.ptable th.num{text-align:right;white-space:nowrap}
+.ptable tr:last-child td{border-bottom:0}
+.ptable a{color:var(--sea-deep);font-weight:600}
+.map-box{background:var(--ink);border-radius:var(--r);position:relative;overflow:hidden;min-height:300px}
+.map-box svg{position:absolute;inset:0;width:100%;height:100%}
+.map-note{position:absolute;left:16px;bottom:12px;right:16px;font-size:12px;color:rgba(255,255,255,.6);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.map-note a{color:var(--sea-light);font-weight:600}
+.pin .dot{fill:var(--sea)}
+.pin.inland .dot{fill:#9BD66B}
+.pin text{font:500 12px var(--f-body);fill:rgba(255,255,255,.8);pointer-events:none}
+.pin.on .dot{fill:var(--coral)}
+.pin.on text{fill:#fff;font-weight:700;font-size:15px}
+a.pin:hover .dot,a.pin:focus .dot{fill:var(--coral)}
+a.pin:hover text,a.pin:focus text{fill:#fff}
+a.pin:focus{outline:none}
+a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
+.zoom .pin text{font-size:16px}
+.zoom .pin.on text{font-size:20px}
+
+/* карточки районов */
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.dcard{position:relative;border-radius:var(--r);overflow:hidden;min-height:230px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;background:var(--ink-2)}
+.dcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.dcard:hover img{transform:scale(1.04)}
+.dcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,17,22,0) 20%,rgba(14,17,22,.6) 55%,rgba(14,17,22,.94))}
+.dcard>*{position:relative;z-index:1}
+.dcard h3{font-size:21px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.dcard h3 a::after{content:"";position:absolute;inset:0;z-index:2}
+.dcard h3 a:focus-visible{outline:none}
+.dcard:has(a:focus-visible){outline:3px solid var(--sea-light);outline-offset:2px}
+.dcard .about{font-size:14px;color:rgba(255,255,255,.85);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dcard .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;color:rgba(255,255,255,.85);margin-top:10px}
+.dcard .meta b{color:#fff}
+.dcard .tl{position:absolute;left:14px;top:14px;display:flex;gap:6px;flex-wrap:wrap;z-index:1}
+.dcard .tl span{font:600 12px var(--f-body);padding:4px 9px;border-radius:6px;background:rgba(255,255,255,.95);color:var(--ink)}
+.dcard .tl span.in{background:#E3F3D6;color:#2F5A12}
+
+/* фильтры на странице всех районов */
+.dfilters{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;margin-bottom:22px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-weight:600;font-size:14.5px;cursor:pointer;min-height:42px}
+.chip[aria-pressed=true]{border-color:var(--sea-deep);color:var(--sea-deep);background:#E9F7FA}
+.dsort{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
+.dsort select{min-height:42px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;color:var(--ink)}
+.cmp-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+.cmp-wrap .ptable{border:0;border-radius:0;min-width:760px}
+.dots{letter-spacing:2px;color:var(--sea);white-space:nowrap}
+.dots i{font-style:normal;color:#CFD6DD}
+
+/* FAQ */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:32px}
+.faq>*{min-width:0}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:18px 36px 18px 0;font-weight:600;font-size:17px;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:14px;font-size:24px;font-weight:400;color:var(--sea-deep)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 18px;color:#2B323C}
+
+/* соседи */
+.nbr .dcard{min-height:200px}
+
+/* заявка */
+.lead{background:var(--ink);color:#fff}
+.lead-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.lead-grid>*{min-width:0}
+.lead h2{margin:8px 0 14px}
+.lead .intro p{color:rgba(255,255,255,.75);margin-bottom:22px}
+.lead .eyebrow{color:var(--sea-light)}
+.contacts{display:flex;gap:10px;flex-wrap:wrap}
+.lform{background:#fff;color:var(--ink);border-radius:var(--r);padding:24px;display:grid;gap:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.phone{display:grid;grid-template-columns:110px 1fr;gap:8px}
+.lform .notice{display:none}
+
+/* SEO-текст */
+.seo{color:#2B323C}
+.seo>*{max-width:78ch}
+.seo h2{font-size:22px;margin-bottom:12px;color:var(--ink)}
+.seo p{margin-bottom:12px}
+.seo .links{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:14.5px}
+.seo .links a{color:var(--sea-deep);font-weight:600}
+
+.notfound{padding:80px 0;text-align:center}
+
+@media (max-width:1100px){
+  .kfacts{grid-template-columns:repeat(3,1fr)}
+  .kfacts div:nth-child(3){border-right:0}
+  .kfacts div:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  .fit,.pm-grid,.faq,.lead-grid{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  .dhero{padding-top:14px}
+  .dhero-grid{grid-template-columns:1fr;gap:0}
+  .dhero-txt{padding:0 0 22px}
+  .dhero p.lead-t{font-size:16px}
+  .dhero-ph{min-height:200px;max-height:240px}
+  .kfacts{grid-template-columns:1fr 1fr}
+  .kfacts div{border-right:0!important;border-bottom:1px solid var(--line)}
+  .kfacts div:nth-child(odd){border-right:1px solid var(--line)!important}
+  .kfacts div:nth-last-child(-n+2){border-bottom:0}
+  .sc-row{grid-template-columns:120px 1fr 28px;font-size:14px}
+  .dgrid{grid-template-columns:1fr}
+  .map-box{min-height:220px}
+  .dhero #map{display:none}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding:0 var(--gut) 4px;scrollbar-width:none;width:calc(100% + 2*var(--gut))}
+  .chip{flex-shrink:0}
+  .row2{grid-template-columns:1fr}
+  .lform{padding:18px}
+  .ptable{font-size:14px}
+  .ptable th,.ptable td{padding:10px 8px}
+  .ptable th.num{white-space:normal}
+}

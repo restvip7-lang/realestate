@@ -140,7 +140,7 @@ body{background:#fff}
       <span class="wm"><b>KLEO</b><small>HOMES</small></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="catalog.html" aria-current="page">Каталог</a><a href="home-v2.html#districts">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a>
+      <a href="catalog.html" aria-current="page">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a>
     </nav>
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
@@ -155,7 +155,7 @@ body{background:#fff}
   <div class="scrim" data-close></div>
   <div class="panel">
     <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="home-v2.html#districts">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a><a href="home-v2.html#lead">Подобрать жильё</a></nav>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a><a href="home-v2.html#lead">Подобрать жильё</a></nav>
     <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
     <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
     <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a></div>
@@ -260,7 +260,7 @@ body{background:#fff}
   const PER = 12;
   const TYPE_ACC = { apartment: 'квартиры', penthouse: 'пентхаусы', villa: 'виллы', duplex: 'дуплексы' };
   const TYPE_GEN = { apartment: 'квартир', penthouse: 'пентхаусов', villa: 'вилл', duplex: 'дуплексов' };
-  const DIST_IN = { avsallar: 'Авсалларе', turkler: 'Тюрклере', konakli: 'Конаклы', cikcilli: 'Джикджилли', center: 'центре Аланьи', tepe: 'Тепе', oba: 'Оба', tosmur: 'Тосмуре', kestel: 'Кестеле', mahmutlar: 'Махмутларе', kargicak: 'Каргыджаке', payallar: 'Паяларе', demirtas: 'Демирташе', gazipasa: 'Газипаше' };
+  const DIST_IN = Object.fromEntries(KH.DISTRICTS.map(d => [d.slug, d.in])); // «в Махмутларе» — из data.js
   const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'объект' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'объекта' : 'объектов';
 
   // ---------- состояние ⇄ URL ----------
@@ -343,6 +343,7 @@ body{background:#fff}
       <p>${dd ? dd.about + ' ' : 'Аланья — курортный город на Средиземном море: 12 районов вдоль побережья от Авсаллара до Газипаши и районы в горах (Тепе, Джикджилли). '}${rent ? 'Для долгосрочной аренды обычно просят депозит в размере месячной платы и договор от 6–12 месяцев.' : `Средняя цена ${dd ? 'в районе' : 'по городу'} — около ${KHS.fmt(dd ? dd.pm : 2000, ' за м²')} (демо). Стоимость сильно зависит от расстояния до моря, вида и возраста комплекса.`}</p>
       <h3>Что проверить перед ${rent ? 'арендой' : 'покупкой'}</h3>
       <p>${rent ? 'Кто собственник и есть ли у него ТАПУ, что входит в оплату, как возвращается депозит, можно ли оформить ВНЖ по этому адресу.' : 'ТАПУ и отсутствие долгов, разрешение на заселение (iskan), реальные расходы на содержание комплекса (aidat), возможность оформить ВНЖ в районе.'}</p>
+      ${dd ? `<p><a href="district.html?d=${dd.slug}" class="link">Гид по району ${dd.name}: плюсы, минусы, цены →</a></p>` : `<p><a href="districts.html" class="link">Сравнить все районы Аланьи →</a></p>`}
       <p class="hint">Текст-шаблон. В рабочей версии у каждой посадочной «тип + район» свой текст, который редактируется в админке.</p>`;
     // JSON-LD ItemList
     let ld = $('#ld'); if (!ld) { ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.id = 'ld'; document.head.appendChild(ld); }
