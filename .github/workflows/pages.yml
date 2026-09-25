@@ -1,0 +1,48 @@
+# Публикует HTML-прототипы (design/prototypes) на GitHub Pages:
+# https://restvip7-lang.github.io/realestate/
+# Запускается после каждого слияния в main, если менялись прототипы, или вручную (Actions → Run workflow).
+name: Прототипы на GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'design/prototypes/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Собрать сайт из прототипов
+        run: |
+          mkdir -p _site
+          cp -r design/prototypes/. _site/
+          # в прототипах выдуманные данные: закрываем от поисковиков
+          find _site -name '*.html' -exec sed -i 's|<head>|<head>\n<meta name="robots" content="noindex, nofollow">|' {} +
+          missing=$(grep -L 'name="robots"' $(find _site -name '*.html') || true)
+          if [ -n "$missing" ]; then echo "Нет noindex: $missing"; exit 1; fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

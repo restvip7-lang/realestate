@@ -50,6 +50,10 @@ docs/                          план, бриф, дизайн-система, 
 - Каждая публичная страница задаёт `generateMetadata` (title, description, canonical, hreflang).
 - Картинки подключаем только через `next/image`.
 
+## Прототипы
+- Онлайн: https://restvip7-lang.github.io/realestate/ — GitHub Pages, обновляется автоматически после слияния в `main` (`.github/workflows/pages.yml`). Страницы закрыты от поисковиков (noindex).
+- Локально: `python -m http.server 8765` в папке `design/prototypes`, затем http://localhost:8765/
+
 ## Команды (появятся на этапе 2)
 - `docker compose up -d db`: запустить Postgres
 - `npm run dev`: сайт на http://localhost:3000, админка на /admin

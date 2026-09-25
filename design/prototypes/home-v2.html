@@ -203,7 +203,7 @@
 </style>
 </head>
 <body>
-<div class="demo-strip">Прототип v2: объекты, цены, отзывы и люди — демо-данные</div>
+<div class="demo-strip">Прототип v2: объекты, цены, отзывы, люди и контакты — демо-данные</div>
 
 <header class="hdr">
   <div class="wrap">
@@ -212,7 +212,7 @@
       <span class="wm"><b>KLEO</b><small>HOMES</small></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="catalog.html">Каталог</a><a href="#districts">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a>
+      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a>
     </nav>
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
@@ -228,10 +228,10 @@
   <div class="scrim" data-close></div>
   <div class="panel">
     <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="#districts">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="#services">Услуги</a><a href="#company">О компании</a><a href="#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
     <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
     <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
-    <div class="contacts"><a class="btn btn-wa" href="#">WhatsApp</a><a class="btn btn-tg" href="#">Telegram</a><a class="btn btn-line" href="tel:+900000000000">+90 5XX XXX XX XX</a></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
   </div>
 </div>
 
@@ -288,12 +288,12 @@
       <button class="chip" type="button" aria-pressed="false" data-chip="sea">У моря · до 300 м</button>
       <button class="chip" type="button" aria-pressed="false" data-chip="new">Новостройки</button>
       <button class="chip" type="button" aria-pressed="false" data-chip="furn">С мебелью</button>
-      <button class="chip" type="button" aria-pressed="false" data-chip="budget">До 150 000 €</button>
+      <button class="chip" type="button" aria-pressed="false" data-chip="budget">До <span data-eur="150000">150 000 €</span></button>
       <button class="chip" type="button" aria-pressed="false" data-chip="view">Вид на море</button>
     </div>
     <div class="mob-ph" style="display:none"><img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=800&q=70" alt="Вид на Аланью с горы" loading="lazy"></div>
     <div class="trust">
-      <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><p><b>Лицензия TTYB № [—]</b><span>номер добавим после получения</span></p></div>
+      <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><p><b>Лицензия TTYB № 1111111</b><span>реестр Министерства торговли Турции</span></p></div>
       <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><p><b>Проверка документов</b><span>ТАПУ, долги, разрешение на заселение</span></p></div>
       <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg><p><b>Сопровождение до ТАПУ</b><span>лично или по доверенности</span></p></div>
       <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><p><b>Помощь после покупки</b><span>ВНЖ, коммунальные, аренда</span></p></div>
@@ -316,7 +316,7 @@
   <div class="wrap">
     <div class="sec-head">
       <div><span class="eyebrow">Районы Аланьи</span><h2>Выберите свой район</h2></div>
-      <button type="button" class="btn btn-line" id="cmp-btn" aria-expanded="false" aria-controls="compare">Сравнить районы</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="districts.html" class="btn btn-dark">Все 14 районов</a><button type="button" class="btn btn-line" id="cmp-btn" aria-expanded="false" aria-controls="compare">Сравнить районы</button></div>
     </div>
     <div class="dgrid" id="dgrid"></div>
     <p class="hint" style="margin-top:10px">Фото: виды Аланьи (иллюстрация, не обязательно этого района). Цены за м² — демо.</p>
@@ -350,7 +350,7 @@
       </ul>
       <div class="team rv">
         <div class="people" id="people"></div>
-        <div class="office"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=400&q=70" alt="Офис агентства (фото для примера)" loading="lazy"><div><b>Офис в Алании</b><br><span class="hint">[адрес офиса] · пн–сб 9:00–19:00</span></div></div>
+        <div class="office"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=400&q=70" alt="Офис агентства (фото для примера)" loading="lazy"><div><b>Офис в Алании</b><br><span class="hint">Saray Mah., Atatürk Cad. № 11 · пн–сб 9:00–19:00</span></div></div>
         <p class="hint" style="font-size:12.5px">Имена вымышлены, фото команды и офиса — примеры со стока. Заменим на реальных сотрудников.</p>
         <a href="#" class="btn btn-dark">О компании</a>
       </div>
@@ -414,8 +414,8 @@
     <div class="sec-head"><div><span class="eyebrow">Документы</span><h2>Компания и документы</h2></div></div>
     <div class="docs">
       <div class="doc rv"><img src="https://images.unsplash.com/photo-1590735627513-59a186ed0984?auto=format&fit=crop&w=640&h=360&q=70" alt="Основатель (фото для примера)" loading="lazy"><h3>Основатель</h3><p>Эмре Йылдыз — история компании и принципы работы.</p><a href="#" class="link">Подробнее →</a></div>
-      <div class="doc rv"><img src="https://images.unsplash.com/photo-1638636241638-aef5120c5153?auto=format&fit=crop&w=640&h=360&q=70" alt="Документ в рамке (пример вместо скана лицензии)" loading="lazy"><h3>Лицензия агентства</h3><p>Разрешение на деятельность с недвижимостью (TTYB). Номер можно проверить в реестре.</p><a href="#" class="link">Смотреть лицензию →</a></div>
-      <div class="doc rv"><img src="https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=640&h=360&q=70" alt="Кубок (пример)" loading="lazy"><h3>Награды и партнёры</h3><p>Отраслевые награды и партнёры-застройщики. Сейчас пример, добавим реальные.</p><a href="#" class="link">Смотреть →</a></div>
+      <div class="doc rv"><img src="https://images.unsplash.com/photo-1638636241638-aef5120c5153?auto=format&fit=crop&w=640&h=360&q=70" alt="Документ в рамке (пример вместо скана лицензии)" loading="lazy"><h3>Лицензия агентства</h3><p>Разрешение на деятельность с недвижимостью (TTYB) № 1111111. Номер можно проверить в реестре.</p><a href="#" class="link">Смотреть лицензию →</a></div>
+      <div class="doc rv"><img src="https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=640&h=360&q=70" alt="Кубок (пример)" loading="lazy"><h3>Награды и партнёры</h3><p>«Агентство года — Аланья 2025», 12 застройщиков-партнёров, аккредитация у двух банков для ипотеки.</p><a href="#" class="link">Смотреть →</a></div>
     </div>
     <div class="faq">
       <div><span class="eyebrow">Вопросы</span><h2 style="margin-top:8px">Частые вопросы покупателей</h2><p class="hint" style="margin-top:10px">Ответы — черновик, финальные тексты даст команда.</p></div>
@@ -423,7 +423,7 @@
         <details><summary>С чего начать выбор района?</summary><p>Решите, для чего покупка: жить круглый год, отдыхать или сдавать. Для жизни смотрят инфраструктуру и школы (Оба, Джикджилли), для аренды — близость к пляжу и центру. Эксперт сравнит 2–3 района под ваши задачи.</p></details>
         <details><summary>Можно ли посмотреть объект по видео?</summary><p>Да. Проводим показ по видеосвязи в реальном времени: квартира, вид из окон, комплекс, дорога до моря. Можно задать любые вопросы.</p></details>
         <details><summary>Какие расходы есть кроме цены?</summary><p>Налог на регистрацию ТАПУ, пошлины, перевод и нотариус, страховка DASK, подключение коммунальных услуг. Полную смету даём до брони.</p></details>
-        <details><summary>Как оплачиваются услуги агентства?</summary><p>[Условия агентства: кто платит комиссию и в каком размере — заполнит команда.]</p></details>
+        <details><summary>Как оплачиваются услуги агентства?</summary><p>Подбор, показы (вживую и по видео) и консультации бесплатны. При покупке вторичного жилья комиссия агентства — 2% от цены + НДС (KDV); в новостройках партнёров её платит застройщик. При долгосрочной аренде — сумма одной месячной платы. Условия фиксируем в договоре до первого показа.</p></details>
       </div>
     </div>
   </div>
@@ -435,7 +435,7 @@
       <span class="eyebrow">Подбор</span>
       <h2>Подберём жильё под ваш бюджет</h2>
       <p>Оставьте контакт — эксперт уточнит пожелания и пришлёт варианты. Или напишите напрямую:</p>
-      <div class="contacts"><a href="#" class="btn btn-wa">WhatsApp</a><a href="#" class="btn btn-tg">Telegram</a><a href="tel:+900000000000" class="btn btn-ghost">+90 5XX XXX XX XX</a></div>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa">WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
     </div>
     <form class="lform" id="lead-form" novalidate>
       <div class="row2">
@@ -461,12 +461,12 @@
     <div class="cols">
       <div>
         <span class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>HOMES</small></span></span>
-        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>[адрес офиса]<br>Пн–сб 9:00–19:00</p>
-        <p style="margin-top:10px"><a href="tel:+900000000000">+90 5XX XXX XX XX</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
-        <div class="soc"><a href="#" aria-label="WhatsApp">WA</a><a href="#" aria-label="Telegram">TG</a><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="YouTube">YT</a></div>
+        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya<br>Пн–сб 9:00–19:00 · TTYB № 1111111</p>
+        <p style="margin-top:10px"><a href="tel:+905001111111">+90 500 111 11 11</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
+        <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
       </div>
       <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li><li><a href="#">Проданные</a></li></ul></div>
-      <div><h4>Районы</h4><ul><li><a href="catalog.html?district=mahmutlar">Махмутлар</a></li><li><a href="catalog.html?district=oba">Оба</a></li><li><a href="catalog.html?district=kestel">Кестель</a></li><li><a href="catalog.html?district=kargicak">Каргыджак</a></li><li><a href="catalog.html?district=center">Центр</a></li><li><a href="#">Все районы</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
       <div><h4>Услуги</h4><ul><li><a href="#">Подбор и просмотр</a></li><li><a href="#">Проверка документов</a></li><li><a href="#">Гражданство</a></li><li><a href="#">ВНЖ</a></li><li><a href="#">Управление арендой</a></li></ul></div>
       <div><h4>Компания</h4><ul><li><a href="#">О нас</a></li><li><a href="#">Отзывы</a></li><li><a href="#">Статьи</a></li><li><a href="#">Новости</a></li><li><a href="#">Партнёрам</a></li><li><a href="#">Вакансии</a></li><li><a href="#">Контакты</a></li></ul></div>
     </div>
@@ -474,7 +474,7 @@
   </div>
 </footer>
 
-<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#lead" class="pick">Подбор</a><a href="#" class="wa">WhatsApp</a></nav>
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#lead" class="pick">Подбор</a><a href="https://wa.me/905001111111" class="wa">WhatsApp</a></nav>
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
@@ -489,7 +489,8 @@
   const val = id => $(id).value.trim();
   const rooms = () => val('#f-rooms') || val('#f-rooms-m');
   function filtered() {
-    const min = +val('#f-min').replace(/\D/g, '') || 0, max = +val('#f-max').replace(/\D/g, '') || Infinity;
+    // бюджет вводят в выбранной валюте, цены объектов хранятся в €
+    const min = KHS.toEur(+val('#f-min').replace(/\D/g, '') || 0), max = KHS.toEur(+val('#f-max').replace(/\D/g, '') || Infinity);
     const id = +val('#f-id'), sea = +val('#f-sea') || Infinity, area = +val('#f-area') || 0, r = rooms();
     return KH.published().filter(o => {
       if (id) return o.id === id;
@@ -530,7 +531,7 @@
   function setDeal(d) {
     state.deal = d;
     $$('.search .tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.deal === d));
-    $('#budget-lbl').textContent = d === 'rent' ? 'Бюджет, € в месяц' : 'Бюджет, €';
+    $('#budget-lbl').textContent = d === 'rent' ? `Бюджет, ${KHS.sym()} в месяц` : `Бюджет, ${KHS.sym()}`;
     update();
   }
   $$('.search .tabs button').forEach(b => b.addEventListener('click', () => setDeal(b.dataset.deal)));
@@ -556,7 +557,7 @@
     const on = c.getAttribute('aria-pressed') !== 'true';
     $('#search').reset(); setDeal('sale');
     $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c && on));
-    if (on) ({ sea: () => $('#f-sea').value = '300', new: () => $('#f-new').checked = true, furn: () => $('#f-furn').checked = true, budget: () => $('#f-max').value = '150000', view: () => $('#f-seaview').checked = true })[c.dataset.chip]();
+    if (on) ({ sea: () => $('#f-sea').value = '300', new: () => $('#f-new').checked = true, furn: () => $('#f-furn').checked = true, budget: () => $('#f-max').value = Math.round(150000 * KHS.rate()), view: () => $('#f-seaview').checked = true })[c.dataset.chip]();
     update(); renderGrid();
   }));
 
@@ -576,7 +577,7 @@
   function pickDistrict(slug) {
     sel = slug; const d = KH.district(slug);
     $('#dsel').classList.add('open');
-    $('#dsel').innerHTML = `<h3>${d.name}</h3><p>${d.about}</p><div class="stats"><span><b>${KHS.fmt(d.pm, '/м²')}</b> средняя цена (демо)</span><span><b>${d.km ? d.km + ' км' : '0 км'}</b> до центра</span><span><b>${counts(slug)}</b> ${plural(counts(slug))} в продаже</span></div><button type="button" class="btn btn-dark btn-sm" data-show-d="${slug}">Смотреть объекты в районе</button>`;
+    $('#dsel').innerHTML = `<h3>${d.name}</h3><p>${d.about}</p><div class="stats"><span><b>${KHS.fmt(d.pm, '/м²')}</b> средняя цена (демо)</span><span><b>${d.km ? d.km + ' км' : '0 км'}</b> до центра</span><span><b>${counts(slug)}</b> ${plural(counts(slug))} в продаже</span></div><button type="button" class="btn btn-dark btn-sm" data-show-d="${slug}">Смотреть объекты в районе</button> <a href="district.html?d=${slug}" class="btn btn-line btn-sm">Гид по району →</a>`;
     renderDistricts();
   }
   document.addEventListener('click', e => {
@@ -595,8 +596,8 @@
   function renderPosts() {
     const live = KH.livePosts();
     const d = s => new Date(s).toLocaleDateString('ru-RU');
-    $('#arts').innerHTML = live.filter(p => p.kind === 'article').slice(0, 3).map(p => `<a href="#" class="art rv"><img src="${p.cover || KH.IMG(p.img || '1560518883-ce09059eeffa', 400)}" alt="" loading="lazy"><div><span class="m">${p.cat} · ${d(p.date)}${p.mins ? ' · ' + p.mins + ' мин' : ''}</span><h3>${p.title}</h3></div></a>`).join('');
-    $('#news').innerHTML = live.filter(p => p.kind === 'news').slice(0, 4).map(p => `<a href="#"><img src="${p.cover || KH.IMG(p.img || '1715593949273-09009558300a', 200)}" alt="" loading="lazy"><span>${p.pinned ? '<span class="pin-tag">Закреплено · </span>' : ''}<span class="m">${d(p.date)} · ${p.cat}</span><h3>${p.title}</h3></span></a>`).join('');
+    $('#arts').innerHTML = live.filter(p => p.kind === 'article').slice(0, 3).map(p => `<a href="#" class="art rv"><img src="${p.cover || KH.IMG(p.img || '1560518883-ce09059eeffa', 400)}" alt="" loading="lazy"><div><span class="m">${KHS.esc(p.cat)} · ${d(p.date)}${p.mins ? ' · ' + p.mins + ' мин' : ''}</span><h3>${KHS.esc(p.title)}</h3></div></a>`).join('');
+    $('#news').innerHTML = live.filter(p => p.kind === 'news').slice(0, 4).map(p => `<a href="#"><img src="${p.cover || KH.IMG(p.img || '1715593949273-09009558300a', 200)}" alt="" loading="lazy"><span>${p.pinned ? '<span class="pin-tag">Закреплено · </span>' : ''}<span class="m">${d(p.date)} · ${KHS.esc(p.cat)}</span><h3>${KHS.esc(p.title)}</h3></span></a>`).join('');
     KHS.reveal($('#journal'));
   }
 
@@ -606,7 +607,8 @@
     if (KHS.validate(e.target)) { $('#l-ok-msg').style.display = 'block'; e.target.querySelector('button[type=submit]').disabled = true; }
   });
 
-  KHS.onCurrency(() => { if ($('#grid').children.length) { const hasFilter = $('#res-title').textContent !== 'Актуальные предложения'; hasFilter ? renderGrid() : first(); } renderDistricts(); if (sel) pickDistrict(sel); });
+  KHS.onCurrency(() => {
+    $('#budget-lbl').textContent = state.deal === 'rent' ? `Бюджет, ${KHS.sym()} в месяц` : `Бюджет, ${KHS.sym()}`; if ($('#grid').children.length) { const hasFilter = $('#res-title').textContent !== 'Актуальные предложения'; hasFilter ? renderGrid() : first(); } renderDistricts(); if (sel) pickDistrict(sel); });
   KHS.initHeader();
   first(); update(); renderDistricts(); renderPosts(); KHS.reveal();
 })();

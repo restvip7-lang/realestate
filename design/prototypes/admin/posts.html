@@ -63,7 +63,7 @@
   $('#cat-f').onchange = e => { f.cat = e.target.value; render(); };
   $('#st-f').onchange = e => { f.st = e.target.value; render(); };
   $('#q').oninput = e => { f.q = e.target.value.trim(); render(); };
-  document.addEventListener('click', e => { const b = e.target.closest('[data-draft]'); if (!b) return; const p = KH.posts().find(x => x.id === +b.dataset.draft); KH.savePost(Object.assign({}, p, { status: 'draft' })); ADM.toast('Снято с публикации'); render(); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-draft]'); if (!b) return; const p = KH.posts().find(x => x.id === +b.dataset.draft); try { KH.savePost(Object.assign({}, p, { status: 'draft' })); } catch (err) { ADM.toast('Не хватает места в браузере'); return; } ADM.toast('Снято с публикации'); render(); });
   const saved = new URLSearchParams(location.search).get('saved');
   if (saved) ADM.toast(`Публикация сохранена`);
   render();

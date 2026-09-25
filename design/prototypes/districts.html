@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Районы Аланьи: где купить квартиру, сравнение цен и инфраструктуры | Kleo Homes</title>
+<meta name="description" content="14 районов Аланьи на одной странице: расстояние до моря и центра, цены за м², аренда, кому подходит каждый район. Сравните и выберите свой.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css">
+<link rel="stylesheet" href="assets/districts.css">
+</head>
+<body>
+<div class="demo-strip">Прототип: описания районов черновые, цены и объекты — демо-данные</div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="home-v2.html" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="13" r="6.5" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="wm"><b>KLEO</b><small>HOMES</small></span>
+    </a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="catalog.html">Каталог</a><a href="districts.html" aria-current="page">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
+      <select class="cur-sel hide-t" aria-label="Валюта"></select>
+      <a class="icon-btn" href="catalog.html" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
+      <a href="#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
+      <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a><a href="#lead">Подобрать жильё</a></nav>
+    <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
+    <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
+  </div>
+</div>
+
+<main>
+<section class="dhero" style="padding-bottom:40px">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">Районы Аланьи</span></nav>
+    <span class="eyebrow">Гид по районам</span>
+    <h1>Районы Аланьи: где купить жильё</h1>
+    <p class="lead-t">12 районов вдоль моря от Авсаллара до Газипаши и 2 района в горах. Сравните цены, расстояние до моря и центра и выберите район под свои задачи: жить круглый год, отдыхать или сдавать.</p>
+    <div class="map-box" style="margin-top:28px;min-height:380px" id="map">
+      <svg viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Схема побережья Аланьи со всеми районами">
+        <defs><pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(0,163,196,.28)"/></pattern></defs>
+        <path id="sea-fill" fill="url(#dots)"/>
+        <g id="mtn" fill="none" stroke="rgba(255,255,255,.08)"></g><path id="coast" fill="none" stroke="#00A3C4" stroke-width="1.6"/>
+        <text x="330" y="330" fill="rgba(255,255,255,.3)" style="font:500 13px Onest;letter-spacing:.3em">СРЕДИЗЕМНОЕ МОРЕ</text><text x="40" y="30" fill="rgba(255,255,255,.28)" style="font:500 12px Onest;letter-spacing:.3em">ГОРЫ ТАВР</text><text x="930" y="392" fill="rgba(255,255,255,.55)" style="font:600 12px Onest" text-anchor="end">✈ аэропорт GZP</text>
+        <g id="pins"></g>
+      </svg>
+      <span class="map-note"><span>Схема не в масштабе. <span style="color:#9BD66B">●</span> район в горах. Нажмите на район, чтобы открыть гид.</span></span>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="dfilters">
+      <div class="chips" role="group" aria-label="Фильтр районов" id="chips">
+        <button class="chip" type="button" data-f="" aria-pressed="true">Все 14</button>
+        <button class="chip" type="button" data-f="sea" aria-pressed="false">У моря</button>
+        <button class="chip" type="button" data-f="inland" aria-pressed="false">В горах</button>
+        <button class="chip" type="button" data-f="life" aria-pressed="false">Для жизни круглый год</button>
+        <button class="chip" type="button" data-f="rent" aria-pressed="false">Для сдачи в аренду</button>
+        <button class="chip" type="button" data-f="quiet" aria-pressed="false">Тихие</button>
+        <button class="chip" type="button" data-f="budget" aria-pressed="false">Доступные цены</button>
+      </div>
+      <label class="dsort">Порядок <select id="sort"><option value="geo">С запада на восток</option><option value="cheap">Сначала дешевле</option><option value="exp">Сначала дороже</option><option value="objs">Больше объектов</option><option value="center">Ближе к центру</option></select></label>
+    </div>
+    <p class="hint" id="found" aria-live="polite" style="margin:-8px 0 16px"></p>
+    <div class="dgrid" id="dgrid"></div>
+    <p class="hint" style="margin-top:10px">Фото: виды Аланьи (иллюстрация, не обязательно этого района). Цены за м² и оценки — демо.</p>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--mist)">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Сравнение</span><h2>Все районы в одной таблице</h2></div><p>Оценки от 1 до 5 — мнение экспертов Kleo Homes (демо). Нажмите на название, чтобы открыть гид по району.</p></div>
+    <div class="cmp-wrap"><table class="ptable" id="cmp"><caption class="vh">Сравнение районов Аланьи</caption><thead><tr><th scope="col">Район</th><th scope="col" class="num">До центра</th><th scope="col" class="num">До моря</th><th scope="col" class="num">Цена за м²</th><th scope="col" class="num">Продажа</th><th scope="col" class="num">Аренда</th><th scope="col">Жить</th><th scope="col">Сдавать</th><th scope="col">Тишина</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap faq">
+    <div><span class="eyebrow">Вопросы</span><h2 style="margin-top:8px">Как выбрать район в Аланье</h2><p class="hint" style="margin-top:10px">Не уверены? <a href="#lead" class="link">Эксперт сравнит 2–3 района под ваши задачи →</a></p></div>
+    <div id="faq"></div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap seo">
+    <h2>Районы Аланьи для покупки недвижимости</h2>
+    <p>Аланья вытянута вдоль Средиземного моря почти на 70 км: от курортного Авсаллара на западе до отдельного города Газипаша с аэропортом на востоке. Ближе к центру — городская жизнь и самые высокие цены, на окраинах — новые комплексы, тишина и цены ниже. Районы Тепе и Джикджилли расположены в горах: до моря оттуда нужно ехать, зато виды и прохлада летом.</p>
+    <p>Для жизни круглый год чаще выбирают Оба, Джикджилли, Махмутлар и Конаклы: там школы, клиники и магазины работают весь год. Для сдачи в аренду — центр и районы у моря с хорошей набережной. Средние цены за м² на этой странице — демо; реальные данные агентство обновляет раз в месяц.</p>
+    <div class="links" id="seo-links"></div>
+    <p class="hint" style="margin-top:14px">Адрес страницы в рабочей версии — /ru/districts/.</p>
+  </div>
+</section>
+</main>
+
+<section class="sec lead" id="lead">
+  <div class="wrap lead-grid">
+    <div class="intro">
+      <span class="eyebrow">Подбор</span>
+      <h2 id="lead-h">Поможем выбрать район</h2>
+      <p>Расскажите о бюджете и планах — эксперт по району пришлёт варианты с плюсами и минусами. Или напишите напрямую:</p>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa" data-wa>WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
+    </div>
+    <form class="lform" id="lead-form" novalidate>
+      <div class="row2">
+        <div class="fld"><label for="l-name">Имя</label><input id="l-name" required autocomplete="name"><span class="err-msg">Укажите имя</span></div>
+        <div class="fld"><label for="l-way">Как связаться</label><select id="l-way"><option>WhatsApp</option><option>Telegram</option><option>Звонок</option><option>E-mail</option></select></div>
+      </div>
+      <div class="fld"><label for="l-phone">Номер телефона</label><div class="phone"><select id="l-code" aria-label="Код страны"><option>+7</option><option>+90</option><option>+49</option><option>+380</option><option>+375</option><option>+44</option><option>+1</option></select><input id="l-phone" type="tel" required autocomplete="tel-national" placeholder="900 000 00 00"></div><span class="err-msg">Укажите номер в международном формате</span></div>
+      <div class="row2">
+        <div class="fld"><label for="l-goal">Цель <span class="hint">(необязательно)</span></label><select id="l-goal"><option>Пока не решил</option><option>Для жизни</option><option>Для отдыха</option><option>Сдавать в аренду</option><option>ВНЖ / гражданство</option></select></div>
+        <div class="fld"><label for="l-budget">Бюджет <span class="hint">(необязательно)</span></label><select id="l-budget"><option>Пока не определён</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+      </div>
+      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish"></textarea></div>
+      <div class="fld"><label class="check"><input type="checkbox" id="l-ok" required>Согласен с <a href="#" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие на обработку данных</span></div>
+      <button class="btn btn-coral" type="submit">Получить подборку</button>
+      <div class="notice ok" id="l-ok-msg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <span class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>HOMES</small></span></span>
+        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya<br>Пн–сб 9:00–19:00 · TTYB № 1111111</p>
+        <p style="margin-top:10px"><a href="tel:+905001111111">+90 500 111 11 11</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
+        <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
+      </div>
+      <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
+      <div><h4>Услуги</h4><ul><li><a href="#lead">Подбор и просмотр</a></li><li><a href="home-v2.html#services">Проверка документов</a></li><li><a href="home-v2.html#services">Гражданство</a></li><li><a href="home-v2.html#services">ВНЖ</a></li><li><a href="home-v2.html#services">Управление арендой</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="home-v2.html#company">О нас</a></li><li><a href="home-v2.html#journal">Статьи</a></li><li><a href="home-v2.html#journal">Новости</a></li><li><a href="#lead">Контакты</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 Kleo Homes</span><a href="#">Политика конфиденциальности</a><a href="admin/login.html">Вход для сотрудников</a></div>
+  </div>
+</footer>
+
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#lead" class="pick">Подбор</a><a href="https://wa.me/905001111111" class="wa" data-wa>WhatsApp</a></nav>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'район' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'района' : 'районов';
+  const pub = KH.published();
+  const cnt = (slug, deal) => pub.filter(o => o.district === slug && o.deal === deal).length;
+  const minSea = d => { const s = pub.filter(o => o.district === d.slug).map(o => o.sea); return s.length ? Math.min(...s) : 0; };
+  const seaTxt = d => d.inland ? (d.slug === 'tepe' ? '3–5 км' : '1,5–2,5 км') : minSea(d) ? `от ${minSea(d)} м` : 'у моря';
+  const kmTxt = d => d.km ? d.km.toLocaleString('ru-RU') + ' км' : 'центр';
+  const dots = n => `<span class="dots" role="img" aria-label="${n} из 5">${'●'.repeat(n)}<i>${'●'.repeat(5 - n)}</i></span>`;
+  const byPm = [...KH.DISTRICTS].sort((a, b) => a.pm - b.pm);
+  const budgetMax = byPm[4].pm; // «доступные» — 5 самых недорогих районов
+  const F = { sea: d => !d.inland, inland: d => d.inland, life: d => d.sc.life >= 4, rent: d => d.sc.rent >= 4, quiet: d => d.sc.quiet >= 4, budget: d => d.pm <= budgetMax };
+  const S = { geo: (a, b) => (a.inland ? a.pos - 0.5 : a.pos) - (b.inland ? b.pos - 0.5 : b.pos), cheap: (a, b) => a.pm - b.pm, exp: (a, b) => b.pm - a.pm, objs: (a, b) => cnt(b.slug, 'sale') - cnt(a.slug, 'sale'), center: (a, b) => a.km - b.km };
+  const p = new URLSearchParams(location.search);
+  const st = { f: F[p.get('f')] ? p.get('f') : '', sort: S[p.get('sort')] ? p.get('sort') : 'geo' };
+
+  // схема побережья: все районы — ссылки на гиды
+  $('#coast').setAttribute('d', KH.COAST); $('#sea-fill').setAttribute('d', KH.COAST + ' L1000 440 L0 440Z');
+  $('#mtn').innerHTML = KH.MOUNTAINS.map(x => `<path d="${x}"/>`).join('');
+  $('#pins').innerHTML = KH.DISTRICTS.map(d => `<a class="pin ${d.inland ? 'inland' : ''}" href="district.html?d=${d.slug}" aria-label="${d.name}: гид по району"><circle class="dot" cx="${d.x}" cy="${d.y}" r="7"/><text x="${d.x}" y="${d.y - 16}" text-anchor="middle">${d.name}</text></a>`).join('');
+
+  function render() {
+    const list = KH.DISTRICTS.filter(F[st.f] || (() => true)).sort(S[st.sort]);
+    $$('#chips .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.f === st.f));
+    $('#sort').value = st.sort;
+    $('#found').textContent = st.f ? `Найдено: ${list.length} ${plural(list.length)}` : '';
+    $('#dgrid').innerHTML = list.map(d => `<article class="dcard rv"><img src="${KH.IMG(d.img, 700)}" alt="" loading="lazy"><div class="tl">${d.inland ? '<span class="in">В горах</span>' : '<span>У моря</span>'}${d.sc.life >= 5 ? '<span>Для жизни</span>' : ''}</div><h3><a href="district.html?d=${d.slug}">${d.name}</a></h3><p class="about">${d.lead}</p><div class="meta"><span><b>${KHS.fmt(d.pm, '/м²')}</b></span><span>${kmTxt(d)}${d.km ? ' до центра' : ''}</span><span>${cnt(d.slug, 'sale')} в продаже</span></div></article>`).join('');
+    $('#cmp tbody').innerHTML = [...KH.DISTRICTS].sort(S[st.sort]).map(d => `<tr><td><a href="district.html?d=${d.slug}">${d.name}</a>${d.inland ? ' <span class="hint">· в горах</span>' : ''}</td><td class="num">${kmTxt(d)}</td><td class="num">${seaTxt(d)}</td><td class="num">${KHS.fmt(d.pm, '/м²')}</td><td class="num"><a href="catalog.html?district=${d.slug}">${cnt(d.slug, 'sale')}</a></td><td class="num"><a href="catalog.html?deal=rent&district=${d.slug}">${cnt(d.slug, 'rent')}</a></td><td>${dots(d.sc.life)}</td><td>${dots(d.sc.rent)}</td><td>${dots(d.sc.quiet)}</td></tr>`).join('');
+    const names = f => KH.DISTRICTS.filter(f).map(d => `<a href="district.html?d=${d.slug}" class="link">${d.name}</a>`).join(', ');
+    $('#faq').innerHTML = [
+      ['Какой район выбрать для жизни круглый год?', `Там, где школы, клиники и магазины работают весь год: ${names(d => d.sc.life >= 5)}. В курортных посёлках зимой часть кафе и магазинов закрывается.`],
+      ['Где лучше покупать для сдачи в аренду?', `Стабильный спрос — у моря и ближе к центру: ${names(d => d.sc.rent >= 4)}. Посчитаем доходность конкретного объекта с учётом расходов на комплекс и управление.`],
+      ['Где самые доступные цены?', `Дешевле всего на окраинах: ${byPm.slice(0, 4).map(d => `<a href="district.html?d=${d.slug}" class="link">${d.name}</a> — от ${KHS.fmt(d.pm, '/м²')}`).join(', ')} (демо). Дороже всего — центр и Тепе.`],
+      ['Чем отличаются районы в горах?', `${names(d => d.inland)} — не у моря: до пляжа 1,5–5 км. Зато там панорамные виды, прохлада летом и больше места. Жить без машины неудобно.`],
+      ['Сколько ехать до аэропорта?', 'Ближайший аэропорт — Газипаша-Аланья (GZP): от восточных районов 5–25 км, от центра около 38 км. Международный аэропорт Анталии (AYT) — примерно в 100–170 км в зависимости от района. Расстояния указаны на странице каждого района.']
+    ].map(([q, a], i) => `<details${i ? '' : ' open'}><summary>${q}</summary><p>${a}</p></details>`).join('');
+    $('#seo-links').innerHTML = KH.DISTRICTS.map(d => `<a href="district.html?d=${d.slug}">Недвижимость в ${d.in}</a>`).join('');
+    KHS.reveal($('#dgrid'));
+    const q = new URLSearchParams(); if (st.f) q.set('f', st.f); if (st.sort !== 'geo') q.set('sort', st.sort);
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
+  }
+  $('#chips').addEventListener('click', e => { const c = e.target.closest('[data-f]'); if (!c) return; st.f = c.dataset.f; render(); });
+  $('#sort').addEventListener('change', e => { st.sort = e.target.value; render(); });
+
+  $('#l-wish').value = 'Помогите выбрать район: ';
+  $('#lead-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!KHS.validate(e.target)) return;
+    const n = $('#l-ok-msg'); n.textContent = 'Демо: заявка не отправлена. В рабочей версии она придёт на почту агентства.'; n.style.display = 'block';
+    e.target.querySelector('button[type=submit]').disabled = true;
+  });
+
+  // JSON-LD: хлебные крошки + список районов
+  const ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify([
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Районы Аланьи', location.pathname]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) },
+    { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Районы Аланьи', numberOfItems: KH.DISTRICTS.length, itemListElement: KH.DISTRICTS.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.name, url: new URL(`district.html?d=${d.slug}`, location.href).href })) }
+  ]);
+  document.head.appendChild(ld);
+
+  KHS.onCurrency(render);
+  KHS.initHeader(); // вызывает render через событие валюты
+})();
+</script>
+</body>
+</html>
