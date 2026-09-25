@@ -28,20 +28,30 @@
 - [ ] [ ] HTML-прототип: рекламный лендинг
 
 ## Этап 2 — Каркас
-- [ ] [ ] Next.js + Payload + Postgres (Docker), .env.example
-- [ ] [ ] i18n (next-intl), маршруты /ru /en /tr
-- [ ] [ ] Коллекции: Properties, Districts, Projects, Media, Users (роли)
-- [ ] [ ] Коллекции: Team, Reviews, Posts, Pages, Leads, Globals
+- [x] [claude] Next.js 16 + Payload 3 + Postgres (Docker локально, Neon на Vercel), .env.example, миграции, seed из прототипа
+- [x] [claude] i18n (next-intl), маршруты /ru /en /tr, словари ru/en/tr
+- [x] [claude] Коллекции: Properties, Districts, Media, Users (роли). Projects (ЖК) — позже, пока поле «Комплекс»
+- [x] [claude] Коллекции: Team, Reviews, Posts, Leads; глобалы Company, Rates, TeamPage. Pages (конструктор лендингов) — позже
+
+## Этап 2.5 — Перенос прототипов на Next.js
+- [ ] [human] Vercel: подключить GitHub и создать Neon (docs/deploy.md), нажать «Загрузить демо-данные»
+- [ ] [ ] Районы: /districts, /districts/[slug]
+- [ ] [ ] Команда: /team, /team/[slug]; отзывы /reviews
+- [ ] [ ] Блог и новости: /blog, /blog/[slug], /news, /news/[slug]
+- [ ] [ ] Как проходит покупка, Услуги, Гражданство, ВНЖ, Контакты, Политика
+- [ ] [ ] Избранное и сравнение /favorites
+- [ ] [ ] sitemap.xml, robots.txt, llms.txt
+- [ ] [human] SMTP-почта для заявок и восстановления пароля (Resend / Brevo / Yandex 360)
 
 ## Этап 3 — Публичная часть
-- [ ] [ ] Главная
-- [ ] [ ] Каталог + фильтры + карта
-- [ ] [ ] Карточка объекта
+- [x] [claude] Главная (без схемы-сравнения районов)
+- [~] [claude] Каталог + фильтры (готово), карта MapLibre — не начата
+- [x] [claude] Карточка объекта
 - [ ] [ ] ЖК, районы, лендинги гражданства/ВНЖ (гражданство — лонгрид с документами и FAQ)
 - [ ] [ ] Поиск по ID, фильтры «Больше», инфраструктура чекбоксами, «Скачать каталог PDF»
 - [ ] [ ] Карточка: «цена проверена», «Нашли дешевле?», zip фото, PDF/печать, отзывы
 - [ ] [ ] Разделы: Проданные, Партнёрам, Новости, Законы в Турции
-- [ ] [ ] Формы заявок → письмо на e-mail агентства (Telegram-бот — позже)
+- [~] [claude] Формы заявок → «Заявки» в админке + письмо (нужны SMTP и LEADS_EMAIL_TO в Vercel); Telegram-бот — позже
 
 ## Этап 4 — Контент и SEO
 - [ ] [ ] Тексты страниц RU → EN/TR (docs/content/)

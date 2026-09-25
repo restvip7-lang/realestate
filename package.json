@@ -1,0 +1,53 @@
+{
+  "name": "kleo-homes",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kleo Homes: сайт агентства недвижимости в Алании (Next.js + Payload CMS)",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "vercel-build": "npm run payload migrate && npm run build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "typecheck": "tsc --noEmit",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/cli.ts"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/onest": "5.3.1",
+    "@fontsource-variable/unbounded": "5.3.0",
+    "@payloadcms/db-postgres": "3.90.2",
+    "@payloadcms/email-nodemailer": "3.90.2",
+    "@payloadcms/next": "3.90.2",
+    "@payloadcms/richtext-lexical": "3.90.2",
+    "@payloadcms/storage-vercel-blob": "3.90.2",
+    "@payloadcms/ui": "3.90.2",
+    "cross-env": "7.0.3",
+    "graphql": "16.11.0",
+    "next": "16.3.3",
+    "next-intl": "4.14.7",
+    "payload": "3.90.2",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "server-only": "0.0.1",
+    "sharp": "0.35.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.9",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.3.3",
+    "prettier": "3.6.2",
+    "typescript": "5.7.3"
+  }
+}

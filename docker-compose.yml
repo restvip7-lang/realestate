@@ -1,0 +1,16 @@
+# Локальная база для разработки: docker compose up -d db
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kleo
+      POSTGRES_PASSWORD: kleo
+      POSTGRES_DB: kleo
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
