@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Журнал о недвижимости в Алании: цены, законы, районы | Kleo Homes</title>
-<meta name="description" content="Статьи экспертов и юриста Kleo Homes о покупке недвижимости в Алании: цены по районам, налоги и ТАПУ, ВНЖ и гражданство, аренда и доходность.">
+<title>Отзывы клиентов Kleo Homes — агентство недвижимости в Алании</title>
+<meta name="description" content="Отзывы покупателей, арендаторов и продавцов о работе Kleo Homes в Алании: покупка, аренда, ВНЖ, продажа. Оценки, эксперты и истории сделок.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="assets/pages.css">
 </head>
 <body>
-<div class="demo-strip">Прототип: статьи — демо-тексты, цифры проверит юрист</div>
+<div class="demo-strip">Прототип: отзывы и оценки — демо</div>
 
 <header class="hdr">
   <div class="wrap">
@@ -21,7 +21,7 @@
       <span class="wm"><b>KLEO</b><small>HOMES</small></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html" aria-current="page">Журнал</a>
+      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a>
     </nav>
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
@@ -46,20 +46,51 @@
 <main>
 <section class="dhero short">
   <div class="wrap">
-    <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">Журнал</span></nav>
-    <span class="eyebrow">Журнал Kleo Homes</span>
-    <h1>Статьи о недвижимости в Алании</h1>
-    <p class="lead-t">Цены, законы, районы и жизнь в Турции. Пишут эксперты и юрист агентства, правовые тексты проверяем перед публикацией. <a href="news.html" class="link" style="color:var(--sea-light)">Новости →</a></p>
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">Отзывы</span></nav>
+    <span class="eyebrow">Отзывы <span class="demo-tag">демо</span></span>
+    <h1>Отзывы клиентов</h1>
+    <p class="lead-t">Что говорят покупатели, арендаторы и продавцы. Публикуем отзывы только с согласия клиентов и не удаляем критику.</p>
+    <div class="rsum" id="rsum"></div>
+    <div class="cta"><a href="#write" class="btn btn-coral">Оставить отзыв</a><a href="https://www.google.com/maps/search/Kleo+Homes+Alanya" class="btn btn-ghost" target="_blank" rel="noopener">Мы в Google</a><a href="https://yandex.ru/maps/?text=Kleo%20Homes%20Alanya" class="btn btn-ghost" target="_blank" rel="noopener">Мы в Яндекс Картах</a></div>
   </div>
 </section>
+
 <section class="sec">
   <div class="wrap">
     <div class="pfilters">
-      <div class="chips" role="group" aria-label="Рубрики" id="chips"></div>
-      <span class="hint" id="found" aria-live="polite"></span>
+      <div class="chips" role="group" aria-label="Услуга" id="chips"></div>
+      <label class="dsort">Эксперт <select id="f-expert"><option value="">Все эксперты</option></select></label>
     </div>
-    <div id="feat"></div>
-    <div class="pgrid" id="grid"></div>
+    <p class="hint" id="found" aria-live="polite" style="margin:-8px 0 16px"></p>
+    <div class="rgrid" id="rgrid"></div>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--mist)" id="write">
+  <div class="wrap cols2">
+    <div>
+      <span class="eyebrow">Ваш отзыв</span>
+      <h2 style="margin:8px 0 14px">Расскажите о своей сделке</h2>
+      <p style="color:#2B323C">Отзыв появится на сайте после проверки: мы убеждаемся, что вы действительно наш клиент. Критику не удаляем — отвечаем на неё и исправляем ошибки.</p>
+    </div>
+    <form class="lform" id="rform" novalidate>
+      <div class="row2">
+        <div class="fld"><label for="r-name">Имя</label><input id="r-name" required autocomplete="name" maxlength="40"><span class="err-msg">Укажите имя</span></div>
+        <div class="fld"><label for="r-country">Страна <span class="hint">(необязательно)</span></label><input id="r-country" maxlength="30"></div>
+      </div>
+      <div class="fld"><span class="lbl" id="r-rate-l">Оценка</span>
+        <div class="stars-in" role="radiogroup" aria-labelledby="r-rate-l">
+          <input type="radio" name="rate" id="r5" value="5" checked><label for="r5" title="5 из 5">★</label><input type="radio" name="rate" id="r4" value="4"><label for="r4" title="4 из 5">★</label><input type="radio" name="rate" id="r3" value="3"><label for="r3" title="3 из 5">★</label><input type="radio" name="rate" id="r2" value="2"><label for="r2" title="2 из 5">★</label><input type="radio" name="rate" id="r1" value="1"><label for="r1" title="1 из 5">★</label>
+        </div></div>
+      <div class="row2">
+        <div class="fld"><label for="r-svc">Услуга</label><select id="r-svc"></select></div>
+        <div class="fld"><label for="r-exp">Эксперт <span class="hint">(необязательно)</span></label><select id="r-exp"><option value="">Не помню</option></select></div>
+      </div>
+      <div class="fld"><label for="r-text">Отзыв</label><textarea id="r-text" required minlength="30" maxlength="600" placeholder="Что понравилось, что можно улучшить"></textarea><span class="err-msg">Напишите хотя бы пару предложений</span></div>
+      <div class="fld"><label class="check"><input type="checkbox" required>Согласен на публикацию отзыва и с <a href="privacy.html" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие</span></div>
+      <button class="btn btn-coral" type="submit">Отправить отзыв</button>
+      <div class="notice ok" id="r-ok" role="status" style="display:none"></div>
+    </form>
   </div>
 </section>
 </main>
@@ -68,7 +99,7 @@
   <div class="wrap lead-grid">
     <div class="intro">
       <span class="eyebrow">Подбор</span>
-      <h2 id="lead-h">Не нашли ответ в статьях?</h2>
+      <h2 id="lead-h">Хотите так же? Начнём с подборки</h2>
       <p>Расскажите о бюджете и планах — эксперт по району пришлёт варианты с плюсами и минусами. Или напишите напрямую:</p>
       <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa" data-wa>WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
     </div>
@@ -82,7 +113,7 @@
         <div class="fld"><label for="l-goal">Цель <span class="hint">(необязательно)</span></label><select id="l-goal"><option>Пока не решил</option><option>Для жизни</option><option>Для отдыха</option><option>Сдавать в аренду</option><option>ВНЖ / гражданство</option></select></div>
         <div class="fld"><label for="l-budget">Бюджет <span class="hint">(необязательно)</span></label><select id="l-budget"><option>Пока не определён</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
       </div>
-      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish">Вопрос по статье: </textarea></div>
+      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish">Хочу консультацию эксперта: </textarea></div>
       <div class="fld"><label class="check"><input type="checkbox" id="l-ok" required>Согласен с <a href="privacy.html" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие на обработку данных</span></div>
       <button class="btn btn-coral" type="submit">Получить подборку</button>
       <div class="notice ok" id="l-ok-msg" role="status"></div>
@@ -112,40 +143,59 @@
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
-<script src="assets/posts.js"></script>
 <script>
 (() => {
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-  const esc = KHS.esc;
-  const addLd = data => { const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify(data); document.head.appendChild(ld); };
-  const crumbsLd = items => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) });
+  const esc = KHS.esc, SV = KH.REVIEW_SERVICES;
+  const all = KH.reviews();
+  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'отзыв' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'отзыва' : 'отзывов';
+  const stars = r => '★'.repeat(r) + '☆'.repeat(5 - r);
+  const q = new URLSearchParams(location.search);
+  const st = { svc: SV[q.get('s')] ? q.get('s') : '', exp: q.get('e') || '' };
 
-  const all = KH.livePosts().filter(p => p.kind === 'article');
-  const cats = [...new Set(all.map(p => p.cat))];
-  let cat = cats.includes(new URLSearchParams(location.search).get('cat')) ? new URLSearchParams(location.search).get('cat') : '';
-  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'статья' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'статьи' : 'статей';
+  // сводка оценок
+  const avg = all.reduce((a, r) => a + r.rating, 0) / (all.length || 1);
+  $('#rsum').innerHTML = `<div><div class="avg">${avg.toFixed(1).replace('.', ',')}</div><div class="stars" aria-label="Средняя оценка ${avg.toFixed(1)} из 5">${stars(Math.round(avg))}</div><small>${all.length} ${plural(all.length)} на сайте · демо</small></div>
+    <div class="dist">${[5, 4, 3, 2, 1].map(n => { const c = all.filter(r => r.rating === n).length; return `<div><span>${n} ★</span><i><b style="width:${all.length ? c / all.length * 100 : 0}%"></b></i><span>${c}</span></div>`; }).join('')}</div>`;
+
+  $('#f-expert').innerHTML += KH.TEAM.filter(t => all.some(r => r.expert === t.id)).map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
+  $('#f-expert').value = st.exp;
+  $('#r-svc').innerHTML = Object.entries(SV).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+  $('#r-exp').innerHTML += KH.TEAM.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
 
   function render() {
-    const list = all.filter(p => !cat || p.cat === cat);
-    $('#chips').innerHTML = [['', `Все · ${all.length}`], ...cats.map(c => [c, `${c} · ${all.filter(p => p.cat === c).length}`])].map(([v, t]) => `<button class="chip" type="button" data-cat="${esc(v)}" aria-pressed="${v === cat}">${esc(t)}</button>`).join('');
-    $('#found').textContent = `${list.length} ${plural(list.length)}`;
-    const [f, ...rest] = list;
-    const a = f && KHS.authorOf(f);
-    $('#feat').innerHTML = f ? `<article class="feat rv"><img src="${KHS.coverOf(f, 1100)}" alt="" width="1100" height="620"><div class="bd">
-      <span class="meta-line">${f.pinned ? '<span class="pin-tag">Закреплено</span>' : ''}<span class="cat">${esc(f.cat)}</span><span>${KHS.ruDate(f.date, true)}</span>${f.mins ? `<span>${f.mins} мин чтения</span>` : ''}</span>
-      <h2><a href="post.html?id=${f.id}">${esc(f.title)}</a></h2><p>${esc(KHS.leadOf(f))}</p>
-      <span class="by">${a ? `<img src="${KH.IMG(a.img, 80)}" alt="">` : ''}${esc(f.author)}${a ? ` · ${esc(a.role)}` : ''}</span></div></article>` : '<div class="empty"><b>В этой рубрике пока нет статей</b>Выберите другую рубрику.</div>';
-    $('#grid').innerHTML = rest.map(KHS.postCard).join('');
-    KHS.reveal(document);
-    history.replaceState(null, '', location.pathname + (cat ? '?cat=' + encodeURIComponent(cat) : ''));
+    $$('#chips .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.s === st.svc));
+    const list = all.filter(r => (!st.svc || r.service === st.svc) && (!st.exp || r.expert === st.exp));
+    $('#found').textContent = st.svc || st.exp ? `Найдено: ${list.length} ${plural(list.length)}` : '';
+    $('#rgrid').innerHTML = list.length ? list.map(r => { const m = r.expert && KH.member(r.expert);
+      return `<article class="rev rv"><span class="tag">${SV[r.service] || ''}</span><div class="stars" aria-label="${r.rating} из 5">${stars(r.rating)}</div><p>«${esc(r.text)}»</p>
+        ${m ? `<span class="by"><img src="${KH.IMG(m.img, 80)}" alt="">Эксперт: <a href="member.html?id=${m.id}" class="link">${esc(m.name)}</a></span>` : ''}
+        <div class="who"><span><b>${esc(r.who)}</b>${r.country ? ' · ' + esc(r.country) : ''}</span><span>${esc(r.date)}</span></div></article>`; }).join('')
+      : '<div class="empty"><b>Отзывов по этому фильтру пока нет</b>Выберите другую услугу или эксперта.</div>';
+    KHS.reveal($('#rgrid'));
+    const p = new URLSearchParams(); if (st.svc) p.set('s', st.svc); if (st.exp) p.set('e', st.exp);
+    history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : '') + location.hash);
   }
-  $('#chips').addEventListener('click', e => { const c = e.target.closest('[data-cat]'); if (c) { cat = c.dataset.cat; render(); } });
+  $('#chips').innerHTML = [['', `Все · ${all.length}`], ...Object.entries(SV).map(([k, v]) => [k, `${v} · ${all.filter(r => r.service === k).length}`])].map(([k, t]) => `<button class="chip" type="button" data-s="${k}" aria-pressed="false">${t}</button>`).join('');
+  $('#chips').addEventListener('click', e => { const c = e.target.closest('[data-s]'); if (c) { st.svc = c.dataset.s; render(); } });
+  $('#f-expert').onchange = e => { st.exp = e.target.value; render(); };
   render();
 
-  addLd([crumbsLd([['Главная', 'home-v2.html'], ['Журнал', location.pathname]]),
-    { '@context': 'https://schema.org', '@type': 'Blog', name: 'Журнал Kleo Homes', blogPost: all.slice(0, 10).map(p => ({ '@type': 'BlogPosting', headline: p.title, datePublished: p.date, url: new URL(`post.html?id=${p.id}`, location.href).href })) }]);
-  KHS.initHeader();
+  // форма отзыва (демо: в рабочей версии уходит на модерацию в админку)
+  $('#rform').addEventListener('submit', e => {
+    e.preventDefault();
+    const tx = $('#r-text'); tx.closest('.fld').classList.toggle('invalid', tx.value.trim().length < 30);
+    if (!KHS.validate(e.target) || tx.value.trim().length < 30) { if (tx.value.trim().length < 30) tx.focus(); return; }
+    const n = $('#r-ok'); n.textContent = 'Спасибо! Демо: отзыв не отправлен. В рабочей версии он придёт на проверку в админку и появится на сайте после модерации.'; n.style.display = 'block';
+    e.target.querySelector('button[type=submit]').disabled = true;
+  });
 
+  // JSON-LD: только хлебные крошки. Звёзды в Google для отзывов о себе на своём сайте не показываются (правила Google для LocalBusiness),
+  // поэтому AggregateRating не размечаем — рейтинг соберём в Google Business Profile.
+  const ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Отзывы', location.pathname]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) });
+  document.head.appendChild(ld);
+  KHS.initHeader();
   // форма заявки (демо): в рабочей версии письмо уходит на почту агентства
   document.querySelector('#lead-form').addEventListener('submit', e => {
     e.preventDefault();

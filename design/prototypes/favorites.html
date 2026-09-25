@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Избранное и сравнение — Kleo Homes</title>
+<meta name="description" content="Сохранённые объекты: сравнение по цене, площади, расстоянию до моря и расходам. Отправьте подборку эксперту или поделитесь ссылкой.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css">
+<link rel="stylesheet" href="assets/pages.css">
+<style>@media print{.hdr,.mbar,.ftr,.lead,.fbar .contacts,.demo-strip,.fchips,.shared .contacts,.fav,.dhero .cta{display:none!important}.cmp-wrap{overflow:visible}.cmp{min-width:0}}</style>
+</head>
+<body>
+<div class="demo-strip">Прототип: избранное хранится в этом браузере</div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="home-v2.html" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="13" r="6.5" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="wm"><b>KLEO</b><small>HOMES</small></span>
+    </a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
+      <select class="cur-sel hide-t" aria-label="Валюта"></select>
+      <a class="icon-btn" href="favorites.html" aria-label="Избранное" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
+      <a href="#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
+      <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a><a href="contacts.html">Контакты</a><a href="#lead">Подобрать жильё</a></nav>
+    <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
+    <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
+    <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111">WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a><a class="btn btn-line" href="tel:+905001111111">+90 500 111 11 11</a></div>
+  </div>
+</div>
+
+<main>
+<section class="dhero short">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="home-v2.html">Главная</a>›<span aria-current="page">Избранное</span></nav>
+    <span class="eyebrow">Избранное</span>
+    <h1 id="f-h1">Избранное</h1>
+    <p class="lead-t">Сохраняйте объекты сердечком ♡, сравнивайте их по цене, площади и расстоянию до моря и отправляйте подборку эксперту.</p>
+  </div>
+</section>
+<section class="sec">
+  <div class="wrap" id="app"></div>
+</section>
+<section class="sec" style="background:var(--mist)" id="compare" hidden>
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Сравнение</span><h2>Сравните до 4 объектов</h2></div><p>Отметьте объекты для сравнения. Лучшее значение в строке подсвечено зелёным.</p></div>
+    <div class="fchips" role="group" aria-label="Объекты для сравнения" id="fchips"></div>
+    <div class="cmp-wrap"><table class="cmp" id="cmp"></table></div>
+    <p class="hint" id="cmp-note" style="margin-top:10px" hidden>В сравнении есть и продажа, и аренда — лучшие значения подсвечиваются, когда сравниваются объекты одного типа сделки.</p>
+  </div>
+</section>
+</main>
+
+<section class="sec lead" id="lead">
+  <div class="wrap lead-grid">
+    <div class="intro">
+      <span class="eyebrow">Подбор</span>
+      <h2 id="lead-h">Обсудить подборку с экспертом</h2>
+      <p>Расскажите о бюджете и планах — эксперт по району пришлёт варианты с плюсами и минусами. Или напишите напрямую:</p>
+      <div class="contacts"><a href="https://wa.me/905001111111" class="btn btn-wa" data-wa>WhatsApp</a><a href="https://t.me/kleohomes" class="btn btn-tg">Telegram</a><a href="tel:+905001111111" class="btn btn-ghost">+90 500 111 11 11</a></div>
+    </div>
+    <form class="lform" id="lead-form" novalidate>
+      <div class="row2">
+        <div class="fld"><label for="l-name">Имя</label><input id="l-name" required autocomplete="name"><span class="err-msg">Укажите имя</span></div>
+        <div class="fld"><label for="l-way">Как связаться</label><select id="l-way"><option>WhatsApp</option><option>Telegram</option><option>Звонок</option><option>E-mail</option></select></div>
+      </div>
+      <div class="fld"><label for="l-phone">Номер телефона</label><div class="phone"><select id="l-code" aria-label="Код страны"><option>+7</option><option>+90</option><option>+49</option><option>+380</option><option>+375</option><option>+44</option><option>+1</option></select><input id="l-phone" type="tel" required autocomplete="tel-national" placeholder="900 000 00 00"></div><span class="err-msg">Укажите номер в международном формате</span></div>
+      <div class="row2">
+        <div class="fld"><label for="l-goal">Цель <span class="hint">(необязательно)</span></label><select id="l-goal"><option>Пока не решил</option><option>Для жизни</option><option>Для отдыха</option><option>Сдавать в аренду</option><option>ВНЖ / гражданство</option></select></div>
+        <div class="fld"><label for="l-budget">Бюджет <span class="hint">(необязательно)</span></label><select id="l-budget"><option>Пока не определён</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+      </div>
+      <div class="fld"><label for="l-wish">Пожелания <span class="hint">(необязательно)</span></label><textarea id="l-wish">Хочу консультацию эксперта: </textarea></div>
+      <div class="fld"><label class="check"><input type="checkbox" id="l-ok" required>Согласен с <a href="privacy.html" style="text-decoration:underline">политикой обработки персональных данных</a></label><span class="err-msg">Нужно согласие на обработку данных</span></div>
+      <button class="btn btn-coral" type="submit">Получить подборку</button>
+      <div class="notice ok" id="l-ok-msg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <span class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>HOMES</small></span></span>
+        <p style="margin-top:14px">Недвижимость в Алании · Alanya Gayrimenkul<br>Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya<br>Пн–сб 9:00–19:00 · TTYB № 1111111</p>
+        <p style="margin-top:10px"><a href="tel:+905001111111">+90 500 111 11 11</a><br><a href="mailto:info@kleohomes.com">info@kleohomes.com</a></p>
+        <div class="soc"><a href="https://wa.me/905001111111" aria-label="WhatsApp">WA</a><a href="https://t.me/kleohomes" aria-label="Telegram">TG</a><a href="https://instagram.com/kleohomes" aria-label="Instagram">IG</a><a href="https://youtube.com/@kleohomes" aria-label="YouTube">YT</a></div>
+      </div>
+      <div><h4>Каталог</h4><ul><li><a href="catalog.html?type=apartment">Квартиры</a></li><li><a href="catalog.html?type=penthouse">Пентхаусы</a></li><li><a href="catalog.html?type=villa">Виллы</a></li><li><a href="catalog.html?new=1">Новостройки</a></li><li><a href="catalog.html?deal=rent">Аренда</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="district.html?d=mahmutlar">Махмутлар</a></li><li><a href="district.html?d=oba">Оба</a></li><li><a href="district.html?d=kestel">Кестель</a></li><li><a href="district.html?d=kargicak">Каргыджак</a></li><li><a href="district.html?d=center">Центр</a></li><li><a href="districts.html">Все районы</a></li></ul></div>
+      <div><h4><a href="services.html">Услуги</a></h4><ul><li><a href="how-to-buy.html#step-2">Подбор и просмотр</a></li><li><a href="how-to-buy.html#step-4">Проверка документов</a></li><li><a href="citizenship.html">Гражданство</a></li><li><a href="residence.html">ВНЖ</a></li><li><a href="services.html#rental">Управление арендой</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="team.html">О нас и команда</a></li><li><a href="reviews.html">Отзывы</a></li><li><a href="blog.html">Статьи</a></li><li><a href="news.html">Новости</a></li><li><a href="contacts.html">Контакты</a></li></ul></div>
+    </div>
+    <div class="bottom"><span>© 2026 Kleo Homes</span><a href="privacy.html">Политика конфиденциальности</a><a href="admin/login.html">Вход для сотрудников</a></div>
+  </div>
+</footer>
+
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="#lead" class="pick">Подбор</a><a href="https://wa.me/905001111111" class="wa" data-wa>WhatsApp</a></nav>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = KHS.esc, C = KH.COMPANY;
+  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'объект' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'объекта' : 'объектов';
+  const sharedIds = (new URLSearchParams(location.search).get('ids') || '').split(',').map(Number).filter(Boolean);
+  const shared = sharedIds.length > 0; // подборка по ссылке (от эксперта или друга)
+  const all = KH.objects();
+  const ids = () => shared ? sharedIds : KHS.favIds();
+  const ST = { published: null, reserved: 'Забронирован', sold: 'Продан', rented: 'Сдан', hidden: 'Снят с продажи', draft: 'Снят с продажи' };
+  let sel = null; // объекты в сравнении (до 4)
+  const url = o => new URL(`property.html?id=${o.id}`, location.href).href;
+  const resale = o => !(o.newBuild && o.source !== 'owner');
+
+  function render() {
+    const list = ids().map(id => all.find(o => o.id === id)).filter(Boolean);
+    $('#f-h1').textContent = shared ? `Подборка · ${list.length} ${plural(list.length)}` : list.length ? `Избранное · ${list.length}` : 'Избранное';
+    if (!list.length) {
+      const fresh = KH.published().filter(o => o.deal === 'sale').slice(0, 3);
+      $('#app').innerHTML = `<div class="empty" style="margin-bottom:32px"><b>${shared ? 'Объекты из подборки больше не доступны' : 'В избранном пока пусто'}</b>Нажимайте ♡ на карточках объектов — они появятся здесь, и их можно будет сравнить и отправить эксперту.<br><a href="catalog.html" class="btn btn-dark btn-sm" style="margin-top:14px">Перейти в каталог</a></div>
+        <div class="sec-head"><div><span class="eyebrow">Свежие предложения</span><h2>Начните с этих объектов</h2></div></div><div class="grid3">${fresh.map(KHS.card).join('')}</div>`;
+      $('#compare').hidden = true; KHS.reveal($('#app')); return;
+    }
+    const lines = list.map(o => `• ID ${o.id} — ${o.title} — ${url(o)}`).join('\n');
+    const wa = `https://wa.me/${C.wa}?text=${encodeURIComponent(`Здравствуйте! Хочу обсудить подборку:\n${lines}`)}`;
+    $('#app').innerHTML = `
+      ${shared ? `<div class="shared"><span><b>Вам прислали подборку из ${list.length} ${plural(list.length)}.</b> Сохраните её, чтобы вернуться позже.</span><div class="contacts"><button type="button" class="btn btn-dark btn-sm" id="f-save">Сохранить в моё избранное</button><a href="favorites.html" class="btn btn-line btn-sm">Моё избранное</a></div></div>` : ''}
+      <div class="fbar"><span class="hint">${list.length} ${plural(list.length)}${list.some(o => ST[o.status]) ? ' · некоторые уже недоступны' : ''}</span>
+        <div class="contacts"><a href="${wa}" class="btn btn-wa btn-sm" target="_blank" rel="noopener">Отправить эксперту в WhatsApp</a><button type="button" class="btn btn-line btn-sm" id="f-copy">Скопировать ссылку</button><button type="button" class="btn btn-line btn-sm" id="f-print">Скачать PDF</button>${shared ? '' : '<button type="button" class="btn btn-line btn-sm" id="f-clear">Очистить</button>'}</div></div>
+      <div class="grid3">${list.map(KHS.card).join('')}</div>
+      ${list.length < 4 && !shared ? (more => more.length ? `<div class="sec-head" style="margin-top:40px"><div><span class="eyebrow">Добавьте ещё</span><h2>Для сравнения нужно 2–4 объекта</h2></div><a href="catalog.html" class="link">Весь каталог →</a></div><div class="grid3" id="more">${more.map(KHS.card).join('')}</div>` : '')(KH.published().filter(o => o.deal === list[0].deal && !ids().includes(o.id)).slice(0, 3)) : ''}`;
+    $('#l-wish').value = `Хочу обсудить подборку: ${list.map(o => 'ID ' + o.id).join(', ')}. `;
+    // сравнение
+    if (list.length < 2) { $('#compare').hidden = true; KHS.reveal($('#app')); return; }
+    $('#compare').hidden = false;
+    sel = (sel || list.slice(0, 4).map(o => o.id)).filter(id => list.some(o => o.id === id));
+    if (sel.length < 2) sel = list.slice(0, Math.min(4, list.length)).map(o => o.id);
+    $('#fchips').innerHTML = list.map(o => `<button type="button" data-sel="${o.id}" aria-pressed="${sel.includes(o.id)}">ID ${o.id} · ${esc(KH.TYPES[o.type])} ${esc(o.rooms)}, ${esc(KH.district(o.district).name)}</button>`).join('');
+    renderCompare(sel.map(id => list.find(o => o.id === id)));
+    KHS.reveal($('#app'));
+  }
+
+  function renderCompare(cols) {
+    const sameDeal = cols.every(o => o.deal === cols[0].deal);
+    $('#cmp-note').hidden = sameDeal;
+    const R = [
+      ['Цена', o => KHS.priceOf(o), 'min', o => o.price],
+      ['Цена за м²', o => o.deal === 'rent' ? '—' : KHS.fmt(o.price / o.area, '/м²'), 'min', o => o.deal === 'rent' ? null : o.price / o.area],
+      ['Расходы сверх цены', o => o.deal === 'rent' ? '—' : KHS.fmt(KHS.buyCosts(o.price, { resale: resale(o) }).total), 'min', o => o.deal === 'rent' ? null : KHS.buyCosts(o.price, { resale: resale(o) }).total],
+      ['Район', o => { const d = KH.district(o.district); return `<a href="district.html?d=${d.slug}" class="link">${d.name}</a>${d.inland ? ' · в горах' : ''}`; }],
+      ['Тип и планировка', o => `${esc(KH.TYPES[o.type])} ${esc(o.rooms)}`],
+      ['Площадь', o => `${o.area} м²`, 'max', o => o.area],
+      ['Этаж', o => o.type === 'villa' ? `${o.floors} этажа` : `${o.floor} из ${o.floors}`],
+      ['До моря', o => `${o.sea} м`, 'min', o => o.sea],
+      ['Вид', o => o.seaView ? 'На море' : 'Город / горы'],
+      ['Мебель', o => o.furnished ? 'Есть' : 'Нет'],
+      ['Состояние', o => o.newBuild ? 'Новостройка' : 'Вторичка'],
+      ['Цена проверена', o => esc(o.checked || '—')],
+      ['Эксперт', o => { const a = KH.byName(o.agent) || KH.agentFor(o); return a.id ? `<a href="member.html?id=${a.id}" class="link">${esc(a.name)}</a>` : esc(a.name); }],
+      ['Статус', o => ST[o.status] || (o.deal === 'rent' ? 'Сдаётся' : 'В продаже')]
+    ];
+    const best = (kind, val) => { if (!kind || !sameDeal) return null; const v = cols.map(val).filter(x => x != null); if (v.length < 2) return null; return kind === 'min' ? Math.min(...v) : Math.max(...v); };
+    $('#cmp').innerHTML = `<caption class="vh">Сравнение объектов</caption><colgroup><col style="width:170px">${cols.map(() => '<col>').join('')}</colgroup>
+      <thead><tr><td></td>${cols.map(o => `<th scope="col" class="obj"><img src="${KHS.imgSrc(o, 400)}" alt="" loading="lazy" width="400" height="300"><a href="property.html?id=${o.id}">${esc(o.title)}</a><span class="id">ID ${o.id}</span>${shared ? '' : `<br><button type="button" class="rm" data-unfav="${o.id}">Убрать из избранного</button>`}</th>`).join('')}</tr></thead>
+      <tbody>${R.map(([t, f, kind, val]) => { const b = best(kind, val); return `<tr><th scope="row">${t}</th>${cols.map(o => `<td${b != null && val(o) === b ? ' class="best"' : ''}>${f(o)}</td>`).join('')}</tr>`; }).join('')}</tbody>`;
+  }
+
+  document.addEventListener('click', e => {
+    const s = e.target.closest('[data-sel]'), un = e.target.closest('[data-unfav]');
+    if (s) {
+      const id = +s.dataset.sel;
+      if (sel.includes(id)) { if (sel.length <= 2) return KHS.toast('Для сравнения нужно минимум 2 объекта'); sel = sel.filter(x => x !== id); }
+      else { if (sel.length >= 4) return KHS.toast('Сравнить можно до 4 объектов — снимите отметку с одного'); sel.push(id); }
+      render(); $(`[data-sel="${id}"]`).focus();
+    }
+    if (un) KHS.setFavs(KHS.favIds().filter(x => x !== +un.dataset.unfav));
+    if (e.target.id === 'f-copy') { const link = `${location.origin}${location.pathname}?ids=${ids().join(',')}`; navigator.clipboard?.writeText(link); KHS.toast('Ссылка на подборку скопирована'); }
+    if (e.target.id === 'f-print') window.print();
+    if (e.target.id === 'f-clear' && confirm('Убрать все объекты из избранного?')) KHS.setFavs([]);
+    if (e.target.id === 'f-save') { KHS.setFavs([...new Set([...KHS.favIds(), ...sharedIds])]); KHS.toast('Подборка сохранена в ваше избранное'); setTimeout(() => location.href = 'favorites.html', 900); }
+  });
+  // ♡ на карточке или «убрать» — перерисовать (в подборке по ссылке список не меняется)
+  document.addEventListener('kh:favs', () => { if (!shared) render(); });
+  KHS.onCurrency(render);
+
+  const ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Главная', 'home-v2.html'], ['Избранное', location.pathname]].map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: new URL(u, location.href).href })) });
+  document.head.appendChild(ld);
+  KHS.initHeader(); // вызывает render через событие валюты
+  // форма заявки (демо): в рабочей версии письмо уходит на почту агентства
+  document.querySelector('#lead-form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!KHS.validate(e.target)) return;
+    const n = document.querySelector('#l-ok-msg'); n.textContent = 'Демо: заявка не отправлена. В рабочей версии она придёт на почту агентства.'; n.style.display = 'block';
+    e.target.querySelector('button[type=submit]').disabled = true;
+  });
+})();
+</script>
+</body>
+</html>

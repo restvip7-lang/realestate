@@ -37,6 +37,19 @@
 .desc p{margin-bottom:12px;color:#2B323C}
 .feats{display:flex;flex-wrap:wrap;gap:8px}
 .feats span{border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:14px}
+.costs{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.costs table{width:100%;border-collapse:collapse;font-size:15px}
+.costs td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.costs td.num{text-align:right;white-space:nowrap;font-weight:600}
+.costs td small{display:block;color:var(--muted);font-size:13px}
+.costs .opts{display:flex;flex-wrap:wrap;gap:10px 22px;padding:14px 16px;background:var(--mist);border-bottom:1px solid var(--line)}
+.costs .tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 16px;background:var(--ink);color:#fff}
+.costs .tot b{font-size:22px;white-space:nowrap}
+.costs .tot span{color:rgba(255,255,255,.75);font-size:14.5px}
+.costs .foot{padding:12px 16px;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center}
+.costs .foot b{color:var(--ink)}
+.extra{font-size:14px;color:var(--sea-deep);font-weight:600}
+.extra:hover{text-decoration:underline}
 .trustq{display:grid;gap:10px}
 .trustq details{border:1px solid var(--line);border-radius:8px;padding:0 16px}
 .trustq summary{cursor:pointer;padding:14px 0;font-weight:600}
@@ -92,12 +105,12 @@
       <span class="wm"><b>KLEO</b><small>HOMES</small></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="catalog.html" aria-current="page">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a>
+      <a href="catalog.html" aria-current="page">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a>
     </nav>
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
       <select class="cur-sel hide-t" aria-label="Валюта"></select>
-      <a class="icon-btn" href="home-v2.html#objects" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
+      <a class="icon-btn" href="favorites.html" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
       <a href="#view" class="btn btn-coral btn-sm hide-m">Записаться на просмотр</a>
       <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -107,7 +120,7 @@
   <div class="scrim" data-close></div>
   <div class="panel">
     <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="home-v2.html#services">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a><a href="contacts.html">Контакты</a></nav>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="districts.html">Районы</a><a href="services.html">Услуги</a><a href="team.html">О компании</a><a href="blog.html">Журнал</a><a href="contacts.html">Контакты</a></nav>
     <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
     <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
     <div class="contacts"><a class="btn btn-wa" href="https://wa.me/905001111111" data-wa>WhatsApp</a><a class="btn btn-tg" href="https://t.me/kleohomes">Telegram</a></div>
@@ -225,6 +238,7 @@
         <p class="hint" style="margin-top:8px">Точный адрес сообщаем после записи на просмотр. В рабочей версии — интерактивная карта.</p>
         <p style="margin-top:10px"><a href="district.html?d=${d.slug}" class="link">О районе ${d.name}: плюсы, минусы, цены →</a></p>
       </div>
+      ${closed ? '' : `<div class="block" id="costs"><h2>${rent ? 'Сколько нужно при заселении' : 'Сколько стоит покупка сверх цены'}</h2><div class="costs" id="costs-box"></div></div>`}
       <div class="block"><h2>Прежде чем покупать</h2>
         <div class="trustq">
           <details><summary>Почему на разных сайтах разные цены?</summary><p>Один объект часто продают несколько агентств. Цены отличаются из-за этажа, вида, мебели, комиссии и устаревших объявлений. Мы сравниваем тот же объект: этаж, площадь, вид и условия сделки.</p></details>
@@ -239,6 +253,7 @@
         <span class="sub">${rent ? 'Аренда' : 'Цена'}</span>
         <span class="big" data-price-main>${KHS.priceOf(o)}</span>
         ${rent ? `<span class="sub">Депозит ${KHS.fmt(o.rent.deposit)} · от ${o.rent.minTerm} мес.</span>` : `<span class="sub">${KHS.fmt(o.price / o.area, '/м²')}</span>`}
+        ${closed ? '' : '<a href="#costs" class="extra" id="extra-line"></a>'}
         <div class="checked"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg><span><b>Цена и наличие проверены</b><br>${o.checked} · перед бронью подтверждаем ещё раз</span></div>
         ${closed ? `<p class="sub">Этот объект уже ${o.status === 'sold' ? 'продан' : 'сдан'}. Подберём похожий вариант.</p>
         <a href="#similar-sec" class="btn btn-coral">Смотреть похожие</a>
@@ -278,7 +293,31 @@
   if (sim.length) { $('#similar-sec').hidden = false; $('#sim-title').textContent = closed ? 'Похожие в продаже' : sim[0].district === o.district ? `Ещё в районе ${d.name}` : 'Похожие по цене'; }
   if (closed) document.querySelectorAll('a[href="#view"]').forEach(a => { a.href = '#similar-sec'; a.textContent = 'Похожие объекты'; });
   const renderSim = () => { $('#similar').innerHTML = sim.map(KHS.card).join(''); KHS.reveal($('#similar')); };
-  KHS.onCurrency(() => { renderSim(); const m = $('[data-price-main]'); if (m) m.textContent = KHS.priceOf(o); });
+  // расходы сверх цены (продажа) или при заселении (аренда); ставки демо, расчёт — KHS.buyCosts
+  const resale = !(o.newBuild && o.source !== 'owner'); // новостройка от застройщика — услуги агентства оплачивает застройщик
+  const cst = { split: false, remote: false };
+  const row = ([t, v, n]) => `<tr><td>${KHS.esc(t)}${n ? `<small>${KHS.esc(n)}</small>` : ''}</td><td class="num">${v ? KHS.fmt(v) : 'бесплатно'}</td></tr>`;
+  function renderCosts() {
+    const box = $('#costs-box'); if (!box) return;
+    if (rent) {
+      const months = Math.max(1, o.rent.advance || 1);
+      const rows = [[months > 1 ? `Аренда за ${months} мес. вперёд` : 'Аренда за первый месяц', o.price * months, ''], ['Депозит', o.rent.deposit, 'возвращается при выезде, если нет повреждений'], ['Услуги агентства', o.price, 'сумма одной месячной платы (демо)']];
+      const total = rows.reduce((a, r) => a + r[1], 0);
+      box.innerHTML = `<table><caption class="vh">Расходы при заселении</caption><tbody>${rows.map(row).join('')}</tbody></table>
+        <div class="tot"><span>Итого при заселении</span><b>${KHS.fmt(total)}</b></div>
+        <div class="foot"><span>Коммунальные платежи ${o.rent.utilities ? 'включены в аренду' : 'оплачиваются отдельно'}. Ставки демо.</span><a href="#view" class="link">Записаться на просмотр →</a></div>`;
+      $('#extra-line').textContent = `При заселении ≈ ${KHS.fmt(total)} →`;
+      return;
+    }
+    const r = KHS.buyCosts(o.price, { resale, split: cst.split, remote: cst.remote }), pct = r.pct.toFixed(1).replace('.', ',');
+    box.innerHTML = `<div class="opts"><label class="check"><input type="checkbox" data-c="split" ${cst.split ? 'checked' : ''}>Налог ТАПУ пополам с продавцом</label><label class="check"><input type="checkbox" data-c="remote" ${cst.remote ? 'checked' : ''}>Покупаю удалённо, по доверенности</label></div>
+      <table><caption class="vh">Расходы сверх цены</caption><tbody>${r.rows.map(row).join('')}</tbody></table>
+      <div class="tot" aria-live="polite"><span>Итого сверх цены · ${pct}%</span><b>${KHS.fmt(r.total)}</b></div>
+      <div class="foot"><span>С ценой объекта: <b>${KHS.fmt(o.price + r.total)}</b>.${resale ? '' : ' Новостройка от застройщика: услуги агентства оплачивает застройщик.'} Ставки демо, точную смету даём до брони.</span><a href="how-to-buy.html#costs" class="link">Как считаем →</a></div>`;
+    $('#extra-line').textContent = `+ ≈ ${KHS.fmt(r.total)} расходы на оформление (${pct}%) →`;
+  }
+  $('#costs-box')?.addEventListener('change', e => { const c = e.target.closest('[data-c]'); if (c) { cst[c.dataset.c] = c.checked; renderCosts(); $(`[data-c="${c.dataset.c}"]`).focus(); } });
+  KHS.onCurrency(() => { renderSim(); renderCosts(); const m = $('[data-price-main]'); if (m) m.textContent = KHS.priceOf(o); });
   KHS.initHeader();
   document.querySelectorAll(`[data-fav="${o.id}"]`).forEach(b => b.setAttribute('aria-pressed', KH.get('kh_favs', []).includes(o.id)));
 

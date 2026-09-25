@@ -92,6 +92,7 @@
       KH.set('kh_favs', [...favs]);
       document.querySelectorAll(`[data-fav="${id}"]`).forEach(x => x.setAttribute('aria-pressed', favs.has(id)));
       syncFavCount();
+      document.dispatchEvent(new CustomEvent('kh:favs'));
     });
     syncFavCount();
     setCurrency(cur);
@@ -170,5 +171,13 @@
     return { rows, total, pct: price ? total / price * 100 : 0 };
   }
 
-  window.KHS = { buyCosts, RATES, postCard, leadOf, authorOf, coverOf, textOf, safeHtml, ruDate, fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
+  // избранное для страницы favorites.html: прочитать и заменить список целиком
+  const favIds = () => [...favs];
+  function setFavs(ids) {
+    favs.clear(); ids.forEach(id => favs.add(+id)); KH.set('kh_favs', [...favs]);
+    document.querySelectorAll('[data-fav]').forEach(x => x.setAttribute('aria-pressed', favs.has(+x.dataset.fav)));
+    syncFavCount(); document.dispatchEvent(new CustomEvent('kh:favs'));
+  }
+
+  window.KHS = { favIds, setFavs, buyCosts, RATES, postCard, leadOf, authorOf, coverOf, textOf, safeHtml, ruDate, fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
 })();
