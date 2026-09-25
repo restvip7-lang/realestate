@@ -259,7 +259,9 @@
   const COMPANY = {
     phone: '+90 500 111 11 11', tel: '+905001111111', wa: '905001111111', tg: 'kleohomes',
     email: 'info@kleohomes.com', address: 'Saray Mah., Atatürk Cad. № 11, 07400 Alanya / Antalya',
-    hours: 'Пн–сб 9:00–19:00', license: '1111111'
+    hours: 'Пн–сб 9:00–19:00', license: '1111111',
+    showroom: 'Barbaros Cad. № 11, Mahmutlar, 07450 Alanya / Antalya',
+    legal: 'Kleo Homes Gayrimenkul Ltd. Şti.', taxOffice: 'Alanya', taxNo: '1111111111', verbis: '1111111'
   };
 
   window.KH = {
