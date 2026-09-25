@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Вход — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-art">
+    <img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=1200&q=70" alt="">
+    <a href="../home-v2.html" class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>ADMIN</small></span></a>
+    <div><h2>Панель управления Kleo Homes</h2><p>Объекты на продажу и в аренду, новости, статьи и заявки клиентов.</p></div>
+  </div>
+  <main class="auth-box">
+    <!-- Первый запуск: создание учётной записи -->
+    <form class="auth-card" id="setup" novalidate hidden>
+      <h1>Создайте вход администратора</h1>
+      <p class="sub">Первый запуск. Эту почту используем для восстановления пароля.</p>
+      <div class="fld"><label for="s-name">Имя</label><input id="s-name" autocomplete="name" placeholder="Например, Айше"></div>
+      <div class="fld"><label for="s-email">Рабочая почта</label><input id="s-email" type="email" required autocomplete="username" placeholder="admin@kleohomes.com"><span class="err-msg">Укажите корректную почту</span></div>
+      <div class="fld"><label for="s-pw">Пароль</label><div class="pw-wrap"><input id="s-pw" type="password" required autocomplete="new-password"><button type="button" data-eye aria-label="Показать пароль">👁</button></div><div class="rules" id="rules"></div><span class="err-msg">Пароль не соответствует требованиям</span></div>
+      <div class="fld"><label for="s-pw2">Повторите пароль</label><input id="s-pw2" type="password" required autocomplete="new-password"><span class="err-msg">Пароли не совпадают</span></div>
+      <button class="btn btn-coral" type="submit">Создать и войти</button>
+    </form>
+
+    <!-- Обычный вход -->
+    <form class="auth-card" id="login" novalidate hidden>
+      <h1>Вход в админ-панель</h1>
+      <div class="notice ok" id="msg" role="status" hidden></div>
+      <div class="notice err" id="err" role="alert" hidden></div>
+      <div class="fld"><label for="l-email">Почта</label><input id="l-email" type="email" required autocomplete="username"><span class="err-msg">Укажите почту</span></div>
+      <div class="fld"><label for="l-pw">Пароль</label><div class="pw-wrap"><input id="l-pw" type="password" required autocomplete="current-password"><button type="button" data-eye aria-label="Показать пароль">👁</button></div><span class="err-msg">Введите пароль</span></div>
+      <label class="check"><input type="checkbox" id="l-rem">Запомнить меня на 14 дней</label>
+      <button class="btn btn-coral" type="submit">Войти</button>
+      <div class="auth-links"><a href="forgot.html">Забыли пароль?</a><a href="../home-v2.html">← На сайт</a></div>
+    </form>
+    <p class="demo-note" style="max-width:400px;width:100%">Прототип: пароль хранится в этом браузере в виде хеша, письма попадают в <a href="mailbox.html" style="text-decoration:underline">демо-почту</a>. В рабочей версии вход и письма обслуживает сервер.</p>
+  </main>
+</div>
+<script src="auth.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), P = new URLSearchParams(location.search);
+  const safeNext = n => /^[\w-]+\.html(\?[\w=&%.-]*)?$/.test(n || '') ? n : 'objects.html';
+  const go = () => location.replace(safeNext(P.get('next')));
+  if (KHA.session()) return go();
+
+  const $$ = s => [...document.querySelectorAll(s)];
+  $$('[data-eye]').forEach(b => b.onclick = () => { const i = b.previousElementSibling; const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль'); });
+  const bad = (el, on) => el.closest('.fld').classList.toggle('invalid', on);
+  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  if (!KHA.account()) {
+    const f = $('#setup'); f.hidden = false;
+    const rules = () => { const e = KHA.checkStrength($('#s-pw').value); $('#rules').innerHTML = ['не короче 10 символов', 'хотя бы одна буква', 'хотя бы одна цифра'].map(r => `<span class="${e.includes(r) ? '' : 'ok'}">${e.includes(r) ? '○' : '✓'} ${r}</span>`).join(''); return e; };
+    $('#s-pw').oninput = rules; rules();
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const em = $('#s-email').value.trim(), pw = $('#s-pw').value;
+      bad($('#s-email'), !emailOk(em)); bad($('#s-pw'), rules().length > 0); bad($('#s-pw2'), pw !== $('#s-pw2').value || !pw);
+      if (f.querySelector('.invalid')) return f.querySelector('.invalid input').focus();
+      await KHA.createAccount(em, pw, $('#s-name').value.trim());
+      await KHA.login(em, pw, false); go();
+    };
+    $('#s-email').focus();
+  } else {
+    const f = $('#login'); f.hidden = false;
+    if (P.get('reset')) { $('#msg').hidden = false; $('#msg').textContent = 'Пароль изменён. Войдите с новым паролем.'; }
+    if (P.get('out')) { $('#msg').hidden = false; $('#msg').textContent = 'Вы вышли из админ-панели.'; }
+    f.onsubmit = async e => {
+      e.preventDefault();
+      bad($('#l-email'), !$('#l-email').value.trim()); bad($('#l-pw'), !$('#l-pw').value);
+      if (f.querySelector('.invalid')) return f.querySelector('.invalid input').focus();
+      const r = await KHA.login($('#l-email').value, $('#l-pw').value, $('#l-rem').checked);
+      if (r.ok) return go();
+      $('#err').hidden = false; $('#err').textContent = r.err; $('#l-pw').value = ''; $('#l-pw').focus();
+    };
+    $('#l-email').focus();
+  }
+})();
+</script>
+</body>
+</html>

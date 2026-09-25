@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Смена пароля — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-art">
+    <img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=1200&q=70" alt="">
+    <a href="../home-v2.html" class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>ADMIN</small></span></a>
+    <div><h2>Панель управления Kleo Homes</h2><p>Объекты на продажу и в аренду, новости, статьи и заявки клиентов.</p></div>
+  </div>
+  <main class="auth-box">
+    <form class="auth-card" id="f" novalidate>
+      <h1>Смена пароля</h1>
+      <p class="sub" id="who"></p>
+      <div class="notice ok" id="ok" role="status" hidden>Пароль изменён. Другие сеансы завершены.</div>
+      <div class="notice err" id="err" role="alert" hidden></div>
+      <div class="fld"><label for="old">Текущий пароль</label><div class="pw-wrap"><input id="old" type="password" required autocomplete="current-password"><button type="button" data-eye aria-label="Показать пароль">👁</button></div><span class="err-msg">Введите текущий пароль</span></div>
+      <div class="fld"><label for="pw">Новый пароль</label><div class="pw-wrap"><input id="pw" type="password" required autocomplete="new-password"><button type="button" data-eye aria-label="Показать пароль">👁</button></div><div class="rules" id="rules"></div><span class="err-msg">Пароль не соответствует требованиям</span></div>
+      <div class="fld"><label for="pw2">Повторите новый пароль</label><input id="pw2" type="password" required autocomplete="new-password"><span class="err-msg">Пароли не совпадают</span></div>
+      <button class="btn btn-coral" type="submit">Сменить пароль</button>
+      <div class="auth-links"><a href="objects.html">← В админку</a><a href="#" id="out">Выйти</a></div>
+    </form>
+  </main>
+</div>
+<script src="auth.js" data-guard></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  $$('[data-eye]').forEach(b => b.onclick = () => { const i = b.previousElementSibling; const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль'); });
+  const bad = (el, on) => el.closest('.fld').classList.toggle('invalid', on);
+  const RULES = ['не короче 10 символов', 'хотя бы одна буква', 'хотя бы одна цифра'];
+  const rules = (inp, box) => { const e = KHA.checkStrength(inp.value); box.innerHTML = RULES.map(r => `<span class="${e.includes(r) ? '' : 'ok'}">${e.includes(r) ? '○' : '✓'} ${r}</span>`).join(''); return e; };
+  $('#who').textContent = 'Учётная запись: ' + KHA.account().email;
+  $('#out').onclick = e => { e.preventDefault(); KHA.logout(); };
+  $('#pw').oninput = () => rules($('#pw'), $('#rules')); rules($('#pw'), $('#rules'));
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); $('#ok').hidden = $('#err').hidden = true; const pw = $('#pw').value;
+    bad($('#old'), !$('#old').value); bad($('#pw'), rules($('#pw'), $('#rules')).length > 0); bad($('#pw2'), !pw || pw !== $('#pw2').value);
+    if ($('.invalid')) return $('.invalid input').focus();
+    const r = await KHA.changePassword($('#old').value, pw);
+    if (r.ok) { $('#ok').hidden = false; e.target.reset(); rules($('#pw'), $('#rules')); } else { $('#err').hidden = false; $('#err').textContent = r.err; }
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+/* Kleo Homes — демо-данные и хранилище прототипа.
+   Всё здесь выдумано для показа. Объекты и публикации из админки
+   сохраняются в localStorage браузера (ключи kh_*), сервер не нужен. */
+(function () {
+  const IMG = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+
+  const TYPES = {
+    apartment: 'Квартира', penthouse: 'Пентхаус', villa: 'Вилла',
+    duplex: 'Дуплекс', land: 'Земля', commercial: 'Коммерция'
+  };
+
+  // Районы Аланьи с запада на восток (по карте владельца, docs/districts.md).
+  // pos — км от центра по побережью (минус — запад); inland — район в горах, не у моря.
+  // lat/lng — точки OpenStreetMap (Nominatim, 25.09.2026); clat/clng/slope — примерно у берега.
+  // x,y — точка на схеме побережья (viewBox 1000×440, KH.COAST); pm — демо €/м².
+  // img — реальные фото Аланьи с Unsplash, но не обязательно этого района (иллюстрация).
+  const DISTRICTS = [
+    { slug: 'avsallar', name: 'Авсаллар', pos: -22, pm: 1600, lat: 36.6353, lng: 31.7498, clat: 36.6353, clng: 31.7498, slope: -0.35, x: 50, y: 92, img: '1593201357902-a707a6c672a4', about: 'Курортный район на западе с широкими песчаными пляжами (Инджекум). Хорош для отдыха и сдачи в аренду летом.' },
+    { slug: 'turkler', name: 'Тюрклер', pos: -17, pm: 1500, lat: 36.6024, lng: 31.8154, clat: 36.5999, clng: 31.8139, slope: -0.35, x: 130, y: 116, img: '1736547316493-18e917fc4fdd', about: 'Небольшой посёлок у моря с новыми комплексами и доступными ценами.' },
+    { slug: 'payallar', name: 'Паялар', pos: -13, pm: 1550, lat: 36.6122, lng: 31.8599, clat: 36.5985, clng: 31.8570, slope: -0.35, x: 200, y: 112, img: '1628690937744-f501f3559a41', about: 'Спокойный район между Тюрклером и Конаклы: пляжи, отели и новые жилые комплексы.' },
+    { slug: 'konakli', name: 'Конаклы', pos: -10, pm: 1750, lat: 36.5859, lng: 31.8904, clat: 36.5834, clng: 31.8889, slope: -0.4, x: 318, y: 118, img: '1656666703820-244b8a6e8922', about: 'Большой жилой район к западу от центра, много семей и резидентов круглый год.' },
+    { slug: 'center', name: 'Центр', pos: 0, pm: 2400, lat: 36.5483, lng: 31.9800, clat: 36.5483, clng: 31.9800, slope: -0.6, x: 462, y: 144, img: '1647825531731-c0d1f92e37d3', about: 'Пляж Клеопатры, набережная, крепость и вся городская жизнь в пешей доступности.' },
+    { slug: 'tepe', name: 'Тепе', pos: 4, inland: true, pm: 2300, lat: 36.5780, lng: 31.9939, x: 452, y: 58, img: '1663338122129-d70bc4dd0d8e', about: 'Район в горах над центром: виллы и дома с панорамой на город и море, тишина и прохлада летом. До пляжа 3–5 км по серпантину, нужна машина.' },
+    { slug: 'cikcilli', name: 'Джикджилли', pos: 3, inland: true, pm: 1800, lat: 36.5476, lng: 32.0287, x: 560, y: 92, img: '1661163090830-b45f31291e3a', about: 'Жилой район на склоне за Оба: школы, рынки, много местных жителей. До моря 1,5–2,5 км.' },
+    { slug: 'oba', name: 'Оба', pos: 2, pm: 2100, lat: 36.5363, lng: 32.0436, clat: 36.5338, clng: 32.0421, slope: -0.8, x: 585, y: 138, img: '1666202629981-71704ec80028', about: 'Современный район для жизни: торговый центр, клиники, школы, парки.' },
+    { slug: 'tosmur', name: 'Тосмур', pos: 5, pm: 2000, lat: 36.5279, lng: 32.0509, clat: 36.5254, clng: 32.0494, slope: -0.8, x: 640, y: 160, img: '1701787233703-166f9853607d', about: 'Зелёный район у реки Димчай, рядом с Оба и морем.' },
+    { slug: 'kestel', name: 'Кестель', pos: 7, pm: 2100, lat: 36.5073, lng: 32.0784, clat: 36.5048, clng: 32.0769, slope: -0.8, x: 690, y: 184, img: '1725637043379-007c9ecab893', about: 'Новые комплексы у моря, развитая набережная, удобно добираться до центра.' },
+    { slug: 'mahmutlar', name: 'Махмутлар', pos: 9.5, pm: 1700, lat: 36.4902, lng: 32.0990, clat: 36.4877, clng: 32.0975, slope: -0.8, x: 742, y: 212, img: '1593201281993-814e5066cc76', about: 'Самый большой район для иностранцев: всё на месте, много русскоговорящих соседей.' },
+    { slug: 'kargicak', name: 'Каргыджак', pos: 14, pm: 2200, lat: 36.4610, lng: 32.1253, clat: 36.4585, clng: 32.1238, slope: -0.8, x: 810, y: 258, img: '1540996971292-8690d9a73586', about: 'Виллы и комплексы на склонах с видом на море, спокойно и зелено.' },
+    { slug: 'demirtas', name: 'Демирташ', pos: 22, pm: 1450, lat: 36.4270, lng: 32.1918, clat: 36.4245, clng: 32.1903, slope: -0.8, x: 880, y: 302, img: '1701336392425-0f7c0cbee1b0', about: 'Тихий посёлок на востоке с пляжами и видами на горы; цены ниже, чем ближе к центру.' },
+    { slug: 'gazipasa', name: 'Газипаша', pos: 43, pm: 1300, lat: 36.2683, lng: 32.3175, clat: 36.2658, clng: 32.3160, slope: -0.8, x: 950, y: 340, img: '1713885639308-d953cc619ffd', about: 'Отдельный город рядом с аэропортом GZP: новая марина, спокойная жизнь, самые доступные цены на побережье.' }
+  ].map(d => Object.assign(d, { km: Math.abs(d.pos) }));
+
+  // Схема побережья по карте районов: запад → крепость → восток до Газипаши
+  const COAST = 'M0 88 C40 94 70 114 110 126 C160 122 220 122 300 130 C360 134 420 136 452 150 C468 162 476 190 490 204 C502 212 512 196 514 172 C528 152 560 148 592 152 C622 160 652 176 692 196 C732 216 762 240 802 268 C842 292 882 318 922 340 C952 356 976 370 1000 382';
+  const MOUNTAINS = ['M0 40 C120 20 220 60 330 36 S560 10 700 44 S900 70 1000 60', 'M0 62 C140 44 250 80 380 58 S600 40 760 76 S930 110 1000 104', 'M380 30 C420 10 480 12 520 34 S470 64 380 30Z'];
+
+  const L = (o) => Object.assign({ deal: 'sale', status: 'published', photos: 12, checked: '24.09.2026', source: 'developer', badges: [], furnished: false, seaView: false, newBuild: false }, o);
+  const SEED = [
+    L({ id: 1031, type: 'penthouse', district: 'center', title: 'Пентхаус 3+1 с террасой и видом на крепость', rooms: '3+1', area: 140, floor: 6, floors: 6, sea: 350, price: 258500, img: '1600607687939-ce8a6c25118c', badges: ['sea'], seaView: true, furnished: true, source: 'owner' }),
+    L({ id: 1030, type: 'apartment', district: 'oba', title: 'Квартира 2+1 с просторной террасой', rooms: '2+1', area: 120, floor: 5, floors: 7, sea: 700, price: 212000, img: '1502672260266-1c1ef2d93688', badges: ['new'], newBuild: true }),
+    L({ id: 1029, type: 'apartment', district: 'mahmutlar', title: 'Апартаменты 1+1 на первой линии', rooms: '1+1', area: 60, floor: 2, floors: 8, sea: 50, price: 118000, img: '1522708323590-d24dbb6b0267', badges: ['sea'], seaView: true, furnished: true }),
+    L({ id: 1028, type: 'apartment', district: 'kestel', title: 'Квартира 2+1 в новом комплексе у моря', rooms: '2+1', area: 105, floor: 3, floors: 9, sea: 250, price: 189000, img: '1560185007-cde436f6a4d0', badges: ['new'], newBuild: true }),
+    L({ id: 1027, type: 'apartment', district: 'center', title: 'Квартира 2+1 с мебелью в центре', rooms: '2+1', area: 90, floor: 3, floors: 5, sea: 600, price: 101000, img: '1560448204-e02f11c3d0e2', furnished: true, source: 'owner' }),
+    L({ id: 1026, type: 'duplex', district: 'kargicak', title: 'Дуплекс 3+1 с видом на море', rooms: '3+1', area: 165, floor: 7, floors: 8, sea: 900, price: 239000, img: '1600566753190-17f0baa2a6c3', badges: ['sea'], seaView: true }),
+    L({ id: 1025, type: 'apartment', district: 'tosmur', title: 'Студия 1+0 для сдачи в аренду', rooms: '1+0', area: 45, floor: 4, floors: 6, sea: 300, price: 79500, img: '1493809842364-78817add7ffb', furnished: true }),
+    L({ id: 1024, type: 'villa', district: 'kargicak', title: 'Вилла 4+1 с бассейном и панорамой моря', rooms: '4+1', area: 225, floor: 3, floors: 3, sea: 900, price: 352000, img: '1512917774080-9991f1c4c750', badges: ['sea'], seaView: true }),
+    L({ id: 1023, type: 'apartment', district: 'avsallar', title: 'Квартира 1+1 у песчаного пляжа', rooms: '1+1', area: 58, floor: 1, floors: 5, sea: 200, price: 96000, img: '1484154218962-a197022b5858', badges: ['new'], newBuild: true }),
+    L({ id: 2012, deal: 'rent', type: 'apartment', district: 'mahmutlar', title: 'Квартира 1+1 с мебелью на длительный срок', rooms: '1+1', area: 65, floor: 4, floors: 10, sea: 150, price: 650, img: '1586023492125-27b2c045efd7', furnished: true, rent: { period: 'long', deposit: 650, minTerm: 6, from: '01.10.2026', utilities: false, pets: true } }),
+    L({ id: 2011, deal: 'rent', type: 'apartment', district: 'oba', title: 'Квартира 2+1 в комплексе с бассейном', rooms: '2+1', area: 110, floor: 2, floors: 6, sea: 900, price: 900, img: '1600210492486-724fe5c67fb0', furnished: true, rent: { period: 'long', deposit: 900, minTerm: 12, from: '15.10.2026', utilities: false, pets: false } }),
+    L({ id: 2010, deal: 'rent', type: 'penthouse', district: 'center', title: 'Пентхаус 3+1 с видом на море', rooms: '3+1', area: 160, floor: 8, floors: 8, sea: 400, price: 1600, img: '1567496898669-ee935f5f647a', badges: ['sea'], seaView: true, furnished: true, rent: { period: 'long', deposit: 3200, minTerm: 12, from: '01.11.2026', utilities: false, pets: false } })
+  ];
+
+  // lat/lng районов — точки OpenStreetMap (Nominatim, 25.09.2026); clat/clng — примерно у берега.
+  // Точка у берега: смещение вдоль побережья dx (градусы) + расстояние до моря вглубь суши
+  const nearCoast = (d, sea, u) => {
+    if (d.inland) { const a = u * 6.283; return [d.lat + Math.sin(a) * 0.006, d.lng + Math.cos(a) * 0.008]; }
+    const dx = (u - 0.5) * 0.024; return [d.clat + d.slope * dx + (sea || 300) / 111000 * 0.95, d.clng + dx];
+  };
+
+  // Дополнительные демо-объекты для каталога (детерминированный генератор, одинаковый при каждой загрузке)
+  (function () {
+    let seed = 7; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const pick = a => a[Math.floor(r() * a.length)];
+    const INT = ['1502672260266-1c1ef2d93688', '1522708323590-d24dbb6b0267', '1560185007-cde436f6a4d0', '1484154218962-a197022b5858', '1586023492125-27b2c045efd7', '1600210492486-724fe5c67fb0', '1567496898669-ee935f5f647a', '1560448204-e02f11c3d0e2', '1493809842364-78817add7ffb', '1600607687939-ce8a6c25118c'];
+    const VIL = ['1512917774080-9991f1c4c750', '1600596542815-ffad4c1539a9', '1613490493576-7fde63acd811', '1600585154340-be6161a56a0c', '1600566753190-17f0baa2a6c3'];
+    const ROOMS = { apartment: ['1+0', '1+1', '1+1', '2+1', '2+1', '3+1'], penthouse: ['2+1', '3+1', '4+1'], villa: ['3+1', '4+1', '5+1'], duplex: ['3+1', '4+1'] };
+    const AREA = { '1+0': 42, '1+1': 58, '2+1': 95, '3+1': 140, '4+1': 200, '5+1': 280 };
+    const TITLE = { apartment: ['Квартира {r} в комплексе с бассейном', 'Квартира {r} с видом на горы', 'Квартира {r} рядом с пляжем', 'Квартира {r} с мебелью'], penthouse: ['Пентхаус {r} с террасой на крыше', 'Пентхаус {r} с панорамой моря'], villa: ['Вилла {r} с частным бассейном', 'Вилла {r} с садом и видом на море'], duplex: ['Дуплекс {r} в новом комплексе'] };
+    const slugs = DISTRICTS.map(d => d.slug);
+    for (let i = 0; i < 52; i++) {
+      const rent = i % 5 === 4;
+      const type = rent ? pick(['apartment', 'apartment', 'penthouse']) : pick(['apartment', 'apartment', 'apartment', 'penthouse', 'villa', 'duplex']);
+      const sl = pick(slugs), d = DISTRICTS.find(x => x.slug === sl);
+      const rooms = pick(ROOMS[type]);
+      const area = Math.round(AREA[rooms] * (0.85 + r() * 0.35));
+      const sea = d.inland ? Math.round((d.slug === 'tepe' ? 3000 + r() * 2000 : 1500 + r() * 1000) / 100) * 100 : type === 'villa' ? 400 + Math.round(r() * 1400) : Math.round((50 + r() * 1500) / 10) * 10;
+      const k = (sea < 200 ? 1.18 : sea < 600 ? 1.05 : 0.92) * (type === 'villa' ? 1.1 : type === 'penthouse' ? 1.08 : 1);
+      const price = rent ? Math.round(area * (7 + r() * 5) / 10) * 10 : Math.round(d.pm * area * k * (0.9 + r() * 0.2) / 500) * 500;
+      const seaView = sea < 400 || r() > (d.inland ? 0.4 : 0.7), newBuild = r() > 0.55, floors = type === 'villa' ? 2 + Math.round(r()) : 5 + Math.round(r() * 7);
+      const o = L({ id: (rent ? 2100 : 1100) + i, deal: rent ? 'rent' : 'sale', type, district: d.slug, rooms, area, sea, price,
+        title: pick(TITLE[type]).replace('{r}', rooms), floor: type === 'villa' ? floors : 1 + Math.floor(r() * floors), floors,
+        img: type === 'villa' ? pick(VIL) : pick(INT), seaView, newBuild, furnished: rent || r() > 0.5, source: r() > 0.7 ? 'owner' : 'developer',
+        photos: 6 + Math.floor(r() * 20), checked: `${10 + Math.floor(r() * 15)}.09.2026`,
+        lat: 0, lng: 0 });
+      [o.lat, o.lng] = nearCoast(d, sea, r());
+      if (seaView) o.title = o.title.replace('с видом на горы', 'с видом на море');
+      else o.title = o.title.replace('с панорамой моря', 'с видом на горы').replace('с садом и видом на море', 'с садом');
+      o.badges = [newBuild && 'new', seaView && 'sea'].filter(Boolean);
+      if (rent) o.rent = { period: 'long', deposit: price, minTerm: pick([6, 12]), from: `${1 + Math.floor(r() * 27)}.1${Math.floor(r() * 2)}.2026`, utilities: false, pets: r() > 0.5 };
+      SEED.push(o);
+    }
+  })();
+
+  // Команда: имена вымышленные, фото — стоковые снимки Unsplash «для примера». Заменить на реальных сотрудников
+  const TEAM = [
+    { id: 'founder', name: 'Эмре Йылдыз', role: 'Основатель', langs: 'TR · RU · EN', img: '1590735627513-59a186ed0984' },
+    { id: 'expert1', name: 'Анна Соколова', role: 'Эксперт по недвижимости', langs: 'RU · EN', img: '1573496359142-b8d87734a5a2' },
+    { id: 'lawyer', name: 'Мурат Кая', role: 'Юрист', langs: 'TR · RU', img: '1589386417686-0d34b5903d23' },
+    { id: 'expert2', name: 'Елена Демир', role: 'Эксперт по недвижимости', langs: 'RU · TR', img: '1573497019940-1c28c88b4f3e' },
+    { id: 'expert3', name: 'Даниэль Мартен', role: 'Эксперт по аренде', langs: 'EN · RU', img: '1614023342667-6f060e9d1e04' },
+    { id: 'expert4', name: 'Амина Арслан', role: 'Эксперт по новостройкам', langs: 'RU · EN · TR', img: '1573497491765-dccce02b29df' }
+  ];
+  const PHOTOS = {
+    office: '1559136555-9303baea8ebd', officeAlt: '1715593949273-09009558300a',
+    license: '1638636241638-aef5120c5153', awards: '1578269174936-2709b6aeb913'
+  };
+  const agentFor = o => { const experts = TEAM.filter(t => t.id.startsWith('expert')); return experts[(o.id || 0) % experts.length]; };
+
+  const P = (o) => Object.assign({ status: 'published', lang: { ru: true, en: false, tr: false }, author: 'Редакция Kleo Homes' }, o);
+  const POSTS = [
+    P({ id: 501, kind: 'article', cat: 'Рынок и цены', title: 'Цены на недвижимость в Алании в 2026 году: районы и цена за м²', date: '2026-09-24', mins: 8, img: '1560518883-ce09059eeffa' }),
+    P({ id: 502, kind: 'article', cat: 'Законы', title: 'Сколько стоит покупка сверх цены квартиры: налоги, ТАПУ, DASK', date: '2026-09-18', mins: 6, img: '1554224155-6726b3ff858f' }),
+    P({ id: 503, kind: 'article', cat: 'Жизнь в Алании', title: 'Махмутлар, Оба или Кестель: где жить круглый год', date: '2026-09-10', mins: 10, img: '1600585154340-be6161a56a0c' }),
+    P({ id: 601, kind: 'news', cat: 'Курсы валют', title: 'Курс лиры к евро на 25 сентября 2026 (демо)', date: '2026-09-25', source: 'tcmb.gov.tr', img: '1726820432863-3ebdb3426d8b' }),
+    P({ id: 602, kind: 'news', cat: 'ВНЖ и гражданство', title: 'Миграционная служба обновила список открытых районов для ВНЖ (демо)', date: '2026-09-22', source: 'goc.gov.tr', img: '1581553673739-c4906b5d0de8' }),
+    P({ id: 603, kind: 'news', cat: 'Новости агентства', title: 'Kleo Homes открывает шоурум в Махмутларе (демо)', date: '2026-09-15', img: '1715593949273-09009558300a' })
+  ];
+
+  // ---------- хранилище ----------
+  const get = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } };
+  const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+  function allObjects() {
+    const local = get('kh_objects', []);
+    const byId = new Map(SEED.map(o => [o.id, o]));
+    local.forEach(o => byId.set(o.id, Object.assign({}, byId.get(o.id) || {}, o, { local: true })));
+    return [...byId.values()].sort((a, b) => b.id - a.id);
+  }
+  function saveObject(o) {
+    const local = get('kh_objects', []).filter(x => x.id !== o.id);
+    local.push(o); set('kh_objects', local);
+  }
+  function nextId(deal) {
+    const ids = allObjects().filter(o => o.deal === deal).map(o => o.id);
+    return Math.max(deal === 'rent' ? 2000 : 1000, ...ids) + 1;
+  }
+
+  function postStatus(p) {
+    if (p.status === 'draft') return 'draft';
+    return new Date(p.date) > new Date() ? 'scheduled' : 'published';
+  }
+  function allPosts() {
+    const local = get('kh_posts', []);
+    const byId = new Map(POSTS.map(p => [p.id, p]));
+    local.forEach(p => byId.set(p.id, Object.assign({}, byId.get(p.id) || {}, p, { local: true })));
+    return [...byId.values()].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.date.localeCompare(a.date));
+  }
+  function savePost(p) {
+    const local = get('kh_posts', []).filter(x => x.id !== p.id);
+    local.push(p); set('kh_posts', local);
+  }
+
+  window.KH = {
+    IMG, TYPES, DISTRICTS, SEED, POSTS, TEAM, PHOTOS, agentFor, get, set, COAST, MOUNTAINS,
+    airportKm: d => Math.max(4, Math.round(Math.abs(38 - d.pos))) + (d.inland ? 2 : 0), // аэропорт GZP ~38 км на восток от центра
+    member: id => TEAM.find(t => t.id === id),
+    coords: o => { if (o.lat && o.lng && +o.lat > 30) return [+o.lat, +o.lng]; const d = DISTRICTS.find(x => x.slug === o.district) || DISTRICTS[4]; return nearCoast(d, o.sea, (o.id * 9301 + 49297) % 233280 / 233280); },
+    district: slug => DISTRICTS.find(d => d.slug === slug) || { name: slug, slug, pm: 0, km: 0 },
+    objects: allObjects,
+    published: () => allObjects().filter(o => o.status === 'published'),
+    saveObject, nextId,
+    posts: allPosts,
+    livePosts: () => allPosts().filter(p => postStatus(p) === 'published'),
+    postStatus, savePost,
+    resetDemo: () => { ['kh_objects', 'kh_posts', 'kh_favs'].forEach(k => localStorage.removeItem(k)); } // пароль админки не сбрасываем
+  };
+})();

@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kleo Homes — недвижимость в Алании у моря</title>
+<meta name="description" content="Квартиры, пентхаусы и виллы в Алании: проверенные объекты, цены за м² по районам, сопровождение сделки и получение ТАПУ онлайн.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap&subset=cyrillic,latin-ext" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1116; --ink-2:#1A1F27; --paper:#fff; --mist:#F4F6F8; --line:#E3E7EC; --line-d:rgba(255,255,255,.12);
+  --muted:#5B6573; --sea:#00A3C4; --sea-deep:#00788F; --coral:#FF6B4A; --sand:#F2E6D8;
+  --f-display:"Unbounded",sans-serif; --f-body:"Onest",sans-serif; --f-mono:"JetBrains Mono",monospace;
+  --wrap:1320px; --gut:32px; --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:400 16px/1.55 var(--f-body);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,select,input,textarea{font:inherit;color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.label{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.label::before{content:"";width:24px;height:1px;background:currentColor}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;letter-spacing:-.02em;line-height:1.08}
+h2{font-size:clamp(28px,3.6vw,44px)}
+.sec{padding:96px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.sec-head h2{margin-top:14px;max-width:18ch}
+.link{font-weight:600;color:var(--sea-deep);display:inline-flex;gap:8px;align-items:center}
+.link:hover{gap:12px}
+.link,.btn,.card,.chip,.dist-row{transition:all .25s ease}
+
+/* demo notice */
+.demo{background:var(--sea);color:#fff;text-align:center;padding:6px 16px}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(14,17,22,.86);backdrop-filter:blur(14px);color:#fff;border-bottom:1px solid var(--line-d)}
+.hdr{display:flex;align-items:center;gap:32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo b{font:700 20px var(--f-display);letter-spacing:.02em}
+.logo span{font-family:var(--f-mono);font-size:10px;letter-spacing:.3em;opacity:.7;margin-top:3px}
+nav.main{display:flex;gap:22px;font-size:14px;font-weight:500;white-space:nowrap}
+nav.main a{opacity:.78}
+nav.main a:hover{opacity:1;color:var(--sea)}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:14px}
+.seg{display:flex;border:1px solid var(--line-d);border-radius:999px;padding:3px}
+.seg button{background:none;border:0;padding:4px 10px;border-radius:999px;font:500 12px var(--f-mono);cursor:pointer;opacity:.7}
+.seg button.on{background:#fff;color:var(--ink);opacity:1}
+.icon-btn{position:relative;width:40px;height:40px;border:1px solid var(--line-d);border-radius:999px;display:grid;place-items:center;background:none;cursor:pointer}
+.icon-btn .cnt{position:absolute;top:-4px;right:-4px;background:var(--coral);color:#fff;font:500 10px var(--f-mono);min-width:18px;height:18px;border-radius:999px;display:grid;place-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 22px;border-radius:6px;font-weight:600;border:0;cursor:pointer;white-space:nowrap}
+.btn-coral{background:var(--coral);color:#fff}
+.btn-coral:hover{background:#ff5530;transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--line-d);color:#fff;background:none}
+.btn-ghost:hover{border-color:#fff}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.burger{display:none}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;position:relative;overflow:hidden;padding:72px 0 0}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line-d) 1px,transparent 1px),linear-gradient(90deg,var(--line-d) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%);opacity:.5}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero .label{color:var(--sea)}
+.hero h1{font-size:clamp(36px,5.4vw,72px);margin:22px 0 22px}
+.hero h1 em{font-style:normal;color:var(--sea)}
+.hero p.lead{font-size:18px;color:rgba(255,255,255,.72);max-width:48ch}
+.facts{display:flex;gap:32px;margin-top:36px;flex-wrap:wrap}
+.facts div{border-left:1px solid var(--line-d);padding-left:14px}
+.facts b{display:block;font:700 26px var(--f-display)}
+.facts span{font-size:13px;color:rgba(255,255,255,.6)}
+.hero-photo{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:4/4.3;border:1px solid var(--line-d)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;animation:zoom 18s ease-in-out infinite alternate}
+@keyframes zoom{to{transform:scale(1.08)}}
+.hud{position:absolute;background:rgba(14,17,22,.78);backdrop-filter:blur(10px);border:1px solid var(--line-d);border-radius:8px;padding:12px 14px}
+.hud.tl{top:16px;left:16px}
+.hud.br{bottom:16px;right:16px;min-width:230px}
+.hud .mono{font-size:10.5px;color:rgba(255,255,255,.6)}
+.hud strong{font:500 20px var(--f-mono);color:#fff;display:block;margin-top:4px}
+.hud .row{display:flex;justify-content:space-between;gap:18px;margin-top:8px;font:400 12px var(--f-mono);color:rgba(255,255,255,.75)}
+.crosshair{position:absolute;left:58%;top:44%;width:56px;height:56px;border:1px solid var(--sea);border-radius:50%}
+.crosshair::before,.crosshair::after{content:"";position:absolute;background:var(--sea)}
+.crosshair::before{left:50%;top:-14px;bottom:-14px;width:1px}
+.crosshair::after{top:50%;left:-14px;right:-14px;height:1px}
+.crosshair i{position:absolute;inset:-10px;border:1px solid var(--sea);border-radius:50%;animation:ping 2.2s ease-out infinite}
+@keyframes ping{from{opacity:.9;transform:scale(.6)}to{opacity:0;transform:scale(1.6)}}
+
+/* search */
+.search{position:relative;margin-top:64px;background:#fff;color:var(--ink);border-radius:var(--r) var(--r) 0 0;padding:20px 24px 24px;box-shadow:0 -20px 60px rgba(0,0,0,.25)}
+.tabs{display:flex;gap:4px;margin-bottom:16px}
+.tabs button{background:none;border:0;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;color:var(--muted)}
+.tabs button.on{background:var(--ink);color:#fff}
+.fields{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:0;border:1px solid var(--line);border-radius:8px}
+.field{padding:10px 16px;border-right:1px solid var(--line);position:relative}
+.field label{display:block;font:500 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.field select{width:100%;border:0;background:none;font-weight:600;font-size:15px;padding:4px 0;appearance:none;cursor:pointer;outline:none}
+.fields .btn{height:auto;border-radius:0 7px 7px 0;padding:0 28px}
+.search-foot{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.tag{font:500 12px var(--f-mono);padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);cursor:pointer;background:none}
+.tag:hover,.tag.on{border-color:var(--sea);color:var(--sea-deep);background:rgba(0,163,196,.06)}
+
+/* collections */
+.chips{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.chip{border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:22px;background:#fff}
+.chip:hover{border-color:var(--sea);transform:translateY(-3px)}
+.chip svg{color:var(--sea-deep)}
+.chip b{font-weight:600;line-height:1.25}
+.chip .mono{color:var(--muted);font-size:11px;margin-top:4px;display:block}
+
+/* listings */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.card:hover{border-color:var(--sea);box-shadow:0 18px 40px -24px rgba(0,120,143,.45)}
+.card .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--mist)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.card:hover .ph img{transform:scale(1.04)}
+.badges{position:absolute;left:12px;top:12px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(14,17,22,.8);color:#fff;backdrop-filter:blur(6px)}
+.badge.new{background:var(--coral)}
+.badge.sea{background:var(--sea)}
+.fav{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:999px;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;cursor:pointer}
+.fav.on svg{fill:var(--coral);stroke:var(--coral)}
+.idtag{position:absolute;left:12px;bottom:12px;font:500 10.5px var(--f-mono);color:#fff;background:rgba(14,17,22,.6);padding:3px 7px;border-radius:4px}
+.card .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .loc{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sea-deep);display:flex;gap:6px;align-items:center}
+.card h3{font:600 16px/1.35 var(--f-body);letter-spacing:0}
+.specs{font:400 12.5px var(--f-mono);color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.specs span+span::before{content:"·";margin-right:10px;color:var(--line)}
+.price{display:flex;justify-content:space-between;align-items:baseline;margin-top:auto;padding-top:12px;border-top:1px dashed var(--line)}
+.price b{font:500 20px var(--f-mono);color:var(--coral)}
+.price small{font:400 12px var(--f-mono);color:var(--muted)}
+
+/* districts map */
+.map-sec{background:var(--mist)}
+.map-wrap{display:grid;grid-template-columns:1fr 360px;gap:24px}
+.map-box{background:var(--ink);border-radius:var(--r);position:relative;overflow:hidden;min-height:440px}
+.map-box svg{width:100%;height:100%;display:block;position:absolute;inset:0}
+.map-legend{position:absolute;left:18px;top:16px;color:rgba(255,255,255,.6);z-index:1}
+.map-legend b{color:#fff;font-weight:500}
+.map-coords{position:absolute;right:18px;bottom:14px;color:rgba(255,255,255,.45);font-size:10.5px}
+.pin{cursor:pointer}
+.pin circle.dot{fill:var(--sea);transition:r .2s}
+.pin circle.halo{fill:none;stroke:var(--sea);opacity:.5;transform-box:fill-box;transform-origin:center;animation:ping 2.6s ease-out infinite}
+.pin text{font:500 11px var(--f-mono);fill:rgba(255,255,255,.75);letter-spacing:.04em;text-transform:uppercase;pointer-events:none}
+.pin.on circle.dot{fill:var(--coral)}
+.pin.on text{fill:#fff}
+.dist-panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px;max-height:440px;overflow:auto}
+.dist-row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 14px;border-radius:8px;cursor:pointer}
+.dist-row:hover,.dist-row.on{background:var(--mist)}
+.dist-row.on{box-shadow:inset 3px 0 0 var(--coral)}
+.dist-row b{font-weight:600}
+.dist-row .pm{font:500 14px var(--f-mono);text-align:right}
+.dist-row .meta{font:400 11.5px var(--f-mono);color:var(--muted);grid-column:1/-1;display:flex;justify-content:space-between}
+.bar{height:3px;background:var(--line);border-radius:3px;grid-column:1/-1;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sea)}
+
+/* programs */
+.prog{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.prog a{position:relative;border-radius:var(--r);overflow:hidden;min-height:380px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:32px}
+.prog img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.prog a:hover img{transform:scale(1.05)}
+.prog a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,17,22,.1),rgba(14,17,22,.92))}
+.prog .in{position:relative;z-index:1}
+.prog h3{font-size:28px;margin:10px 0 12px}
+.prog p{color:rgba(255,255,255,.75);max-width:44ch}
+.prog ul{list-style:none;display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.prog li{font:500 11px var(--f-mono);border:1px solid rgba(255,255,255,.3);padding:6px 10px;border-radius:999px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line)}
+.step{padding:28px 20px 0 0;position:relative}
+.step::before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--paper);border:2px solid var(--sea)}
+.step .mono{color:var(--sea-deep)}
+.step b{display:block;font:600 17px/1.3 var(--f-body);margin:12px 0 8px}
+.step p{font-size:14px;color:var(--muted)}
+.online{margin-top:48px;display:flex;align-items:center;gap:18px;background:var(--mist);border-radius:var(--r);padding:20px 24px}
+.online b{font-weight:600}
+
+/* why */
+.why{background:var(--ink);color:#fff}
+.why .label{color:var(--sea)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line-d);border-radius:var(--r)}
+.why-grid>div{padding:32px 28px;border-right:1px solid var(--line-d)}
+.why-grid>div:last-child{border-right:0}
+.why-grid strong{font:700 48px var(--f-display);display:block;color:#fff}
+.why-grid strong small{font-size:22px;color:var(--sea)}
+.why-grid b{display:block;margin:14px 0 6px;font-weight:600}
+.why-grid p{font-size:14px;color:rgba(255,255,255,.6)}
+
+/* expert + reviews */
+.people{display:grid;grid-template-columns:380px 1fr;gap:24px}
+.expert{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.expert img{aspect-ratio:1/1;object-fit:cover;width:100%}
+.expert .bd{padding:22px}
+.expert b{font:700 20px var(--f-display)}
+.expert p{color:var(--muted);font-size:14px;margin:6px 0 16px}
+.langs{display:flex;gap:6px;margin-bottom:18px}
+.langs span{font:500 11px var(--f-mono);border:1px solid var(--line);padding:4px 8px;border-radius:4px}
+.reviews{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-content:start}
+.rev{background:var(--sand);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:14px}
+.rev .stars{color:var(--coral);letter-spacing:3px}
+.rev p{font-size:15px}
+.rev .who{margin-top:auto;display:flex;justify-content:space-between;font:400 12px var(--f-mono);color:var(--muted)}
+.rating{grid-column:1/-1;display:flex;align-items:center;gap:20px;border:1px solid var(--line);border-radius:var(--r);padding:18px 24px}
+.rating strong{font:700 36px var(--f-display)}
+
+/* blog */
+.blog{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.post img{aspect-ratio:16/10;object-fit:cover;border-radius:var(--r);margin-bottom:16px;width:100%}
+.post .mono{color:var(--muted)}
+.post h3{font:600 19px/1.35 var(--f-body);letter-spacing:0;margin-top:8px}
+.post:hover h3{color:var(--sea-deep)}
+
+/* lead */
+.lead-sec{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.lead-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative}
+.lead-sec h2{max-width:14ch}
+.lead-sec p{color:rgba(255,255,255,.7);margin:18px 0 28px;max-width:44ch}
+.msgr{display:flex;gap:12px;flex-wrap:wrap}
+form.lead{background:var(--ink-2);border:1px solid var(--line-d);border-radius:var(--r);padding:28px;display:grid;gap:14px}
+.in-f label{display:block;font:500 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+.in-f input,.in-f select{width:100%;height:48px;background:transparent;border:1px solid var(--line-d);border-radius:6px;padding:0 14px;color:#fff;outline:none}
+.in-f select option{color:var(--ink)}
+.in-f input:focus,.in-f select:focus{border-color:var(--sea)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.consent{font-size:12px;color:rgba(255,255,255,.5)}
+.ok{display:none;color:var(--sea);font:500 13px var(--f-mono)}
+
+/* footer */
+footer{background:#07090C;color:rgba(255,255,255,.65);padding:64px 0 100px;font-size:14px}
+.ft{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:32px}
+footer h4{font:500 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:14px}
+footer ul{list-style:none;display:grid;gap:8px}
+footer a:hover{color:var(--sea)}
+.ft-bottom{border-top:1px solid var(--line-d);margin-top:48px;padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:400 12px var(--f-mono)}
+
+/* mobile sticky bar */
+.mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(14,17,22,.96);backdrop-filter:blur(10px);padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:8px;border-top:1px solid var(--line-d)}
+.mbar a{flex:1;height:46px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;color:#fff;border:1px solid var(--line-d)}
+.mbar a.wa{background:#25D366;border-color:#25D366;color:#0E1116}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* responsive */
+@media (max-width:1400px){.hdr-r .btn{display:none}.hdr{gap:28px}}
+@media (max-width:1180px){
+  nav.main{display:none}.burger{display:grid}
+  .chips{grid-template-columns:repeat(3,1fr)}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(3,1fr);row-gap:32px}
+  .why-grid{grid-template-columns:repeat(2,1fr)}.why-grid>div:nth-child(2){border-right:0}.why-grid>div:nth-child(-n+2){border-bottom:1px solid var(--line-d)}
+  .people{grid-template-columns:1fr}.expert{display:grid;grid-template-columns:260px 1fr}.expert img{height:100%}
+  .ft{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:860px){
+  :root{--gut:16px}
+  .sec{padding:64px 0}
+  .hero{padding-top:40px}
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero-photo{aspect-ratio:4/3}
+  .hdr-r .hide-m{display:none}
+  .fields{grid-template-columns:1fr 1fr}
+  .field:nth-child(2){border-right:0}
+  .field:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .fields .btn{grid-column:1/-1;border-radius:0 0 7px 7px;height:52px}
+  .field:nth-child(4){border-right:0}
+  .search{padding:16px}
+  .map-wrap{grid-template-columns:1fr}.map-box{min-height:0;overflow-x:auto}.map-box svg{position:relative;width:820px;height:360px}.map-legend,.map-coords{position:sticky;left:0;padding:12px 16px;display:block}
+  .dist-panel{max-height:320px}
+  .prog{grid-template-columns:1fr}
+  .reviews{grid-template-columns:1fr}
+  .blog{grid-template-columns:1fr}
+  .lead-grid{grid-template-columns:1fr;gap:32px}
+  .ft{grid-template-columns:1fr 1fr}
+  .mbar{display:flex}
+  .expert{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .chips{grid-template-columns:repeat(2,1fr)}
+  .grid4{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr}.why-grid>div{border-right:0;border-bottom:1px solid var(--line-d)}
+  .row2{grid-template-columns:1fr}
+  .facts{gap:20px}
+  .hud.br{min-width:0;left:16px}
+  .logo span{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="demo mono">Устаревший прототип v1 · актуальная версия: <a href="home-v2.html" style="text-decoration:underline">home-v2.html</a></div>
+
+<header>
+  <div class="wrap hdr">
+    <a href="#" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="14" r="7" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <b>KLEO</b><span>HOMES</span>
+    </a>
+    <nav class="main" aria-label="Основное меню">
+      <a href="#objects">Купить</a><a href="#">Аренда</a><a href="#">Новостройки</a><a href="#districts">Районы</a><a href="#programs">Гражданство и ВНЖ</a><a href="#">Услуги</a><a href="#blog">Блог</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-m" role="group" aria-label="Язык"><button class="on">RU</button><button>EN</button><button>TR</button></div>
+      <div class="seg hide-m" role="group" aria-label="Валюта" id="cur">
+        <button class="on" data-c="EUR">€</button><button data-c="USD">$</button><button data-c="TRY">₺</button><button data-c="RUB">₽</button>
+      </div>
+      <button class="icon-btn" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" id="favCnt">0</span></button>
+      <a href="#lead" class="btn btn-coral btn-sm hide-m">Подобрать объект</a>
+      <button class="icon-btn burger" aria-label="Меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="rv">
+        <div class="label mono">Аланья · Средиземное море · 36.54°N 32.00°E</div>
+        <h1>Дом у моря в Алании — <em>с точными данными</em>, без сюрпризов</h1>
+        <p class="lead">Квартиры, пентхаусы и виллы от застройщиков и собственников. Проверяем документы и цену каждого объекта, сопровождаем сделку до ТАПУ, в том числе онлайн.</p>
+        <div class="facts">
+          <div><b>300+</b><span>солнечных дней в году</span></div>
+          <div><b>11</b><span>районов побережья</span></div>
+          <div><b>24 ч</b><span>подборка под ваш бюджет</span></div>
+        </div>
+      </div>
+      <div class="hero-photo rv" style="transition-delay:.12s">
+        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1100&q=75" alt="Вилла с бассейном и видом на море в Алании">
+        <div class="crosshair"><i></i></div>
+        <div class="hud tl"><div class="mono">ID 1024 · Каргыджак</div><strong>Вилла 4+1</strong></div>
+        <div class="hud br">
+          <div class="mono">Цена проверена · 24.09.2026</div>
+          <strong data-eur="352000">352 000 €</strong>
+          <div class="row"><span>225 м²</span><span>до моря 900 м</span></div>
+          <div class="row"><span>вид на море</span><span data-eur="1564" data-sfx="/м²">1 564 €/м²</span></div>
+        </div>
+      </div>
+    </div>
+
+    <form class="search rv" style="transition-delay:.2s" onsubmit="event.preventDefault();location.hash='objects'">
+      <div class="tabs" role="tablist"><button type="button" class="on">Купить</button><button type="button">Аренда</button><button type="button">Новостройки</button></div>
+      <div class="fields">
+        <div class="field"><label for="s-type">Тип</label><select id="s-type"><option>Любой</option><option>Квартира</option><option>Пентхаус</option><option>Вилла</option><option>Дуплекс</option><option>Земля</option><option>Коммерция</option></select></div>
+        <div class="field"><label for="s-dist">Район</label><select id="s-dist"><option>Все районы</option></select></div>
+        <div class="field"><label for="s-rooms">Комнаты</label><select id="s-rooms"><option>Любые</option><option>Студия 1+0</option><option>1+1</option><option>2+1</option><option>3+1</option><option>4+1 и больше</option></select></div>
+        <div class="field"><label for="s-budget">Бюджет</label><select id="s-budget"><option>Любой</option><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+        <button class="btn btn-coral" type="submit">Показать 1 248 объектов</button>
+      </div>
+      <div class="search-foot">
+        <span class="mono" style="color:var(--muted);font-size:11px">Быстро:</span>
+        <button type="button" class="tag">вид на море</button><button type="button" class="tag">первая линия</button><button type="button" class="tag">под гражданство</button><button type="button" class="tag">с мебелью</button><button type="button" class="tag">рассрочка</button>
+        <a href="#districts" class="link" style="margin-left:auto;font-size:14px">Искать на карте →</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:64px">
+  <div class="wrap">
+    <div class="chips">
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 16c3.3-2 6.7-2 10 0s6.7 2 10 0M2 20c3.3-2 6.7-2 10 0s6.7 2 10 0"/><circle cx="12" cy="8" r="4"/></svg><div><b>Вид на море</b><span class="mono">412 объектов</span></div></a>
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M2 17c2-1 4-1 6 0"/></svg><div><b>Первая линия</b><span class="mono">96 объектов</span></div></a>
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><div><b>Под гражданство</b><span class="mono">от 400 000 $</span></div></a>
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V4h9v17M13 9h7v12M7 8h3M7 12h3M7 16h3M16 13h1M16 17h1"/></svg><div><b>Новостройки</b><span class="mono">58 проектов</span></div></a>
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5h4.5a1.8 1.8 0 0 1 0 3.5h-3a1.8 1.8 0 0 0 0 3.5H15"/></svg><div><b>До 150 000 €</b><span class="mono">337 объектов</span></div></a>
+      <a href="#" class="chip rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><div><b>Рассрочка 0%</b><span class="mono">до 36 мес.</span></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="objects" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">01 — Новые объекты</div><h2>Свежие предложения этой недели</h2></div>
+      <a href="#" class="link">Весь каталог · 1 248 →</a>
+    </div>
+    <div class="grid4" id="grid"></div>
+  </div>
+</section>
+
+<section class="sec map-sec" id="districts">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">02 — Районы</div><h2>Где покупать в Алании: цены за м² по побережью</h2></div>
+      <p style="color:var(--muted);max-width:40ch">Нажмите на район: средняя цена, расстояние до центра и число объектов в продаже.</p>
+    </div>
+    <div class="map-wrap">
+      <div class="map-box rv">
+        <div class="map-legend mono">Выбран: <b id="mapName">Махмутлар</b></div>
+        <svg viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet" id="map" role="img" aria-label="Схема побережья Аланьи с районами">
+          <defs>
+            <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(0,163,196,.28)"/></pattern>
+          </defs>
+          <g fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1">
+            <path d="M0 60 C150 30 260 90 400 55 S700 20 1000 60"/><path d="M0 95 C170 70 280 125 420 92 S720 60 1000 98"/><path d="M0 130 C180 110 300 160 430 128 S740 100 1000 136"/><path d="M60 40 C120 20 200 30 230 55 S160 80 60 40Z"/><path d="M620 30 C680 12 760 20 790 42 S700 66 620 30Z"/>
+          </g>
+          <path id="v1-sea" fill="url(#dots)"/>
+          <path id="v1-coast" fill="none" stroke="#00A3C4" stroke-width="1.6"/>
+          <text x="330" y="330" fill="rgba(255,255,255,.25)" style="font:500 12px 'JetBrains Mono';letter-spacing:.4em">СРЕДИЗЕМНОЕ МОРЕ</text>
+          <text x="60" y="30" fill="rgba(255,255,255,.22)" style="font:500 11px 'JetBrains Mono';letter-spacing:.3em">ГОРЫ ТАВР</text>
+          
+          <text x="930" y="392" fill="rgba(255,255,255,.4)" text-anchor="end" style="font:500 10.5px 'JetBrains Mono'">✈ АЭРОПОРТ GZP</text>
+          <g id="pins"></g>
+        </svg>
+        <div class="map-coords mono">36.44°N — 36.60°N · 31.80°E — 32.20°E</div>
+      </div>
+      <div class="dist-panel rv" id="distList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="programs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">03 — Программы</div><h2>Недвижимость как путь к ВНЖ и гражданству</h2></div>
+    </div>
+    <div class="prog">
+      <a href="#" class="rv">
+        <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1100&q=70" alt="Турецкий флаг над городом" loading="lazy">
+        <div class="in"><div class="mono" style="color:#6FDCF0">Гражданство Турции</div><h3>Паспорт за инвестицию от 400 000 $</h3><p>Подбираем объекты, которые подходят под программу, проверяем оценку SPK и готовим документы для всей семьи.</p><ul><li>3–6 месяцев</li><li>супруг и дети до 18</li><li>без проживания</li></ul></div>
+      </a>
+      <a href="#" class="rv" style="transition-delay:.1s">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1100&q=70" alt="Пляж и море" loading="lazy">
+        <div class="in"><div class="mono" style="color:#6FDCF0">ВНЖ · Ikamet</div><h3>Вид на жительство при покупке жилья</h3><p>Разбираем, в каких районах сейчас можно оформить ВНЖ, и готовим пакет документов: страховка, перевод, запись в миграционную службу.</p><ul><li>от 1 года</li><li>продление</li><li>открытые районы</li></ul></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">04 — Как проходит покупка</div><h2>От первой заявки до ключей и ТАПУ</h2></div>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="mono">Шаг 01</span><b>Бриф и подборка</b><p>Бюджет, цель, район. Присылаем 5–10 проверенных вариантов за 24 часа.</p></div>
+      <div class="step rv"><span class="mono">Шаг 02</span><b>Просмотры</b><p>Вживую или по видеосвязи в реальном времени, с честными минусами.</p></div>
+      <div class="step rv"><span class="mono">Шаг 03</span><b>Проверка объекта</b><p>ТАПУ, долги, обременения, разрешение на заселение (iskan), застройщик.</p></div>
+      <div class="step rv"><span class="mono">Шаг 04</span><b>Бронь и договор</b><p>Фиксируем цену, договор на двух языках, налоговый номер, счёт в банке.</p></div>
+      <div class="step rv"><span class="mono">Шаг 05</span><b>ТАПУ</b><p>Регистрация права в кадастре лично или по доверенности.</p></div>
+      <div class="step rv"><span class="mono">Шаг 06</span><b>После сделки</b><p>Коммунальные услуги, страховка DASK, ВНЖ, сдача в аренду.</p></div>
+    </div>
+    <div class="online rv">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00788F" stroke-width="1.7"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <div><b>Можно купить без поездки.</b> <span style="color:var(--muted)">Показ по видео, подписание по доверенности у нотариуса и ТАПУ онлайн.</span></div>
+      <a href="#lead" class="link" style="margin-left:auto">Как это работает →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec why">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">05 — Почему Kleo Homes</div><h2>Прозрачность, которую можно проверить</h2></div>
+    </div>
+    <div class="why-grid">
+      <div class="rv"><strong>100<small>%</small></strong><b>Юридическая проверка</b><p>Каждый объект перед бронью: ТАПУ, долги, iskan, история.</p></div>
+      <div class="rv"><strong>3</strong><b>языка команды</b><p>Русский, английский, турецкий: переводчик не нужен ни на одном этапе.</p></div>
+      <div class="rv"><strong>0<small>€</small></strong><b>скрытых платежей</b><p>Смета расходов до брони: налог 4%, пошлины, DASK, услуги.</p></div>
+      <div class="rv"><strong>24<small>/7</small></strong><b>поддержка после покупки</b><p>Ремонт, мебель, аренда, продление ВНЖ, коммунальные услуги.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">06 — Команда и отзывы</div><h2>Люди, которые ведут вашу сделку</h2></div>
+      <a href="#" class="link">Все отзывы →</a>
+    </div>
+    <div class="people">
+      <div class="expert rv">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=70" alt="Эксперт по недвижимости" loading="lazy">
+        <div class="bd">
+          <b>Анна Соколова</b>
+          <p>Эксперт по недвижимости Аланьи · имя и фото для примера</p>
+          <div class="langs"><span>RU</span><span>EN</span><span>TR</span></div>
+          <a href="#lead" class="btn btn-coral" style="width:100%">Задать вопрос эксперту</a>
+        </div>
+      </div>
+      <div class="reviews">
+        <div class="rating rv"><strong>4.9</strong><div><div style="color:var(--coral);letter-spacing:3px">★★★★★</div><span class="mono" style="color:var(--muted)">Google · 120 отзывов</span></div><a href="#" class="link" style="margin-left:auto">Читать в Google →</a></div>
+        <div class="rev rv"><div class="stars">★★★★★</div><p>«Купили квартиру в Махмутларе полностью онлайн: показ по видео, доверенность, ТАПУ пришло через три недели. Каждый шаг объясняли заранее».</p><div class="who"><span>Анна и Игорь · Алматы</span><span>08.2026</span></div></div>
+        <div class="rev rv"><div class="stars">★★★★★</div><p>«Понравилось, что показали и минусы объекта, и смету расходов до брони. Никаких сюрпризов на сделке».</p><div class="who"><span>Markus · Berlin</span><span>07.2026</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="blog" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="label mono">07 — Журнал</div><h2>Разбираем рынок Аланьи</h2></div>
+      <a href="#" class="link">Все статьи →</a>
+    </div>
+    <div class="blog">
+      <a href="#" class="post rv"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=70" alt="" loading="lazy"><span class="mono">Аналитика · 8 мин</span><h3>Цены на недвижимость в Алании в 2026 году: районы, м², прогноз</h3></a>
+      <a href="#" class="post rv"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=70" alt="" loading="lazy"><span class="mono">Налоги · 6 мин</span><h3>Сколько стоит купить квартиру в Турции сверх цены: полная смета</h3></a>
+      <a href="#" class="post rv"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=70" alt="" loading="lazy"><span class="mono">Гид · 10 мин</span><h3>Махмутлар, Оба или Каргыджак: где жить круглый год</h3></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec lead-sec" id="lead">
+  <div class="wrap lead-grid">
+    <div class="rv">
+      <div class="label mono" style="color:var(--sea)">08 — Подбор</div>
+      <h2 style="margin-top:14px">Подберём 5–10 объектов за 24 часа</h2>
+      <p>Напишите бюджет и пожелания. Эксперт пришлёт проверенные варианты с ценой за м², расходами на покупку и честными минусами.</p>
+      <div class="msgr">
+        <a href="#" class="btn" style="background:#25D366;color:#0E1116">WhatsApp</a>
+        <a href="#" class="btn" style="background:#2AABEE;color:#fff">Telegram</a>
+        <a href="#" class="btn btn-ghost">+90 5XX XXX XX XX</a>
+      </div>
+    </div>
+    <form class="lead rv" id="leadForm">
+      <div class="row2">
+        <div class="in-f"><label for="l-name">Имя</label><input id="l-name" required autocomplete="name"></div>
+        <div class="in-f"><label for="l-phone">Телефон / WhatsApp</label><input id="l-phone" required type="tel" autocomplete="tel" placeholder="+7 …"></div>
+      </div>
+      <div class="row2">
+        <div class="in-f"><label for="l-goal">Цель покупки</label><select id="l-goal"><option>Для жизни</option><option>Инвестиция / аренда</option><option>ВНЖ</option><option>Гражданство</option></select></div>
+        <div class="in-f"><label for="l-budget">Бюджет</label><select id="l-budget"><option>до 100 000 €</option><option>100–200 000 €</option><option>200–400 000 €</option><option>от 400 000 €</option></select></div>
+      </div>
+      <button class="btn btn-coral" type="submit">Получить подборку</button>
+      <p class="consent">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных (KVKK / GDPR).</p>
+      <p class="ok" id="ok">✓ Заявка принята (демо). Эксперт свяжется в течение 15 минут.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="ft">
+      <div>
+        <a href="#" class="logo" style="color:#fff"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="14" r="7" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg><b>KLEO</b><span>HOMES</span></a>
+        <p style="margin-top:14px;max-width:32ch">Недвижимость в Алании. Лицензированное агентство, TTYB № ——. Адрес офиса — заглушка.</p>
+      </div>
+      <div><h4>Купить в Алании</h4><ul><li><a href="#">Квартиры</a></li><li><a href="#">Пентхаусы</a></li><li><a href="#">Виллы</a></li><li><a href="#">Новостройки</a></li><li><a href="#">Коммерция</a></li></ul></div>
+      <div><h4>Районы</h4><ul><li><a href="#">Махмутлар</a></li><li><a href="#">Оба</a></li><li><a href="#">Каргыджак</a></li><li><a href="#">Кестель</a></li><li><a href="#">Авсаллар</a></li></ul></div>
+      <div><h4>Услуги</h4><ul><li><a href="#">Гражданство</a></li><li><a href="#">ВНЖ</a></li><li><a href="#">Проверка объекта</a></li><li><a href="#">Управление арендой</a></li></ul></div>
+      <div><h4>Компания</h4><ul><li><a href="#">О нас</a></li><li><a href="#">Отзывы</a></li><li><a href="#">Блог</a></li><li><a href="#">Контакты</a></li></ul></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 Kleo Homes · Alanya Gayrimenkul</span><span>RU · EN · TR</span><span>Политика конфиденциальности</span></div>
+  </div>
+</footer>
+
+<div class="mbar"><a href="#" class="wa">WhatsApp</a><a href="#">Telegram</a><a href="#">Позвонить</a></div>
+
+<script>
+const RATES={EUR:[1,'€'],USD:[1.09,'$'],TRY:[45.2,'₺'],RUB:[98,'₽']}; // демо-курсы
+let cur='EUR';
+const fmt=(eur,sfx='')=>{const [r,s]=RATES[cur];return Math.round(eur*r).toLocaleString('ru-RU').replace(/,/g,' ')+' '+s+sfx};
+
+const IMG=id=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=640&q=70`;
+const L=[
+ {id:1031,t:'Пентхаус 3+1 с террасой и видом на крепость',d:'Центр',type:'Пентхаус',r:'3+1',a:140,f:'6/6',sea:350,p:258500,img:'1600607687939-ce8a6c25118c',b:['new','sea']},
+ {id:1030,t:'Квартира 2+1 в комплексе с аквапарком',d:'Оба',type:'Квартира',r:'2+1',a:120,f:'5/7',sea:1700,p:212000,img:'1502672260266-1c1ef2d93688',b:['new']},
+ {id:1029,t:'Вилла 4+1 с бассейном и панорамой моря',d:'Каргыджак',type:'Вилла',r:'4+1',a:225,f:'3 эт.',sea:900,p:352000,img:'1512917774080-9991f1c4c750',b:['sea','cit']},
+ {id:1028,t:'Апартаменты 1+1 на первой линии',d:'Махмутлар',type:'Квартира',r:'1+1',a:60,f:'2/8',sea:50,p:118000,img:'1522708323590-d24dbb6b0267',b:['sea']},
+ {id:1027,t:'Квартира 2+1 с мебелью в центре',d:'Центр',type:'Квартира',r:'2+1',a:90,f:'3/5',sea:600,p:101000,img:'1560448204-e02f11c3d0e2',b:[]},
+ {id:1026,t:'Дуплекс 3+1 в новом комплексе',d:'Кестель',type:'Дуплекс',r:'3+1',a:165,f:'7-8',sea:450,p:239000,img:'1600566753190-17f0baa2a6c3',b:['new']},
+ {id:1025,t:'Студия 1+0 для сдачи в аренду',d:'Тосмур',type:'Квартира',r:'1+0',a:45,f:'4/6',sea:300,p:79500,img:'1493809842364-78817add7ffb',b:[]},
+ {id:1024,t:'Вилла 5+1 в охраняемом посёлке',d:'Тепе',type:'Вилла',r:'5+1',a:310,f:'3 эт.',sea:1200,p:640000,img:'1600596542815-ffad4c1539a9',b:['sea','cit']},
+];
+const BL={new:['new','Новое'],sea:['sea','Вид на море'],cit:['','Под гражданство']};
+const favs=new Set();
+function renderGrid(){
+  document.getElementById('grid').innerHTML=L.map(o=>`
+  <article class="card rv in">
+    <div class="ph"><img src="${IMG(o.img)}" alt="${o.type} ${o.r}, ${o.d}, Аланья" loading="lazy">
+      <div class="badges">${o.b.map(k=>`<span class="badge ${BL[k][0]}">${BL[k][1]}</span>`).join('')}</div>
+      <button class="fav ${favs.has(o.id)?'on':''}" data-id="${o.id}" aria-label="В избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1116" stroke-width="2"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg></button>
+      <span class="idtag">ID ${o.id}</span></div>
+    <div class="bd">
+      <span class="loc"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/></svg>${o.d} · Аланья</span>
+      <h3>${o.t}</h3>
+      <div class="specs"><span>${o.r}</span><span>${o.a} м²</span><span>${o.f}</span><span>≈${o.sea} м до моря</span></div>
+      <div class="price"><b>${fmt(o.p)}</b><small>${fmt(Math.round(o.p/o.a),'/м²')}</small></div>
+    </div>
+  </article>`).join('');
+}
+document.getElementById('grid').addEventListener('click',e=>{
+  const b=e.target.closest('.fav');if(!b)return;
+  const id=+b.dataset.id;favs.has(id)?favs.delete(id):favs.add(id);
+  b.classList.toggle('on');document.getElementById('favCnt').textContent=favs.size;
+});
+
+// districts (x,y on schematic map; €/м² demo)
+const D=[
+ ['Авсаллар',50,92,1600,22,184],['Тюрклер',130,116,1500,17,61],['Паялар',200,112,1550,13,58],['Конаклы',318,118,1750,10,122],['Центр',462,144,2400,0,143],['Тепе',452,58,2300,4,38],
+ ['Джикджилли',560,92,1800,3,97],['Оба',585,138,2100,2,176],['Тосмур',640,160,2000,5,88],['Кестель',690,184,2100,7,104],['Махмутлар',742,212,1700,9.5,231],['Каргыджак',810,258,2200,14,69],['Демирташ',880,302,1450,22,40],['Газипаша',950,340,1300,43,52]
+];
+const COAST='M0 88 C40 94 70 114 110 126 C160 122 220 122 300 130 C360 134 420 136 452 150 C468 162 476 190 490 204 C502 212 512 196 514 172 C528 152 560 148 592 152 C622 160 652 176 692 196 C732 216 762 240 802 268 C842 292 882 318 922 340 C952 356 976 370 1000 382';
+document.getElementById('v1-coast').setAttribute('d',COAST);document.getElementById('v1-sea').setAttribute('d',COAST+' L1000 440 L0 440Z');
+const max=Math.max(...D.map(d=>d[3]));
+let sel='Махмутлар';
+function renderMap(){
+  document.getElementById('pins').innerHTML=D.map(([n,x,y])=>`
+   <g class="pin ${n===sel?'on':''}" data-n="${n}" tabindex="0" role="button" aria-label="${n}">
+    <circle class="halo" cx="${x}" cy="${y}" r="10"/><circle class="dot" cx="${x}" cy="${y}" r="${n===sel?7:5}"/>
+    <text x="${x}" y="${y-16}" text-anchor="middle">${n}</text></g>`).join('');
+  document.getElementById('distList').innerHTML=[...D].sort((a,b)=>b[3]-a[3]).map(([n,,,pm,km,cnt])=>`
+   <div class="dist-row ${n===sel?'on':''}" data-n="${n}"><b>${n}</b><span class="pm">${fmt(pm,'/м²')}</span>
+   <div class="bar"><i style="width:${Math.round(pm/max*100)}%"></i></div>
+   <div class="meta"><span>${km?km+' км до центра':'центр города'}</span><span>${cnt} объектов</span></div></div>`).join('');
+  document.getElementById('mapName').textContent=sel;
+}
+const pick=e=>{const t=e.target.closest('[data-n]');if(!t)return;sel=t.dataset.n;renderMap();};
+document.getElementById('pins').addEventListener('click',pick);
+document.getElementById('distList').addEventListener('click',pick);
+document.getElementById('s-dist').innerHTML+=D.map(d=>`<option>${d[0]}</option>`).join('');
+
+// currency
+function renderPrices(){
+  document.querySelectorAll('[data-eur]').forEach(el=>el.textContent=fmt(+el.dataset.eur,el.dataset.sfx||''));
+  renderGrid();renderMap();
+}
+document.getElementById('cur').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;cur=b.dataset.c;
+  e.currentTarget.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderPrices();
+});
+document.querySelectorAll('.seg:not(#cur),.tabs').forEach(g=>g.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));}));
+document.querySelectorAll('.tag').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('on')));
+document.getElementById('leadForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').style.display='block';});
+
+renderPrices();
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

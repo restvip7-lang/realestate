@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Восстановление пароля — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-art">
+    <img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=1200&q=70" alt="">
+    <a href="../home-v2.html" class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>ADMIN</small></span></a>
+    <div><h2>Панель управления Kleo Homes</h2><p>Объекты на продажу и в аренду, новости, статьи и заявки клиентов.</p></div>
+  </div>
+  <main class="auth-box">
+    <form class="auth-card" id="f" novalidate>
+      <h1>Восстановление пароля</h1>
+      <p class="sub">Укажите почту администратора. Мы пришлём ссылку для нового пароля.</p>
+      <div class="fld"><label for="email">Почта</label><input id="email" type="email" required autocomplete="username"><span class="err-msg">Укажите корректную почту</span></div>
+      <button class="btn btn-coral" type="submit">Отправить ссылку</button>
+      <div class="notice ok" id="done" role="status" hidden>Если такой адрес зарегистрирован, мы отправили на него письмо со ссылкой. Она действует 30 минут. Проверьте также «Спам».</div>
+      <p class="demo-note" id="demo" hidden>Прототип: письмо не уходит на реальную почту, а появляется в <a href="mailbox.html" style="text-decoration:underline;font-weight:600">демо-почте</a>.</p>
+      <div class="auth-links"><a href="login.html">← Ко входу</a></div>
+    </form>
+  </main>
+</div>
+<script src="auth.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  $$('[data-eye]').forEach(b => b.onclick = () => { const i = b.previousElementSibling; const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль'); });
+  const bad = (el, on) => el.closest('.fld').classList.toggle('invalid', on);
+  const RULES = ['не короче 10 символов', 'хотя бы одна буква', 'хотя бы одна цифра'];
+  const rules = (inp, box) => { const e = KHA.checkStrength(inp.value); box.innerHTML = RULES.map(r => `<span class="${e.includes(r) ? '' : 'ok'}">${e.includes(r) ? '○' : '✓'} ${r}</span>`).join(''); return e; };
+  $('#f').onsubmit = e => {
+    e.preventDefault(); const v = $('#email').value.trim();
+    bad($('#email'), !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)); if ($('.invalid')) return $('#email').focus();
+    KHA.requestReset(v); $('#done').hidden = false; $('#demo').hidden = false; e.target.querySelector('button[type=submit]').disabled = true;
+  };
+  $('#email').focus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Демо-почта — админка Kleo Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/proto.css">
+<link rel="stylesheet" href="../assets/admin.css">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-art">
+    <img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=1200&q=70" alt="">
+    <a href="../home-v2.html" class="logo" style="color:#fff"><span class="wm"><b>KLEO</b><small>ADMIN</small></span></a>
+    <div><h2>Панель управления Kleo Homes</h2><p>Объекты на продажу и в аренду, новости, статьи и заявки клиентов.</p></div>
+  </div>
+  <main class="auth-box">
+    <div class="auth-card" style="max-width:560px">
+      <h1>Демо-почта</h1>
+      <p class="demo-note">Только для прототипа: здесь письма, которые в рабочей версии уйдут на настоящую почту через почтовый сервис (SMTP).</p>
+      <div id="list" style="display:grid;gap:12px"></div>
+      <div class="auth-links"><a href="login.html">← Ко входу</a><a href="#" id="clear">Очистить</a></div>
+    </div>
+  </main>
+</div>
+<script src="auth.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  $$('[data-eye]').forEach(b => b.onclick = () => { const i = b.previousElementSibling; const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'Скрыть пароль' : 'Показать пароль'); });
+  const bad = (el, on) => el.closest('.fld').classList.toggle('invalid', on);
+  const RULES = ['не короче 10 символов', 'хотя бы одна буква', 'хотя бы одна цифра'];
+  const rules = (inp, box) => { const e = KHA.checkStrength(inp.value); box.innerHTML = RULES.map(r => `<span class="${e.includes(r) ? '' : 'ok'}">${e.includes(r) ? '○' : '✓'} ${r}</span>`).join(''); return e; };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const render = () => { const m = KHA.mail(); $('#list').innerHTML = m.length ? m.map(x => `<article class="mail-item"><div class="hdrs">Кому: ${esc(x.to)} · ${esc(x.date)}</div><b>${esc(x.subject)}</b><pre>${esc(x.body)}</pre><a class="btn btn-coral btn-sm" href="${esc(x.link)}">Задать новый пароль</a></article>`).join('') : '<p class="hint">Писем пока нет. Запросите восстановление на странице «Забыли пароль?».</p>'; };
+  $('#clear').onclick = e => { e.preventDefault(); KHA.clearMail(); render(); };
+  render();
+})();
+</script>
+</body>
+</html>

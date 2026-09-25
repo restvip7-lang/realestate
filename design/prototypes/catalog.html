@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Купить недвижимость в Алании — каталог | Kleo Homes</title>
+<meta name="description" content="Каталог квартир, пентхаусов и вилл в Алании: фильтры по району, цене и расстоянию до моря, карта объектов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<link rel="stylesheet" href="assets/proto.css">
+<style>
+:root{--bar:64px}
+body{background:#fff}
+/* панель фильтров */
+.fbar{position:sticky;top:var(--h-header);z-index:40;background:#fff;border-bottom:1px solid var(--line)}
+.fbar .wrap{max-width:none;display:flex;gap:8px;align-items:center;min-height:var(--bar);padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+.fbar select,.fbar input{min-height:42px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;font-size:14.5px}
+.fbar .price-in{display:flex;gap:4px}
+.fbar .price-in input{width:108px}
+.dealsw{display:inline-flex;border:1px solid var(--line);border-radius:8px;padding:3px}
+.dealsw button{border:0;background:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;color:var(--muted);min-height:34px}
+.dealsw button[aria-pressed=true]{background:var(--ink);color:#fff}
+.fbtn{display:inline-flex;align-items:center;gap:8px;min-height:42px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 14px;font-weight:600;cursor:pointer;font-size:14.5px}
+.fbtn:hover{border-color:var(--ink)}
+.fbtn .n{background:var(--coral);color:#fff;border-radius:999px;min-width:20px;height:20px;font-size:12px;display:grid;place-items:center;padding:0 5px}
+.fbar .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.views{display:inline-flex;border:1px solid var(--line);border-radius:8px;padding:3px}
+.views button{border:0;background:none;padding:6px 10px;border-radius:6px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.views button[aria-pressed=true]{background:var(--mist);color:var(--ink)}
+/* раскладка */
+.cat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr)}
+.cat.list-only{grid-template-columns:1fr}.cat.list-only .mapcol{display:none}
+.cat.map-only{grid-template-columns:0 1fr}.cat.map-only .listcol{display:none}
+.listcol{padding:18px 24px 48px 32px;min-width:0}
+.mapcol{position:sticky;top:calc(var(--h-header) + var(--bar));height:calc(100vh - var(--h-header) - var(--bar));border-left:1px solid var(--line)}
+#map{position:absolute;inset:0;background:#E9EEF2}
+.map-tools{position:absolute;top:12px;left:56px;z-index:500;display:flex;gap:8px;flex-wrap:wrap}
+.map-tools label,.map-tools button{background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(14,17,22,.18);padding:8px 12px;font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center;cursor:pointer;border:0}
+.map-tools input{accent-color:var(--sea-deep);width:16px;height:16px}
+.crumbs{font-size:14px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a:hover{color:var(--sea-deep)}
+.res-head{display:flex;justify-content:space-between;align-items:end;gap:12px 20px;flex-wrap:wrap;margin:10px 0 14px}
+.res-head h1{font-size:clamp(22px,2.4vw,32px)}
+.res-head .cnt{color:var(--muted);margin-top:6px}
+.res-head .acts{display:flex;gap:8px;align-items:center}
+.res-head select{min-height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:#fff}
+.chips-act{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chips-act button{border:1px solid var(--line);background:var(--mist);border-radius:999px;padding:6px 10px 6px 12px;font-size:13.5px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chips-act button:hover{border-color:var(--ink)}
+.chips-act .clear{background:none;border:0;color:var(--sea-deep);font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.list-only .grid2{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card.hl{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
+.more-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:24px}
+.pages{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.pages a,.pages span{min-width:40px;height:40px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:600;font-size:14px}
+.pages [aria-current]{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* маркеры */
+.pm{background:#fff;color:var(--ink);font:700 12.5px var(--f-body);padding:5px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(14,17,22,.3);white-space:nowrap;transform:translate(-50%,-50%);display:inline-block;border:2px solid #fff;transition:background .15s,color .15s,transform .15s}
+.pm.rent{border-color:var(--coral)}
+.pm.hl,.pm:hover{background:var(--coral);color:#fff;transform:translate(-50%,-50%) scale(1.12);z-index:1000}
+.leaflet-div-icon.pm-wrap{background:none;border:0}
+.leaflet-container img{max-width:none!important;max-height:none!important}
+.leaflet-container{font-family:var(--f-body)}
+.marker-cluster{background:rgba(0,163,196,.3);border-radius:50%}
+.marker-cluster div{width:32px;height:32px;margin:4px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px var(--f-body);display:grid;place-items:center}
+.marker-cluster span{line-height:1}
+.leaflet-popup-content{margin:0;width:240px!important}
+.leaflet-popup-content-wrapper{padding:0;overflow:hidden;border-radius:10px}
+.pop img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.pop div{padding:10px 12px;font:14px var(--f-body);display:grid;gap:4px}
+.pop b{font-size:16px}
+.pop a{color:var(--sea-deep);font-weight:600}
+/* SEO-блок */
+.seo{background:var(--mist);padding:56px 0}
+.seo .cols{display:grid;grid-template-columns:1.2fr 1fr;gap:40px}
+.seo h2{font-size:24px;margin-bottom:12px}
+.seo p{color:#2B323C;margin-bottom:10px}
+.seo h3{font:700 16px var(--f-body);letter-spacing:0;margin:18px 0 8px}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.links a{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+.links a:hover{border-color:var(--sea-deep);color:var(--sea-deep)}
+/* шторка фильтров */
+.sheet{position:fixed;inset:0;z-index:90;display:none}
+.sheet.open{display:block}
+.sheet .scrim{position:absolute;inset:0;background:rgba(14,17,22,.5)}
+.sheet .panel{position:absolute;right:0;top:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column}
+.sheet .ph{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.sheet .ph h2{font:700 20px var(--f-body);letter-spacing:0}
+.sheet .pb{flex:1;overflow:auto;padding:20px;display:grid;gap:18px;align-content:start}
+.sheet .pf{padding:12px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
+.sheet .pf .btn{flex:1}
+.sheet .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{display:flex;flex-wrap:wrap;gap:6px}
+.opt label{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:14px}
+.opt input{position:absolute;opacity:0}
+.opt label:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.opt label:has(input:focus-visible){outline:2px solid var(--sea)}
+.feats-f{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mob-toggle{display:none}
+@media (max-width:1100px){
+  .fbar .hide-t{display:none}
+  .grid2{grid-template-columns:1fr}
+  .list-only .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  :root{--bar:58px}
+  .fbar .hide-m{display:none}
+  .fbar .r .views{display:none}
+  .cat,.cat.list-only{grid-template-columns:1fr}
+  .cat .mapcol{display:none}
+  .cat.map-only .listcol{display:none}.cat.map-only .mapcol{display:block;position:fixed;top:calc(var(--h-header) + var(--bar));left:0;right:0;bottom:0;height:auto;border:0;z-index:30}
+  .listcol{padding:14px var(--gut) 90px}
+  .list-only .grid2{grid-template-columns:1fr}
+  .mob-toggle{display:flex;position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:65;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 20px;font-weight:600;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(14,17,22,.35);cursor:pointer}
+  .seo .cols{grid-template-columns:1fr}
+  .map-tools{left:12px;top:auto;bottom:140px}
+  .res-head .acts .btn-pdf{display:none}
+}
+@media print{
+  .hdr,.fbar,.mapcol,.seo,.ftr,.mbar,.mob-toggle,.demo-strip,.chips-act,.more-wrap,.fav,.res-head .acts{display:none!important}
+  .cat{display:block}.listcol{padding:0}
+  .grid2{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+  .card{break-inside:avoid;box-shadow:none}
+  .print-head{display:flex!important}
+}
+.print-head{display:none;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:2px solid var(--ink);padding-bottom:8px}
+</style>
+</head>
+<body>
+<div class="demo-strip">Прототип: объекты и цены — демо-данные</div>
+
+<header class="hdr">
+  <div class="wrap" style="max-width:none">
+    <a href="home-v2.html" class="logo" aria-label="Kleo Homes — на главную">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="13" r="6.5" stroke="#FF6B4A" stroke-width="2.4"/><path d="M2 21c4.7-3 9.3-3 14 0s9.3 3 14 0M2 27c4.7-3 9.3-3 14 0s9.3 3 14 0" stroke="#00A3C4" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="wm"><b>KLEO</b><small>HOMES</small></span>
+    </a>
+    <nav class="nav" aria-label="Основное меню">
+      <a href="catalog.html" aria-current="page">Каталог</a><a href="home-v2.html#districts">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a>
+    </nav>
+    <div class="hdr-r">
+      <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
+      <select class="cur-sel hide-t" aria-label="Валюта"></select>
+      <button class="icon-btn" type="button" id="fav-open" aria-label="Показать избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></button>
+      <a href="home-v2.html#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
+      <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <div class="top"><span class="logo" style="color:var(--ink)"><span class="wm"><b>KLEO</b><small style="opacity:1">HOMES</small></span></span><button class="icon-btn" type="button" data-close aria-label="Закрыть меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav aria-label="Мобильное меню"><a href="catalog.html">Каталог</a><a href="home-v2.html#districts">Районы</a><a href="home-v2.html#services">Услуги</a><a href="home-v2.html#company">О компании</a><a href="home-v2.html#journal">Журнал</a><a href="home-v2.html#lead">Подобрать жильё</a></nav>
+    <div class="mm-row"><span class="lbl">Язык</span><div class="seg" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div></div>
+    <div class="mm-row"><span class="lbl">Валюта</span><select class="cur-sel" aria-label="Валюта"></select></div>
+    <div class="contacts"><a class="btn btn-wa" href="#">WhatsApp</a><a class="btn btn-tg" href="#">Telegram</a></div>
+  </div>
+</div>
+
+<form class="fbar" id="fbar" role="search" aria-label="Фильтры каталога" onsubmit="return false">
+  <div class="wrap">
+    <div class="dealsw" role="group" aria-label="Сделка"><button type="button" data-deal="sale" aria-pressed="true">Купить</button><button type="button" data-deal="rent" aria-pressed="false">Аренда</button></div>
+    <select name="type" aria-label="Тип объекта" class="hide-m"><option value="">Любой тип</option><option value="apartment">Квартиры</option><option value="penthouse">Пентхаусы</option><option value="villa">Виллы</option><option value="duplex">Дуплексы</option></select>
+    <select name="district" aria-label="Район" class="hide-m"><option value="">Все районы</option></select>
+    <select name="rooms" aria-label="Комнаты" class="hide-t"><option value="">Комнаты</option><option value="1+0">1+0</option><option value="1+1">1+1</option><option value="2+1">2+1</option><option value="3+1">3+1</option><option value="4+">4+1 и больше</option></select>
+    <div class="price-in hide-t"><input name="min" inputmode="numeric" placeholder="Цена от" aria-label="Цена от"><input name="max" inputmode="numeric" placeholder="до" aria-label="Цена до"></div>
+    <button type="button" class="fbtn" id="open-sheet" aria-controls="sheet" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Фильтры <span class="n" id="fcount" hidden>0</span></button>
+    <div class="r">
+      <div class="views" role="group" aria-label="Вид">
+        <button type="button" data-view="split" aria-pressed="true" title="Список и карта"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="8" height="16" rx="1"/><path d="M14 4l3 1.5L20 4v16l-3 1.5-3-1.5z"/></svg></button>
+        <button type="button" data-view="list" aria-pressed="false" title="Только список"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
+        <button type="button" data-view="map" aria-pressed="false" title="Только карта"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v16M15 6v16"/></svg></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t">
+  <div class="scrim" data-close-sheet></div>
+  <div class="panel">
+    <div class="ph"><h2 id="sheet-t">Фильтры</h2><button type="button" class="icon-btn" data-close-sheet aria-label="Закрыть фильтры" style="border-color:var(--line)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="pb" id="sheet-body">
+      <div class="fld"><span class="lbl">Тип объекта</span><div class="opt" data-group="type"></div></div>
+      <div class="fld"><label for="s-district">Район</label><select id="s-district" data-mirror="district"><option value="">Все районы</option></select></div>
+      <div class="fld"><span class="lbl">Комнаты</span><div class="opt" data-group="rooms"></div></div>
+      <div class="fld"><span class="lbl" id="s-price-l">Цена, €</span><div class="row"><input data-mirror="min" inputmode="numeric" placeholder="от" aria-label="Цена от"><input data-mirror="max" inputmode="numeric" placeholder="до" aria-label="Цена до"></div></div>
+      <div class="row">
+        <div class="fld"><label for="s-sea">До моря</label><select id="s-sea" data-extra="sea"><option value="">Любое</option><option value="100">до 100 м</option><option value="300">до 300 м</option><option value="700">до 700 м</option><option value="1000">до 1 км</option></select></div>
+        <div class="fld"><label for="s-area">Площадь от, м²</label><input id="s-area" data-extra="area" inputmode="numeric"></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label for="s-floor">Этаж</label><select id="s-floor" data-extra="floor"><option value="">Любой</option><option value="notfirst">Не первый</option><option value="notlast">Не последний</option><option value="top">Последний (пентхаус)</option></select></div>
+        <div class="fld"><label for="s-id">ID объекта</label><input id="s-id" data-extra="id" inputmode="numeric" placeholder="1030"></div>
+      </div>
+      <div class="fld"><span class="lbl">Особенности</span>
+        <div class="feats-f">
+          <label class="check"><input type="checkbox" data-extra="seaview">Вид на море</label>
+          <label class="check"><input type="checkbox" data-extra="furn">С мебелью</label>
+          <label class="check"><input type="checkbox" data-extra="new">Новостройка</label>
+          <label class="check"><input type="checkbox" data-extra="owner">От собственника</label>
+          <label class="check"><input type="checkbox" data-extra="video">Есть видео</label>
+          <label class="check"><input type="checkbox" data-extra="pets" data-rent-only>Можно с животными</label>
+        </div>
+      </div>
+    </div>
+    <div class="pf"><button type="button" class="btn btn-line" id="reset-all">Сбросить</button><button type="button" class="btn btn-coral" data-close-sheet id="show-n">Показать</button></div>
+  </div>
+</div>
+
+<main class="cat" id="cat">
+  <section class="listcol" aria-labelledby="h1">
+    <div class="print-head"><b>Kleo Homes · подборка объектов</b><span id="print-date"></span></div>
+    <nav class="crumbs" aria-label="Хлебные крошки" id="crumbs"></nav>
+    <div class="res-head">
+      <div><h1 id="h1">Недвижимость в Алании</h1><div class="cnt" id="cnt" aria-live="polite"></div></div>
+      <div class="acts">
+        <label class="vh" for="sort">Сортировка</label>
+        <select id="sort"><option value="new">Сначала новые</option><option value="cheap">Сначала дешёвые</option><option value="exp">Сначала дорогие</option><option value="ppm">Дешевле за м²</option><option value="sea">Ближе к морю</option></select>
+        <button type="button" class="btn btn-line btn-sm btn-pdf" id="pdf">Скачать PDF</button>
+      </div>
+    </div>
+    <div class="chips-act" id="chips"></div>
+    <div class="grid2" id="list"></div>
+    <div class="more-wrap" id="more"></div>
+  </section>
+  <aside class="mapcol" aria-label="Карта объектов">
+    <div id="map" role="application" aria-label="Карта: объекты на побережье Аланьи"></div>
+    <div class="map-tools"><label><input type="checkbox" id="bounds">Искать при перемещении карты</label></div>
+  </aside>
+</main>
+<button type="button" class="mob-toggle" id="mob-toggle"><span id="mob-toggle-t">Карта</span></button>
+
+<section class="seo" id="seo" aria-labelledby="seo-h">
+  <div class="wrap cols">
+    <div id="seo-text"></div>
+    <div>
+      <h3>По районам</h3><div class="links" id="l-dist"></div>
+      <h3>По типу</h3><div class="links" id="l-type"></div>
+      <h3>Подборки</h3><div class="links"><a href="?seaview=1">Вид на море</a><a href="?sea=100">Первая линия</a><a href="?new=1">Новостройки</a><a href="?furn=1">С мебелью</a><a href="?max=150000">До 150 000 €</a><a href="?owner=1">От собственника</a><a href="?deal=rent">Аренда</a></div>
+    </div>
+  </div>
+</section>
+
+<footer class="ftr"><div class="wrap"><div class="bottom" style="margin-top:0;border-top:0;padding-top:0"><span>© 2026 Kleo Homes · Alanya Gayrimenkul</span><a href="home-v2.html">На главную</a><a href="admin/login.html">Вход для сотрудников</a></div></div></footer>
+<nav class="mbar" aria-label="Быстрые действия"><a href="catalog.html">Каталог</a><a href="home-v2.html#lead" class="pick">Подбор</a><a href="#" class="wa">WhatsApp</a></nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const F = $('#fbar');
+  const PER = 12;
+  const TYPE_ACC = { apartment: 'квартиры', penthouse: 'пентхаусы', villa: 'виллы', duplex: 'дуплексы' };
+  const TYPE_GEN = { apartment: 'квартир', penthouse: 'пентхаусов', villa: 'вилл', duplex: 'дуплексов' };
+  const DIST_IN = { avsallar: 'Авсалларе', turkler: 'Тюрклере', konakli: 'Конаклы', cikcilli: 'Джикджилли', center: 'центре Аланьи', tepe: 'Тепе', oba: 'Оба', tosmur: 'Тосмуре', kestel: 'Кестеле', mahmutlar: 'Махмутларе', kargicak: 'Каргыджаке', payallar: 'Паяларе', demirtas: 'Демирташе', gazipasa: 'Газипаше' };
+  const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'объект' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'объекта' : 'объектов';
+
+  // ---------- состояние ⇄ URL ----------
+  const KEYS = ['deal', 'type', 'district', 'rooms', 'min', 'max', 'sea', 'area', 'floor', 'id', 'seaview', 'furn', 'new', 'owner', 'video', 'pets', 'sort', 'page', 'view'];
+  const st = {};
+  function readUrl() { const p = new URLSearchParams(location.search); KEYS.forEach(k => st[k] = p.get(k) || ''); st.deal = st.deal === 'rent' ? 'rent' : 'sale'; st.page = +st.page || 1; st.view = st.view || 'split'; st.sort = st.sort || 'new'; }
+  function writeUrl(push) {
+    const p = new URLSearchParams(); KEYS.forEach(k => { const v = st[k]; if (v && !(k === 'deal' && v === 'sale') && !(k === 'page' && v == 1) && !(k === 'view' && v === 'split') && !(k === 'sort' && v === 'new')) p.set(k, v); });
+    const url = location.pathname + (p.toString() ? '?' + p : '');
+    history[push ? 'pushState' : 'replaceState'](null, '', url);
+  }
+
+  // ---------- заполнение полей ----------
+  F.district.innerHTML += KH.DISTRICTS.map(d => `<option value="${d.slug}">${d.name}</option>`).join('');
+  $('#s-district').innerHTML += KH.DISTRICTS.map(d => `<option value="${d.slug}">${d.name}</option>`).join('');
+  $('[data-group=type]').innerHTML = [['', 'Любой'], ...Object.entries({ apartment: 'Квартира', penthouse: 'Пентхаус', villa: 'Вилла', duplex: 'Дуплекс' })].map(([v, t]) => `<label><input type="radio" name="s-type" value="${v}">${t}</label>`).join('');
+  $('[data-group=rooms]').innerHTML = [['', 'Любые'], ['1+0', '1+0'], ['1+1', '1+1'], ['2+1', '2+1'], ['3+1', '3+1'], ['4+', '4+1 и больше']].map(([v, t]) => `<label><input type="radio" name="s-rooms" value="${v}">${t}</label>`).join('');
+
+  function syncInputs() {
+    $$('.dealsw button').forEach(b => b.setAttribute('aria-pressed', b.dataset.deal === st.deal));
+    ['type', 'district', 'rooms', 'min', 'max'].forEach(k => { F[k].value = st[k]; });
+    $$('[data-mirror]').forEach(el => el.value = st[el.dataset.mirror]);
+    $$('[name=s-type]').forEach(r => r.checked = r.value === st.type);
+    $$('[name=s-rooms]').forEach(r => r.checked = r.value === st.rooms);
+    $$('[data-extra]').forEach(el => { if (el.type === 'checkbox') el.checked = !!st[el.dataset.extra]; else el.value = st[el.dataset.extra]; });
+    $$('[data-rent-only]').forEach(el => el.closest('label').hidden = st.deal !== 'rent');
+    $('#sort').value = st.sort;
+    $$('.views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === st.view));
+    $('#s-price-l').textContent = st.deal === 'rent' ? 'Цена, € в месяц' : 'Цена, €';
+    F.min.placeholder = st.deal === 'rent' ? 'от €/мес' : 'Цена от';
+  }
+
+  // ---------- фильтрация ----------
+  let boundsOn = false, mapBounds = null;
+  function filtered(ignoreBounds) {
+    const min = +String(st.min).replace(/\D/g, '') || 0, max = +String(st.max).replace(/\D/g, '') || Infinity;
+    let list = KH.published().filter(o => {
+      if (st.id) return String(o.id) === st.id.trim();
+      if (o.deal !== st.deal) return false;
+      if (st.type && o.type !== st.type) return false;
+      if (st.district && o.district !== st.district) return false;
+      if (st.rooms && (st.rooms === '4+' ? parseInt(o.rooms) < 4 : o.rooms !== st.rooms)) return false;
+      if (o.price < min || o.price > max) return false;
+      if (st.sea && o.sea > +st.sea) return false;
+      if (st.area && o.area < +st.area) return false;
+      if (st.floor === 'notfirst' && o.floor <= 1) return false;
+      if (st.floor === 'notlast' && o.floor >= o.floors) return false;
+      if (st.floor === 'top' && o.floor < o.floors) return false;
+      if (st.seaview && !o.seaView) return false;
+      if (st.furn && !o.furnished) return false;
+      if (st.new && !o.newBuild) return false;
+      if (st.owner && o.source !== 'owner') return false;
+      if (st.video && !o.video) return false;
+      if (st.pets && !(o.rent && o.rent.pets)) return false;
+      return true;
+    });
+    if (boundsOn && mapBounds && !ignoreBounds) list = list.filter(o => mapBounds.contains(KH.coords(o)));
+    const S = { new: (a, b) => b.id - a.id, cheap: (a, b) => a.price - b.price, exp: (a, b) => b.price - a.price, ppm: (a, b) => a.price / a.area - b.price / b.area, sea: (a, b) => a.sea - b.sea };
+    return list.sort(S[st.sort] || S.new);
+  }
+
+  // ---------- заголовки / SEO ----------
+  function titles(n) {
+    const d = st.district && KH.district(st.district), rent = st.deal === 'rent';
+    const what = st.type ? TYPE_ACC[st.type] : 'недвижимость';
+    const where = d ? `в ${DIST_IN[d.slug]}` : 'в Алании';
+    const h1 = `${rent ? 'Аренда' : 'Купить'} ${rent ? (st.type ? TYPE_GEN[st.type] : 'жилья') : what} ${where}`;
+    $('#h1').textContent = h1.charAt(0).toUpperCase() + h1.slice(1);
+    const prices = filtered(true).map(o => o.price);
+    $('#cnt').textContent = n ? `${n} ${plural(n)}${prices.length ? ' · от ' + KHS.fmt(Math.min(...prices), rent ? ' / мес' : '') : ''}${boundsOn ? ' в видимой области карты' : ''}` : 'Ничего не найдено';
+    document.title = `${$('#h1').textContent} — ${n} ${plural(n)} | Kleo Homes`;
+    // «чистый» SEO-адрес, который будет в рабочей версии
+    const seoPath = `/ru/${rent ? 'rent' : 'sale'}/${st.type ? { apartment: 'apartments', penthouse: 'penthouses', villa: 'villas', duplex: 'duplex' }[st.type] + '/' : ''}${d ? d.slug + '/' : ''}`;
+    const extra = ['rooms', 'min', 'max', 'sea', 'area', 'floor', 'id', 'seaview', 'furn', 'new', 'owner', 'video', 'pets'].some(k => st[k]);
+    $('#crumbs').innerHTML = `<a href="home-v2.html">Главная</a>›<a href="catalog.html${rent ? '?deal=rent' : ''}">${rent ? 'Аренда' : 'Продажа'}</a>${st.type ? `›<a href="?${rent ? 'deal=rent&' : ''}type=${st.type}">${TYPE_ACC[st.type][0].toUpperCase() + TYPE_ACC[st.type].slice(1)}</a>` : ''}${d ? `›<span aria-current="page">${d.name}</span>` : ''}<span class="hint" style="margin-left:auto" title="Так будет выглядеть адрес страницы в рабочей версии">URL: ${seoPath}${extra ? ' · фильтры → noindex' : ''}</span>`;
+    // SEO-текст
+    const dd = d || null;
+    $('#seo-text').innerHTML = `<h2 id="seo-h">${$('#h1').textContent}: как выбрать</h2>
+      <p>${dd ? dd.about + ' ' : 'Аланья — курортный город на Средиземном море: 12 районов вдоль побережья от Авсаллара до Газипаши и районы в горах (Тепе, Джикджилли). '}${rent ? 'Для долгосрочной аренды обычно просят депозит в размере месячной платы и договор от 6–12 месяцев.' : `Средняя цена ${dd ? 'в районе' : 'по городу'} — около ${KHS.fmt(dd ? dd.pm : 2000, ' за м²')} (демо). Стоимость сильно зависит от расстояния до моря, вида и возраста комплекса.`}</p>
+      <h3>Что проверить перед ${rent ? 'арендой' : 'покупкой'}</h3>
+      <p>${rent ? 'Кто собственник и есть ли у него ТАПУ, что входит в оплату, как возвращается депозит, можно ли оформить ВНЖ по этому адресу.' : 'ТАПУ и отсутствие долгов, разрешение на заселение (iskan), реальные расходы на содержание комплекса (aidat), возможность оформить ВНЖ в районе.'}</p>
+      <p class="hint">Текст-шаблон. В рабочей версии у каждой посадочной «тип + район» свой текст, который редактируется в админке.</p>`;
+    // JSON-LD ItemList
+    let ld = $('#ld'); if (!ld) { ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.id = 'ld'; document.head.appendChild(ld); }
+    ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: $('#h1').textContent, numberOfItems: n, itemListElement: filtered().slice(0, PER).map((o, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`property.html?id=${o.id}`, location.href).href })) });
+  }
+
+  // ---------- активные фильтры ----------
+  function chips() {
+    const L = { type: v => ({ apartment: 'Квартиры', penthouse: 'Пентхаусы', villa: 'Виллы', duplex: 'Дуплексы' })[v], district: v => KH.district(v).name, rooms: v => v === '4+' ? '4+1 и больше' : v, min: v => 'от ' + v, max: v => 'до ' + v, sea: v => `до моря ≤ ${v} м`, area: v => `от ${v} м²`, floor: v => ({ notfirst: 'не первый этаж', notlast: 'не последний', top: 'последний этаж' })[v], id: v => 'ID ' + v, seaview: () => 'вид на море', furn: () => 'с мебелью', new: () => 'новостройка', owner: () => 'от собственника', video: () => 'с видео', pets: () => 'с животными' };
+    const act = Object.keys(L).filter(k => st[k]);
+    $('#chips').innerHTML = act.map(k => `<button type="button" data-rm="${k}" aria-label="Убрать фильтр ${L[k](st[k])}">${L[k](st[k])} <span aria-hidden="true">✕</span></button>`).join('') + (act.length ? '<button type="button" class="clear" id="clear-all">Сбросить всё</button>' : '');
+    const n = act.filter(k => !['type', 'district'].includes(k)).length;
+    $('#fcount').hidden = !n; $('#fcount').textContent = n;
+  }
+
+  // ---------- список ----------
+  function renderList() {
+    const all = filtered(), n = all.length, pages = Math.max(1, Math.ceil(n / PER));
+    if (st.page > pages) st.page = pages;
+    const shown = all.slice(0, st.page * PER);
+    titles(n); chips();
+    $('#list').innerHTML = n ? shown.map(KHS.card).join('') : `<div class="empty"><b>По этим фильтрам ничего нет</b>${boundsOn ? 'Отдалите карту или выключите «Искать при перемещении карты». ' : ''}Попробуйте убрать часть фильтров или <a href="home-v2.html#lead" class="link">оставьте заявку</a> — подберём вручную.<br><button type="button" class="btn btn-line btn-sm" style="margin-top:14px" id="clear-all2">Сбросить фильтры</button></div>`;
+    $('#more').innerHTML = n > shown.length ? `<button type="button" class="btn btn-dark" id="load-more">Показать ещё ${Math.min(PER, n - shown.length)}</button><span class="hint">Показано ${shown.length} из ${n}</span><nav class="pages" aria-label="Страницы">${Array.from({ length: pages }, (_, i) => i + 1 === st.page ? `<span aria-current="page">${i + 1}</span>` : `<a href="?${new URLSearchParams(Object.assign(currentParams(), { page: i + 1 }))}">${i + 1}</a>`).join('')}</nav>` : (n ? `<span class="hint">Показаны все ${n} ${plural(n)}</span>` : '');
+    $('#show-n').textContent = n ? `Показать ${n} ${plural(n)}` : 'Ничего не найдено';
+    KHS.reveal($('#list'));
+    renderMarkers(all);
+  }
+  const currentParams = () => Object.fromEntries(new URLSearchParams(location.search));
+
+  // ---------- карта ----------
+  let map, cluster, markers = new Map();
+  const shortPrice = o => { const v = o.price * ({ EUR: 1, USD: 1.09, TRY: 45.2, RUB: 98, KZT: 560, GBP: .84 }[KHS.cur] || 1), s = KHS.fmt(1).split(' ').pop(); return (o.deal === 'rent' ? Math.round(v).toLocaleString('ru-RU') : v >= 1e6 ? (v / 1e6).toFixed(1).replace('.0', '') + ' млн' : Math.round(v / 1000) + ' тыс') + ' ' + s; };
+  function initMap() {
+    if (!window.L) { $('#map').innerHTML = '<div class="empty" style="margin:24px">Карта не загрузилась (нет доступа к cdnjs или тайлам OpenStreetMap).</div>'; return; }
+    map = L.map('map', { zoomControl: true, scrollWheelZoom: true }).setView([36.545, 31.99], 11);
+    window.__map = map; // для отладки прототипа
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; участники <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    cluster = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 40, disableClusteringAtZoom: 14 });
+    map.addLayer(cluster);
+    map.on('moveend', () => { mapBounds = map.getBounds(); if (boundsOn) { st.page = 1; renderList(); } });
+  }
+  let fitted = false;
+  function renderMarkers(list) {
+    if (!map) return;
+    cluster.clearLayers(); markers.clear();
+    list.forEach(o => {
+      const m = L.marker(KH.coords(o), { icon: L.divIcon({ className: 'pm-wrap', html: `<span class="pm ${o.deal}" data-mid="${o.id}">${shortPrice(o)}</span>`, iconSize: [0, 0] }), title: o.title, keyboard: true });
+      m.bindPopup(`<div class="pop"><img src="${KHS.imgSrc(o, 400)}" alt=""><div><span class="hint">${KH.district(o.district).name} · ${o.rooms} · ${o.area} м²</span><b>${KHS.priceOf(o)}</b><span>${o.title}</span><a href="property.html?id=${o.id}">Подробнее →</a></div></div>`, { closeButton: true, maxWidth: 240 });
+      m.on('mouseover', () => hl(o.id, true)); m.on('mouseout', () => hl(o.id, false));
+      m.on('popupopen', () => { const c = $(`#list [data-id="${o.id}"]`); if (c && st.view !== 'map') c.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
+      cluster.addLayer(m); markers.set(o.id, m);
+    });
+    lastList = list;
+    if (!boundsOn && list.length && (!fitted || st.district)) fit(list);
+  }
+  let lastList = [];
+  function fit(list = lastList) {
+    if (!map || !list.length || !map.getSize().x) return; // карта скрыта — подгоним, когда покажем
+    map.fitBounds(L.latLngBounds(list.map(KH.coords)).pad(0.15), { maxZoom: 15, animate: false }); fitted = true;
+  }
+  function hl(id, on) {
+    const c = $(`#list [data-id="${id}"]`); if (c) c.classList.toggle('hl', on);
+    const pm = document.querySelector(`[data-mid="${id}"]`); if (pm) pm.classList.toggle('hl', on);
+  }
+  $('#list').addEventListener('mouseover', e => { const c = e.target.closest('[data-id]'); if (c) hl(+c.dataset.id, true); });
+  $('#list').addEventListener('mouseout', e => { const c = e.target.closest('[data-id]'); if (c) hl(+c.dataset.id, false); });
+  $('#bounds').onchange = e => { boundsOn = e.target.checked; mapBounds = map && map.getBounds(); st.page = 1; renderList(); };
+
+  // ---------- вид ----------
+  function setView(v) {
+    st.view = v; $('#cat').className = 'cat' + (v === 'list' ? ' list-only' : v === 'map' ? ' map-only' : '');
+    $$('.views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
+    $('#mob-toggle-t').textContent = v === 'map' ? 'Список' : 'Карта';
+    if (map) setTimeout(() => { map.invalidateSize(); if (!boundsOn && (!fitted || map.getZoom() < 10)) fit(); }, 60);
+  }
+  $$('.views button').forEach(b => b.onclick = () => { setView(b.dataset.view); writeUrl(); });
+  $('#mob-toggle').onclick = () => { setView(st.view === 'map' ? 'split' : 'map'); writeUrl(); scrollTo(0, 0); };
+
+  // ---------- события ----------
+  const apply = (push = true) => { st.page = 1; writeUrl(push); syncInputs(); renderList(); };
+  $$('.dealsw button').forEach(b => b.onclick = () => { st.deal = b.dataset.deal; st.min = st.max = ''; if (st.deal !== 'rent') st.pets = ''; fitted = false; apply(); });
+  ['type', 'district', 'rooms'].forEach(k => F[k].onchange = () => { st[k] = F[k].value; if (k === 'district') fitted = false; apply(); });
+  let t; ['min', 'max'].forEach(k => F[k].oninput = () => { clearTimeout(t); t = setTimeout(() => { st[k] = F[k].value.replace(/\D/g, ''); apply(false); }, 350); });
+  $('#sort').onchange = () => { st.sort = $('#sort').value; apply(false); };
+  $('#sheet-body').addEventListener('change', e => {
+    const el = e.target;
+    if (el.name === 's-type') st.type = el.value;
+    else if (el.name === 's-rooms') st.rooms = el.value;
+    else if (el.dataset.mirror) st[el.dataset.mirror] = el.value.replace(/\D/g, '') || (el.dataset.mirror === 'district' ? el.value : '');
+    else if (el.dataset.extra) st[el.dataset.extra] = el.type === 'checkbox' ? (el.checked ? '1' : '') : el.value;
+    if (el.dataset.mirror === 'district') { st.district = el.value; fitted = false; }
+    apply(false);
+  });
+  $('#sheet-body').addEventListener('input', e => { if (e.target.matches('input[inputmode=numeric]')) e.target.dispatchEvent(new Event('change', { bubbles: true })); });
+  document.addEventListener('click', e => {
+    const rm = e.target.closest('[data-rm]'); if (rm) { st[rm.dataset.rm] = ''; if (rm.dataset.rm === 'district') fitted = false; apply(); }
+    if (e.target.closest('#clear-all, #clear-all2, #reset-all')) { KEYS.forEach(k => { if (!['deal', 'view', 'sort'].includes(k)) st[k] = ''; }); boundsOn = false; $('#bounds').checked = false; fitted = false; apply(); }
+    if (e.target.id === 'load-more') { st.page++; writeUrl(false); renderList(); }
+  });
+  // шторка
+  const sheet = $('#sheet'), opener = $('#open-sheet');
+  const openSheet = () => { sheet.classList.add('open'); opener.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; sheet.querySelector('input,select').focus(); };
+  const closeSheet = () => { sheet.classList.remove('open'); opener.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; opener.focus(); };
+  opener.onclick = openSheet;
+  sheet.addEventListener('click', e => { if (e.target.closest('[data-close-sheet]')) closeSheet(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet(); });
+  // избранное
+  $('#fav-open').onclick = () => { const f = KH.get('kh_favs', []); if (!f.length) return KHS.toast('В избранном пока пусто — нажмите ♡ на карточке'); KHS.toast(`В избранном: ${f.length}. Отдельная страница избранного — в следующей версии`); };
+  // PDF
+  $('#pdf').onclick = () => { $('#print-date').textContent = new Date().toLocaleDateString('ru-RU'); window.print(); };
+  window.addEventListener('popstate', () => { readUrl(); syncInputs(); setView(st.view); renderList(); });
+
+  // SEO-ссылки
+  $('#l-dist').innerHTML = KH.DISTRICTS.map(d => `<a href="?district=${d.slug}">${d.name}</a>`).join('');
+  $('#l-type').innerHTML = Object.entries(TYPE_ACC).map(([k, v]) => `<a href="?type=${k}">${v[0].toUpperCase() + v.slice(1)}</a>`).join('');
+
+  // реальная высота панели фильтров (она переносится на узких экранах)
+  const syncBar = () => document.documentElement.style.setProperty('--bar', F.offsetHeight + 'px');
+  addEventListener('resize', syncBar); syncBar();
+
+  KHS.onCurrency(() => renderList());
+  readUrl(); syncInputs(); initMap(); setView(st.view);
+  KHS.initHeader(); // вызывает renderList через событие валюты
+})();
+</script>
+</body>
+</html>
