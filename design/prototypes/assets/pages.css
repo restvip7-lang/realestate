@@ -307,6 +307,21 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 .calc .total span{color:rgba(255,255,255,.7);font-size:14px}
 .ptable td small{display:block;color:var(--muted);font-size:13px}
 
+/* ---------- услуги ---------- */
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.sgrid>*{min-width:0}
+.scard{border:1px solid var(--line);border-radius:var(--r);padding:24px;background:#fff;display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
+.scard:target{border-color:var(--sea-deep);box-shadow:0 0 0 3px #E9F7FA}
+.scard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.scard .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:#E9F7FA;color:var(--sea-deep);font-size:22px;flex-shrink:0}
+.scard .price-tag{font-weight:700;font-size:15px;background:var(--mist);border-radius:8px;padding:6px 10px;text-align:right}
+.scard .price-tag.free{background:#E7F6EE;color:var(--ok)}
+.scard h3{font-size:21px}
+.scard p{color:#2B323C}
+.scard .checklist li{font-size:15px}
+.scard .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.scard.wide{grid-column:1/-1}
+
 /* ---------- политика ---------- */
 .legal h2{font-size:22px}
 .legal table{width:100%;border-collapse:collapse;font-size:15px}
@@ -382,6 +397,8 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .feat{grid-template-columns:1fr;gap:0}
   .timeline{grid-template-columns:1fr}
   .ccards,.offices,.xrow{grid-template-columns:1fr}
+  .sgrid{grid-template-columns:1fr}
+  .scard{padding:18px}
   .pstep{grid-template-columns:1fr;gap:10px;padding:18px}
   .pstep .who{grid-template-columns:1fr}
   .mhero-grid,.revs{grid-template-columns:1fr}
