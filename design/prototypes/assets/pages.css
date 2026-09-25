@@ -266,6 +266,26 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
 .xrow b{display:block;font-size:15px}
 .xrow span{font-size:13px;color:var(--muted)}
 
+/* ---------- страница эксперта ---------- */
+.mhero{background:var(--ink);color:#fff;padding:22px 0 40px}
+.mhero-grid{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+.mhero-grid>*{min-width:0}
+.mhero-grid>img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r);background:var(--ink-2)}
+.mhero .eyebrow{color:var(--sea-light)}
+.mhero h1{font-size:clamp(28px,3.6vw,46px);margin:8px 0 6px}
+.mhero .role{font-size:18px;color:rgba(255,255,255,.85)}
+.mhero .spec{margin-top:14px;font-size:17px;color:rgba(255,255,255,.78);max-width:52ch}
+.mhero .areas{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.mhero .areas a{border:1px solid var(--line-d);border-radius:999px;padding:6px 12px;font-size:14px}
+.mhero .areas a:hover{border-color:#fff}
+.mhero .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.revs{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.revs>*{min-width:0}
+.rev{background:var(--sand);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px}
+.rev .stars{color:#E0902B;letter-spacing:2px}
+.rev .who{margin-top:auto;display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--muted)}
+.mcard h3 a:hover{color:var(--sea-deep)}
+
 /* ---------- политика ---------- */
 .legal h2{font-size:22px}
 .legal table{width:100%;border-collapse:collapse;font-size:15px}
@@ -323,6 +343,7 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .cols2{grid-template-columns:1fr}
   .kfacts.k4{grid-template-columns:1fr 1fr}
   .ccards{grid-template-columns:repeat(2,1fr)}
+  .mhero-grid{grid-template-columns:220px 1fr;gap:28px}
   .offices{grid-template-columns:1fr 1fr}
   .offices .map-box{grid-column:1/-1}
   .xrow{grid-template-columns:repeat(2,1fr)}
@@ -338,6 +359,8 @@ a.pin:focus-visible .dot{stroke:#fff;stroke-width:3}
   .feat{grid-template-columns:1fr;gap:0}
   .timeline{grid-template-columns:1fr}
   .ccards,.offices,.xrow{grid-template-columns:1fr}
+  .mhero-grid,.revs{grid-template-columns:1fr}
+  .mhero-grid>img{max-width:220px}
   .req{grid-template-columns:1fr;gap:2px}
   .req dd{margin-bottom:10px}
   .legal table{font-size:13.5px}
