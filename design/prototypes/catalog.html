@@ -145,7 +145,7 @@ body{background:#fff}
     <div class="hdr-r">
       <div class="seg hide-t" data-lang role="group" aria-label="Язык"><button aria-pressed="true">RU</button><button aria-pressed="false">EN</button><button aria-pressed="false">TR</button></div>
       <select class="cur-sel hide-t" aria-label="Валюта"></select>
-      <button class="icon-btn" type="button" id="fav-open" aria-label="Показать избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></button>
+      <a class="icon-btn" href="favorites.html" id="fav-open" aria-label="Избранное"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg><span class="cnt" data-fav-count hidden>0</span></a>
       <a href="home-v2.html#lead" class="btn btn-coral btn-sm hide-m">Подобрать жильё</a>
       <button class="icon-btn burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -451,7 +451,6 @@ body{background:#fff}
   sheet.addEventListener('click', e => { if (e.target.closest('[data-close-sheet]')) closeSheet(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeSheet(); });
   // избранное
-  $('#fav-open').onclick = () => { const f = KH.get('kh_favs', []); if (!f.length) return KHS.toast('В избранном пока пусто — нажмите ♡ на карточке'); KHS.toast(`В избранном: ${f.length}. Отдельная страница избранного — в следующей версии`); };
   // PDF
   $('#pdf').onclick = () => { $('#print-date').textContent = new Date().toLocaleDateString('ru-RU'); window.print(); };
   window.addEventListener('popstate', () => { readUrl(); syncInputs(); setView(st.view); renderList(); });
