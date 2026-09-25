@@ -1,0 +1,26 @@
+# зависимости
+/node_modules
+
+# Next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# локальные файлы и секреты (пример — в .env.example)
+.env
+.env*.local
+
+# загруженные в админку файлы при локальной разработке (в продакшене — Vercel Blob)
+/media
+
+# Vercel
+.vercel
+
+# прочее
+.DS_Store
+*.pem
+npm-debug.log*
+/test-results/
+/playwright-report/
