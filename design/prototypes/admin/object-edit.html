@@ -320,7 +320,8 @@
   $$('[data-save]').forEach(b => b.onclick = () => save(b.dataset.save === 'published' ? 'published' : (F.status.value === 'published' ? 'draft' : F.status.value)));
   $('#preview').onclick = () => {
     if (!check(false)) return;
-    const o = collect(F.status.value === 'published' ? 'published' : 'draft'); KH.saveObject(o);
+    const o = collect(F.status.value === 'published' ? 'published' : 'draft');
+    try { KH.saveObject(o); } catch (e) { ADM.toast('Не хватает места в браузере: уменьшите число фото'); return; }
     window.open(`../property.html?id=${o.id}&preview=1`, '_blank');
   };
 

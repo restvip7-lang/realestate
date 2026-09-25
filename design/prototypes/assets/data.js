@@ -119,7 +119,9 @@
 
   // ---------- хранилище ----------
   const get = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } };
-  const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  // set возвращает false, если браузер не дал записать (закончилось место, приватный режим)
+  const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+  const setOrThrow = (k, v) => { if (!set(k, v)) throw new Error('storage-full'); };
 
   function allObjects() {
     const local = get('kh_objects', []);
@@ -129,7 +131,7 @@
   }
   function saveObject(o) {
     const local = get('kh_objects', []).filter(x => x.id !== o.id);
-    local.push(o); set('kh_objects', local);
+    local.push(o); setOrThrow('kh_objects', local);
   }
   function nextId(deal) {
     const ids = allObjects().filter(o => o.deal === deal).map(o => o.id);
@@ -148,10 +150,19 @@
   }
   function savePost(p) {
     const local = get('kh_posts', []).filter(x => x.id !== p.id);
-    local.push(p); set('kh_posts', local);
+    local.push(p); setOrThrow('kh_posts', local);
+  }
+
+  // Фото объекта: загруженные в админке или обложка + демо-интерьеры. Одна функция для карточки и страницы,
+  // чтобы «N фото» на карточке совпадало с галереей
+  const EXTRA = ['1502672260266-1c1ef2d93688', '1522708323590-d24dbb6b0267', '1560185007-cde436f6a4d0', '1484154218962-a197022b5858', '1586023492125-27b2c045efd7', '1600210492486-724fe5c67fb0'];
+  function gallery(o, w = 1400) {
+    if ((o.gallery || []).length) return o.gallery;
+    return [o.cover || IMG(o.img, w)].concat(EXTRA.filter(x => x !== o.img).map(x => IMG(x, w)));
   }
 
   window.KH = {
+    gallery,
     IMG, TYPES, DISTRICTS, SEED, POSTS, TEAM, PHOTOS, agentFor, get, set, COAST, MOUNTAINS,
     airportKm: d => Math.max(4, Math.round(Math.abs(38 - d.pos))) + (d.inland ? 2 : 0), // аэропорт GZP ~38 км на восток от центра
     member: id => TEAM.find(t => t.id === id),

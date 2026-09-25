@@ -289,14 +289,15 @@ body{background:#fff}
     $$('[data-rent-only]').forEach(el => el.closest('label').hidden = st.deal !== 'rent');
     $('#sort').value = st.sort;
     $$('.views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === st.view));
-    $('#s-price-l').textContent = st.deal === 'rent' ? 'Цена, € в месяц' : 'Цена, €';
-    F.min.placeholder = st.deal === 'rent' ? 'от €/мес' : 'Цена от';
+    $('#s-price-l').textContent = st.deal === 'rent' ? `Цена, ${KHS.sym()} в месяц` : `Цена, ${KHS.sym()}`;
+    F.min.placeholder = st.deal === 'rent' ? `от ${KHS.sym()}/мес` : `Цена от, ${KHS.sym()}`;
   }
 
   // ---------- фильтрация ----------
   let boundsOn = false, mapBounds = null;
   function filtered(ignoreBounds) {
-    const min = +String(st.min).replace(/\D/g, '') || 0, max = +String(st.max).replace(/\D/g, '') || Infinity;
+    // бюджет вводят в выбранной валюте, цены объектов хранятся в €
+    const min = KHS.toEur(+String(st.min).replace(/\D/g, '') || 0), max = KHS.toEur(+String(st.max).replace(/\D/g, '') || Infinity);
     let list = KH.published().filter(o => {
       if (st.id) return String(o.id) === st.id.trim();
       if (o.deal !== st.deal) return false;
@@ -350,7 +351,7 @@ body{background:#fff}
 
   // ---------- активные фильтры ----------
   function chips() {
-    const L = { type: v => ({ apartment: 'Квартиры', penthouse: 'Пентхаусы', villa: 'Виллы', duplex: 'Дуплексы' })[v], district: v => KH.district(v).name, rooms: v => v === '4+' ? '4+1 и больше' : v, min: v => 'от ' + v, max: v => 'до ' + v, sea: v => `до моря ≤ ${v} м`, area: v => `от ${v} м²`, floor: v => ({ notfirst: 'не первый этаж', notlast: 'не последний', top: 'последний этаж' })[v], id: v => 'ID ' + v, seaview: () => 'вид на море', furn: () => 'с мебелью', new: () => 'новостройка', owner: () => 'от собственника', video: () => 'с видео', pets: () => 'с животными' };
+    const L = { type: v => ({ apartment: 'Квартиры', penthouse: 'Пентхаусы', villa: 'Виллы', duplex: 'Дуплексы' })[v], district: v => KH.district(v).name, rooms: v => v === '4+' ? '4+1 и больше' : v, min: v => `от ${(+v).toLocaleString('ru-RU')} ${KHS.sym()}`, max: v => `до ${(+v).toLocaleString('ru-RU')} ${KHS.sym()}`, sea: v => `до моря ≤ ${v} м`, area: v => `от ${v} м²`, floor: v => ({ notfirst: 'не первый этаж', notlast: 'не последний', top: 'последний этаж' })[v], id: v => 'ID ' + v, seaview: () => 'вид на море', furn: () => 'с мебелью', new: () => 'новостройка', owner: () => 'от собственника', video: () => 'с видео', pets: () => 'с животными' };
     const act = Object.keys(L).filter(k => st[k]);
     $('#chips').innerHTML = act.map(k => `<button type="button" data-rm="${k}" aria-label="Убрать фильтр ${L[k](st[k])}">${L[k](st[k])} <span aria-hidden="true">✕</span></button>`).join('') + (act.length ? '<button type="button" class="clear" id="clear-all">Сбросить всё</button>' : '');
     const n = act.filter(k => !['type', 'district'].includes(k)).length;
@@ -373,7 +374,7 @@ body{background:#fff}
 
   // ---------- карта ----------
   let map, cluster, markers = new Map();
-  const shortPrice = o => { const v = o.price * ({ EUR: 1, USD: 1.09, TRY: 45.2, RUB: 98, KZT: 560, GBP: .84 }[KHS.cur] || 1), s = KHS.fmt(1).split(' ').pop(); return (o.deal === 'rent' ? Math.round(v).toLocaleString('ru-RU') : v >= 1e6 ? (v / 1e6).toFixed(1).replace('.0', '') + ' млн' : Math.round(v / 1000) + ' тыс') + ' ' + s; };
+  const shortPrice = o => { const v = o.price * KHS.rate(), s = KHS.sym(); return (o.deal === 'rent' ? Math.round(v).toLocaleString('ru-RU') : v >= 1e6 ? (v / 1e6).toFixed(1).replace('.0', '') + ' млн' : Math.round(v / 1000) + ' тыс') + ' ' + s; };
   function initMap() {
     if (!window.L) { $('#map').innerHTML = '<div class="empty" style="margin:24px">Карта не загрузилась (нет доступа к cdnjs или тайлам OpenStreetMap).</div>'; return; }
     map = L.map('map', { zoomControl: true, scrollWheelZoom: true }).setView([36.545, 31.99], 11);
@@ -389,7 +390,7 @@ body{background:#fff}
     cluster.clearLayers(); markers.clear();
     list.forEach(o => {
       const m = L.marker(KH.coords(o), { icon: L.divIcon({ className: 'pm-wrap', html: `<span class="pm ${o.deal}" data-mid="${o.id}">${shortPrice(o)}</span>`, iconSize: [0, 0] }), title: o.title, keyboard: true });
-      m.bindPopup(`<div class="pop"><img src="${KHS.imgSrc(o, 400)}" alt=""><div><span class="hint">${KH.district(o.district).name} · ${o.rooms} · ${o.area} м²</span><b>${KHS.priceOf(o)}</b><span>${o.title}</span><a href="property.html?id=${o.id}">Подробнее →</a></div></div>`, { closeButton: true, maxWidth: 240 });
+      m.bindPopup(`<div class="pop"><img src="${KHS.imgSrc(o, 400)}" alt=""><div><span class="hint">${KH.district(o.district).name} · ${o.rooms} · ${o.area} м²</span><b>${KHS.priceOf(o)}</b><span>${KHS.esc(o.title)}</span><a href="property.html?id=${o.id}">Подробнее →</a></div></div>`, { closeButton: true, maxWidth: 240 });
       m.on('mouseover', () => hl(o.id, true)); m.on('mouseout', () => hl(o.id, false));
       m.on('popupopen', () => { const c = $(`#list [data-id="${o.id}"]`); if (c && st.view !== 'map') c.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
       cluster.addLayer(m); markers.set(o.id, m);
@@ -462,7 +463,7 @@ body{background:#fff}
   const syncBar = () => document.documentElement.style.setProperty('--bar', F.offsetHeight + 'px');
   addEventListener('resize', syncBar); syncBar();
 
-  KHS.onCurrency(() => renderList());
+  KHS.onCurrency(() => { syncInputs(); renderList(); });
   readUrl(); syncInputs(); initMap(); setView(st.view);
   KHS.initHeader(); // вызывает renderList через событие валюты
 })();

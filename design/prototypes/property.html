@@ -118,7 +118,7 @@
 
 <section class="sec" style="background:var(--mist)" id="similar-sec" hidden>
   <div class="wrap">
-    <div class="sec-head"><div><span class="eyebrow">Похожие объекты</span><h2 id="sim-title">Ещё в этом районе</h2></div><a href="catalog.html?district=${""}" class="link" id="sim-all">В каталог →</a></div>
+    <div class="sec-head"><div><span class="eyebrow">Похожие объекты</span><h2 id="sim-title">Ещё в этом районе</h2></div><a href="catalog.html" class="link" id="sim-all">В каталог →</a></div>
     <div class="grid3" id="similar"></div>
   </div>
 </section>
@@ -160,20 +160,21 @@
   document.querySelector('meta[name=description]').content = `${typeName} ${o.rooms}, ${o.area} м², ${o.sea} м до моря, ${d.name}, Аланья. ${rent ? 'Аренда' : 'Продажа'}. ID ${o.id}.`;
 
   // галерея: обложка + демо-фото интерьеров
-  const extra = ['1502672260266-1c1ef2d93688', '1522708323590-d24dbb6b0267', '1560185007-cde436f6a4d0', '1484154218962-a197022b5858', '1586023492125-27b2c045efd7', '1600210492486-724fe5c67fb0'].filter(x => x !== o.img);
-  const photos = [KHS.imgSrc(o, 1400)].concat((o.gallery || []).length ? o.gallery : extra.map(x => KH.IMG(x, 1400)));
+  const photos = KH.gallery(o, 1400);
+  const esc = KHS.esc, title = esc(o.title);
+  const closed = ['sold', 'rented'].includes(o.status); // проданный / сданный: страница остаётся ради SEO, но без записи на просмотр
   const wa = `https://wa.me/900000000000?text=${encodeURIComponent(`Здравствуйте! Интересует объект ID ${o.id}: ${o.title}. ${location.href}`)}`;
   document.querySelectorAll('[data-wa]').forEach(a => a.href = wa);
 
   const statusBadge = { reserved: 'Забронирован', sold: 'Продан', rented: 'Сдан', draft: 'Черновик (предпросмотр)' }[o.status];
-  const feats = o.features || ['Открытый бассейн', 'Фитнес-зал', 'Сауна', 'Охрана 24/7', 'Видеонаблюдение', 'Генератор', 'Крытая парковка', 'Детская площадка', 'Зелёная территория'];
+  const feats = (o.features || []).length ? o.features.map(esc) : ['Открытый бассейн', 'Фитнес-зал', 'Сауна', 'Охрана 24/7', 'Видеонаблюдение', 'Генератор', 'Крытая парковка', 'Детская площадка', 'Зелёная территория'];
   const floorTxt = o.type === 'villa' ? `${o.floors} этажа` : `${o.floor} из ${o.floors}`;
 
   const rentRows = rent ? `
       <div><dt>Вид аренды</dt><dd>${o.rent.period === 'long' ? 'Долгосрочная' : 'Посуточная'}</dd></div>
       <div><dt>Депозит</dt><dd data-eur="${o.rent.deposit}">${KHS.fmt(o.rent.deposit)}</dd></div>
       <div><dt>Минимальный срок</dt><dd>${o.rent.minTerm} мес.</dd></div>
-      <div><dt>Свободна с</dt><dd>${o.rent.from}</dd></div>
+      <div><dt>Свободна с</dt><dd>${esc(o.rent.from || '—')}</dd></div>
       <div><dt>Коммунальные</dt><dd>${o.rent.utilities ? 'Включены' : 'Оплачиваются отдельно'}</dd></div>
       <div><dt>Можно с животными</dt><dd>${o.rent.pets ? 'Да' : 'Нет'}</dd></div>` : `
       <div><dt>Источник</dt><dd>${o.source === 'owner' ? 'От собственника' : 'От застройщика'}</dd></div>
@@ -184,7 +185,7 @@
   <div class="p-head">
     <div>
       ${statusBadge ? `<span class="badge rent" style="display:inline-block;margin-bottom:10px">${statusBadge}</span>` : ''}
-      <h1>${o.title}</h1>
+      <h1>${title}</h1>
       <div class="loc"><span>${d.name}, Аланья</span><span>${o.sea} м до моря</span><span class="mono">ID ${o.id}</span></div>
     </div>
     <div class="acts">
@@ -192,7 +193,7 @@
       <button class="btn btn-line btn-sm" type="button" id="share">Поделиться</button>
     </div>
   </div>
-  <div class="gal">${photos.slice(0, 5).map((p, i) => `<button type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}"><img src="${p}" alt="${typeName} ${o.rooms}, ${d.name} — фото ${i + 1}" ${i ? 'loading="lazy"' : ''}>${i === 0 ? `<span class="all">Все фото · ${o.photos || photos.length}</span>` : ''}</button>`).join('')}</div>
+  <div class="gal">${photos.slice(0, 5).map((p, i) => `<button type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}"><img src="${p}" alt="${typeName} ${o.rooms}, ${d.name} — фото ${i + 1}" ${i ? 'loading="lazy"' : ''}>${i === 0 ? `<span class="all">Все фото · ${photos.length}</span>` : ''}</button>`).join('')}</div>
   <div class="p-grid">
     <div>
       <div class="facts">
@@ -212,7 +213,7 @@
           ${rentRows}
         </dl>
       </div>
-      <div class="block desc"><h2>Описание</h2>${(o.descRu || `Демо-описание. ${typeName} ${o.rooms} площадью ${o.area} м² в районе ${d.name}. Гостиная с кухней, ${o.rooms.split('+')[0]} спальни, балкон. Комплекс с бассейном и охраной, до моря около ${o.sea} м.\n\n${d.about}`).split(/\n\n/).map(p => `<p>${p}</p>`).join('')}</div>
+      <div class="block desc"><h2>Описание</h2>${(o.descRu ? esc(o.descRu) : `Демо-описание. ${typeName} ${o.rooms} площадью ${o.area} м² в районе ${d.name}. Гостиная с кухней, ${o.rooms.split('+')[0]} спальни, балкон. Комплекс с бассейном и охраной, до моря около ${o.sea} м.\n\n${d.about}`).split(/\n\n/).map(p => `<p>${p}</p>`).join('')}</div>
       <div class="block"><h2>Инфраструктура комплекса</h2><div class="feats">${feats.map(f => `<span>${f}</span>`).join('')}</div></div>
       <div class="block"><h2>Расположение</h2>
         <div class="mini-map"><svg viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Схема: ${d.name} на побережье Аланьи">
@@ -237,12 +238,14 @@
         <span class="big" data-price-main>${KHS.priceOf(o)}</span>
         ${rent ? `<span class="sub">Депозит ${KHS.fmt(o.rent.deposit)} · от ${o.rent.minTerm} мес.</span>` : `<span class="sub">${KHS.fmt(o.price / o.area, '/м²')}</span>`}
         <div class="checked"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg><span><b>Цена и наличие проверены</b><br>${o.checked} · перед бронью подтверждаем ещё раз</span></div>
-        <a href="#view" class="btn btn-coral">Записаться на просмотр</a>
+        ${closed ? `<p class="sub">Этот объект уже ${o.status === 'sold' ? 'продан' : 'сдан'}. Подберём похожий вариант.</p>
+        <a href="#similar-sec" class="btn btn-coral">Смотреть похожие</a>
+        <a href="${wa}" class="btn btn-wa" target="_blank" rel="noopener">Подобрать похожий в WhatsApp</a>` : `<a href="#view" class="btn btn-coral">Записаться на просмотр</a>
         <a href="${wa}" class="btn btn-wa" target="_blank" rel="noopener">Спросить в WhatsApp</a>
-        <button type="button" class="btn btn-line" id="ask-price">Получить актуальную цену</button>
+        <button type="button" class="btn btn-line" id="ask-price">Получить актуальную цену</button>`}
         <div class="agent"><img src="${KH.IMG(agent.img, 160)}" alt="${agent.role} (фото для примера)"><div><b>${agent.name}</b><span>${agent.role} · ${d.name} · ${agent.langs}</span></div></div>
       </div>
-      <form class="viewform" id="view" novalidate>
+      <form class="viewform" id="view" novalidate ${closed ? 'hidden' : ''}>
         <h2>Записаться на просмотр</h2>
         <div class="seg2" role="radiogroup" aria-label="Формат просмотра"><label><input type="radio" name="fmt" value="live" checked><span>Вживую</span></label><label><input type="radio" name="fmt" value="video"><span>По видео</span></label></div>
         <div class="fld"><label for="v-name">Имя</label><input id="v-name" required autocomplete="name"><span class="err-msg">Укажите имя</span></div>
@@ -264,13 +267,14 @@
   document.addEventListener('keydown', e => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') showPh(cur - 1); if (e.key === 'ArrowRight') showPh(cur + 1); });
 
   $('#share').onclick = () => { navigator.clipboard?.writeText(location.href); KHS.toast('Ссылка скопирована'); };
-  $('#ask-price').onclick = () => { $('#view').scrollIntoView(); $('#v-name').focus(); KHS.toast('Оставьте контакт — пришлём актуальную цену'); };
+  if (!closed) $('#ask-price').onclick = () => { $('#view').scrollIntoView(); $('#v-name').focus(); KHS.toast('Оставьте контакт — пришлём актуальную цену'); };
   $('#view').addEventListener('submit', e => { e.preventDefault(); if (KHS.validate(e.target)) { e.target.querySelector('.notice').style.display = 'block'; e.target.querySelector('button[type=submit]').disabled = true; } });
 
   // похожие
   const sim = KH.published().filter(x => x.id !== o.id && x.deal === o.deal).sort((a, b) => (b.district === o.district) - (a.district === o.district) || Math.abs(a.price - o.price) - Math.abs(b.price - o.price)).slice(0, 3);
   $('#sim-all').href = `catalog.html?${rent ? 'deal=rent&' : ''}district=${d.slug}`;
-  if (sim.length) { $('#similar-sec').hidden = false; $('#sim-title').textContent = sim[0].district === o.district ? `Ещё в районе ${d.name}` : 'Похожие по цене'; }
+  if (sim.length) { $('#similar-sec').hidden = false; $('#sim-title').textContent = closed ? 'Похожие в продаже' : sim[0].district === o.district ? `Ещё в районе ${d.name}` : 'Похожие по цене'; }
+  if (closed) document.querySelectorAll('a[href="#view"]').forEach(a => { a.href = '#similar-sec'; a.textContent = 'Похожие объекты'; });
   const renderSim = () => { $('#similar').innerHTML = sim.map(KHS.card).join(''); KHS.reveal($('#similar')); };
   KHS.onCurrency(() => { renderSim(); const m = $('[data-price-main]'); if (m) m.textContent = KHS.priceOf(o); });
   KHS.initHeader();
@@ -278,8 +282,8 @@
 
   // JSON-LD как в боевой версии (RealEstateListing + Offer)
   const ld = document.createElement('script'); ld.type = 'application/ld+json';
-  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'RealEstateListing', name: o.title, url: location.href, image: photos.slice(0, 3), datePosted: '2026-09-20',
-    offers: { '@type': 'Offer', price: o.price, priceCurrency: 'EUR', availability: 'https://schema.org/InStock', businessFunction: rent ? 'http://purl.org/goodrelations/v1#LeaseOut' : 'http://purl.org/goodrelations/v1#Sell' },
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'RealEstateListing', name: o.title, url: location.href.split('&preview')[0], image: photos.slice(0, 3), datePosted: '2026-09-20',
+    offers: { '@type': 'Offer', price: o.price, priceCurrency: 'EUR', availability: 'https://schema.org/' + (closed ? 'SoldOut' : o.status === 'reserved' ? 'LimitedAvailability' : 'InStock'), businessFunction: rent ? 'http://purl.org/goodrelations/v1#LeaseOut' : 'http://purl.org/goodrelations/v1#Sell' },
     about: { '@type': o.type === 'villa' ? 'SingleFamilyResidence' : 'Apartment', numberOfRooms: o.rooms, floorSize: { '@type': 'QuantitativeValue', value: o.area, unitCode: 'MTK' }, address: { '@type': 'PostalAddress', addressLocality: 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' } } });
   document.head.appendChild(ld);
 })();

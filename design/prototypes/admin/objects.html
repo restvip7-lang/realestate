@@ -81,9 +81,11 @@
   document.addEventListener('click', e => {
     const dup = e.target.closest('[data-dup]'), hide = e.target.closest('[data-hide]'), pub = e.target.closest('[data-pub]');
     const find = id => KH.objects().find(o => o.id === +id);
+    try {
     if (dup) { const o = find(dup.dataset.dup); const c = Object.assign({}, o, { id: KH.nextId(o.deal), status: 'draft', title: o.title + ' (копия)' }); delete c.local; KH.saveObject(c); ADM.toast(`Создан черновик ID ${c.id}`); render(); }
     if (hide) { const o = find(hide.dataset.hide); KH.saveObject(Object.assign({}, o, { status: 'hidden' })); ADM.toast(`ID ${o.id} снят с публикации`); render(); }
     if (pub) { const o = find(pub.dataset.pub); KH.saveObject(Object.assign({}, o, { status: 'published' })); ADM.toast(`ID ${o.id} опубликован`); render(); }
+    } catch (err) { ADM.toast('Не хватает места в браузере: удалите лишние фото или нажмите «Сбросить демо»'); }
   });
 
   const saved = new URLSearchParams(location.search).get('saved');

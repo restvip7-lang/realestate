@@ -288,7 +288,7 @@
       <button class="chip" type="button" aria-pressed="false" data-chip="sea">У моря · до 300 м</button>
       <button class="chip" type="button" aria-pressed="false" data-chip="new">Новостройки</button>
       <button class="chip" type="button" aria-pressed="false" data-chip="furn">С мебелью</button>
-      <button class="chip" type="button" aria-pressed="false" data-chip="budget">До 150 000 €</button>
+      <button class="chip" type="button" aria-pressed="false" data-chip="budget">До <span data-eur="150000">150 000 €</span></button>
       <button class="chip" type="button" aria-pressed="false" data-chip="view">Вид на море</button>
     </div>
     <div class="mob-ph" style="display:none"><img src="https://images.unsplash.com/photo-1666202629981-71704ec80028?auto=format&fit=crop&w=800&q=70" alt="Вид на Аланью с горы" loading="lazy"></div>
@@ -489,7 +489,8 @@
   const val = id => $(id).value.trim();
   const rooms = () => val('#f-rooms') || val('#f-rooms-m');
   function filtered() {
-    const min = +val('#f-min').replace(/\D/g, '') || 0, max = +val('#f-max').replace(/\D/g, '') || Infinity;
+    // бюджет вводят в выбранной валюте, цены объектов хранятся в €
+    const min = KHS.toEur(+val('#f-min').replace(/\D/g, '') || 0), max = KHS.toEur(+val('#f-max').replace(/\D/g, '') || Infinity);
     const id = +val('#f-id'), sea = +val('#f-sea') || Infinity, area = +val('#f-area') || 0, r = rooms();
     return KH.published().filter(o => {
       if (id) return o.id === id;
@@ -530,7 +531,7 @@
   function setDeal(d) {
     state.deal = d;
     $$('.search .tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.deal === d));
-    $('#budget-lbl').textContent = d === 'rent' ? 'Бюджет, € в месяц' : 'Бюджет, €';
+    $('#budget-lbl').textContent = d === 'rent' ? `Бюджет, ${KHS.sym()} в месяц` : `Бюджет, ${KHS.sym()}`;
     update();
   }
   $$('.search .tabs button').forEach(b => b.addEventListener('click', () => setDeal(b.dataset.deal)));
@@ -556,7 +557,7 @@
     const on = c.getAttribute('aria-pressed') !== 'true';
     $('#search').reset(); setDeal('sale');
     $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c && on));
-    if (on) ({ sea: () => $('#f-sea').value = '300', new: () => $('#f-new').checked = true, furn: () => $('#f-furn').checked = true, budget: () => $('#f-max').value = '150000', view: () => $('#f-seaview').checked = true })[c.dataset.chip]();
+    if (on) ({ sea: () => $('#f-sea').value = '300', new: () => $('#f-new').checked = true, furn: () => $('#f-furn').checked = true, budget: () => $('#f-max').value = Math.round(150000 * KHS.rate()), view: () => $('#f-seaview').checked = true })[c.dataset.chip]();
     update(); renderGrid();
   }));
 
@@ -595,8 +596,8 @@
   function renderPosts() {
     const live = KH.livePosts();
     const d = s => new Date(s).toLocaleDateString('ru-RU');
-    $('#arts').innerHTML = live.filter(p => p.kind === 'article').slice(0, 3).map(p => `<a href="#" class="art rv"><img src="${p.cover || KH.IMG(p.img || '1560518883-ce09059eeffa', 400)}" alt="" loading="lazy"><div><span class="m">${p.cat} · ${d(p.date)}${p.mins ? ' · ' + p.mins + ' мин' : ''}</span><h3>${p.title}</h3></div></a>`).join('');
-    $('#news').innerHTML = live.filter(p => p.kind === 'news').slice(0, 4).map(p => `<a href="#"><img src="${p.cover || KH.IMG(p.img || '1715593949273-09009558300a', 200)}" alt="" loading="lazy"><span>${p.pinned ? '<span class="pin-tag">Закреплено · </span>' : ''}<span class="m">${d(p.date)} · ${p.cat}</span><h3>${p.title}</h3></span></a>`).join('');
+    $('#arts').innerHTML = live.filter(p => p.kind === 'article').slice(0, 3).map(p => `<a href="#" class="art rv"><img src="${p.cover || KH.IMG(p.img || '1560518883-ce09059eeffa', 400)}" alt="" loading="lazy"><div><span class="m">${KHS.esc(p.cat)} · ${d(p.date)}${p.mins ? ' · ' + p.mins + ' мин' : ''}</span><h3>${KHS.esc(p.title)}</h3></div></a>`).join('');
+    $('#news').innerHTML = live.filter(p => p.kind === 'news').slice(0, 4).map(p => `<a href="#"><img src="${p.cover || KH.IMG(p.img || '1715593949273-09009558300a', 200)}" alt="" loading="lazy"><span>${p.pinned ? '<span class="pin-tag">Закреплено · </span>' : ''}<span class="m">${d(p.date)} · ${KHS.esc(p.cat)}</span><h3>${KHS.esc(p.title)}</h3></span></a>`).join('');
     KHS.reveal($('#journal'));
   }
 
@@ -606,7 +607,8 @@
     if (KHS.validate(e.target)) { $('#l-ok-msg').style.display = 'block'; e.target.querySelector('button[type=submit]').disabled = true; }
   });
 
-  KHS.onCurrency(() => { if ($('#grid').children.length) { const hasFilter = $('#res-title').textContent !== 'Актуальные предложения'; hasFilter ? renderGrid() : first(); } renderDistricts(); if (sel) pickDistrict(sel); });
+  KHS.onCurrency(() => {
+    $('#budget-lbl').textContent = state.deal === 'rent' ? `Бюджет, ${KHS.sym()} в месяц` : `Бюджет, ${KHS.sym()}`; if ($('#grid').children.length) { const hasFilter = $('#res-title').textContent !== 'Актуальные предложения'; hasFilter ? renderGrid() : first(); } renderDistricts(); if (sel) pickDistrict(sel); });
   KHS.initHeader();
   first(); update(); renderDistricts(); renderPosts(); KHS.reveal();
 })();

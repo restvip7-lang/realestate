@@ -8,6 +8,10 @@
 
   const num = n => Math.round(n).toLocaleString('ru-RU').replace(/ |,/g, ' ');
   const fmt = (eur, sfx = '') => { const [r, s] = RATES[cur]; return `${num(eur * r)} ${s}${sfx}`; };
+  const rate = () => RATES[cur][0], sym = () => RATES[cur][1];
+  const toEur = v => v / rate(); // сумма, введённая в выбранной валюте → €
+  // текст из админки вставляется в HTML, поэтому экранируем
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const priceOf = o => o.deal === 'rent' ? fmt(o.price, ' / мес') : fmt(o.price);
 
   const ROOMS_HINT = r => { const [a, b] = r.split('+'); return a === '1' && b === '0' ? 'Студия: одна комната с кухней' : `${a} спальн${a === '1' ? 'я' : a < 5 ? 'и' : 'ей'} + ${b} гостиная`; };
@@ -28,14 +32,14 @@
       <div class="ph"><img src="${imgSrc(o, 640)}" alt="${KH.TYPES[o.type]} ${o.rooms}, ${d.name}, Аланья" loading="lazy" width="640" height="480">
         <div class="badges">${badges.map(([c, t]) => `<span class="badge ${c}">${t}</span>`).join('')}</div>
         <button class="fav" type="button" data-fav="${o.id}" aria-pressed="${favs.has(o.id)}" aria-label="Добавить в избранное">${ICON_HEART}</button>
-        <span class="photos"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>${o.photos || 1} фото</span>
+        <span class="photos"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>${KH.gallery(o).length} фото</span>
       </div>
       <div class="bd">
         <span class="loc">${ICON_PIN}${d.name} · Аланья</span>
-        <h3><a href="property.html?id=${o.id}">${o.title}</a></h3>
+        <h3><a href="property.html?id=${o.id}">${esc(o.title)}</a></h3>
         <div class="specs"><span><abbr title="${ROOMS_HINT(o.rooms)}">${o.rooms}</abbr></span><span>${o.area} м²</span><span>${floor}</span><span>${o.sea} м до моря</span></div>
         <div class="price-row"><span class="price" data-price="${o.id}">${priceOf(o)}</span><span class="more">Подробнее →</span></div>
-        <span class="upd">${o.deal === 'rent' ? 'Свободна с ' + o.rent.from : fmt(o.price / o.area, '/м²') + ' · цена обновлена ' + o.checked} · <span class="id">ID ${o.id}</span></span>
+        <span class="upd">${o.deal === 'rent' ? 'Свободна с ' + esc(o.rent && o.rent.from || '—') : fmt(o.price / o.area, '/м²') + ' · цена обновлена ' + o.checked} · <span class="id">ID ${o.id}</span></span>
       </div>
     </article>`;
   }
@@ -123,5 +127,5 @@
     return ok;
   }
 
-  window.KHS = { fmt, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
+  window.KHS = { fmt, rate, sym, toEur, esc, priceOf, card, setCurrency, onCurrency, initHeader, reveal, toast, validate, imgSrc, ROOMS_HINT, get cur() { return cur; } };
 })();
