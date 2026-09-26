@@ -340,7 +340,28 @@
     "byDistrict": "Bölgelere göre",
     "byType": "Türe göre",
     "collections": "Seçkiler",
-    "firstLine": "Denize sıfır"
+    "firstLine": "Denize sıfır",
+    "floor": "Kat",
+    "floors": {
+      "notfirst": "Giriş katı hariç",
+      "notlast": "En üst kat hariç",
+      "top": "En üst kat (çatı dubleksi)"
+    },
+    "owner": "Sahibinden",
+    "video": "Videolu",
+    "pets": "Evcil hayvan kabul",
+    "viewSplit": "Liste ve harita",
+    "viewList": "Sadece liste",
+    "viewMap": "Sadece harita",
+    "viewsLabel": "Görünüm",
+    "map": "Harita",
+    "list": "Liste",
+    "mapLabel": "Harita: Alanya sahilindeki ilanlar",
+    "mapFail": "Harita yüklenemedi. Bağlantınızı kontrol edip sayfayı yenileyin.",
+    "more": "Detaylar →",
+    "mapCount": "Haritada {n}",
+    "k": "{n} bin",
+    "mln": "{n} mn"
   },
   "property": {
     "openPhoto": "{n}. fotoğrafı aç",

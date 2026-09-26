@@ -28,7 +28,7 @@ export async function PropertyCard({ p, priority = false }: { p: Property; prior
   const floor = p.type === 'villa' ? t('floors', { n: p.floors ?? 1 }) : t('floor', { n: p.floor ?? 1 })
   const title = `${typeName(p.type, locale)} ${p.rooms ?? ''}, ${d?.name ?? ''}`
   return (
-    <article className="card">
+    <article className="card" data-pid={p.id}>
       <div className="ph">
         {cover ? <Image src={cover} alt={`${title}, ${t('alanya')}`} width={640} height={480} sizes="(max-width: 760px) 100vw, 400px" priority={priority} /> : null}
         <div className="badges">

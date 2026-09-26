@@ -340,7 +340,28 @@
     "byDistrict": "By district",
     "byType": "By type",
     "collections": "Collections",
-    "firstLine": "Beachfront"
+    "firstLine": "Beachfront",
+    "floor": "Floor",
+    "floors": {
+      "notfirst": "Not ground floor",
+      "notlast": "Not top floor",
+      "top": "Top floor (penthouse)"
+    },
+    "owner": "From owner",
+    "video": "Has video",
+    "pets": "Pets allowed",
+    "viewSplit": "List and map",
+    "viewList": "List only",
+    "viewMap": "Map only",
+    "viewsLabel": "View",
+    "map": "Map",
+    "list": "List",
+    "mapLabel": "Map of listings on the Alanya coast",
+    "mapFail": "The map failed to load. Check your connection and reload the page.",
+    "more": "Details →",
+    "mapCount": "{n} on the map",
+    "k": "{n}K",
+    "mln": "{n}M"
   },
   "property": {
     "openPhoto": "Open photo {n}",
