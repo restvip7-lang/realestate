@@ -35,7 +35,7 @@
 
 ## Этап 2.5 — Перенос прототипов на Next.js
 - [ ] [human] Vercel: подключить GitHub и создать Neon (docs/deploy.md), нажать «Загрузить демо-данные»
-- [ ] [ ] Районы: /districts, /districts/[slug]
+- [x] [claude] Районы: /districts, /districts/[slug]
 - [ ] [ ] Команда: /team, /team/[slug]; отзывы /reviews
 - [ ] [ ] Блог и новости: /blog, /blog/[slug], /news, /news/[slug]
 - [ ] [ ] Как проходит покупка, Услуги, Гражданство, ВНЖ, Контакты, Политика
