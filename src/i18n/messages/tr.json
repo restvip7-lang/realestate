@@ -692,5 +692,11 @@
     "seoVillas": "Villalar {where}",
     "seoNew": "Yeni projeler {where}",
     "seoRent": "Kiralık {where}"
+  },
+  "cookies": {
+    "label": "Çerez onayı",
+    "text": "Çerez kullanıyoruz: sitenin çalışması için zorunlu olanları, analiz ve reklam çerezlerini ise yalnızca onayınızla. <link>Ayrıntılar ve ayarlar</link>",
+    "necessary": "Yalnızca zorunlu",
+    "all": "Tümünü kabul et"
   }
 }

@@ -692,5 +692,11 @@
     "seoVillas": "Villas {where}",
     "seoNew": "New builds {where}",
     "seoRent": "Rentals {where}"
+  },
+  "cookies": {
+    "label": "Cookie consent",
+    "text": "We use cookies: essential ones to make the site work, analytics and advertising only with your consent. <link>Details and settings</link>",
+    "necessary": "Essential only",
+    "all": "Accept all"
   }
 }

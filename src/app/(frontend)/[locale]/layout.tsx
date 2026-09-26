@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { CookieBanner } from '@/components/site/CookieBanner'
 import { CurrencyProvider } from '@/components/site/Currency'
 import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
@@ -61,6 +62,7 @@ export default async function Layout({ children, params }: { children: React.Rea
               <a href="#lead" className="pick">{t('pickShort')}</a>
               <a href={`https://wa.me/${company.whatsapp}`} className="wa">WhatsApp</a>
             </nav>
+            <CookieBanner />
           </CurrencyProvider>
         </NextIntlClientProvider>
       </body>

@@ -493,3 +493,4 @@
 .pg .chip[aria-current=true]{border-color:var(--sea-deep);color:var(--sea-deep);background:#E9F7FA}
 .pg .empty{border:1px dashed var(--line);border-radius:var(--r);padding:32px 24px;text-align:center;display:grid;gap:8px;justify-items:center;background:#fff}
 .pg a.chip[aria-current=true]{border-color:var(--sea-deep);color:var(--sea-deep);background:#E9F7FA}
+@media (max-width:760px){.pg .ptable td.num{white-space:normal}.pg .cols2>*{min-width:0}}
