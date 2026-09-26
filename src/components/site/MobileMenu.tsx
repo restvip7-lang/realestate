@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
-// Кнопка-бургер и выезжающее меню: фокус остаётся внутри, Esc закрывает, прокрутка страницы блокируется
+// Кнопка-бургер и выезжающее меню: фокус остаётся внутри, Esc закрывает, прокрутка страницы блокируется.
+// Меню выводится в <body> (портал), чтобы шапка не передавала ему белый цвет текста и не прятала под нижней панелью.
 export function MobileMenu({ openLabel, closeLabel, dialogLabel, children }: {
   openLabel: string
   closeLabel: string
@@ -43,7 +45,8 @@ export function MobileMenu({ openLabel, closeLabel, dialogLabel, children }: {
       <button ref={opener} className="icon-btn burger" type="button" aria-label={openLabel} aria-expanded={open} aria-controls="mmenu" onClick={() => setOpen(true)}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
       </button>
-      <div className={`mmenu${open ? ' open' : ''}`} id="mmenu" role="dialog" aria-modal="true" aria-label={dialogLabel}>
+      {open && createPortal(
+      <div className="mmenu open" id="mmenu" role="dialog" aria-modal="true" aria-label={dialogLabel}>
         <div className="scrim" onClick={close} />
         <div
           className="panel"
@@ -60,7 +63,9 @@ export function MobileMenu({ openLabel, closeLabel, dialogLabel, children }: {
           </div>
           {children}
         </div>
-      </div>
+      </div>,
+      document.body,
+      )}
     </>
   )
 }

@@ -45,6 +45,8 @@ export function CatalogLayout({ points, children }: { points: MapPoint[]; childr
   const [failed, setFailed] = useState(false)
   const [ready, setReady] = useState(false)
   const bounds = useRef<Leaflet.LatLngBounds | null>(null)
+  const main = useRef<HTMLElement>(null)
+  const [inView, setInView] = useState(true)
   const fitted = useRef(false) // карта была видна, когда подгоняли масштаб
 
   // создаём карту один раз
@@ -117,6 +119,14 @@ export function CatalogLayout({ points, children }: { points: MapPoint[]; childr
     return () => clearTimeout(id)
   }, [view, ready])
 
+  // кнопка «Карта / Список» видна, только пока на экране каталог (не над формой заявки и подвалом)
+  useEffect(() => {
+    if (!main.current) return
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { rootMargin: '0px 0px -40% 0px' })
+    io.observe(main.current)
+    return () => io.disconnect()
+  }, [])
+
   // наведение на карточку подсвечивает метку
   useEffect(() => {
     const hl = (e: Event, on: boolean) => {
@@ -135,14 +145,14 @@ export function CatalogLayout({ points, children }: { points: MapPoint[]; childr
 
   return (
     <>
-      <main className={`cat${view === 'list' ? ' list-only' : view === 'map' ? ' map-only' : ''}`}>
+      <main ref={main} className={`cat${view === 'list' ? ' list-only' : view === 'map' ? ' map-only' : ''}`}>
         {children}
         <aside className="mapcol" aria-label={t('mapLabel')}>
           <div id="map" ref={box} role="application" aria-label={t('mapLabel')} />
           {failed && <div className="empty" style={{ position: 'absolute', inset: 24, height: 'fit-content' }}>{t('mapFail')}</div>}
         </aside>
       </main>
-      <button type="button" className="mob-toggle" onClick={() => setCatView(view === 'map' ? 'split' : 'map')}>
+      <button type="button" className="mob-toggle" hidden={!inView && view !== 'map'} onClick={() => setCatView(view === 'map' ? 'split' : 'map')}>
         {view === 'map' ? t('list') : t('map')}
       </button>
     </>
