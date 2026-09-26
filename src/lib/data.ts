@@ -170,3 +170,46 @@ export async function districtCounts(deal: 'sale' | 'rent' = 'sale'): Promise<Re
   })
   return out
 }
+
+export async function getDistrict(slug: string, locale: Locale): Promise<District | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'districts', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
+  return docs[0] ?? null
+}
+
+/** Опубликованные объекты района (продажа и аренда) — для страницы района. */
+export async function districtProperties(districtId: number, locale: Locale): Promise<Property[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    locale,
+    where: { and: [{ status: { equals: 'published' } }, { district: { equals: districtId } }] },
+    sort: '-id',
+    limit: 500,
+    depth: 1,
+    pagination: false,
+    ...pub,
+  })
+  return docs
+}
+
+export type DistrictStat = { sale: number; rent: number; minSea: number | null }
+/** Для каждого района: сколько объектов в продаже и аренде, ближайший к морю. */
+export async function districtStats(): Promise<Record<number, DistrictStat>> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    where: { status: { equals: 'published' } },
+    select: { district: true, deal: true, sea: true },
+    limit: 5000,
+    depth: 0,
+    pagination: false,
+    ...pub,
+  })
+  const out: Record<number, DistrictStat> = {}
+  docs.forEach((p) => {
+    const id = typeof p.district === 'object' ? p.district?.id : p.district
+    if (!id) return
+    const s = (out[id] ??= { sale: 0, rent: 0, minSea: null })
+    s[p.deal === 'rent' ? 'rent' : 'sale']++
+    if (p.sea != null) s.minSea = s.minSea == null ? p.sea : Math.min(s.minSea, p.sea)
+  })
+  return out
+}

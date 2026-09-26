@@ -60,8 +60,20 @@
     "goal": "Purpose",
     "budget": "Budget",
     "optional": "optional",
-    "goals": ["Not decided yet", "To live in", "For holidays", "To rent out", "Residence permit / citizenship"],
-    "budgets": ["Not decided yet", "up to €100,000", "€100–200,000", "€200–400,000", "from €400,000"],
+    "goals": [
+      "Not decided yet",
+      "To live in",
+      "For holidays",
+      "To rent out",
+      "Residence permit / citizenship"
+    ],
+    "budgets": [
+      "Not decided yet",
+      "up to €100,000",
+      "€100–200,000",
+      "€200–400,000",
+      "from €400,000"
+    ],
     "wish": "Wishes",
     "wishPh": "For example: 2+1 near the sea, furnished, up to €200,000",
     "consent": "I agree to the <link>personal data processing policy</link>",
@@ -111,10 +123,22 @@
     "chipBudget": "Up to",
     "chipView": "Sea view",
     "trust": [
-      { "b": "TTYB licence No. {license}", "s": "registry of the Turkish Ministry of Trade" },
-      { "b": "Document checks", "s": "TAPU, debts, occupancy permit" },
-      { "b": "Support until TAPU", "s": "in person or by power of attorney" },
-      { "b": "Help after purchase", "s": "residence permit, utilities, rentals" }
+      {
+        "b": "TTYB licence No. {license}",
+        "s": "registry of the Turkish Ministry of Trade"
+      },
+      {
+        "b": "Document checks",
+        "s": "TAPU, debts, occupancy permit"
+      },
+      {
+        "b": "Support until TAPU",
+        "s": "in person or by power of attorney"
+      },
+      {
+        "b": "Help after purchase",
+        "s": "residence permit, utilities, rentals"
+      }
     ],
     "saleEyebrow": "For sale",
     "objectsTitle": "Latest listings",
@@ -130,11 +154,26 @@
     "teamEyebrow": "Team and service",
     "teamTitle": "Who will help you buy a home",
     "services": [
-      { "b": "Property search", "p": "We ask about your budget, goals and lifestyle and send options with their pros and cons." },
-      { "b": "Viewings", "p": "In person or by video call: we show the apartment, the complex, the grounds and the way to the sea." },
-      { "b": "Document checks", "p": "TAPU, debts and encumbrances, occupancy permit, developer reliability." },
-      { "b": "Transaction support", "p": "Tax number, contract, payment, registration of ownership." },
-      { "b": "Help after purchase", "p": "Utilities, DASK insurance, residence permit, furniture, renting out." }
+      {
+        "b": "Property search",
+        "p": "We ask about your budget, goals and lifestyle and send options with their pros and cons."
+      },
+      {
+        "b": "Viewings",
+        "p": "In person or by video call: we show the apartment, the complex, the grounds and the way to the sea."
+      },
+      {
+        "b": "Document checks",
+        "p": "TAPU, debts and encumbrances, occupancy permit, developer reliability."
+      },
+      {
+        "b": "Transaction support",
+        "p": "Tax number, contract, payment, registration of ownership."
+      },
+      {
+        "b": "Help after purchase",
+        "p": "Utilities, DASK insurance, residence permit, furniture, renting out."
+      }
     ],
     "office": "Office in Alanya",
     "teamNote": "Names are fictional, team photos are stock examples. They will be replaced with real staff.",
@@ -146,12 +185,30 @@
     "processTitle": "Buying in 6 steps",
     "processMore": "More about the process →",
     "steps": [
-      { "b": "Request", "p": "Budget, purpose, district, timing." },
-      { "b": "Selection", "p": "Options with price per m² and costs." },
-      { "b": "Viewings", "p": "In person or by video." },
-      { "b": "Checks", "p": "Documents and property before booking." },
-      { "b": "Contract and payment", "p": "Tax number, bank account, contract." },
-      { "b": "TAPU and keys", "p": "Registration and handover." }
+      {
+        "b": "Request",
+        "p": "Budget, purpose, district, timing."
+      },
+      {
+        "b": "Selection",
+        "p": "Options with price per m² and costs."
+      },
+      {
+        "b": "Viewings",
+        "p": "In person or by video."
+      },
+      {
+        "b": "Checks",
+        "p": "Documents and property before booking."
+      },
+      {
+        "b": "Contract and payment",
+        "p": "Tax number, bank account, contract."
+      },
+      {
+        "b": "TAPU and keys",
+        "p": "Registration and handover."
+      }
     ],
     "citizenshipTitle": "Turkish citizenship",
     "citizenshipText": "Which properties qualify for the programme and how the application works. We check the conditions on the date of the deal.",
@@ -174,10 +231,22 @@
     "faqTitle": "Frequently asked questions",
     "faqNote": "Draft answers; the team will provide final texts.",
     "faq": [
-      { "q": "How do I choose a district?", "a": "Decide what the purchase is for: living all year round, holidays or renting out. For living, look at infrastructure and schools (Oba, Cikcilli); for renting out, closeness to the beach and the centre. An expert will compare 2–3 districts for your needs." },
-      { "q": "Can I view a property by video?", "a": "Yes. We run live video viewings: the apartment, the view from the windows, the complex and the way to the sea. You can ask any questions." },
-      { "q": "What costs are there on top of the price?", "a": "TAPU registration tax, fees, translation and notary, DASK insurance and utility connections. We give a full estimate before booking." },
-      { "q": "How are the agency's services paid for?", "a": "Property search, viewings (in person and by video) and consultations are free. For resale properties the agency fee is 2% of the price + VAT (KDV); for our partners' new builds the developer pays it. For long-term rentals it is one month's rent. The terms are fixed in a contract before the first viewing." }
+      {
+        "q": "How do I choose a district?",
+        "a": "Decide what the purchase is for: living all year round, holidays or renting out. For living, look at infrastructure and schools (Oba, Cikcilli); for renting out, closeness to the beach and the centre. An expert will compare 2–3 districts for your needs."
+      },
+      {
+        "q": "Can I view a property by video?",
+        "a": "Yes. We run live video viewings: the apartment, the view from the windows, the complex and the way to the sea. You can ask any questions."
+      },
+      {
+        "q": "What costs are there on top of the price?",
+        "a": "TAPU registration tax, fees, translation and notary, DASK insurance and utility connections. We give a full estimate before booking."
+      },
+      {
+        "q": "How are the agency's services paid for?",
+        "a": "Property search, viewings (in person and by video) and consultations are free. For resale properties the agency fee is 2% of the price + VAT (KDV); for our partners' new builds the developer pays it. For long-term rentals it is one month's rent. The terms are fixed in a contract before the first viewing."
+      }
     ]
   },
   "catalogCats": {
@@ -195,7 +264,12 @@
     "rent": "Rent",
     "type": "Type",
     "any": "Any",
-    "types": { "apartment": "Apartment", "penthouse": "Penthouse", "villa": "Villa", "duplex": "Duplex" },
+    "types": {
+      "apartment": "Apartment",
+      "penthouse": "Penthouse",
+      "villa": "Villa",
+      "duplex": "Duplex"
+    },
     "district": "District",
     "allDistricts": "All districts",
     "rooms": "Rooms",
@@ -225,7 +299,12 @@
   "catalog": {
     "filtersLabel": "Property filters",
     "anyType": "Any type",
-    "typesPlural": { "apartment": "Apartments", "penthouse": "Penthouses", "villa": "Villas", "duplex": "Duplexes" },
+    "typesPlural": {
+      "apartment": "Apartments",
+      "penthouse": "Penthouses",
+      "villa": "Villas",
+      "duplex": "Duplexes"
+    },
     "priceFrom": "Price from",
     "filters": "Filters",
     "closeFilters": "Close filters",
@@ -233,7 +312,12 @@
     "reset": "Reset filters",
     "show": "Show",
     "sort": "Sort by",
-    "sorts": { "new": "Newest first", "cheap": "Cheapest first", "expensive": "Most expensive first", "sea": "Closest to the sea" },
+    "sorts": {
+      "new": "Newest first",
+      "cheap": "Cheapest first",
+      "expensive": "Most expensive first",
+      "sea": "Closest to the sea"
+    },
     "saleAll": "Property for sale",
     "rentAll": "Property for rent",
     "inDistrict": "in {where}",
@@ -292,7 +376,11 @@
     "year": "Year built",
     "complex": "Complex",
     "rentPeriod": "Rental type",
-    "periods": { "long": "Long-term", "short": "Daily", "season": "Seasonal" },
+    "periods": {
+      "long": "Long-term",
+      "short": "Daily",
+      "season": "Seasonal"
+    },
     "deposit": "Deposit",
     "minTerm": "Minimum term",
     "months": "{n} mo.",
@@ -304,7 +392,11 @@
     "yes": "Yes",
     "no": "No",
     "source": "Source",
-    "sources": { "developer": "From the developer", "owner": "From the owner", "agency": "Agency exclusive" },
+    "sources": {
+      "developer": "From the developer",
+      "owner": "From the owner",
+      "agency": "Agency exclusive"
+    },
     "pricePerM2": "Price per m²",
     "installment": "Instalments",
     "installmentVal": "{months} mo., {down}% down payment",
@@ -324,9 +416,18 @@
     "costsBuy": "Costs on top of the price",
     "beforeBuy": "Before you buy",
     "trustq": [
-      { "q": "Why do prices differ between websites?", "a": "The same property is often sold by several agencies. Prices differ because of the floor, view, furniture, commission and outdated listings. We compare the same unit: floor, area, view and terms of the deal." },
-      { "q": "How to spot a bait listing?", "a": "A price that is too low, no ID or complex address, \"already sold, but there's a similar one\". We show the date the price was checked and confirm availability before booking." },
-      { "q": "Found it cheaper? Let's compare", "a": "Send us the link on WhatsApp or via the form below — we'll check whether it is the same unit and what is included in the price." }
+      {
+        "q": "Why do prices differ between websites?",
+        "a": "The same property is often sold by several agencies. Prices differ because of the floor, view, furniture, commission and outdated listings. We compare the same unit: floor, area, view and terms of the deal."
+      },
+      {
+        "q": "How to spot a bait listing?",
+        "a": "A price that is too low, no ID or complex address, \"already sold, but there's a similar one\". We show the date the price was checked and confirm availability before booking."
+      },
+      {
+        "q": "Found it cheaper? Let's compare",
+        "a": "Send us the link on WhatsApp or via the form below — we'll check whether it is the same unit and what is included in the price."
+      }
     ],
     "howToBuy": "How buying works and what it costs on top of the price →",
     "price": "Price",
@@ -343,8 +444,17 @@
     "similarForSale": "Similar properties for sale",
     "similarIn": "More in {name} and similar prices",
     "toCatalog": "To the catalogue →",
-    "views": { "sea": "Sea", "mountain": "Mountains", "castle": "Castle", "city": "City / courtyard" },
-    "furn": { "yes": "Furnished", "no": "Unfurnished", "partial": "Partly furnished" }
+    "views": {
+      "sea": "Sea",
+      "mountain": "Mountains",
+      "castle": "Castle",
+      "city": "City / courtyard"
+    },
+    "furn": {
+      "yes": "Furnished",
+      "no": "Unfurnished",
+      "partial": "Partly furnished"
+    }
   },
   "costs": {
     "rows": {
@@ -408,5 +518,179 @@
     "text": "The property may have been sold or unpublished and the link is out of date. Browse the catalogue or go back to the home page.",
     "catalog": "Open the catalogue",
     "home": "Home page"
+  },
+  "districts": {
+    "crumbs": "Districts of Alanya",
+    "guide": "District guide",
+    "listTitle": "Districts of Alanya: where to buy a home",
+    "listLead": "{sea} districts along the sea from Avsallar to Gazipasa and {inland} in the hills. Compare prices and distances to the sea and the centre, and choose a district for your goals: living all year round, holidays or renting out.",
+    "listMetaDesc": "Guide to {n} districts of Alanya: prices per m², distance to the sea and centre, ratings for living and renting, properties for sale.",
+    "mapLabel": "Map of the Alanya coast with districts",
+    "mapSea": "MEDITERRANEAN SEA",
+    "mapMountains": "TAURUS MOUNTAINS",
+    "mapAirport": "✈ GZP airport",
+    "mapNote": "Not to scale. Green dot — hillside district. Tap a district to open its guide.",
+    "filterLabel": "District filter",
+    "filters": {
+      "all": "All {n}",
+      "sea": "By the sea",
+      "inland": "In the hills",
+      "life": "For year-round living",
+      "rent": "For renting out",
+      "quiet": "Quiet",
+      "budget": "Affordable"
+    },
+    "sortLabel": "Order",
+    "sorts": {
+      "geo": "West to east",
+      "cheap": "Cheapest first",
+      "exp": "Most expensive first",
+      "objs": "Most listings",
+      "center": "Closest to the centre"
+    },
+    "found": "{n, plural, one {# district found} other {# districts found}}",
+    "tagInland": "In the hills",
+    "tagSea": "By the sea",
+    "tagLife": "For living",
+    "km": "{n} km",
+    "center": "centre",
+    "toCenter": "to the centre",
+    "onSale": "{n} for sale",
+    "photoNote": "Photos: views of Alanya (illustrations, not necessarily of this district). Prices per m² and ratings are demo.",
+    "cmpEyebrow": "Comparison",
+    "cmpTitle": "All districts in one table",
+    "cmpNote": "Ratings from 1 to 5 are the opinion of Kleo Homes experts. Tap a name to open the district guide.",
+    "th": {
+      "district": "District",
+      "toCenter": "To centre",
+      "toSea": "To sea",
+      "pm": "Price per m²",
+      "sale": "For sale",
+      "rent": "For rent",
+      "life": "Living",
+      "rentScore": "Renting",
+      "beach": "Beach",
+      "quiet": "Quiet"
+    },
+    "inlandShort": "in the hills",
+    "seaTepe": "3–5 km",
+    "seaInland": "1.5–2.5 km",
+    "seaFrom": "from {m} m",
+    "seaNear": "by the sea",
+    "outOf5": "{n} out of 5",
+    "listFaqTitle": "How to choose a district in Alanya",
+    "listFaqHint": "Not sure?",
+    "listFaqAsk": "An expert will compare 2–3 districts for your needs →",
+    "listFaq": {
+      "lifeQ": "Which district is best for living all year round?",
+      "lifeA": "Where schools, clinics and shops are open all year: {names}. In resort villages some cafés and shops close in winter.",
+      "rentQ": "Where is it best to buy to rent out?",
+      "rentA": "Demand is steady by the sea and closer to the centre: {names}. We'll calculate the yield of a specific property including complex fees and management.",
+      "cheapQ": "Where are prices most affordable?",
+      "cheapA": "The cheapest areas are on the outskirts: {names}. The most expensive are the centre and Tepe.",
+      "inlandQ": "What's different about hillside districts?",
+      "inlandA": "{names} are not by the sea: the beach is 1.5–5 km away. But you get panoramic views, cooler summers and more space. Living there without a car is inconvenient.",
+      "airportQ": "How far is the airport?",
+      "airportA": "The nearest airport is Gazipasa-Alanya (GZP): 5–25 km from the eastern districts, about 38 km from the centre. Antalya International Airport (AYT) is roughly 100–170 km away depending on the district. Distances are shown on each district page."
+    },
+    "listSeoTitle": "Districts of Alanya for buying property",
+    "listSeo1": "Alanya stretches almost 70 km along the Mediterranean: from the resort of Avsallar in the west to the separate town of Gazipasa with its airport in the east. Closer to the centre you get city life and the highest prices; on the outskirts, new complexes, quiet and lower prices. Tepe and Cikcilli are in the hills: you need to drive to the sea, but you get the views and cooler summers.",
+    "listSeo2": "For living all year round people usually choose Oba, Cikcilli, Mahmutlar and Konakli: schools, clinics and shops are open all year there. For renting out — the centre and seaside districts with a good promenade.",
+    "seoLink": "Property {where}",
+    "metaTitle": "{name}, Alanya: living, apartment prices and rentals — district guide",
+    "metaDesc": "{lead} Who {name} suits, prices per m², {n} for sale, rentals and infrastructure.",
+    "guideOne": "District guide",
+    "h1": "{name}: living and property",
+    "ctaObjects": "{n, plural, =0 {View the catalogue} one {View # property} other {View # properties}}",
+    "ctaPick": "Find a home {where}",
+    "photoCap": "Photo: view of Alanya, illustration",
+    "photoAlt": "View of Alanya (illustration for {name})",
+    "kf": {
+      "label": "District at a glance",
+      "toCenter": "To the centre",
+      "isCenter": "This is the centre",
+      "west": "to the west",
+      "east": "to the east",
+      "mountains": "in the hills",
+      "castle": "castle, harbour",
+      "toSea": "To the sea",
+      "serpentine": "by winding road",
+      "byCatalog": "based on listings",
+      "gzp": "GZP airport",
+      "gzpName": "Gazipasa-Alanya",
+      "ayt": "AYT airport",
+      "aytName": "Antalya",
+      "pm": "Price per m²",
+      "pmNote": "average",
+      "inCatalog": "Listings",
+      "saleRent": "for sale / for rent"
+    },
+    "fitEyebrow": "Who it suits",
+    "fitTitle": "{name}: pros and cons",
+    "scoresTitle": "District rating",
+    "scores": {
+      "life": "Year-round living",
+      "rent": "Renting out",
+      "beach": "Beach nearby",
+      "infra": "Infrastructure",
+      "quiet": "Quiet"
+    },
+    "scoresNote": "Rating by Kleo Homes experts. Ask an expert if a specific criterion matters to you.",
+    "pros": "Pros",
+    "cons": "Cons",
+    "nearby": "What's nearby",
+    "objEyebrow": "Properties",
+    "objTitle": "Property {where}",
+    "dealLabel": "Deal type",
+    "tabSale": "For sale · {n}",
+    "tabRent": "For rent · {n}",
+    "emptySale": "No properties for sale {where} right now",
+    "emptyRent": "No apartments for rent {where} right now",
+    "emptyHint": "Leave a request — we'll find options from the developers and owners we work with.",
+    "allInCatalog": "{n, plural, one {Open # property in the catalogue} other {All # properties in the catalogue}}",
+    "pricesEyebrow": "Prices and location",
+    "pricesTitle": "How much property costs {where}",
+    "pricesCaption": "Sale prices by layout",
+    "pt": {
+      "layout": "Layout",
+      "count": "Listings",
+      "from": "Price from",
+      "avg": "Average per m²"
+    },
+    "studio": "Studio 1+0",
+    "pricesNote": "Based on our listings. Rent for a 1+1 from {rent} per month.",
+    "noPrices": "There are no properties for sale in this district yet. The average price is about {pm} per m².",
+    "mapZoomLabel": "Map of the Alanya coast: {name} and neighbouring districts",
+    "mapScale": "Not to scale",
+    "mapDistrict": "{name} district",
+    "nbrEyebrow": "Nearby",
+    "nbrTitle": "Neighbouring districts",
+    "allDistricts": "All {n} districts →",
+    "faqEyebrow": "Questions",
+    "faqTitle": "FAQ about {name}",
+    "faqHint": "Didn't find the answer?",
+    "faqAsk": "Ask an expert →",
+    "faq": {
+      "priceQ": "How much does an apartment cost {where}?",
+      "priceInCatalog": "Our catalogue currently has {n, plural, one {# property} other {# properties}} in the district, from {from}. ",
+      "priceA": "{inCatalog}The average price is about {pm} per m². The price depends on the distance to the sea, the view, the floor and the age of the complex. The table by layout is above on this page.",
+      "rentQ": "How much does renting cost {where}?",
+      "rentA": "Long-term rent for a 1+1 apartment starts from {rent} per month. Landlords usually ask for a deposit of one month's rent and a contract of 6–12 months; utilities are paid separately.",
+      "vnzhQ": "Can I get a residence permit if I buy {where}?",
+      "vnzhA": "The Turkish migration service periodically closes certain neighbourhoods to new residence permits, and the list changes. Before booking we check the status of the specific address on the date of the deal and tell you in advance.",
+      "airportQ": "How do I get to the airport?",
+      "airportA": "Gazipasa-Alanya airport (GZP) is about {gzp} km away, Antalya airport (AYT) about {ayt} km. We can arrange a transfer for viewings and after the purchase.",
+      "rentabilityQ": "Is {name} good for renting out?",
+      "rentabilityHigh": "Yes: rental demand {where} is steady, especially for 1+1 and 2+1 apartments near the sea. We'll calculate the yield of a specific property and explain rental management.",
+      "rentabilityMid": "Yes, but mostly in season: demand is high in summer and lower in winter. For year-round renting people usually choose districts closer to the centre. We'll calculate the yield of a specific property.",
+      "rentabilityLow": "{name} is less suited to renting out than seaside districts and those closer to the centre: people buy here mainly to live. If income matters, we'll find an option in another district."
+    },
+    "seoTitle": "Property {where}: what to know",
+    "seo1": "{lead} The average price is about {pm} per m², long-term rent for a 1+1 from {rent} per month.",
+    "seo2": "Before buying, check the TAPU and that there are no debts, the occupancy permit (iskan), the complex maintenance fees (aidat) and whether a residence permit is possible at the address. A Kleo Homes expert for {name} will show you properties in person or by video.",
+    "seoApartments": "Apartments {where}",
+    "seoVillas": "Villas {where}",
+    "seoNew": "New builds {where}",
+    "seoRent": "Rentals {where}"
   }
 }

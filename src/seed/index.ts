@@ -15,7 +15,6 @@ import data from './prototype-data.json'
 type Log = (msg: string) => void
 
 const DEFAULT_FEATURES = ['Открытый бассейн', 'Фитнес-зал', 'Финская сауна', 'Охрана 24/7', 'Видеонаблюдение', 'Генератор', 'Крытая парковка', 'Детская площадка', 'Зелёная территория']
-const CONTENT = ['posts', 'reviews', 'properties', 'team', 'districts', 'media'] as const
 
 const ruDate = (s: string) => {
   // «24.09.2026» или «07.2026» → ISO
