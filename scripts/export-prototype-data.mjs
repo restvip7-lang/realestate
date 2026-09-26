@@ -57,7 +57,7 @@ const posts = KH.POSTS.map((p) => ({
 const out = {
   note: 'Снимок демо-данных прототипа. Не редактировать вручную: node scripts/export-prototype-data.mjs',
   galleryExtra: ['1502672260266-1c1ef2d93688', '1522708323590-d24dbb6b0267', '1560185007-cde436f6a4d0', '1484154218962-a197022b5858', '1586023492125-27b2c045efd7', '1600210492486-724fe5c67fb0'],
-  company: KH.COMPANY, rates, teamPage: KH.TEAM_PAGE, districts, team, reviews, properties, posts,
+  company: KH.COMPANY, photos: KH.PHOTOS, rates, teamPage: KH.TEAM_PAGE, districts, team, reviews, properties, posts,
 }
 const file = path.join(root, 'src/seed/prototype-data.json')
 fs.writeFileSync(file, JSON.stringify(out, null, 1) + '\n')

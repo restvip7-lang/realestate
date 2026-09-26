@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Costs, CostsLine } from '@/components/site/Costs'
 import { Price } from '@/components/site/Currency'
+import { FavButton } from '@/components/site/FavButton'
 import { Gallery } from '@/components/site/Gallery'
 import { PropertyCard } from '@/components/site/PropertyCard'
 import { ViewForm } from '@/components/site/ViewForm'
@@ -121,6 +122,7 @@ export default async function PropertyPage({ params }: Props) {
             <h1>{p.title}</h1>
             <div className="loc"><span>{d?.name}, {tc('alanya')}</span><span>{tc('toSea', { m: p.sea ?? 0 })}</span><span className="mono">ID {p.id}</span></div>
           </div>
+          <div className="acts"><FavButton id={p.id} variant="page" /></div>
         </div>
         <Gallery photos={photos} />
         <div className="p-grid">

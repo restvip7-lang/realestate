@@ -170,3 +170,91 @@ export async function districtCounts(deal: 'sale' | 'rent' = 'sale'): Promise<Re
   })
   return out
 }
+
+export async function getDistrict(slug: string, locale: Locale): Promise<District | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'districts', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
+  return docs[0] ?? null
+}
+
+/** Опубликованные объекты района (продажа и аренда) — для страницы района. */
+export async function districtProperties(districtId: number, locale: Locale): Promise<Property[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    locale,
+    where: { and: [{ status: { equals: 'published' } }, { district: { equals: districtId } }] },
+    sort: '-id',
+    limit: 500,
+    depth: 1,
+    pagination: false,
+    ...pub,
+  })
+  return docs
+}
+
+export type DistrictStat = { sale: number; rent: number; minSea: number | null }
+/** Для каждого района: сколько объектов в продаже и аренде, ближайший к морю. */
+export async function districtStats(): Promise<Record<number, DistrictStat>> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    where: { status: { equals: 'published' } },
+    select: { district: true, deal: true, sea: true },
+    limit: 5000,
+    depth: 0,
+    pagination: false,
+    ...pub,
+  })
+  const out: Record<number, DistrictStat> = {}
+  docs.forEach((p) => {
+    const id = typeof p.district === 'object' ? p.district?.id : p.district
+    if (!id) return
+    const s = (out[id] ??= { sale: 0, rent: 0, minSea: null })
+    s[p.deal === 'rent' ? 'rent' : 'sale']++
+    if (p.sea != null) s.minSea = s.minSea == null ? p.sea : Math.min(s.minSea, p.sea)
+  })
+  return out
+}
+
+export async function getMember(slug: string, locale: Locale): Promise<Team | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'team', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
+  return docs[0] ?? null
+}
+
+/** Все опубликованные объекты (для распределения по экспертам и избранного). */
+export async function allPublished(locale: Locale): Promise<Property[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', locale, where: { status: { equals: 'published' } }, sort: '-id', limit: 2000, depth: 1, pagination: false, ...pub,
+  })
+  return docs
+}
+
+export type PostQuery = { kind?: 'article' | 'news'; category?: string; author?: number; page?: number; limit?: number; exclude?: number }
+export async function listPosts(locale: Locale, q: PostQuery = {}) {
+  const and: Where[] = []
+  if (q.kind) and.push({ kind: { equals: q.kind } })
+  if (q.category) and.push({ category: { equals: q.category } })
+  if (q.author) and.push({ author: { equals: q.author } })
+  if (q.exclude) and.push({ id: { not_equals: q.exclude } })
+  return (await payloadClient()).find({
+    collection: 'posts', locale, where: and.length ? { and } : undefined, sort: ['-pinned', '-publishedAt'],
+    limit: q.limit ?? 12, page: q.page ?? 1, depth: 2, ...pub,
+  })
+}
+
+export async function getPost(slug: string, locale: Locale): Promise<Post | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'posts', locale, where: { slug: { equals: slug } }, limit: 1, depth: 2, ...pub })
+  return docs[0] ?? null
+}
+
+export async function listReviews(): Promise<Review[]> {
+  const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
+  return docs
+}
+
+/** Объекты избранного по списку ID (в порядке списка); проданные и забронированные тоже — с пометкой статуса. */
+export async function getPropertiesByIds(ids: number[], locale: Locale): Promise<Property[]> {
+  if (!ids.length) return []
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', locale, where: { and: [{ id: { in: ids } }, { status: { in: [...PUBLIC_STATUSES] } }] }, limit: ids.length, depth: 1, pagination: false, ...pub,
+  })
+  return ids.map((id) => docs.find((d) => d.id === id)).filter((d): d is Property => !!d)
+}

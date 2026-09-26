@@ -64,3 +64,37 @@ export async function submitLead(input: LeadInput): Promise<{ ok: true } | { ok:
     return { ok: false, error: 'server' }
   }
 }
+
+export type ReviewInput = { who: string; country?: string; rating: number; service: 'buy' | 'rent' | 'docs' | 'sell'; expert?: number; text: string; consent: boolean; website?: string }
+
+/** Отзыв с сайта: сохраняется скрытым (published = false), публикует редактор в админке. */
+export async function submitReview(input: ReviewInput): Promise<{ ok: true } | { ok: false; error: 'invalid' | 'rate' | 'server' }> {
+  if (input.website) return { ok: true }
+  const text = clip(input.text, 600)
+  const rating = Math.round(Number(input.rating))
+  if (!clip(input.who, 40) || text.length < 30 || !(rating >= 1 && rating <= 5) || !input.consent || !['buy', 'rent', 'docs', 'sell'].includes(input.service)) {
+    return { ok: false, error: 'invalid' }
+  }
+  const h = await headers()
+  const ip = `r:${(h.get('x-forwarded-for') || '').split(',')[0].trim() || 'local'}`
+  const now = Date.now()
+  const hits = (recent.get(ip) || []).filter((t) => now - t < 60 * 60 * 1000)
+  if (hits.length >= 3) return { ok: false, error: 'rate' }
+  recent.set(ip, [...hits, now])
+  try {
+    const payload = await getPayload({ config })
+    await payload.create({
+      collection: 'reviews',
+      overrideAccess: true,
+      data: {
+        who: clip(input.who, 40), country: clip(input.country, 30), rating, service: input.service, text,
+        expert: input.expert && Number.isInteger(input.expert) ? input.expert : null,
+        date: new Date().toISOString(), published: false,
+      },
+    })
+    return { ok: true }
+  } catch (err) {
+    console.error('submitReview', err)
+    return { ok: false, error: 'server' }
+  }
+}

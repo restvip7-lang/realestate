@@ -1052,6 +1052,9 @@ export interface Company {
     taxOffice?: string | null;
     taxNo?: string | null;
   };
+  officePhoto?: (number | null) | Media;
+  licensePhoto?: (number | null) | Media;
+  awards?: string | null;
   social?:
     | {
         network?: ('instagram' | 'youtube' | 'facebook' | 'vk' | 'tiktok' | 'telegram') | null;
@@ -1128,6 +1131,9 @@ export interface CompanySelect<T extends boolean = true> {
         taxOffice?: T;
         taxNo?: T;
       };
+  officePhoto?: T;
+  licensePhoto?: T;
+  awards?: T;
   social?:
     | T
     | {

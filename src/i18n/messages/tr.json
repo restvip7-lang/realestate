@@ -60,8 +60,20 @@
     "goal": "Amaç",
     "budget": "Bütçe",
     "optional": "isteğe bağlı",
-    "goals": ["Henüz karar vermedim", "Yaşamak için", "Tatil için", "Kiraya vermek için", "Oturma izni / vatandaşlık"],
-    "budgets": ["Henüz belli değil", "100.000 €'ya kadar", "100–200.000 €", "200–400.000 €", "400.000 € ve üzeri"],
+    "goals": [
+      "Henüz karar vermedim",
+      "Yaşamak için",
+      "Tatil için",
+      "Kiraya vermek için",
+      "Oturma izni / vatandaşlık"
+    ],
+    "budgets": [
+      "Henüz belli değil",
+      "100.000 €'ya kadar",
+      "100–200.000 €",
+      "200–400.000 €",
+      "400.000 € ve üzeri"
+    ],
     "wish": "İstekler",
     "wishPh": "Örneğin: denize yakın 2+1, eşyalı, 200.000 €'ya kadar",
     "consent": "<link>Kişisel verilerin işlenmesi politikasını</link> kabul ediyorum",
@@ -111,10 +123,22 @@
     "chipBudget": "En fazla",
     "chipView": "Deniz manzaralı",
     "trust": [
-      { "b": "TTYB belge no. {license}", "s": "Ticaret Bakanlığı sicili" },
-      { "b": "Belge kontrolü", "s": "tapu, borçlar, iskân" },
-      { "b": "Tapuya kadar destek", "s": "bizzat veya vekâletle" },
-      { "b": "Satış sonrası yardım", "s": "oturma izni, abonelikler, kiralama" }
+      {
+        "b": "TTYB belge no. {license}",
+        "s": "Ticaret Bakanlığı sicili"
+      },
+      {
+        "b": "Belge kontrolü",
+        "s": "tapu, borçlar, iskân"
+      },
+      {
+        "b": "Tapuya kadar destek",
+        "s": "bizzat veya vekâletle"
+      },
+      {
+        "b": "Satış sonrası yardım",
+        "s": "oturma izni, abonelikler, kiralama"
+      }
     ],
     "saleEyebrow": "Satılık",
     "objectsTitle": "Güncel ilanlar",
@@ -130,11 +154,26 @@
     "teamEyebrow": "Ekip ve hizmet",
     "teamTitle": "Ev almanıza kim yardım edecek",
     "services": [
-      { "b": "Emlak seçimi", "p": "Bütçenizi, amacınızı ve yaşam tarzınızı sorar, artı ve eksileriyle seçenekler göndeririz." },
-      { "b": "Gezme", "p": "Yerinde veya görüntülü görüşmeyle: daireyi, siteyi, bahçeyi ve denize giden yolu gösteririz." },
-      { "b": "Belge kontrolü", "p": "Tapu, borçlar ve ipotekler, iskân, müteahhidin güvenilirliği." },
-      { "b": "İşlem desteği", "p": "Vergi numarası, sözleşme, ödeme, tapu tescili." },
-      { "b": "Satış sonrası yardım", "p": "Abonelikler, DASK sigortası, oturma izni, mobilya, kiraya verme." }
+      {
+        "b": "Emlak seçimi",
+        "p": "Bütçenizi, amacınızı ve yaşam tarzınızı sorar, artı ve eksileriyle seçenekler göndeririz."
+      },
+      {
+        "b": "Gezme",
+        "p": "Yerinde veya görüntülü görüşmeyle: daireyi, siteyi, bahçeyi ve denize giden yolu gösteririz."
+      },
+      {
+        "b": "Belge kontrolü",
+        "p": "Tapu, borçlar ve ipotekler, iskân, müteahhidin güvenilirliği."
+      },
+      {
+        "b": "İşlem desteği",
+        "p": "Vergi numarası, sözleşme, ödeme, tapu tescili."
+      },
+      {
+        "b": "Satış sonrası yardım",
+        "p": "Abonelikler, DASK sigortası, oturma izni, mobilya, kiraya verme."
+      }
     ],
     "office": "Alanya ofisi",
     "teamNote": "İsimler kurgusaldır, ekip fotoğrafları stok örneklerdir. Gerçek çalışanlarla değiştirilecek.",
@@ -146,12 +185,30 @@
     "processTitle": "6 adımda satın alma",
     "processMore": "Süreç hakkında →",
     "steps": [
-      { "b": "Talep", "p": "Bütçe, amaç, bölge, zamanlama." },
-      { "b": "Seçenekler", "p": "m² fiyatı ve masraflarla birlikte." },
-      { "b": "Gezme", "p": "Yerinde veya video ile." },
-      { "b": "Kontrol", "p": "Rezervasyondan önce belgeler ve mülk." },
-      { "b": "Sözleşme ve ödeme", "p": "Vergi numarası, hesap, sözleşme." },
-      { "b": "Tapu ve anahtar", "p": "Tescil ve teslim." }
+      {
+        "b": "Talep",
+        "p": "Bütçe, amaç, bölge, zamanlama."
+      },
+      {
+        "b": "Seçenekler",
+        "p": "m² fiyatı ve masraflarla birlikte."
+      },
+      {
+        "b": "Gezme",
+        "p": "Yerinde veya video ile."
+      },
+      {
+        "b": "Kontrol",
+        "p": "Rezervasyondan önce belgeler ve mülk."
+      },
+      {
+        "b": "Sözleşme ve ödeme",
+        "p": "Vergi numarası, hesap, sözleşme."
+      },
+      {
+        "b": "Tapu ve anahtar",
+        "p": "Tescil ve teslim."
+      }
     ],
     "citizenshipTitle": "Türk vatandaşlığı",
     "citizenshipText": "Hangi mülkler programa uygun ve başvuru nasıl yapılır. Koşulları işlem tarihine göre kontrol ederiz.",
@@ -174,10 +231,22 @@
     "faqTitle": "Sık sorulan sorular",
     "faqNote": "Yanıtlar taslaktır; son metinleri ekip verecek.",
     "faq": [
-      { "q": "Bölge seçimine nereden başlamalı?", "a": "Satın alma amacına karar verin: yıl boyu yaşamak, tatil veya kiraya vermek. Yaşamak için altyapıya ve okullara (Oba, Cikcilli), kiralama için plaja ve merkeze yakınlığa bakılır. Uzmanımız ihtiyaçlarınıza göre 2–3 bölgeyi karşılaştırır." },
-      { "q": "Mülkü video ile görebilir miyim?", "a": "Evet. Canlı görüntülü gezme yapıyoruz: daire, pencere manzarası, site ve denize giden yol. İstediğiniz her şeyi sorabilirsiniz." },
-      { "q": "Fiyat dışında hangi masraflar var?", "a": "Tapu harcı, resmî ücretler, tercüme ve noter, DASK sigortası, abonelik bağlantıları. Tam masraf dökümünü rezervasyondan önce veriyoruz." },
-      { "q": "Ajans hizmetleri nasıl ücretlendirilir?", "a": "Emlak seçimi, gezmeler (yerinde ve video) ve danışmanlık ücretsizdir. İkinci el alımlarda ajans komisyonu fiyatın %2'si + KDV'dir; iş ortağımız olan yeni projelerde bunu müteahhit öder. Uzun dönem kiralamada bir aylık kira tutarıdır. Koşulları ilk gezmeden önce sözleşmeyle belirleriz." }
+      {
+        "q": "Bölge seçimine nereden başlamalı?",
+        "a": "Satın alma amacına karar verin: yıl boyu yaşamak, tatil veya kiraya vermek. Yaşamak için altyapıya ve okullara (Oba, Cikcilli), kiralama için plaja ve merkeze yakınlığa bakılır. Uzmanımız ihtiyaçlarınıza göre 2–3 bölgeyi karşılaştırır."
+      },
+      {
+        "q": "Mülkü video ile görebilir miyim?",
+        "a": "Evet. Canlı görüntülü gezme yapıyoruz: daire, pencere manzarası, site ve denize giden yol. İstediğiniz her şeyi sorabilirsiniz."
+      },
+      {
+        "q": "Fiyat dışında hangi masraflar var?",
+        "a": "Tapu harcı, resmî ücretler, tercüme ve noter, DASK sigortası, abonelik bağlantıları. Tam masraf dökümünü rezervasyondan önce veriyoruz."
+      },
+      {
+        "q": "Ajans hizmetleri nasıl ücretlendirilir?",
+        "a": "Emlak seçimi, gezmeler (yerinde ve video) ve danışmanlık ücretsizdir. İkinci el alımlarda ajans komisyonu fiyatın %2'si + KDV'dir; iş ortağımız olan yeni projelerde bunu müteahhit öder. Uzun dönem kiralamada bir aylık kira tutarıdır. Koşulları ilk gezmeden önce sözleşmeyle belirleriz."
+      }
     ]
   },
   "catalogCats": {
@@ -195,7 +264,12 @@
     "rent": "Kirala",
     "type": "Tür",
     "any": "Hepsi",
-    "types": { "apartment": "Daire", "penthouse": "Çatı katı", "villa": "Villa", "duplex": "Dubleks" },
+    "types": {
+      "apartment": "Daire",
+      "penthouse": "Çatı katı",
+      "villa": "Villa",
+      "duplex": "Dubleks"
+    },
     "district": "Bölge",
     "allDistricts": "Tüm bölgeler",
     "rooms": "Oda",
@@ -225,7 +299,12 @@
   "catalog": {
     "filtersLabel": "İlan filtreleri",
     "anyType": "Tüm türler",
-    "typesPlural": { "apartment": "Daireler", "penthouse": "Çatı katları", "villa": "Villalar", "duplex": "Dubleksler" },
+    "typesPlural": {
+      "apartment": "Daireler",
+      "penthouse": "Çatı katları",
+      "villa": "Villalar",
+      "duplex": "Dubleksler"
+    },
     "priceFrom": "En düşük fiyat",
     "filters": "Filtreler",
     "closeFilters": "Filtreleri kapat",
@@ -233,7 +312,12 @@
     "reset": "Filtreleri temizle",
     "show": "Göster",
     "sort": "Sıralama",
-    "sorts": { "new": "Önce yeni", "cheap": "Önce ucuz", "expensive": "Önce pahalı", "sea": "Denize en yakın" },
+    "sorts": {
+      "new": "Önce yeni",
+      "cheap": "Önce ucuz",
+      "expensive": "Önce pahalı",
+      "sea": "Denize en yakın"
+    },
     "saleAll": "Satılık emlak",
     "rentAll": "Kiralık emlak",
     "inDistrict": "— {where}",
@@ -292,7 +376,11 @@
     "year": "Yapım yılı",
     "complex": "Site",
     "rentPeriod": "Kiralama türü",
-    "periods": { "long": "Uzun dönem", "short": "Günlük", "season": "Sezonluk" },
+    "periods": {
+      "long": "Uzun dönem",
+      "short": "Günlük",
+      "season": "Sezonluk"
+    },
     "deposit": "Depozito",
     "minTerm": "En az süre",
     "months": "{n} ay",
@@ -304,7 +392,11 @@
     "yes": "Evet",
     "no": "Hayır",
     "source": "Kimden",
-    "sources": { "developer": "Müteahhitten", "owner": "Sahibinden", "agency": "Ajansa özel" },
+    "sources": {
+      "developer": "Müteahhitten",
+      "owner": "Sahibinden",
+      "agency": "Ajansa özel"
+    },
     "pricePerM2": "m² fiyatı",
     "installment": "Taksit",
     "installmentVal": "{months} ay, %{down} peşinat",
@@ -324,9 +416,18 @@
     "costsBuy": "Fiyat dışındaki masraflar",
     "beforeBuy": "Satın almadan önce",
     "trustq": [
-      { "q": "Neden farklı sitelerde fiyatlar farklı?", "a": "Aynı mülkü çoğu zaman birkaç ajans satar. Fiyatlar kat, manzara, eşya, komisyon ve güncel olmayan ilanlar nedeniyle farklılaşır. Aynı daireyi karşılaştırırız: kat, alan, manzara ve işlem koşulları." },
-      { "q": "Tuzak ilan nasıl anlaşılır?", "a": "Çok düşük fiyat, ilan numarası veya site adresi yok, \"satıldı ama benzeri var\". Biz fiyatın kontrol tarihini yazar, rezervasyondan önce mülkün hâlâ satışta olduğunu teyit ederiz." },
-      { "q": "Daha ucuzunu mu buldunuz? Karşılaştıralım", "a": "Bağlantıyı WhatsApp'tan veya aşağıdaki formdan gönderin — aynı daire mi ve fiyata neler dahil, kontrol edelim." }
+      {
+        "q": "Neden farklı sitelerde fiyatlar farklı?",
+        "a": "Aynı mülkü çoğu zaman birkaç ajans satar. Fiyatlar kat, manzara, eşya, komisyon ve güncel olmayan ilanlar nedeniyle farklılaşır. Aynı daireyi karşılaştırırız: kat, alan, manzara ve işlem koşulları."
+      },
+      {
+        "q": "Tuzak ilan nasıl anlaşılır?",
+        "a": "Çok düşük fiyat, ilan numarası veya site adresi yok, \"satıldı ama benzeri var\". Biz fiyatın kontrol tarihini yazar, rezervasyondan önce mülkün hâlâ satışta olduğunu teyit ederiz."
+      },
+      {
+        "q": "Daha ucuzunu mu buldunuz? Karşılaştıralım",
+        "a": "Bağlantıyı WhatsApp'tan veya aşağıdaki formdan gönderin — aynı daire mi ve fiyata neler dahil, kontrol edelim."
+      }
     ],
     "howToBuy": "Satın alma süreci ve fiyat dışındaki masraflar →",
     "price": "Fiyat",
@@ -343,8 +444,17 @@
     "similarForSale": "Benzer satılık ilanlar",
     "similarIn": "{name} bölgesinden ve benzer fiyatlı",
     "toCatalog": "İlanlara →",
-    "views": { "sea": "Deniz", "mountain": "Dağ", "castle": "Kale", "city": "Şehir / avlu" },
-    "furn": { "yes": "Eşyalı", "no": "Eşyasız", "partial": "Kısmen eşyalı" }
+    "views": {
+      "sea": "Deniz",
+      "mountain": "Dağ",
+      "castle": "Kale",
+      "city": "Şehir / avlu"
+    },
+    "furn": {
+      "yes": "Eşyalı",
+      "no": "Eşyasız",
+      "partial": "Kısmen eşyalı"
+    }
   },
   "costs": {
     "rows": {
@@ -408,5 +518,258 @@
     "text": "İlan satılmış veya yayından kaldırılmış, bağlantı eskimiş olabilir. İlanlara göz atın veya ana sayfaya dönün.",
     "catalog": "İlanları aç",
     "home": "Ana sayfa"
+  },
+  "districts": {
+    "crumbs": "Alanya bölgeleri",
+    "guide": "Bölge rehberi",
+    "listTitle": "Alanya bölgeleri: nereden ev alınır",
+    "listLead": "Avsallar'dan Gazipaşa'ya deniz boyunca {sea} bölge ve yamaçlarda {inland} bölge. Fiyatları, denize ve merkeze uzaklığı karşılaştırın; yıl boyu yaşamak, tatil veya kiraya vermek için bölgenizi seçin.",
+    "listMetaDesc": "Alanya'nın {n} bölgesi için rehber: m² fiyatları, denize ve merkeze uzaklık, yaşam ve kiralama puanları, satılık ilanlar.",
+    "mapLabel": "Bölgeleriyle Alanya sahil şeması",
+    "mapSea": "AKDENİZ",
+    "mapMountains": "TOROS DAĞLARI",
+    "mapAirport": "✈ GZP havalimanı",
+    "mapNote": "Ölçekli değildir. Yeşil nokta — yamaçtaki bölge. Rehberi açmak için bölgeye dokunun.",
+    "filterLabel": "Bölge filtresi",
+    "filters": {
+      "all": "Tümü {n}",
+      "sea": "Denize yakın",
+      "inland": "Yamaçta",
+      "life": "Yıl boyu yaşam için",
+      "rent": "Kiraya vermek için",
+      "quiet": "Sakin",
+      "budget": "Uygun fiyatlı"
+    },
+    "sortLabel": "Sıralama",
+    "sorts": {
+      "geo": "Batıdan doğuya",
+      "cheap": "Önce ucuz",
+      "exp": "Önce pahalı",
+      "objs": "En çok ilan",
+      "center": "Merkeze en yakın"
+    },
+    "found": "{n} bölge bulundu",
+    "tagInland": "Yamaçta",
+    "tagSea": "Denize yakın",
+    "tagLife": "Yaşam için",
+    "km": "{n} km",
+    "center": "merkez",
+    "toCenter": "merkeze",
+    "onSale": "{n} satılık",
+    "photoNote": "Fotoğraflar: Alanya manzaraları (temsilîdir, bu bölgeye ait olmayabilir). m² fiyatları ve puanlar demodur.",
+    "cmpEyebrow": "Karşılaştırma",
+    "cmpTitle": "Tüm bölgeler tek tabloda",
+    "cmpNote": "1–5 arası puanlar Kleo Homes uzmanlarının görüşüdür. Bölge rehberini açmak için ada dokunun.",
+    "th": {
+      "district": "Bölge",
+      "toCenter": "Merkeze",
+      "toSea": "Denize",
+      "pm": "m² fiyatı",
+      "sale": "Satılık",
+      "rent": "Kiralık",
+      "life": "Yaşam",
+      "rentScore": "Kiralama",
+      "beach": "Plaj",
+      "quiet": "Sakinlik"
+    },
+    "inlandShort": "yamaçta",
+    "seaTepe": "3–5 km",
+    "seaInland": "1,5–2,5 km",
+    "seaFrom": "{m} m'den",
+    "seaNear": "denize yakın",
+    "outOf5": "5 üzerinden {n}",
+    "listFaqTitle": "Alanya'da bölge nasıl seçilir",
+    "listFaqHint": "Emin değil misiniz?",
+    "listFaqAsk": "Uzmanımız ihtiyacınıza göre 2–3 bölgeyi karşılaştırsın →",
+    "listFaq": {
+      "lifeQ": "Yıl boyu yaşamak için hangi bölge?",
+      "lifeA": "Okulların, kliniklerin ve mağazaların yıl boyu açık olduğu yerler: {names}. Tatil beldelerinde kışın bazı kafe ve mağazalar kapanır.",
+      "rentQ": "Kiraya vermek için nereden almalı?",
+      "rentA": "Talep denize yakın ve merkeze yakın bölgelerde istikrarlı: {names}. Site aidatı ve yönetim masraflarıyla birlikte mülkün getirisini hesaplarız.",
+      "cheapQ": "En uygun fiyatlar nerede?",
+      "cheapA": "En ucuz bölgeler şehrin kenarlarında: {names}. En pahalıları merkez ve Tepe.",
+      "inlandQ": "Yamaçtaki bölgelerin farkı ne?",
+      "inlandA": "{names} denize yakın değil: plaja 1,5–5 km. Ama panoramik manzara, serin yazlar ve daha fazla alan var. Arabasız yaşamak zordur.",
+      "airportQ": "Havalimanına ne kadar sürer?",
+      "airportA": "En yakın havalimanı Gazipaşa-Alanya (GZP): doğu bölgelerinden 5–25 km, merkezden yaklaşık 38 km. Antalya Havalimanı (AYT) bölgeye göre yaklaşık 100–170 km. Mesafeler her bölgenin sayfasında yazılıdır."
+    },
+    "listSeoTitle": "Emlak almak için Alanya bölgeleri",
+    "listSeo1": "Alanya Akdeniz boyunca yaklaşık 70 km uzanır: batıda tatil beldesi Avsallar'dan doğuda havalimanlı ayrı ilçe Gazipaşa'ya kadar. Merkeze yakın yerlerde şehir hayatı ve en yüksek fiyatlar, kenarlarda yeni siteler, sakinlik ve daha düşük fiyatlar var. Tepe ve Cikcilli yamaçtadır: denize araçla gidilir, ama manzara ve serin yazlar vardır.",
+    "listSeo2": "Yıl boyu yaşamak için genellikle Oba, Cikcilli, Mahmutlar ve Konaklı seçilir: okullar, klinikler ve mağazalar yıl boyu açıktır. Kiraya vermek için merkez ve iyi bir sahil yolu olan deniz kenarı bölgeler.",
+    "seoLink": "Emlak {where}",
+    "metaTitle": "{name}, Alanya: yaşam, daire fiyatları ve kiralar — bölge rehberi",
+    "metaDesc": "{lead} {name} kimlere uygun, m² fiyatları, {n} satılık ilan, kiralama ve altyapı.",
+    "guideOne": "Bölge rehberi",
+    "h1": "{name}: yaşam ve emlak",
+    "ctaObjects": "{n, plural, =0 {İlanlara bak} other {# ilanı gör}}",
+    "ctaPick": "Ev bulalım {where}",
+    "photoCap": "Fotoğraf: Alanya manzarası, temsilî",
+    "photoAlt": "Alanya manzarası ({name} için temsilî)",
+    "kf": {
+      "label": "Kısaca bölge",
+      "toCenter": "Merkeze",
+      "isCenter": "Burası merkez",
+      "west": "batıda",
+      "east": "doğuda",
+      "mountains": "yamaçta",
+      "castle": "kale, liman",
+      "toSea": "Denize",
+      "serpentine": "virajlı yoldan",
+      "byCatalog": "ilanlara göre",
+      "gzp": "GZP havalimanı",
+      "gzpName": "Gazipaşa-Alanya",
+      "ayt": "AYT havalimanı",
+      "aytName": "Antalya",
+      "pm": "m² fiyatı",
+      "pmNote": "ortalama",
+      "inCatalog": "İlanlar",
+      "saleRent": "satılık / kiralık"
+    },
+    "fitEyebrow": "Kimlere uygun",
+    "fitTitle": "{name}: artılar ve eksiler",
+    "scoresTitle": "Bölge puanı",
+    "scores": {
+      "life": "Yıl boyu yaşam",
+      "rent": "Kiraya verme",
+      "beach": "Plaja yakınlık",
+      "infra": "Altyapı",
+      "quiet": "Sakinlik"
+    },
+    "scoresNote": "Kleo Homes uzmanlarının puanı. Belirli bir kriter sizin için önemliyse uzmana sorun.",
+    "pros": "Artılar",
+    "cons": "Eksiler",
+    "nearby": "Yakında neler var",
+    "objEyebrow": "İlanlar",
+    "objTitle": "Emlak {where}",
+    "dealLabel": "İşlem türü",
+    "tabSale": "Satılık · {n}",
+    "tabRent": "Kiralık · {n}",
+    "emptySale": "Şu anda satılık ilan yok {where}",
+    "emptyRent": "Şu anda kiralık daire yok {where}",
+    "emptyHint": "Talep bırakın — birlikte çalıştığımız müteahhit ve mülk sahiplerinden seçenekler bulalım.",
+    "allInCatalog": "Tüm {n} ilan",
+    "pricesEyebrow": "Fiyatlar ve konum",
+    "pricesTitle": "Ev fiyatları {where}",
+    "pricesCaption": "Oda sayısına göre satış fiyatları",
+    "pt": {
+      "layout": "Oda sayısı",
+      "count": "İlan",
+      "from": "En düşük fiyat",
+      "avg": "Ortalama m²"
+    },
+    "studio": "Stüdyo 1+0",
+    "pricesNote": "İlanlarımıza göre. 1+1 kira aylık {rent}'dan başlar.",
+    "noPrices": "Bu bölgede henüz satılık ilan yok. Ortalama fiyat m² başına yaklaşık {pm}.",
+    "mapZoomLabel": "Alanya sahil şeması: {name} ve komşu bölgeler",
+    "mapScale": "Ölçekli değildir",
+    "mapDistrict": "{name} bölgesi",
+    "nbrEyebrow": "Yakında",
+    "nbrTitle": "Komşu bölgeler",
+    "allDistricts": "Tüm {n} bölge →",
+    "faqEyebrow": "Sorular",
+    "faqTitle": "{name} hakkında sık sorulanlar",
+    "faqHint": "Yanıt bulamadınız mı?",
+    "faqAsk": "Uzmana sorun →",
+    "faq": {
+      "priceQ": "Daire fiyatları ne kadar {where}?",
+      "priceInCatalog": "İlanlarımızda şu anda bölgede {n} ilan var, fiyatlar {from}'dan başlıyor. ",
+      "priceA": "{inCatalog}Ortalama fiyat m² başına yaklaşık {pm}. Fiyat denize uzaklığa, manzaraya, kata ve sitenin yaşına bağlıdır. Oda sayısına göre tablo bu sayfada yukarıdadır.",
+      "rentQ": "Kiralar ne kadar {where}?",
+      "rentA": "1+1 dairenin uzun dönem kirası aylık {rent}'dan başlar. Genellikle bir aylık kira tutarında depozito ve 6–12 aylık sözleşme istenir; faturalar ayrıca ödenir.",
+      "vnzhQ": "Ev alırsam oturma izni alabilir miyim ({where})?",
+      "vnzhA": "Göç İdaresi bazı mahalleleri yeni oturma izinlerine dönem dönem kapatır ve liste değişir. Rezervasyondan önce adresin durumunu işlem tarihine göre kontrol eder, önceden bildiririz.",
+      "airportQ": "Havalimanına nasıl gidilir?",
+      "airportA": "Gazipaşa-Alanya Havalimanı (GZP) yaklaşık {gzp} km, Antalya Havalimanı (AYT) yaklaşık {ayt} km. Gezme ve satış sonrası için transfer ayarlayabiliriz.",
+      "rentabilityQ": "{name} kiraya vermek için uygun mu?",
+      "rentabilityHigh": "Evet: kiralık talebi istikrarlı ({where}), özellikle denize yakın 1+1 ve 2+1 dairelerde. Mülkün getirisini hesaplar, kira yönetimini anlatırız.",
+      "rentabilityMid": "Evet, ama daha çok sezonda: yazın talep yüksek, kışın düşük. Yıl boyu kiralama için genellikle merkeze yakın bölgeler seçilir. Mülkün getirisini hesaplarız.",
+      "rentabilityLow": "{name} deniz kenarı ve merkeze yakın bölgelere göre kiralamaya daha az uygundur: burada daha çok oturmak için alınır. Gelir önemliyse başka bir bölgeden seçenek buluruz."
+    },
+    "seoTitle": "Emlak {where}: bilmeniz gerekenler",
+    "seo1": "{lead} Ortalama fiyat m² başına yaklaşık {pm}, 1+1 uzun dönem kira aylık {rent}'dan başlar.",
+    "seo2": "Almadan önce tapuyu ve borç olmadığını, iskânı, site aidatını ve adreste oturma izni alınıp alınamayacağını kontrol edin. {name} bölgesindeki Kleo Homes uzmanı mülkleri yerinde veya video ile gösterir.",
+    "seoApartments": "Daireler {where}",
+    "seoVillas": "Villalar {where}",
+    "seoNew": "Yeni projeler {where}",
+    "seoRent": "Kiralık {where}"
+  },
+  "cookies": {
+    "label": "Çerez onayı",
+    "text": "Çerez kullanıyoruz: sitenin çalışması için zorunlu olanları, analiz ve reklam çerezlerini ise yalnızca onayınızla. <link>Ayrıntılar ve ayarlar</link>",
+    "necessary": "Yalnızca zorunlu",
+    "all": "Tümünü kabul et"
+  },
+  "favs": {
+    "title": "Favoriler",
+    "add": "Favorilere ekle",
+    "remove": "Favorilerden çıkar",
+    "inFavs": "Favorilerde",
+    "lead": "İlanları ♡ ile kaydedin, fiyat, alan ve denize mesafeye göre karşılaştırın, listenizi uzmana gönderin.",
+    "metaDesc": "Kaydedilen ilanlar: fiyat, alan ve denize mesafe karşılaştırması, listeyi Kleo Homes uzmanına gönderme.",
+    "titleN": "Favoriler · {n}",
+    "sharedTitle": "Seçki · {n} ilan",
+    "count": "{n} ilan",
+    "someGone": "bazıları artık mevcut değil",
+    "emptyTitle": "Henüz favori yok",
+    "emptyShared": "Bu seçkideki ilanlar artık mevcut değil",
+    "emptyText": "İlan kartlarındaki ♡ işaretine dokunun — burada görünür, karşılaştırıp uzmana gönderebilirsiniz.",
+    "toCatalog": "İlanlara göz at",
+    "freshEyebrow": "Yeni ilanlar",
+    "freshTitle": "Bunlarla başlayın",
+    "sharedNote": "Size {n} ilanlık bir seçki gönderildi.",
+    "sharedSave": "Daha sonra dönmek için kaydedin.",
+    "save": "Favorilerime kaydet",
+    "saved": "Seçki kaydedildi",
+    "mine": "Favorilerim",
+    "sendWa": "WhatsApp ile uzmana gönder",
+    "waText": "Merhaba! Bu seçkiyi konuşmak istiyorum:",
+    "copy": "Bağlantıyı kopyala",
+    "copied": "Bağlantı kopyalandı",
+    "print": "PDF indir",
+    "clear": "Temizle",
+    "clearConfirm": "Tüm ilanlar favorilerden çıkarılsın mı?",
+    "moreEyebrow": "Daha ekleyin",
+    "moreTitle": "Karşılaştırma için 2–4 ilan gerekir",
+    "allCatalog": "Tüm ilanlar →",
+    "cmpEyebrow": "Karşılaştırma",
+    "cmpTitle": "4 ilana kadar karşılaştırın",
+    "cmpLead": "Karşılaştırılacak ilanları seçin. Her satırdaki en iyi değer yeşil renkte.",
+    "cmpChips": "Karşılaştırılacak ilanlar",
+    "cmpCaption": "İlan karşılaştırması",
+    "cmpMixed": "Karşılaştırmada satılık ve kiralık birlikte var — en iyi değerler yalnızca aynı işlem türünde vurgulanır.",
+    "cmpMin": "Karşılaştırma için en az 2 ilan seçin",
+    "cmpMax": "En fazla 4 ilan karşılaştırılabilir — önce birinin seçimini kaldırın",
+    "rows": {
+      "price": "Fiyat",
+      "ppm": "m² fiyatı",
+      "costs": "Fiyat dışı masraflar",
+      "district": "Bölge",
+      "type": "Tip ve plan",
+      "area": "Alan",
+      "floor": "Kat",
+      "sea": "Denize",
+      "view": "Manzara",
+      "furniture": "Eşya",
+      "condition": "Durum",
+      "checked": "Fiyat kontrolü",
+      "expert": "Uzman",
+      "status": "Durum"
+    },
+    "inland": "dağlık bölge",
+    "floors": "{n} kat",
+    "floorOf": "{floor} / {floors}",
+    "m": "m",
+    "m2": "m²",
+    "viewSea": "Deniz",
+    "viewOther": "Şehir / dağ",
+    "yes": "Var",
+    "no": "Yok",
+    "newBuild": "Yeni proje",
+    "resale": "İkinci el",
+    "onSale": "Satılık",
+    "forRent": "Kiralık",
+    "reserved": "Rezerve",
+    "sold": "Satıldı",
+    "rented": "Kiralandı"
   }
 }

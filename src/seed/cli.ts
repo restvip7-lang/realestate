@@ -1,10 +1,10 @@
-// npm run seed            — загрузить демо-данные в пустую базу
-// npm run seed -- --reset — удалить объекты, статьи, команду, районы, отзывы, фото и загрузить заново
+// npm run seed            — загрузить демо-данные (повторный запуск обновит их, дубликатов не будет)
+// npm run seed -- --reset — сначала удалить объекты, статьи, команду, районы, отзывы и фото
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import { seed } from './index'
+import { seedAll } from './index'
 
 const payload = await getPayload({ config })
-const result = await seed(payload, { reset: process.argv.includes('--reset'), log: (m) => payload.logger.info(m) })
-process.exit(result.ok || result.skipped ? 0 : 1)
+await seedAll(payload, { reset: process.argv.includes('--reset'), log: (m) => payload.logger.info(m) })
+process.exit(0)
