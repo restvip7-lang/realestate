@@ -247,7 +247,8 @@
         "q": "Ajans hizmetleri nasıl ücretlendirilir?",
         "a": "Emlak seçimi, gezmeler (yerinde ve video) ve danışmanlık ücretsizdir. İkinci el alımlarda ajans komisyonu fiyatın %2'si + KDV'dir; iş ortağımız olan yeni projelerde bunu müteahhit öder. Uzun dönem kiralamada bir aylık kira tutarıdır. Koşulları ilk gezmeden önce sözleşmeyle belirleriz."
       }
-    ]
+    ],
+    "compareBtn": "Bölgeleri karşılaştır"
   },
   "catalogCats": {
     "market": "Piyasa ve fiyatlar",

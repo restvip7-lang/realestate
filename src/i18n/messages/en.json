@@ -247,7 +247,8 @@
         "q": "How are the agency's services paid for?",
         "a": "Property search, viewings (in person and by video) and consultations are free. For resale properties the agency fee is 2% of the price + VAT (KDV); for our partners' new builds the developer pays it. For long-term rentals it is one month's rent. The terms are fixed in a contract before the first viewing."
       }
-    ]
+    ],
+    "compareBtn": "Compare districts"
   },
   "catalogCats": {
     "market": "Market and prices",
