@@ -476,7 +476,10 @@
       "yes": "Furnished",
       "no": "Unfurnished",
       "partial": "Partly furnished"
-    }
+    },
+    "share": "Share",
+    "copied": "Link copied",
+    "pdf": "Download PDF"
   },
   "costs": {
     "rows": {
