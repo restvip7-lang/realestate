@@ -3,42 +3,64 @@
 import { Button } from '@payloadcms/ui'
 import { useState } from 'react'
 
+type Next = { step: string; offset: number } | null
+
 // Блок над панелью админки: загрузить демо-данные прототипа (только для роли «Администратор»).
+// Загрузка идёт короткими шагами; при обрыве её можно продолжить с того же места.
 export function SeedButton() {
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'error'>('idle')
   const [msg, setMsg] = useState('')
+  const [resume, setResume] = useState<Next>(null)
 
-  async function run(reset = false) {
+  async function run(start: Next) {
     setState('busy')
-    setMsg('Загружаю фото и данные, это займёт 1–3 минуты…')
+    setMsg('Начинаю загрузку…')
+    let cur = start
     try {
-      const res = await fetch(`/next/seed${reset ? '?reset=1' : ''}`, { method: 'POST', credentials: 'include' })
-      const json = await res.json().catch(() => ({}))
-      if (res.status === 409) {
-        setState('idle')
-        if (window.confirm('В базе уже есть объекты. Удалить объекты, статьи, команду, районы, отзывы и фото и загрузить демо заново? Заявки и пользователи останутся.')) return run(true)
-        setMsg('')
-        return
+      while (cur) {
+        const res = await fetch(`/next/seed?step=${cur.step}&offset=${cur.offset}`, { method: 'POST', credentials: 'include' })
+        const json = await res.json().catch(() => ({}))
+        if (!res.ok) throw new Error(json.error || `Ошибка ${res.status}`)
+        setMsg(json.message)
+        cur = json.next
+        setResume(cur)
       }
-      if (!res.ok) throw new Error(json.error || `Ошибка ${res.status}`)
-      const c = json.counts || {}
       setState('done')
-      setMsg(`Готово: объектов ${c.properties}, статей и новостей ${c.posts}, районов ${c.districts}, сотрудников ${c.team}, отзывов ${c.reviews}, фото ${c.media}.`)
     } catch (e) {
       setState('error')
-      setMsg(e instanceof Error ? e.message : String(e))
+      setResume(cur)
+      setMsg(`${e instanceof Error ? e.message : String(e)}. Нажмите «Продолжить» — загрузка продолжится с этого места.`)
     }
   }
 
+  const busy = state === 'busy'
   return (
     <div style={{ border: '1px solid var(--theme-elevation-150)', borderRadius: 8, padding: '16px 20px', marginBottom: 24 }}>
       <h4 style={{ margin: '0 0 6px' }}>Демо-данные</h4>
       <p style={{ margin: '0 0 12px', color: 'var(--theme-elevation-600)' }}>
         Объекты, районы, команда, статьи и отзывы из прототипа. Все данные выдуманные — перед запуском их заменят настоящими.
+        Повторная загрузка обновляет демо-записи, дубликатов не будет.
       </p>
-      <Button buttonStyle="secondary" size="small" disabled={state === 'busy'} onClick={() => run()} margin={false}>
-        {state === 'busy' ? 'Загрузка…' : 'Загрузить демо-данные'}
-      </Button>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {state === 'error' && resume ? (
+          <Button buttonStyle="primary" size="small" margin={false} onClick={() => run(resume)}>Продолжить</Button>
+        ) : (
+          <Button buttonStyle="secondary" size="small" disabled={busy} margin={false} onClick={() => run({ step: 'media', offset: 0 })}>
+            {busy ? 'Загрузка…' : 'Загрузить демо-данные'}
+          </Button>
+        )}
+        <Button
+          buttonStyle="subtle"
+          size="small"
+          disabled={busy}
+          margin={false}
+          onClick={() => {
+            if (window.confirm('Удалить объекты, статьи, команду, районы, отзывы и фото и загрузить демо заново? Заявки и пользователи останутся.')) run({ step: 'reset', offset: 0 })
+          }}
+        >
+          Удалить и загрузить заново
+        </Button>
+      </div>
       {msg && <p style={{ margin: '10px 0 0', color: state === 'error' ? 'var(--theme-error-500)' : undefined }}>{msg}</p>}
     </div>
   )
