@@ -258,3 +258,16 @@ export async function getPropertiesByIds(ids: number[], locale: Locale): Promise
   })
   return ids.map((id) => docs.find((d) => d.id === id)).filter((d): d is Property => !!d)
 }
+
+/** Адреса для sitemap.xml и llms.txt: только то, что видит посетитель. */
+export async function sitemapData() {
+  const p = await payloadClient()
+  const opts = { limit: 5000, depth: 0, pagination: false, ...pub } as const
+  const [districts, team, posts, properties] = await Promise.all([
+    p.find({ collection: 'districts', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
+    p.find({ collection: 'team', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
+    p.find({ collection: 'posts', ...opts, sort: '-publishedAt', select: { slug: true, kind: true, title: true, updatedAt: true } }),
+    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, updatedAt: true } }),
+  ])
+  return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs }
+}

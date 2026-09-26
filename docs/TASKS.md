@@ -40,7 +40,7 @@
 - [x] [claude] Блог и новости: /blog, /blog/[slug], /news, /news/[slug]
 - [x] [claude] Как проходит покупка, Услуги, Гражданство, ВНЖ, Контакты, Политика
 - [x] [claude] Избранное и сравнение /favorites
-- [ ] [ ] sitemap.xml, robots.txt, llms.txt
+- [x] [claude] sitemap.xml, robots.txt, llms.txt
 - [ ] [human] SMTP-почта для заявок и восстановления пароля (Resend / Brevo / Yandex 360)
 
 ## Этап 3 — Публичная часть
