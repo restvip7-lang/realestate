@@ -309,7 +309,7 @@
 .pg .scard.wide{grid-column:1/-1}
 
 /* ---------- избранное и сравнение ---------- */
-.pg .fbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.pg .fbar{position:static;background:none;border:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:22px}
 .pg .fbar .contacts{gap:8px}
 .pg .shared{background:#E9F7FA;border:1px solid #BFE6EF;border-radius:var(--r);padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-bottom:22px}
 .pg .fchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
@@ -494,3 +494,6 @@
 .pg .empty{border:1px dashed var(--line);border-radius:var(--r);padding:32px 24px;text-align:center;display:grid;gap:8px;justify-items:center;background:#fff}
 .pg a.chip[aria-current=true]{border-color:var(--sea-deep);color:var(--sea-deep);background:#E9F7FA}
 @media (max-width:760px){.pg .ptable td.num{white-space:normal}.pg .cols2>*{min-width:0}}
+@media print{
+  .pg .fbar .contacts,.pg .fchips,.pg .cmp .rm,.pg .fav{display:none!important}
+}

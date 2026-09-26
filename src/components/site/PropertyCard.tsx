@@ -8,6 +8,7 @@ import { fmtDate, propertyPath, roomsHint, typeName } from '@/lib/format'
 import type { Property } from '@/payload-types'
 
 import { Price } from './Currency'
+import { FavButton } from './FavButton'
 
 const PIN = (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" /></svg>
@@ -33,6 +34,7 @@ export async function PropertyCard({ p, priority = false }: { p: Property; prior
         <div className="badges">
           {badges.slice(0, 2).map(([c, label]) => <span key={c} className={`badge ${c}`}>{label}</span>)}
         </div>
+        <FavButton id={p.id} />
         <span className="photos">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="12" cy="12" r="3" /></svg>
           {t('photos', { n: photos.length })}

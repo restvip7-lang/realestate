@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation'
 import type { Company } from '@/payload-types'
 
 import { CurrencySelect } from './Currency'
+import { FavLink } from './FavButton'
 import { LangSwitch } from './LangSwitch'
 import { LogoMark } from './Logo'
 import { MobileMenu } from './MobileMenu'
@@ -35,6 +36,7 @@ export async function Header({ company }: { company: Company }) {
         <div className="hdr-r">
           {langs}
           <CurrencySelect className="cur-sel hide-t" label={t('currency')} />
+          <FavLink />
           <a href="#lead" className="btn btn-coral btn-sm hide-m">{t('pick')}</a>
           <MobileMenu openLabel={t('openMenu')} closeLabel={t('closeMenu')} dialogLabel={t('menu')}>
             <nav aria-label={t('mobileMenu')}>

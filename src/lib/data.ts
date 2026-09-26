@@ -249,3 +249,12 @@ export async function listReviews(): Promise<Review[]> {
   const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
   return docs
 }
+
+/** Объекты избранного по списку ID (в порядке списка); проданные и забронированные тоже — с пометкой статуса. */
+export async function getPropertiesByIds(ids: number[], locale: Locale): Promise<Property[]> {
+  if (!ids.length) return []
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', locale, where: { and: [{ id: { in: ids } }, { status: { in: [...PUBLIC_STATUSES] } }] }, limit: ids.length, depth: 1, pagination: false, ...pub,
+  })
+  return ids.map((id) => docs.find((d) => d.id === id)).filter((d): d is Property => !!d)
+}
