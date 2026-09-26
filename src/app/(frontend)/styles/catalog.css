@@ -100,6 +100,7 @@ body{background:#fff}
   .listcol{padding:14px var(--gut) 90px}
   .list-only .grid2{grid-template-columns:1fr}
   .mob-toggle{display:flex;position:fixed;left:50%;bottom:80px;transform:translateX(-50%);z-index:65;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 20px;font-weight:600;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(14,17,22,.35);cursor:pointer}
+  .mob-toggle[hidden]{display:none}
   .seo .cols{grid-template-columns:1fr}
   .map-tools{left:12px;top:auto;bottom:140px}
   .res-head .acts .btn-pdf{display:none}
