@@ -1,4 +1,4 @@
-import '@/app/(frontend)/styles/districts.css'
+import '@/app/(frontend)/styles/pages.css'
 
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -96,7 +96,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
   ]
 
   return (
-    <main className="pg-d">
+    <main className="pg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
       <section className="dhero" style={{ paddingBottom: 40 }}>
         <div className="wrap">

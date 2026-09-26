@@ -1,4 +1,4 @@
-import '@/app/(frontend)/styles/districts.css'
+import '@/app/(frontend)/styles/pages.css'
 
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -120,7 +120,7 @@ export default async function DistrictPage({ params }: Props) {
     )
 
   return (
-    <main className="pg-d">
+    <main className="pg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
       <section className="dhero">
         <div className="wrap">

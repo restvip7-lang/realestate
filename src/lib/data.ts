@@ -213,3 +213,39 @@ export async function districtStats(): Promise<Record<number, DistrictStat>> {
   })
   return out
 }
+
+export async function getMember(slug: string, locale: Locale): Promise<Team | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'team', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
+  return docs[0] ?? null
+}
+
+/** Все опубликованные объекты (для распределения по экспертам и избранного). */
+export async function allPublished(locale: Locale): Promise<Property[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', locale, where: { status: { equals: 'published' } }, sort: '-id', limit: 2000, depth: 1, pagination: false, ...pub,
+  })
+  return docs
+}
+
+export type PostQuery = { kind?: 'article' | 'news'; category?: string; author?: number; page?: number; limit?: number; exclude?: number }
+export async function listPosts(locale: Locale, q: PostQuery = {}) {
+  const and: Where[] = []
+  if (q.kind) and.push({ kind: { equals: q.kind } })
+  if (q.category) and.push({ category: { equals: q.category } })
+  if (q.author) and.push({ author: { equals: q.author } })
+  if (q.exclude) and.push({ id: { not_equals: q.exclude } })
+  return (await payloadClient()).find({
+    collection: 'posts', locale, where: and.length ? { and } : undefined, sort: ['-pinned', '-publishedAt'],
+    limit: q.limit ?? 12, page: q.page ?? 1, depth: 2, ...pub,
+  })
+}
+
+export async function getPost(slug: string, locale: Locale): Promise<Post | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'posts', locale, where: { slug: { equals: slug } }, limit: 1, depth: 2, ...pub })
+  return docs[0] ?? null
+}
+
+export async function listReviews(): Promise<Review[]> {
+  const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
+  return docs
+}

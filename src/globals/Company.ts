@@ -58,6 +58,14 @@ export const Company: GlobalConfig = {
       ],
     },
     {
+      type: 'row',
+      fields: [
+        { name: 'officePhoto', type: 'upload', relationTo: 'media', label: 'Фото офиса' },
+        { name: 'licensePhoto', type: 'upload', relationTo: 'media', label: 'Скан лицензии' },
+      ],
+    },
+    { name: 'awards', type: 'textarea', label: 'Награды и партнёры', localized: true },
+    {
       name: 'social',
       type: 'array',
       label: 'Соцсети',

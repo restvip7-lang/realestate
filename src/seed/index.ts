@@ -54,6 +54,8 @@ function photoList(): [string, string][] {
   data.properties.forEach((p) => !m.has(p.img) && m.set(p.img, p.title))
   data.galleryExtra.forEach((id) => !m.has(id) && m.set(id, 'Интерьер квартиры'))
   data.posts.forEach((p) => !m.has(p.img) && m.set(p.img, p.title))
+  m.set(data.photos.office, 'Офис агентства (фото для примера)')
+  m.set(data.photos.license, 'Документ в рамке (пример вместо скана лицензии)')
   return [...m.entries()]
 }
 
@@ -241,6 +243,8 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
       phone: c.phone, whatsapp: c.wa, telegram: c.tg, email: c.email, address: c.address, showroom: c.showroom, hours: c.hours,
       lat: 36.5436, lng: 31.9992,
       legal: { name: c.legal, license: c.license, verbis: c.verbis, taxOffice: c.taxOffice, taxNo: c.taxNo },
+      officePhoto: media.get(data.photos.office), licensePhoto: media.get(data.photos.license),
+      awards: '«Агентство года — Аланья 2025», 12 застройщиков-партнёров, аккредитация у двух банков для ипотеки.',
       isDemo: true,
     },
   })
