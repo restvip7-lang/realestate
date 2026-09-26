@@ -177,3 +177,9 @@ h3{font-size:20px}
   .hdr-r .hide-m{display:none}
   .card h3{font-size:16.5px}
 }
+
+/* Печать и «Скачать PDF»: только содержимое страницы */
+@media print{
+  .hdr,.ftr,.mbar,.cookie-bar,.demo-strip,#lead,.mmenu{display:none!important}
+  body{background:#fff}
+}

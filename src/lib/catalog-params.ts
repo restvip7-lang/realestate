@@ -24,6 +24,10 @@ export function parseCatalog(deal: 'sale' | 'rent', sp: SearchParams): CatalogQu
     furnished: one(sp.furn) === '1',
     newBuild: one(sp.new) === '1',
     citizenship: one(sp.cit) === '1',
+    floor: (['notfirst', 'notlast', 'top'] as const).find((f) => f === one(sp.floor)),
+    owner: one(sp.owner) === '1',
+    video: one(sp.video) === '1',
+    pets: deal === 'rent' && one(sp.pets) === '1',
     sort: (['new', 'cheap', 'expensive', 'sea'] as const).find((s) => s === sort),
     page: int(sp.page),
   }
@@ -44,6 +48,10 @@ export function catalogQueryString(q: CatalogQuery, patch: Partial<CatalogQuery>
   if (x.furnished) p.set('furn', '1')
   if (x.newBuild) p.set('new', '1')
   if (x.citizenship) p.set('cit', '1')
+  if (x.floor) p.set('floor', x.floor)
+  if (x.owner) p.set('owner', '1')
+  if (x.video) p.set('video', '1')
+  if (x.pets) p.set('pets', '1')
   if (x.sort && x.sort !== 'new') p.set('sort', x.sort)
   if (x.page && x.page > 1) p.set('page', String(x.page))
   const s = p.toString()
@@ -51,4 +59,4 @@ export function catalogQueryString(q: CatalogQuery, patch: Partial<CatalogQuery>
 }
 
 export const hasFilters = (q: CatalogQuery) =>
-  !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship)
+  !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship || q.floor || q.owner || q.video || q.pets)

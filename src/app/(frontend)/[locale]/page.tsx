@@ -128,7 +128,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="wrap">
           <div className="sec-head">
             <div><span className="eyebrow">{t('districtsEyebrow')}</span><h2>{t('districtsTitle')}</h2></div>
-            <Link href="/districts" className="btn btn-dark">{t('allDistricts', { n: districts.length })}</Link>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <Link href="/districts" className="btn btn-dark">{t('allDistricts', { n: districts.length })}</Link>
+              <Link href="/districts#compare" className="btn btn-line">{t('compareBtn')}</Link>
+            </div>
           </div>
           <div className="dgrid">
             {TOP.map((s) => districts.find((d) => d.slug === s)).filter(Boolean).map((d) => {
