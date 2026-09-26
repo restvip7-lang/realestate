@@ -130,7 +130,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
         </div>
       </section>
 
-      <section className="sec" style={{ background: 'var(--mist)' }}>
+      <section className="sec" id="compare" style={{ background: 'var(--mist)' }}>
         <div className="wrap">
           <div className="sec-head"><div><span className="eyebrow">{t('cmpEyebrow')}</span><h2>{t('cmpTitle')}</h2></div><p>{t('cmpNote')}</p></div>
           <div className="cmp-wrap">

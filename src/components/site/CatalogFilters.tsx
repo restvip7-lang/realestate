@@ -8,6 +8,7 @@ import { CURRENCY_SYMBOL } from '@/lib/catalog'
 import { catalogQueryString } from '@/lib/catalog-params'
 import type { CatalogQuery } from '@/lib/data'
 
+import { ViewButtons } from './CatalogMap'
 import { useMoney } from './Currency'
 
 type Props = { q: CatalogQuery; districts: { slug: string; name: string }[] }
@@ -27,7 +28,7 @@ export function CatalogFilters({ q, districts }: Props) {
     const n = Number(v.replace(/\D/g, ''))
     return n ? Math.round(n / rate) : undefined
   }
-  const extra = [q.sea, q.area, q.seaView, q.furnished, q.newBuild, q.citizenship].filter(Boolean).length
+  const extra = [q.sea, q.area, q.seaView, q.furnished, q.newBuild, q.citizenship, q.floor, q.owner, q.video, q.pets].filter(Boolean).length
 
   const panel = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -80,6 +81,7 @@ export function CatalogFilters({ q, districts }: Props) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
             {t('filters')} {extra > 0 && <span className="n">{extra}</span>}
           </button>
+          <div className="r"><ViewButtons /></div>
         </div>
       </form>
 
@@ -129,12 +131,36 @@ export function CatalogFilters({ q, districts }: Props) {
                 <input id="s-area" inputMode="numeric" key={`area-${q.area}`} defaultValue={q.area || ''} onBlur={(e) => go({ area: Number(e.target.value.replace(/\D/g, '')) || undefined })} />
               </div>
             </div>
+            <div className="row">
+              <div className="fld">
+                <label htmlFor="s-floor">{t('floor')}</label>
+                <select id="s-floor" value={q.floor || ''} onChange={(e) => go({ floor: (e.target.value || undefined) as CatalogQuery['floor'] })}>
+                  <option value="">{ts('any')}</option>
+                  <option value="notfirst">{t('floors.notfirst')}</option>
+                  <option value="notlast">{t('floors.notlast')}</option>
+                  <option value="top">{t('floors.top')}</option>
+                </select>
+              </div>
+              <div className="fld">
+                <label htmlFor="s-id">{ts('id')}</label>
+                <input id="s-id" inputMode="numeric" placeholder={ts('idPh')}
+                  onKeyDown={(e) => {
+                    const id = e.currentTarget.value.replace(/\D/g, '')
+                    if (e.key !== 'Enter' || !id) return
+                    e.preventDefault()
+                    router.push(`/property/${id}`)
+                  }} />
+              </div>
+            </div>
             <div className="fld"><span className="lbl">{t('features')}</span>
               <div className="feats-f">
                 <label className="check"><input type="checkbox" checked={!!q.seaView} onChange={(e) => go({ seaView: e.target.checked })} />{ts('seaView')}</label>
                 <label className="check"><input type="checkbox" checked={!!q.furnished} onChange={(e) => go({ furnished: e.target.checked })} />{ts('furnished')}</label>
                 <label className="check"><input type="checkbox" checked={!!q.newBuild} onChange={(e) => go({ newBuild: e.target.checked })} />{ts('newBuild')}</label>
                 {deal === 'sale' && <label className="check"><input type="checkbox" checked={!!q.citizenship} onChange={(e) => go({ citizenship: e.target.checked })} />{ts('citizenship')}</label>}
+                <label className="check"><input type="checkbox" checked={!!q.owner} onChange={(e) => go({ owner: e.target.checked })} />{t('owner')}</label>
+                <label className="check"><input type="checkbox" checked={!!q.video} onChange={(e) => go({ video: e.target.checked })} />{t('video')}</label>
+                {deal === 'rent' && <label className="check"><input type="checkbox" checked={!!q.pets} onChange={(e) => go({ pets: e.target.checked })} />{t('pets')}</label>}
               </div>
             </div>
           </div>

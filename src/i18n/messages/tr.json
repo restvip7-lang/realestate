@@ -247,7 +247,8 @@
         "q": "Ajans hizmetleri nasıl ücretlendirilir?",
         "a": "Emlak seçimi, gezmeler (yerinde ve video) ve danışmanlık ücretsizdir. İkinci el alımlarda ajans komisyonu fiyatın %2'si + KDV'dir; iş ortağımız olan yeni projelerde bunu müteahhit öder. Uzun dönem kiralamada bir aylık kira tutarıdır. Koşulları ilk gezmeden önce sözleşmeyle belirleriz."
       }
-    ]
+    ],
+    "compareBtn": "Bölgeleri karşılaştır"
   },
   "catalogCats": {
     "market": "Piyasa ve fiyatlar",
@@ -340,7 +341,28 @@
     "byDistrict": "Bölgelere göre",
     "byType": "Türe göre",
     "collections": "Seçkiler",
-    "firstLine": "Denize sıfır"
+    "firstLine": "Denize sıfır",
+    "floor": "Kat",
+    "floors": {
+      "notfirst": "Giriş katı hariç",
+      "notlast": "En üst kat hariç",
+      "top": "En üst kat (çatı dubleksi)"
+    },
+    "owner": "Sahibinden",
+    "video": "Videolu",
+    "pets": "Evcil hayvan kabul",
+    "viewSplit": "Liste ve harita",
+    "viewList": "Sadece liste",
+    "viewMap": "Sadece harita",
+    "viewsLabel": "Görünüm",
+    "map": "Harita",
+    "list": "Liste",
+    "mapLabel": "Harita: Alanya sahilindeki ilanlar",
+    "mapFail": "Harita yüklenemedi. Bağlantınızı kontrol edip sayfayı yenileyin.",
+    "more": "Detaylar →",
+    "mapCount": "Haritada {n}",
+    "k": "{n} bin",
+    "mln": "{n} mn"
   },
   "property": {
     "openPhoto": "{n}. fotoğrafı aç",
@@ -454,7 +476,10 @@
       "yes": "Eşyalı",
       "no": "Eşyasız",
       "partial": "Kısmen eşyalı"
-    }
+    },
+    "share": "Paylaş",
+    "copied": "Bağlantı kopyalandı",
+    "pdf": "PDF indir"
   },
   "costs": {
     "rows": {

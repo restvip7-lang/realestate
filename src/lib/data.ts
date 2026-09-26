@@ -59,12 +59,17 @@ export type CatalogQuery = {
   furnished?: boolean
   newBuild?: boolean
   citizenship?: boolean
+  floor?: 'notfirst' | 'notlast' | 'top'
+  owner?: boolean
+  video?: boolean
+  pets?: boolean
   sort?: 'new' | 'cheap' | 'expensive' | 'sea'
   page?: number
   limit?: number
 }
 
-export async function listProperties(locale: Locale, q: CatalogQuery, districts?: District[]) {
+/** Условия каталога (общие для списка и карты). */
+async function catalogWhere(locale: Locale, q: CatalogQuery, districts?: District[]): Promise<Where> {
   const and: Where[] = [{ status: { equals: 'published' } }, { deal: { equals: q.deal || 'sale' } }]
   if (q.district) {
     const d = (districts ?? (await listDistricts(locale))).find((x) => x.slug === q.district)
@@ -81,17 +86,49 @@ export async function listProperties(locale: Locale, q: CatalogQuery, districts?
   if (q.furnished) and.push({ furnished: { in: ['yes', 'partial'] } })
   if (q.newBuild) and.push({ condition: { in: ['new', 'construction'] } })
   if (q.citizenship) and.push({ citizenship: { equals: true } })
+  if (q.owner) and.push({ source: { equals: 'owner' } })
+  if (q.video) and.push({ video: { exists: true } }, { video: { not_equals: '' } })
+  if (q.pets && q.deal === 'rent') and.push({ 'rent.pets': { equals: true } })
+  if (q.floor === 'notfirst') and.push({ floor: { greater_than: 1 } })
+  else if (q.floor) {
+    // «не последний» / «последний» сравнивают два поля — отбираем ID заранее
+    const { docs } = await (await payloadClient()).find({
+      collection: 'properties', where: { and: [...and, { type: { not_equals: 'villa' } }] }, select: { floor: true, floors: true }, limit: 5000, depth: 0, pagination: false, ...pub,
+    })
+    const ids = docs.filter((d) => d.floor != null && d.floors != null && (q.floor === 'top' ? d.floor >= d.floors : d.floor < d.floors)).map((d) => d.id)
+    and.push({ id: { in: ids.length ? ids : [-1] } })
+  }
+  return { and }
+}
+
+export async function listProperties(locale: Locale, q: CatalogQuery, districts?: District[]) {
   const sort = { new: '-id', cheap: 'price', expensive: '-price', sea: 'sea' }[q.sort || 'new']
   return (await payloadClient()).find({
     collection: 'properties',
     locale,
-    where: { and },
+    where: await catalogWhere(locale, q, districts),
     sort,
     limit: q.limit ?? 24,
     page: q.page ?? 1,
     depth: 1,
     ...pub,
   })
+}
+
+/** Все объекты по фильтру для карты каталога (только нужные поля). */
+export async function mapProperties(locale: Locale, q: CatalogQuery, districts?: District[]): Promise<Property[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    locale,
+    where: await catalogWhere(locale, q, districts),
+    select: { title: true, slug: true, deal: true, price: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, type: true },
+    sort: '-id',
+    limit: 500,
+    depth: 1,
+    pagination: false,
+    ...pub,
+  })
+  return docs as Property[]
 }
 
 export async function getProperty(id: number, locale: Locale): Promise<Property | null> {
@@ -257,4 +294,17 @@ export async function getPropertiesByIds(ids: number[], locale: Locale): Promise
     collection: 'properties', locale, where: { and: [{ id: { in: ids } }, { status: { in: [...PUBLIC_STATUSES] } }] }, limit: ids.length, depth: 1, pagination: false, ...pub,
   })
   return ids.map((id) => docs.find((d) => d.id === id)).filter((d): d is Property => !!d)
+}
+
+/** Адреса для sitemap.xml и llms.txt: только то, что видит посетитель. */
+export async function sitemapData() {
+  const p = await payloadClient()
+  const opts = { limit: 5000, depth: 0, pagination: false, ...pub } as const
+  const [districts, team, posts, properties] = await Promise.all([
+    p.find({ collection: 'districts', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
+    p.find({ collection: 'team', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
+    p.find({ collection: 'posts', ...opts, sort: '-publishedAt', select: { slug: true, kind: true, title: true, updatedAt: true } }),
+    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, updatedAt: true } }),
+  ])
+  return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs }
 }
