@@ -10,6 +10,7 @@ import { POST_CATEGORIES } from '@/lib/catalog'
 import { htmlToLexical } from '@/lib/lexical'
 import { slugify } from '@/lib/slug'
 
+import { descriptionI18n, DISTRICTS_I18N, titleI18n } from './i18n'
 import data from './prototype-data.json'
 
 type Log = (msg: string) => void
@@ -44,7 +45,7 @@ export type SeedStep = (typeof SEED_STEPS)[number]
 export type SeedStepResult = { next: { step: SeedStep; offset: number } | null; message: string }
 
 const MEDIA_BATCH = 6
-const PROPERTY_BATCH = 25
+const PROPERTY_BATCH = 15 // каждый объект пишется на трёх языках — пачка меньше, чтобы шаг укладывался в лимит Vercel
 
 // все фото демо-данных: номер Unsplash → подпись
 function photoList(): [string, string][] {
@@ -85,6 +86,13 @@ async function upsert<T extends 'districts' | 'team' | 'properties' | 'posts'>(p
   return existing ? payload.update({ ...args, id: existing }) : payload.create(args)
 }
 
+/** Переводы EN/TR поверх русской версии (переводимые поля Payload хранит по языкам). */
+async function translate(payload: Payload, collection: 'districts' | 'properties', id: number, byLocale: Partial<Record<'en' | 'tr', Record<string, unknown>>>) {
+  for (const [locale, data] of Object.entries(byLocale)) {
+    if (data) await payload.update({ collection, id, locale: locale as 'en' | 'tr', data: data as never })
+  }
+}
+
 /** Один короткий шаг загрузки. Вызывать, пока `next` не станет null. */
 export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0): Promise<SeedStepResult> {
   const after = (s: SeedStep) => ({ step: SEED_STEPS[SEED_STEPS.indexOf(s) + 1], offset: 0 })
@@ -120,12 +128,19 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
   if (step === 'districts') {
     const have = await bySlug(payload, 'districts')
     for (const d of data.districts) {
-      await upsert(payload, 'districts', have.get(d.slug), {
+      const doc = await upsert(payload, 'districts', have.get(d.slug), {
         name: d.name, nameIn: d.nameIn, slug: d.slug, order: d.order, inland: d.inland, about: d.about, lead: d.lead,
         pros: d.pros.map((text) => ({ text })), cons: d.cons.map((text) => ({ text })), infra: d.infra.map((text) => ({ text })),
         image: media.get(d.img), pricePerM2: d.pricePerM2, pricePerM2Date: ruDate('24.09.2026'), coastKm: d.coastKm,
         scores: d.scores, lat: d.lat, lng: d.lng, schema: { x: d.x, y: d.y },
       })
+      const tr = DISTRICTS_I18N[d.slug]
+      if (tr) {
+        await translate(payload, 'districts', doc.id, {
+          en: { name: tr.name.en, nameIn: d.slug === 'center' ? 'the city centre' : tr.name.en, about: tr.about.en },
+          tr: { name: tr.name.tr, nameIn: tr.name.tr, about: tr.about.tr },
+        })
+      }
     }
     return { next: after('districts'), message: `Районы: ${data.districts.length}` }
   }
@@ -172,9 +187,9 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
     const have = new Set(docs.map((d) => d.id))
     for (const p of batch) {
       const gallery = [p.img, ...data.galleryExtra.filter((x) => x !== p.img)].map((x) => media.get(x)!).filter(Boolean)
-      await upsert(payload, 'properties', have.has(p.id) ? p.id : undefined, {
+      const doc = await upsert(payload, 'properties', have.has(p.id) ? p.id : undefined, {
         ...(have.has(p.id) ? {} : { id: p.id }),
-        deal: p.deal, status: p.status, title: p.title, type: p.type,
+        deal: p.deal, status: p.status, title: p.title, slug: slugify(p.title), type: p.type,
         district: district.get(p.district), rooms: p.rooms, area: p.area, floor: p.floor, floors: p.floors, sea: p.sea,
         view: p.view, furnished: p.furnished, condition: p.condition, source: p.source,
         ...(p.deal === 'rent'
@@ -188,6 +203,12 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
           : { priceOriginal: p.price, currency: 'EUR', priceCheckedAt: ruDate(p.checked) }),
         photos: gallery, features: DEFAULT_FEATURES, description: p.description, lat: p.lat, lng: p.lng,
       })
+      const i18n = (loc: 'en' | 'tr') => {
+        const title = titleI18n(p.title, loc)
+        // slug один на все языки — передаём русский, иначе хук соберёт его из английского заголовка
+        return title ? { title, slug: slugify(p.title), description: descriptionI18n(p, p.district, loc) } : undefined
+      }
+      await translate(payload, 'properties', doc.id, { en: i18n('en'), tr: i18n('tr') })
     }
     const done = Math.min(offset + PROPERTY_BATCH, data.properties.length)
     if (done < data.properties.length) return { next: { step: 'properties', offset: done }, message: `Объекты ${done} из ${data.properties.length}` }

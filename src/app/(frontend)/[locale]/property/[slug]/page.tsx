@@ -15,6 +15,7 @@ import { ViewForm } from '@/components/site/ViewForm'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { agentFor, districtOf, getCompany, getProperty, listTeam, mediaUrl, similarProperties } from '@/lib/data'
+import { featureLabel } from '@/lib/catalog'
 import { fmtDate, propertyPath, roomsHint, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { Media } from '@/payload-types'
@@ -168,7 +169,7 @@ export default async function PropertyPage({ params }: Props) {
               <div className="block desc"><h2>{t('description')}</h2>{para.map((x, i) => <p key={i}>{x}</p>)}</div>
             )}
             {feats.length > 0 && (
-              <div className="block"><h2>{t('features')}</h2><div className="feats">{feats.map((f) => <span key={f}>{f}</span>)}</div></div>
+              <div className="block"><h2>{t('features')}</h2><div className="feats">{feats.map((f) => <span key={f}>{featureLabel(f, locale)}</span>)}</div></div>
             )}
             <div className="block">
               <h2>{t('location')}</h2>

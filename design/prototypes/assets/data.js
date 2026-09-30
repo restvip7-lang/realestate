@@ -168,6 +168,7 @@
       [o.lat, o.lng] = nearCoast(d, sea, r());
       if (seaView) o.title = o.title.replace('с видом на горы', 'с видом на море');
       else o.title = o.title.replace('с панорамой моря', 'с видом на горы').replace('с садом и видом на море', 'с садом');
+      if (sea > 300) o.title = o.title.replace('рядом с пляжем', 'в комплексе с бассейном'); // «рядом с пляжем» — только до 300 м
       o.badges = [newBuild && 'new', seaView && 'sea'].filter(Boolean);
       if (rent) o.rent = { period: 'long', deposit: price, minTerm: pick([6, 12]), from: `${1 + Math.floor(r() * 27)}.1${Math.floor(r() * 2)}.2026`, utilities: false, pets: r() > 0.5 };
       SEED.push(o);
