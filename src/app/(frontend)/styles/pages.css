@@ -480,7 +480,7 @@
   .pg .sc-row{grid-template-columns:120px 1fr 28px;font-size:14px}
   .pg .dgrid{grid-template-columns:1fr}
   .pg .map-box{min-height:220px}
-  .pg .dhero #map{display:none}
+  .pg .dhero #coast{display:none}
   .pg .chips{flex-wrap:nowrap;overflow-x:auto;margin-left:calc(-1*var(--gut));margin-right:calc(-1*var(--gut));padding:0 var(--gut) 4px;scrollbar-width:none;width:calc(100% + 2*var(--gut))}
   .pg .chip{flex-shrink:0}
   .pg .ptable{font-size:14px}

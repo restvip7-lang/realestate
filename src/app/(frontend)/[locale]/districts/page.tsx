@@ -104,7 +104,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
           <span className="eyebrow">{t('guide')}</span>
           <h1>{t('listTitle')}</h1>
           <p className="lead-t">{t('listLead', { sea: districts.filter((d) => !d.inland).length, inland: districts.filter((d) => d.inland).length })}</p>
-          <div className="map-box" id="map" style={{ marginTop: 28, minHeight: 380 }}>
+          <div className="map-box" id="coast" style={{ marginTop: 28, minHeight: 380 }}>
             <CoastMap districts={districts} locale={locale} label={t('mapLabel')} />
             <span className="map-note"><span>{t('mapNote')}</span></span>
           </div>

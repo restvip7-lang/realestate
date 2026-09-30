@@ -60,7 +60,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   ]
 
   return (
-    <main>
+    <main className="home">
       <section className="hero">
         <div className="wrap hero-grid">
           <div className="hero-txt">

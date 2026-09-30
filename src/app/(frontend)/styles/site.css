@@ -7,6 +7,7 @@
 /* блок заявки «Подберём жильё» (внизу каждой страницы, id="lead") */
 .lead{background:var(--ink);color:#fff}
 .lead-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.lead-grid>*{min-width:0}
 .lead h2{margin:8px 0 14px}
 .lead .intro p{color:rgba(255,255,255,.75);margin-bottom:22px}
 .lead .eyebrow{color:var(--sea-light)}
