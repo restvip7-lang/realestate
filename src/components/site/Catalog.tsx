@@ -118,7 +118,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
           )}
         </section>
       </CatalogLayout>
-      <section className="seo" aria-labelledby="seo-h">
+      <section className="cat-seo" aria-labelledby="seo-h">
         <div className="wrap cols">
           <div>
             <h2 id="seo-h">{hasFilters(q) ? title : t(deal === 'rent' ? 'seoRentTitle' : 'seoSaleTitle')}</h2>
