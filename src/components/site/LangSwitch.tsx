@@ -17,6 +17,7 @@ export function LangSwitch({ className, label }: { className?: string; label: st
           key={l}
           href={search ? `${pathname}?${search}` : pathname}
           locale={l}
+          scroll={false} // остаёмся на том же месте страницы, а не прыгаем в начало
           aria-current={l === locale ? 'true' : undefined}
           hrefLang={l}
           lang={l}
