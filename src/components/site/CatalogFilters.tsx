@@ -65,7 +65,7 @@ export function CatalogFilters({ q, districts }: Props) {
           </div>
           <select className="hide-m" aria-label={ts('type')} value={q.type || ''} onChange={(e) => go({ type: e.target.value || undefined })}>
             <option value="">{t('anyType')}</option>
-            {(['apartment', 'penthouse', 'villa', 'duplex'] as const).map((k) => <option key={k} value={k}>{t(`typesPlural.${k}`)}</option>)}
+            {(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).map((k) => <option key={k} value={k}>{t(`typesPlural.${k}`)}</option>)}
           </select>
           <select className="hide-m" aria-label={ts('district')} value={q.district || ''} onChange={(e) => go({ district: e.target.value || undefined })}>
             <option value="">{ts('allDistricts')}</option>
@@ -97,7 +97,7 @@ export function CatalogFilters({ q, districts }: Props) {
           <div className="pb">
             <div className="fld"><span className="lbl">{ts('type')}</span>
               <div className="opt">
-                {(['apartment', 'penthouse', 'villa', 'duplex'] as const).map((k) => (
+                {(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).map((k) => (
                   <label key={k}><input type="radio" name="s-type" checked={q.type === k} onChange={() => go({ type: k })} onClick={() => q.type === k && go({ type: undefined })} />{t(`typesPlural.${k}`)}</label>
                 ))}
               </div>

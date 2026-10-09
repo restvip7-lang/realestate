@@ -269,7 +269,8 @@
       "apartment": "Daire",
       "penthouse": "Çatı katı",
       "villa": "Villa",
-      "duplex": "Dubleks"
+      "duplex": "Dubleks",
+      "project": "Yeni proje"
     },
     "district": "Bölge",
     "allDistricts": "Tüm bölgeler",
@@ -304,7 +305,8 @@
       "apartment": "Daireler",
       "penthouse": "Çatı katları",
       "villa": "Villalar",
-      "duplex": "Dubleksler"
+      "duplex": "Dubleksler",
+      "project": "Yeni projeler"
     },
     "priceFrom": "En düşük fiyat",
     "filters": "Filtreler",

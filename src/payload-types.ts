@@ -149,11 +149,37 @@ export interface Property {
   id: number;
   title: string;
   deal: 'sale' | 'rent';
-  type: 'apartment' | 'penthouse' | 'villa' | 'duplex' | 'land' | 'commercial';
+  type: 'apartment' | 'penthouse' | 'villa' | 'duplex' | 'land' | 'commercial' | 'project';
   district: number | District;
   complex?: string | null;
-  rooms?: ('1+0' | '1+1' | '2+1' | '3+1' | '3+2' | '4+1' | '4+2' | '5+1' | '6+1') | null;
+  rooms?:
+    | (
+        | '1+0'
+        | '1+1'
+        | '2+1'
+        | '3+1'
+        | '3+2'
+        | '4+1'
+        | '4+2'
+        | '5+1'
+        | '5+2'
+        | '6+1'
+        | '6+2'
+        | '7+1'
+        | '7+2'
+        | '8+1'
+        | '8+2'
+      )
+    | null;
   area?: number | null;
+  /**
+   * Для нового проекта: «Площадь» — от, здесь — до.
+   */
+  areaTo?: number | null;
+  /**
+   * Для нового проекта, например «1+1, 2+1».
+   */
+  layouts?: string | null;
   floor?: number | null;
   floors?: number | null;
   year?: number | null;
@@ -172,6 +198,10 @@ export interface Property {
    * Показывается на карточке: «цена проверена 24.09.2026».
    */
   priceCheckedAt?: string | null;
+  /**
+   * Для новых проектов: на сайте «от 109 000 €».
+   */
+  priceFrom?: boolean | null;
   price?: number | null;
   installment?: {
     months?: number | null;
@@ -195,6 +225,18 @@ export interface Property {
    * Первое фото — обложка. Порядок меняется перетаскиванием.
    */
   photos?: (number | Media)[] | null;
+  /**
+   * Ссылки на фото в Stay Portfolio, обновляются при синхронизации. Если загрузить фото выше, на сайте будут они.
+   */
+  remotePhotos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   video?: string | null;
   tour?: string | null;
   /**
@@ -273,6 +315,16 @@ export interface Property {
    * Латиницей через дефис. Пусто — заполнится из заголовка.
    */
   slug?: string | null;
+  /**
+   * Объект приходит из Stay: заголовок, описание, цена, фото и параметры перезаписываются при синхронизации. Правьте их в Stay. Эксперт, метки, SEO и заметки остаются нашими.
+   */
+  stay?: {
+    objectId?: number | null;
+    refNo?: string | null;
+    modified?: string | null;
+    syncedAt?: string | null;
+    trHash?: string | null;
+  };
   /**
    * Контакты собственника, ключи, комиссия. На сайте не видно.
    */
@@ -689,6 +741,8 @@ export interface PropertiesSelect<T extends boolean = true> {
   complex?: T;
   rooms?: T;
   area?: T;
+  areaTo?: T;
+  layouts?: T;
   floor?: T;
   floors?: T;
   year?: T;
@@ -701,6 +755,7 @@ export interface PropertiesSelect<T extends boolean = true> {
   priceOriginal?: T;
   currency?: T;
   priceCheckedAt?: T;
+  priceFrom?: T;
   price?: T;
   installment?:
     | T
@@ -725,6 +780,7 @@ export interface PropertiesSelect<T extends boolean = true> {
         pets?: T;
       };
   photos?: T;
+  remotePhotos?: T;
   video?: T;
   tour?: T;
   description?: T;
@@ -742,6 +798,15 @@ export interface PropertiesSelect<T extends boolean = true> {
   agent?: T;
   labels?: T;
   slug?: T;
+  stay?:
+    | T
+    | {
+        objectId?: T;
+        refNo?: T;
+        modified?: T;
+        syncedAt?: T;
+        trHash?: T;
+      };
   notes?: T;
   updatedAt?: T;
   createdAt?: T;

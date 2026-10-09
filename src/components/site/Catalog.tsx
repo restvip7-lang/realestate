@@ -128,7 +128,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
             <h3>{t('byDistrict')}</h3>
             <div className="links">{districts.map((x) => <Link key={x.slug} href={`/${deal}?district=${x.slug}`}>{x.name}</Link>)}</div>
             <h3>{t('byType')}</h3>
-            <div className="links">{(['apartment', 'penthouse', 'villa', 'duplex'] as const).map((k) => <Link key={k} href={`/${deal}?type=${k}`}>{t(`typesPlural.${k}`)}</Link>)}</div>
+            <div className="links">{(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).map((k) => <Link key={k} href={`/${deal}?type=${k}`}>{t(`typesPlural.${k}`)}</Link>)}</div>
             <h3>{t('collections')}</h3>
             <div className="links">
               <Link href={`/${deal}?view=sea`}>{ts('seaView')}</Link>

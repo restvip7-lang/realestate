@@ -6,10 +6,11 @@ export const PROPERTY_TYPES = {
   duplex: { ru: 'Дуплекс', en: 'Duplex', tr: 'Dubleks', plural: { ru: 'Дуплексы', en: 'Duplexes', tr: 'Dubleksler' }, path: 'duplex' },
   land: { ru: 'Земля', en: 'Land', tr: 'Arsa', plural: { ru: 'Участки', en: 'Land plots', tr: 'Arsalar' }, path: 'land' },
   commercial: { ru: 'Коммерция', en: 'Commercial', tr: 'Ticari', plural: { ru: 'Коммерческая недвижимость', en: 'Commercial property', tr: 'Ticari gayrimenkul' }, path: 'commercial' },
+  project: { ru: 'Новый проект', en: 'New project', tr: 'Yeni proje', plural: { ru: 'Новые проекты', en: 'New projects', tr: 'Yeni projeler' }, path: 'projects' },
 } as const
 export type PropertyType = keyof typeof PROPERTY_TYPES
 
-export const ROOMS = ['1+0', '1+1', '2+1', '3+1', '3+2', '4+1', '4+2', '5+1', '6+1'] as const
+export const ROOMS = ['1+0', '1+1', '2+1', '3+1', '3+2', '4+1', '4+2', '5+1', '5+2', '6+1', '6+2', '7+1', '7+2', '8+1', '8+2'] as const
 
 export const PROPERTY_STATUS = {
   published: 'Опубликован',

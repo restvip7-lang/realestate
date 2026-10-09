@@ -269,7 +269,8 @@
       "apartment": "Квартира",
       "penthouse": "Пентхаус",
       "villa": "Вилла",
-      "duplex": "Дуплекс"
+      "duplex": "Дуплекс",
+      "project": "Новый проект"
     },
     "district": "Район",
     "allDistricts": "Все районы",
@@ -304,7 +305,8 @@
       "apartment": "Квартиры",
       "penthouse": "Пентхаусы",
       "villa": "Виллы",
-      "duplex": "Дуплексы"
+      "duplex": "Дуплексы",
+      "project": "Новые проекты"
     },
     "priceFrom": "Цена от",
     "filters": "Фильтры",
