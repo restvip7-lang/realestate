@@ -3,7 +3,7 @@ import 'server-only'
 import type { Where } from 'payload'
 
 import type { Locale } from '@/i18n/locales'
-import type { Company, District, Media, Post, Property, Rate, Review, Team, TeamPage } from '@/payload-types'
+import type { Company, District, Media, Post, Property, Rate, Review, Service, Team, TeamPage } from '@/payload-types'
 
 import { PUBLIC_STATUSES } from './catalog'
 import { payloadClient } from './payload'
@@ -203,6 +203,13 @@ export function propertyPhotos(p: Pick<Property, 'photos' | 'remotePhotos'>, siz
 }
 export const propertyCover = (p: Pick<Property, 'photos' | 'remotePhotos'>, size: 'thumb' | 'card' | 'large' = 'card') => propertyPhotos(p, size)[0] ?? null
 
+/** Обложка публикации или услуги: загруженная в админке, а если её нет — ссылка на картинку в Stay Property (не копируется к нам). */
+export function coverOf(p: { cover?: number | Media | null; remoteCover?: string | null } | null | undefined, size: 'thumb' | 'card' | 'large' = 'card') {
+  const own = mediaUrl(p?.cover, size)
+  if (own) return { src: own, remote: false }
+  return p?.remoteCover?.startsWith('https://') ? { src: p.remoteCover, remote: true } : null
+}
+
 /** Сколько опубликованных объектов в каждом районе (для карточек районов). */
 export async function districtCounts(deal: 'sale' | 'rent' = 'sale'): Promise<Record<number, number>> {
   const { docs } = await (await payloadClient()).find({
@@ -296,6 +303,17 @@ export async function getPost(slug: string, locale: Locale): Promise<Post | null
   return docs[0] ?? null
 }
 
+/** Услуги из Stay Property: порядок из админки, без порядка — по названию. */
+export async function listServices(locale: Locale): Promise<Service[]> {
+  const { docs } = await (await payloadClient()).find({ collection: 'services', locale, limit: 200, depth: 1, pagination: false, ...pub })
+  return docs.sort((a, b) => (a.order ?? 1e9) - (b.order ?? 1e9) || (a.title || '').localeCompare(b.title || '', locale))
+}
+
+export async function getService(slug: string, locale: Locale): Promise<Service | null> {
+  const { docs } = await (await payloadClient()).find({ collection: 'services', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
+  return docs[0] ?? null
+}
+
 export async function listReviews(): Promise<Review[]> {
   const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
   return docs
@@ -314,11 +332,12 @@ export async function getPropertiesByIds(ids: number[], locale: Locale): Promise
 export async function sitemapData() {
   const p = await payloadClient()
   const opts = { limit: 5000, depth: 0, pagination: false, ...pub } as const
-  const [districts, team, posts, properties] = await Promise.all([
+  const [districts, team, posts, properties, services] = await Promise.all([
     p.find({ collection: 'districts', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'team', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'posts', ...opts, sort: '-publishedAt', select: { slug: true, kind: true, title: true, updatedAt: true } }),
     p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, updatedAt: true } }),
+    p.find({ collection: 'services', ...opts, sort: 'order', select: { slug: true, title: true, updatedAt: true } }),
   ])
-  return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs }
+  return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs, services: services.docs }
 }

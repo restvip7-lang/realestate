@@ -17,7 +17,8 @@
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/cli.ts",
-    "stay:sync": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/stay-sync.ts"
+    "stay:sync": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/stay-sync.ts",
+    "content:sync": "cross-env NODE_OPTIONS=--no-deprecation payload run src/scripts/content-sync.ts"
   },
   "engines": {
     "node": ">=20.9.0"

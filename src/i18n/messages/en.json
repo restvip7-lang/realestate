@@ -799,5 +799,20 @@
     "reserved": "Reserved",
     "sold": "Sold",
     "rented": "Rented"
+  },
+  "svc": {
+    "crumbs": "Services",
+    "free": "Free for buyers",
+    "service": "Service",
+    "pagesTitle": "More about our services",
+    "pagesEyebrow": "Services",
+    "freeTitle": "Free for buyers",
+    "freeEyebrow": "After-sale support",
+    "more": "Other services",
+    "all": "All services",
+    "details": "Details",
+    "needHelp": "Need advice?",
+    "help": "We will explain how the service works and what it costs.",
+    "ask": "Ask a question"
   }
 }

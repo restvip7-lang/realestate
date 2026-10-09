@@ -9,7 +9,7 @@ import { SearchForm } from '@/components/site/SearchForm'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { districtCounts, getCompany, latestPosts, latestReviews, listDistricts, listProperties, listTeam, mediaUrl } from '@/lib/data'
+import { coverOf, districtCounts, getCompany, latestPosts, latestReviews, listDistricts, listProperties, listTeam, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import { pageMeta } from '@/lib/seo'
 
@@ -219,7 +219,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           <div className="revs">
             {reviews.map((r) => (
               <div className="rev" key={r.id}>
-                <div className="stars" aria-label={t('stars', { n: r.rating })}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div>
+                {r.rating ? <div className="stars" aria-label={t('stars', { n: r.rating })}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div> : null}
                 <p>«{r.text}»</p>
                 <div className="who"><span>{r.who}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>
               </div>
@@ -234,10 +234,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             <div className="sec-head"><div><span className="eyebrow">{t('journalEyebrow')}</span><h2>{t('journalTitle')}</h2></div><Link href="/blog" className="link">{t('allArticles')}</Link></div>
             <div className="arts">
               {articles.map((p) => {
-                const img = mediaUrl(p.cover, 'thumb')
+                const img = coverOf(p, 'thumb')
                 return (
                   <Link href={`/blog/${p.slug}`} className="art" key={p.id}>
-                    {img ? <Image src={img} alt="" width={400} height={267} sizes="160px" /> : <span />}
+                    {img ? <Image src={img.src} alt="" width={400} height={267} sizes="160px" unoptimized={img.remote} /> : <span />}
                     <div>
                       <span className="m">{cat(p.category)} · {fmtDate(p.publishedAt, locale)}{p.readingMins ? ` · ${t('mins', { n: p.readingMins })}` : ''}</span>
                       <h3>{p.title}</h3>
@@ -251,10 +251,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             <div className="sec-head"><div><span className="eyebrow">{t('newsEyebrow')}</span><h2>{t('newsTitle')}</h2></div><Link href="/news" className="link">{t('allNews')}</Link></div>
             <div className="news">
               {news.map((p) => {
-                const img = mediaUrl(p.cover, 'thumb')
+                const img = coverOf(p, 'thumb')
                 return (
                   <Link href={`/news/${p.slug}`} key={p.id}>
-                    {img ? <Image src={img} alt="" width={200} height={133} sizes="96px" /> : <span />}
+                    {img ? <Image src={img.src} alt="" width={200} height={133} sizes="96px" unoptimized={img.remote} /> : <span />}
                     <span>
                       {p.pinned && <span className="pin-tag">{t('pinned')} · </span>}
                       <span className="m">{fmtDate(p.publishedAt, locale)} · {cat(p.category)}</span>

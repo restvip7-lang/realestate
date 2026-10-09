@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
       { protocol: 'https', hostname: 'portfolio.stayrepo.com', pathname: '/lbi-content/**' },
+      // обложки новостей и услуг Stay Property (показываются без оптимизатора, unoptimized)
+      { protocol: 'https', hostname: 'eu2.contabostorage.com', pathname: '/eeb8c723fe9e48fb9591639419bc7af9:stay-media/**' },
     ],
     formats: ['image/avif', 'image/webp'],
   },

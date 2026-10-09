@@ -1,6 +1,7 @@
 import type { CollectionConfig, Where } from 'payload'
 
 import { adminOnly, editorsOnly, isStaff } from '@/access'
+import { externalField, remoteCoverField } from '@/fields/external'
 import { slugField } from '@/fields/slug'
 import { POST_CATEGORIES, SOURCE_REQUIRED } from '@/lib/catalog'
 import { lexicalText } from '@/lib/lexical'
@@ -62,6 +63,7 @@ export const Posts: CollectionConfig = {
     },
     { name: 'lead', type: 'textarea', label: 'Подзаголовок (лид)', localized: true, maxLength: 320 },
     { name: 'cover', type: 'upload', relationTo: 'media', label: 'Обложка' },
+    remoteCoverField,
     { name: 'body', type: 'richText', label: 'Текст', localized: true },
     {
       type: 'row',
@@ -116,5 +118,6 @@ export const Posts: CollectionConfig = {
     { name: 'pinned', type: 'checkbox', label: 'Закрепить наверху', admin: { position: 'sidebar' } },
     slugField('title'),
     { name: 'readingMins', type: 'number', label: 'Минут чтения', admin: { position: 'sidebar', readOnly: true } },
+    externalField('Новость приходит из Stay Property: заголовок, лид, текст и обложка перезаписываются при синхронизации, правьте их там (дату — тоже, если она указана там полностью). Рубрика, автор, публикация и SEO остаются нашими.'),
   ],
 }

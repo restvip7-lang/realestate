@@ -1,7 +1,9 @@
 import '@/app/(frontend)/styles/pages.css'
 
-import { listTeam } from '@/lib/data'
-import { setRequestLocale } from 'next-intl/server'
+import { listServices, listTeam } from '@/lib/data'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+
+import { ServiceCard } from '@/components/site/ServiceCard'
 
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
@@ -18,7 +20,10 @@ export async function generateMetadata({ params }: Props) {
 export default async function ServicesPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
-  const team = await listTeam(locale)
+  const [team, services, ts] = await Promise.all([listTeam(locale), listServices(locale), getTranslations('svc')])
+  // услуги из Stay Property (docs/content-import.md): подробные страницы и бесплатная помощь покупателям
+  const pages = services.filter((x) => x.group !== 'free')
+  const free = services.filter((x) => x.group === 'free')
   const by = (slug: string, kind: 'founder' | 'expert' | 'lawyer') => {
     const m = team.find((t) => t.slug === slug) || (kind !== 'expert' ? team.find((t) => t.kind === kind) : undefined)
     return m ? <p className="hint">Отвечает: <Link href={`/team/${m.slug}`} className="link">{m.name}</Link>, {m.role.toLowerCase()}</p> : null
@@ -100,6 +105,24 @@ export default async function ServicesPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {pages.length > 0 && (
+        <section className="sec" id="more" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="sec-head"><div><span className="eyebrow">{ts('pagesEyebrow')}</span><h2>{ts('pagesTitle')}</h2></div></div>
+            <div className="pgrid">{pages.map((x) => <ServiceCard key={x.id} s={x} />)}</div>
+          </div>
+        </section>
+      )}
+
+      {free.length > 0 && (
+        <section className="sec" id="free" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="sec-head"><div><span className="eyebrow">{ts('freeEyebrow')}</span><h2>{ts('freeTitle')}</h2></div></div>
+            <div className="pgrid">{free.map((x) => <ServiceCard key={x.id} s={x} />)}</div>
+          </div>
+        </section>
+      )}
 
       <section className="sec" style={{ background: "var(--mist)" }} id="prices">
         <div className="wrap cols2">

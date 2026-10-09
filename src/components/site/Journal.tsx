@@ -4,7 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { getRates, listPosts, mediaUrl } from '@/lib/data'
+import { coverOf, getRates, listPosts, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import { SITE_URL } from '@/lib/seo'
 import type { Post } from '@/payload-types'
@@ -62,7 +62,7 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
   if (!news) {
     const [f, ...rest] = list
     const a = f?.author && typeof f.author === 'object' ? f.author : null
-    const cover = mediaUrl(f?.cover, 'large')
+    const cover = coverOf(f, 'large')
     return (
       <main className="pg">
         {ldTag}
@@ -72,7 +72,7 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
             <div className="pfilters">{chips}<span className="hint" aria-live="polite">{t('articlesN', { n: list.length })}</span></div>
             {f ? (
               <article className="feat">
-                {cover ? <Image src={cover} alt="" width={1100} height={620} priority sizes="(max-width: 760px) 100vw, 60vw" /> : <div />}
+                {cover ? <Image src={cover.src} alt="" width={1100} height={620} priority sizes="(max-width: 760px) 100vw, 60vw" unoptimized={cover.remote} /> : <div />}
                 <div className="bd">
                   <span className="meta-line">
                     {f.pinned && <span className="pin-tag">{t('pinned')}</span>}
@@ -109,10 +109,10 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
             <div className="pfilters">{chips}</div>
             <div className="nlist">
               {list.length ? list.map((p) => {
-                const img = mediaUrl(p.cover, 'thumb')
+                const img = coverOf(p, 'thumb')
                 return (
                   <article className="nitem" key={p.id}>
-                    {img ? <Image src={img} alt="" width={400} height={300} sizes="160px" /> : <div />}
+                    {img ? <Image src={img.src} alt="" width={400} height={300} sizes="160px" unoptimized={img.remote} /> : <div />}
                     <div>
                       <span className="meta-line">
                         {p.pinned && <span className="pin-tag">{t('pinned')}</span>}

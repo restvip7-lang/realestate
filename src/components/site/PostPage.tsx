@@ -7,8 +7,9 @@ import { getTranslations } from 'next-intl/server'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { allPublished, getCompany, getPost, listPosts, mediaUrl } from '@/lib/data'
+import { allPublished, coverOf, getCompany, getPost, listPosts, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
+import { lexicalText } from '@/lib/lexical'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { Property } from '@/payload-types'
 
@@ -20,7 +21,7 @@ import { Prose, tocOf } from './Prose'
 export async function postMeta(locale: Locale, slug: string) {
   const p = await getPost(slug, locale)
   if (!p) return {}
-  return pageMeta(locale, postPath(p), { title: p.seo?.title || p.title, description: p.seo?.description || p.lead || undefined, image: mediaUrl(p.cover, 'large') })
+  return pageMeta(locale, postPath(p), { title: p.seo?.title || p.title, description: p.seo?.description || p.lead || undefined, image: coverOf(p, 'large')?.src })
 }
 
 export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: string; kind: 'article' | 'news' }) {
@@ -35,10 +36,12 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
   const base = news ? '/news' : '/blog'
   const a = p.author && typeof p.author === 'object' ? p.author : null
   const catOk = POST_CATEGORIES.some((c) => c.value === p.category)
-  const cover = mediaUrl(p.cover, 'large')
+  const cover = coverOf(p, 'large')
   const url = `${SITE_URL}${getPathname({ href: postPath(p), locale })}`
   const src = p.source ? (/^https?:/.test(p.source) ? p.source : `https://${p.source}`) : ''
   const toc = tocOf(p.body)
+  // у новостей Stay Property лид — начало текста: второй раз над статьёй его не показываем
+  const leadRepeats = !!p.lead && lexicalText(p.body).startsWith(p.lead.replace(/[….\s]+$/, '').slice(0, 80))
   const wa = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(t('waQuestion', { title: p.title }))}`
 
   // объекты по теме: выбранные в админке, затем объекты упомянутых районов
@@ -54,7 +57,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [[tc('home'), '/'], [t(news ? 'news' : 'blog'), base], [p.title, postPath(p)]].map(([name, h], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: h, locale })}` })) },
     {
       '@context': 'https://schema.org', '@type': news ? 'NewsArticle' : 'Article', headline: p.title, description: p.lead,
-      ...(cover ? { image: [cover.startsWith('http') ? cover : `${SITE_URL}${cover}`] } : {}),
+      ...(cover ? { image: [cover.src.startsWith('http') ? cover.src : `${SITE_URL}${cover.src}`] } : {}),
       datePublished: p.publishedAt, dateModified: p.reviewedAt || p.updatedAt,
       author: a ? { '@type': 'Person', name: a.name, jobTitle: a.role, url: `${SITE_URL}${getPathname({ href: `/team/${a.slug}`, locale })}` } : { '@type': 'Organization', name: 'Kleo Homes' },
       publisher: { '@type': 'Organization', name: 'Kleo Homes' }, mainEntityOfPage: url, ...(src ? { isBasedOn: src } : {}),
@@ -71,7 +74,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
         <header className="post-head">
           <span className="meta-line"><span className="cat">{t(news ? 'kindNews' : 'kindArticle')} · {catOk ? tcat(p.category as never) : p.category}</span></span>
           <h1>{p.title}</h1>
-          {p.lead && <p className="lead-p">{p.lead}</p>}
+          {p.lead && !leadRepeats && <p className="lead-p">{p.lead}</p>}
           <div className="post-meta">
             {a ? (
               <Link className="who" href={`/team/${a.slug}`}>
@@ -84,7 +87,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
             {p.reviewedAt && <span className="checked-b">{t('actual', { date: fmtDate(p.reviewedAt, locale) })}</span>}
           </div>
         </header>
-        {cover && <div className="post-cover"><Image src={cover} alt="" width={1400} height={612} priority sizes="(max-width: 1280px) 100vw, 1216px" /></div>}
+        {cover && <div className="post-cover"><Image src={cover.src} alt="" width={1400} height={612} priority sizes="(max-width: 1280px) 100vw, 1216px" unoptimized={cover.remote} /></div>}
         <div className="post-grid" style={{ marginTop: 28 }}>
           <article>
             <Prose data={p.body} />
