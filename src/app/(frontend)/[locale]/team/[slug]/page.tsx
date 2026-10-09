@@ -145,7 +145,7 @@ export default async function MemberPage({ params }: Props) {
             <div className="revs">
               {revs.slice(0, 3).map((r) => (
                 <div className="rev" key={r.id}>
-                  <div className="stars" aria-label={`${r.rating}/5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div>
+                  {r.rating ? <div className="stars" aria-label={`${r.rating}/5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div> : null}
                   <p>«{r.text}»</p>
                   <div className="who"><span>{r.who}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>
                 </div>

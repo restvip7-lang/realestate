@@ -4,7 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { mediaUrl } from '@/lib/data'
+import { coverOf, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import type { Post } from '@/payload-types'
 
@@ -14,12 +14,12 @@ export async function PostCard({ p }: { p: Post }) {
   const locale = (await getLocale()) as Locale
   const t = await getTranslations('journal')
   const tc = await getTranslations('catalogCats')
-  const img = mediaUrl(p.cover, 'card')
+  const img = coverOf(p, 'card')
   const author = p.author && typeof p.author === 'object' ? p.author : null
   const avatar = mediaUrl(author?.photo, 'thumb')
   return (
     <article className="pcard">
-      {img ? <Image src={img} alt="" width={640} height={360} sizes="(max-width: 760px) 100vw, 400px" /> : null}
+      {img ? <Image src={img.src} alt="" width={640} height={360} sizes="(max-width: 760px) 100vw, 400px" unoptimized={img.remote} /> : null}
       <div className="bd">
         <span className="meta-line">
           {p.pinned && <span className="pin-tag">{t('pinned')}</span>}

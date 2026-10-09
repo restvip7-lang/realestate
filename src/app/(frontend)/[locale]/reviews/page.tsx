@@ -33,7 +33,9 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
     return team.find((m) => m.id === id)
   }
   const list = all.filter((r) => (!svc || r.service === svc) && (!expertSlug || expertOf(r)?.slug === expertSlug))
-  const avg = all.reduce((a, r) => a + r.rating, 0) / (all.length || 1)
+  // у отзывов из Stay Property оценки нет: средняя и распределение — только по отзывам с оценкой
+  const rated = all.filter((r): r is typeof r & { rating: number } => typeof r.rating === 'number')
+  const avg = rated.reduce((a, r) => a + r.rating, 0) / (rated.length || 1)
   const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n)
   const href = (s?: string, e?: string) => {
     const q = new URLSearchParams()
@@ -54,19 +56,21 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
           <span className="eyebrow">{t('crumbs')}{company.isDemo && <> <span className="demo-tag">demo</span></>}</span>
           <h1>{t('title')}</h1>
           <p className="lead-t">{t('lead')}</p>
-          <div className="rsum">
-            <div>
-              <div className="avg">{avg.toFixed(1)}</div>
-              <div className="stars" aria-label={t('avgLabel', { avg: avg.toFixed(1) })}>{stars(Math.round(avg))}</div>
-              <small>{t('count', { n: all.length })}</small>
+          {rated.length > 0 && (
+            <div className="rsum">
+              <div>
+                <div className="avg">{avg.toFixed(1)}</div>
+                <div className="stars" aria-label={t('avgLabel', { avg: avg.toFixed(1) })}>{stars(Math.round(avg))}</div>
+                <small>{t('count', { n: rated.length })}</small>
+              </div>
+              <div className="dist">
+                {[5, 4, 3, 2, 1].map((n) => {
+                  const c = rated.filter((r) => r.rating === n).length
+                  return <div key={n}><span>{n} ★</span><i><b style={{ width: `${(c / rated.length) * 100}%` }} /></i><span>{c}</span></div>
+                })}
+              </div>
             </div>
-            <div className="dist">
-              {[5, 4, 3, 2, 1].map((n) => {
-                const c = all.filter((r) => r.rating === n).length
-                return <div key={n}><span>{n} ★</span><i><b style={{ width: `${all.length ? (c / all.length) * 100 : 0}%` }} /></i><span>{c}</span></div>
-              })}
-            </div>
-          </div>
+          )}
           <div className="cta">
             <a href="#write" className="btn btn-coral">{t('write')}</a>
             <a href="https://www.google.com/maps/search/Kleo+Homes+Alanya" className="btn btn-ghost" target="_blank" rel="noopener">{t('google')}</a>
@@ -93,8 +97,8 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
               const a = mediaUrl(m?.photo, 'thumb')
               return (
                 <article className="rev" key={r.id}>
-                  <span className="tag">{t(`services.${r.service || 'buy'}`)}</span>
-                  <div className="stars" aria-label={t('ofFive', { n: r.rating })}>{stars(r.rating)}</div>
+                  {r.service && <span className="tag">{t(`services.${r.service}`)}</span>}
+                  {r.rating ? <div className="stars" aria-label={t('ofFive', { n: r.rating })}>{stars(r.rating)}</div> : null}
                   <p>«{r.text}»</p>
                   {m && <span className="by">{a && <Image src={a} alt="" width={56} height={56} />}{t('expertIs')} <Link href={`/team/${m.slug}`} className="link">{m.name}</Link></span>}
                   <div className="who"><span><b>{r.who}</b>{r.country ? ` · ${r.country}` : ''}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>

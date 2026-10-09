@@ -15,6 +15,7 @@ import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { Properties } from './collections/Properties'
 import { Reviews } from './collections/Reviews'
+import { Services } from './collections/Services'
 import { Team } from './collections/Team'
 import { Users } from './collections/Users'
 import { Company } from './globals/Company'
@@ -45,7 +46,7 @@ export default buildConfig({
     defaultLocale: DEFAULT_LOCALE,
     fallback: true,
   },
-  collections: [Properties, Districts, Posts, Team, Reviews, Leads, Media, Users],
+  collections: [Properties, Districts, Posts, Services, Team, Reviews, Leads, Media, Users],
   globals: [Company, Rates, TeamPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -6,7 +6,7 @@ export const revalidate = 3600
 
 export async function GET() {
   if (!INDEXABLE) return new Response('# Kleo Homes\n\n> Демо-версия сайта, данные вымышлены.\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
-  const [c, { districts, posts }] = await Promise.all([getCompany('ru'), sitemapData()])
+  const [c, { districts, posts, services }] = await Promise.all([getCompany('ru'), sitemapData()])
   const u = (p: string) => `${SITE_URL}/ru${p}`
   const lines = [
     '# Kleo Homes',
@@ -26,6 +26,7 @@ export async function GET() {
     `- [Гражданство Турции за недвижимость](${u('/citizenship')})`,
     `- [ВНЖ через покупку недвижимости](${u('/residence-permit')})`,
     `- [Услуги и цены](${u('/services')})`,
+    ...services.filter((x) => x.slug).map((x) => `- [${x.title}](${u(`/services/${x.slug}`)})`),
     '',
     '## О компании',
     `- [Команда](${u('/team')})`,

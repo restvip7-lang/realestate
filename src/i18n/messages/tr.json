@@ -799,5 +799,20 @@
     "reserved": "Rezerve",
     "sold": "Satıldı",
     "rented": "Kiralandı"
+  },
+  "svc": {
+    "crumbs": "Hizmetler",
+    "free": "Alıcılara ücretsiz",
+    "service": "Hizmet",
+    "pagesTitle": "Hizmetlerimiz hakkında daha fazla",
+    "pagesEyebrow": "Hizmetler",
+    "freeTitle": "Alıcılara ücretsiz",
+    "freeEyebrow": "Satış sonrası destek",
+    "more": "Diğer hizmetler",
+    "all": "Tüm hizmetler",
+    "details": "Ayrıntılar",
+    "needHelp": "Danışmanlık mı gerekiyor?",
+    "help": "Hizmetin nasıl işlediğini ve ücretini anlatalım.",
+    "ask": "Soru sor"
   }
 }

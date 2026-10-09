@@ -70,6 +70,7 @@ export interface Config {
     properties: Property;
     districts: District;
     posts: Post;
+    services: Service;
     team: Team;
     reviews: Review;
     leads: Lead;
@@ -89,6 +90,7 @@ export interface Config {
     properties: PropertiesSelect<false> | PropertiesSelect<true>;
     districts: DistrictsSelect<false> | DistrictsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
@@ -498,7 +500,10 @@ export interface Review {
   who: string;
   country?: string | null;
   date: string;
-  rating: number;
+  /**
+   * Пусто — без звёзд (у отзывов из Stay Property оценки нет).
+   */
+  rating?: number | null;
   service?: ('buy' | 'rent' | 'docs' | 'sell') | null;
   expert?: (number | null) | Team;
   /**
@@ -506,6 +511,14 @@ export interface Review {
    */
   text: string;
   published?: boolean | null;
+  /**
+   * Отзыв приходит из Stay Property: имя, страна, текст и дата перезаписываются при синхронизации. Галочка «Показывать на сайте», услуга и сотрудник остаются нашими.
+   */
+  external?: {
+    sourceId?: string | null;
+    modified?: string | null;
+    syncedAt?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -522,6 +535,10 @@ export interface Post {
   category: 'market' | 'laws' | 'residence' | 'life' | 'rates' | 'agency';
   lead?: string | null;
   cover?: (number | null) | Media;
+  /**
+   * Обновляется при синхронизации. Если загрузить обложку выше, на сайте будет она.
+   */
+  remoteCover?: string | null;
   body?: {
     root: {
       type: string;
@@ -560,9 +577,72 @@ export interface Post {
    */
   slug?: string | null;
   readingMins?: number | null;
+  /**
+   * Новость приходит из Stay Property: заголовок, лид, текст и обложка перезаписываются при синхронизации, правьте их там (дату — тоже, если она указана там полностью). Рубрика, автор, публикация и SEO остаются нашими.
+   */
+  external?: {
+    sourceId?: string | null;
+    modified?: string | null;
+    syncedAt?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Дополнительные услуги: список на странице «Услуги» и отдельная страница у каждой.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  group: 'free' | 'page';
+  /**
+   * Меньше — выше в списке.
+   */
+  order?: number | null;
+  excerpt?: string | null;
+  cover?: (number | null) | Media;
+  /**
+   * Обновляется при синхронизации. Если загрузить обложку выше, на сайте будет она.
+   */
+  remoteCover?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  published?: boolean | null;
+  /**
+   * Латиницей через дефис. Пусто — заполнится из заголовка.
+   */
+  slug?: string | null;
+  /**
+   * Услуга приходит из Stay Property: название, раздел, текст и обложка перезаписываются при синхронизации, правьте их там. Порядок, публикация и SEO остаются нашими.
+   */
+  external?: {
+    sourceId?: string | null;
+    modified?: string | null;
+    syncedAt?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Статусы нужны для отчёта по рекламе: какие заявки дошли до просмотра и сделки.
@@ -666,6 +746,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
       } | null)
     | ({
         relationTo: 'team';
@@ -875,6 +959,7 @@ export interface PostsSelect<T extends boolean = true> {
   category?: T;
   lead?: T;
   cover?: T;
+  remoteCover?: T;
   body?: T;
   source?: T;
   reviewedAt?: T;
@@ -892,9 +977,46 @@ export interface PostsSelect<T extends boolean = true> {
   pinned?: T;
   slug?: T;
   readingMins?: T;
+  external?:
+    | T
+    | {
+        sourceId?: T;
+        modified?: T;
+        syncedAt?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  group?: T;
+  order?: T;
+  excerpt?: T;
+  cover?: T;
+  remoteCover?: T;
+  body?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  published?: T;
+  slug?: T;
+  external?:
+    | T
+    | {
+        sourceId?: T;
+        modified?: T;
+        syncedAt?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -940,6 +1062,13 @@ export interface ReviewsSelect<T extends boolean = true> {
   expert?: T;
   text?: T;
   published?: T;
+  external?:
+    | T
+    | {
+        sourceId?: T;
+        modified?: T;
+        syncedAt?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

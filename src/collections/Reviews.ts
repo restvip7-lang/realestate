@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { editorsOnly, isStaff } from '@/access'
+import { externalField } from '@/fields/external'
 import { revalidateAfterChange, revalidateAfterDelete } from '@/lib/revalidate'
 
 export const Reviews: CollectionConfig = {
@@ -37,7 +38,15 @@ export const Reviews: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'rating', type: 'number', label: 'Оценка', min: 1, max: 5, defaultValue: 5, required: true },
+        {
+          name: 'rating',
+          type: 'number',
+          label: 'Оценка',
+          min: 1,
+          max: 5,
+          defaultValue: 5,
+          admin: { description: 'Пусто — без звёзд (у отзывов из Stay Property оценки нет).' },
+        },
         {
           name: 'service',
           type: 'select',
@@ -61,5 +70,6 @@ export const Reviews: CollectionConfig = {
       admin: { description: 'На языке клиента, без перевода.' },
     },
     { name: 'published', type: 'checkbox', label: 'Показывать на сайте', defaultValue: true },
+    externalField('Отзыв приходит из Stay Property: имя, страна, текст и дата перезаписываются при синхронизации. Галочка «Показывать на сайте», услуга и сотрудник остаются нашими.'),
   ],
 }
