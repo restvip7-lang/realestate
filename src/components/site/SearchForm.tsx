@@ -46,7 +46,7 @@ export function SearchForm({ districts }: { districts: { slug: string; name: str
           <label htmlFor="f-type">{t('type')}</label>
           <select id="f-type" name="type">
             <option value="">{t('any')}</option>
-            {(['apartment', 'penthouse', 'villa', 'duplex'] as const).map((k) => <option key={k} value={k}>{t(`types.${k}`)}</option>)}
+            {(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).map((k) => <option key={k} value={k}>{t(`types.${k}`)}</option>)}
           </select>
         </div>
         <div className="fld">

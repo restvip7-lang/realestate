@@ -14,11 +14,10 @@ import { ShareButton } from '@/components/site/ShareButton'
 import { ViewForm } from '@/components/site/ViewForm'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { agentFor, districtOf, getCompany, getProperty, listTeam, mediaUrl, similarProperties } from '@/lib/data'
+import { agentFor, districtOf, getCompany, getProperty, listTeam, mediaUrl, propertyCover, propertyPhotos, similarProperties } from '@/lib/data'
 import { featureLabel } from '@/lib/catalog'
 import { fmtDate, propertyPath, roomsHint, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
-import type { Media } from '@/payload-types'
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> }
 
@@ -46,7 +45,7 @@ export async function generateMetadata({ params }: Props) {
     description:
       p.seo?.description ||
       t(p.deal === 'rent' ? 'metaDescRent' : 'metaDesc', { type: tn, rooms: p.rooms ?? '', area: p.area ?? 0, sea: p.sea ?? 0, district: d?.name ?? '', id: p.id }),
-    image: mediaUrl(p.photos?.[0], 'large'),
+    image: propertyCover(p, 'large')?.src,
   })
 }
 
@@ -73,9 +72,10 @@ export default async function PropertyPage({ params }: Props) {
   const tn = typeName(p.type, locale)
   const agent = agentFor(p, team)
   const agentImg = mediaUrl(agent?.photo, 'thumb')
-  const photos = (p.photos || []).filter((m): m is Media => typeof m === 'object' && !!m?.url).map((m, i) => ({
-    src: mediaUrl(m, 'large')!,
-    full: m.url!,
+  const photos = propertyPhotos(p, 'large').map((m, i) => ({
+    src: m.src,
+    full: m.full,
+    remote: m.remote,
     alt: m.alt || t('photoAlt', { type: tn, rooms: p.rooms ?? '', district: d?.name ?? '', n: i + 1 }),
   }))
   const url = `${SITE_URL}${getPathname({ href: canonical, locale })}`
@@ -131,10 +131,16 @@ export default async function PropertyPage({ params }: Props) {
         <div className="p-grid">
           <div>
             <div className="facts">
-              <div><span>{t('layout')}</span><b><abbr title={tc(roomsHint(p.rooms).key, roomsHint(p.rooms).values)} style={{ textDecoration: 'none' }}>{p.rooms}</abbr></b></div>
-              <div><span>{t('area')}</span><b>{p.area} {tc('sqm')}</b></div>
-              <div><span>{t('floor')}</span><b>{p.type === 'villa' ? tc('floors', { n: p.floors ?? 1 }) : t('floorOf', { floor: p.floor ?? 1, floors: p.floors ?? 1 })}</b></div>
-              <div><span>{t('toSea')}</span><b>{p.sea} {t('m')}</b></div>
+              <div><span>{t('layout')}</span><b>{p.layouts || (p.rooms ? <abbr title={tc(roomsHint(p.rooms).key, roomsHint(p.rooms).values)} style={{ textDecoration: 'none' }}>{p.rooms}</abbr> : '—')}</b></div>
+              <div><span>{t('area')}</span><b>{p.area ? `${p.areaTo ? `${p.area}–${p.areaTo}` : p.area} ${tc('sqm')}` : '—'}</b></div>
+              {p.type === 'villa' ? (
+                p.floors ? <div><span>{t('floor')}</span><b>{tc('floors', { n: p.floors })}</b></div> : p.year ? <div><span>{t('year')}</span><b>{p.year}</b></div> : null
+              ) : p.floor ? (
+                <div><span>{t('floor')}</span><b>{t('floorOf', { floor: p.floor, floors: p.floors ?? p.floor })}</b></div>
+              ) : p.year ? (
+                <div><span>{t('year')}</span><b>{p.year}</b></div>
+              ) : null}
+              <div><span>{t('toSea')}</span><b>{p.sea != null ? `${p.sea} ${t('m')}` : '—'}</b></div>
             </div>
             <div className="block">
               <h2>{t('params')}</h2>
@@ -142,8 +148,8 @@ export default async function PropertyPage({ params }: Props) {
                 <div><dt>{t('type')}</dt><dd>{tn}</dd></div>
                 <div><dt>{t('deal')}</dt><dd>{t(rent ? 'rent' : 'sale')}</dd></div>
                 <div><dt>{t('district')}</dt><dd>{d?.name}</dd></div>
-                <div><dt>{t('furniture')}</dt><dd>{furn}</dd></div>
-                <div><dt>{t('view')}</dt><dd>{view}</dd></div>
+                {p.furnished ? <div><dt>{t('furniture')}</dt><dd>{furn}</dd></div> : null}
+                {p.view ? <div><dt>{t('view')}</dt><dd>{view}</dd></div> : null}
                 {p.year ? <div><dt>{t('year')}</dt><dd>{p.year}</dd></div> : null}
                 {p.complex ? <div><dt>{t('complex')}</dt><dd>{p.complex}</dd></div> : null}
                 {rent && p.rent ? (
@@ -157,8 +163,8 @@ export default async function PropertyPage({ params }: Props) {
                   </>
                 ) : (
                   <>
-                    <div><dt>{t('source')}</dt><dd>{t(`sources.${p.source || 'developer'}` as never)}</dd></div>
-                    <div><dt>{t('pricePerM2')}</dt><dd><Price eur={(p.price ?? 0) / (p.area || 1)} suffix={tc('perM2')} /></dd></div>
+                    {p.source ? <div><dt>{t('source')}</dt><dd>{t(`sources.${p.source}` as never)}</dd></div> : null}
+                    {p.area ? <div><dt>{t('pricePerM2')}</dt><dd>{p.priceFrom && `${tc('fromPrice')} `}<Price eur={(p.price ?? 0) / p.area} suffix={tc('perM2')} /></dd></div> : null}
                     {p.installment?.months ? <div><dt>{t('installment')}</dt><dd>{t('installmentVal', { months: p.installment.months, down: p.installment.down ?? 0 })}</dd></div> : null}
                     {p.citizenship ? <div><dt>{t('citizenship')}</dt><dd>{t('yes')}</dd></div> : null}
                   </>
@@ -198,7 +204,7 @@ export default async function PropertyPage({ params }: Props) {
           <aside className="side">
             <div className="pricebox">
               <span className="sub">{t(rent ? 'rent' : 'price')}</span>
-              <span className="big"><Price eur={p.price ?? 0} suffix={rent ? tc('perMonth') : ''} /></span>
+              <span className="big">{p.priceFrom && `${tc('fromPrice')} `}<Price eur={p.price ?? 0} suffix={rent ? tc('perMonth') : ''} /></span>
               {rent && p.rent ? (
                 <span className="sub">{t('depositLine', { months: p.rent.minTerm ?? 1 })} <Price eur={p.rent.deposit ?? 0} /></span>
               ) : (

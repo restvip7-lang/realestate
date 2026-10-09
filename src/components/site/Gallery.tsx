@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-type Photo = { src: string; full: string; alt: string }
+type Photo = { src: string; full: string; alt: string; remote?: boolean }
 
 // Сетка из 5 фото + просмотр всех фото (стрелки, Esc, свайп на телефоне)
 export function Gallery({ photos }: { photos: Photo[] }) {
@@ -44,7 +44,7 @@ export function Gallery({ photos }: { photos: Photo[] }) {
       <div className="gal">
         {photos.slice(0, 5).map((p, i) => (
           <button key={p.src} type="button" aria-label={t('openPhoto', { n: i + 1 })} onClick={(e) => { opener.current = e.currentTarget; show(i) }}>
-            <Image src={p.src} alt={p.alt} fill sizes={i ? '(max-width: 760px) 1px, 25vw' : '(max-width: 760px) 100vw, 50vw'} priority={i === 0} />
+            <Image src={p.src} alt={p.alt} fill sizes={i ? '(max-width: 760px) 1px, 25vw' : '(max-width: 760px) 100vw, 50vw'} priority={i === 0} unoptimized={p.remote} />
             {i === 0 && <span className="all">{t('allPhotos', { n })}</span>}
           </button>
         ))}

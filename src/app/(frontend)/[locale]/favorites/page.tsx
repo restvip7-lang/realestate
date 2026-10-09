@@ -9,7 +9,7 @@ import { type CmpItem, FavActions, FavCompare, FavSync } from '@/components/site
 import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { agentFor, allPublished, districtOf, getCompany, getPropertiesByIds, listTeam, mediaUrl } from '@/lib/data'
+import { agentFor, allPublished, districtOf, getCompany, getPropertiesByIds, listTeam, propertyCover } from '@/lib/data'
 import { buyCosts } from '@/lib/costs'
 import { fmtDate, propertyPath, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
@@ -99,14 +99,14 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
     const d = districtOf(p)
     const agent = agentFor(p, team)
     const costs = rent ? null : buyCosts(price, { resale: !(p.condition !== 'resale' && p.source !== 'owner') }).total
-    const cover = mediaUrl((p.photos || []).find((m) => typeof m === 'object'), 'card')
+    const cover = propertyCover(p, 'card')
     return {
       id: p.id,
       deal: p.deal,
       chip: `ID ${p.id} · ${title(p)}`,
       head: (
         <>
-          {cover && <Image src={cover} alt="" width={400} height={300} sizes="220px" />}
+          {cover && <Image src={cover.src} alt="" width={400} height={300} sizes="220px" unoptimized={cover.remote} />}
           <Link href={propertyPath(p)}>{p.title}</Link>
           <span className="id">ID {p.id}</span>
         </>

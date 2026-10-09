@@ -103,7 +103,8 @@
     "perM2": "/м²",
     "more": "Подробнее →",
     "availableFrom": "Свободна с {date}",
-    "updated": "цена обновлена {date}"
+    "updated": "цена обновлена {date}",
+    "fromPrice": "от"
   },
   "home": {
     "eyebrow": "Недвижимость в Алании",
@@ -269,7 +270,8 @@
       "apartment": "Квартира",
       "penthouse": "Пентхаус",
       "villa": "Вилла",
-      "duplex": "Дуплекс"
+      "duplex": "Дуплекс",
+      "project": "Новый проект"
     },
     "district": "Район",
     "allDistricts": "Все районы",
@@ -304,7 +306,8 @@
       "apartment": "Квартиры",
       "penthouse": "Пентхаусы",
       "villa": "Виллы",
-      "duplex": "Дуплексы"
+      "duplex": "Дуплексы",
+      "project": "Новые проекты"
     },
     "priceFrom": "Цена от",
     "filters": "Фильтры",

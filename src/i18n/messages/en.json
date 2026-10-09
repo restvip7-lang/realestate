@@ -103,7 +103,8 @@
     "perM2": "/m²",
     "more": "Details →",
     "availableFrom": "Available from {date}",
-    "updated": "price updated {date}"
+    "updated": "price updated {date}",
+    "fromPrice": "from"
   },
   "home": {
     "eyebrow": "Real estate in Alanya",
@@ -269,7 +270,8 @@
       "apartment": "Apartment",
       "penthouse": "Penthouse",
       "villa": "Villa",
-      "duplex": "Duplex"
+      "duplex": "Duplex",
+      "project": "New project"
     },
     "district": "District",
     "allDistricts": "All districts",
@@ -304,7 +306,8 @@
       "apartment": "Apartments",
       "penthouse": "Penthouses",
       "villa": "Villas",
-      "duplex": "Duplexes"
+      "duplex": "Duplexes",
+      "project": "New projects"
     },
     "priceFrom": "Price from",
     "filters": "Filters",

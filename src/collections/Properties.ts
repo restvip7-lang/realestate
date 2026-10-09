@@ -82,6 +82,14 @@ export const Properties: CollectionConfig = {
             },
             {
               type: 'row',
+              admin: { condition: (data) => data?.type === 'project' },
+              fields: [
+                { name: 'areaTo', type: 'number', label: 'Площадь до, м²', min: 1, admin: { description: 'Для нового проекта: «Площадь» — от, здесь — до.' } },
+                { name: 'layouts', type: 'text', label: 'Планировки', admin: { description: 'Для нового проекта, например «1+1, 2+1».' } },
+              ],
+            },
+            {
+              type: 'row',
               fields: [
                 { name: 'floor', type: 'number', label: 'Этаж' },
                 { name: 'floors', type: 'number', label: 'Этажей в доме' },
@@ -122,6 +130,7 @@ export const Properties: CollectionConfig = {
                 { name: 'priceOriginal', type: 'number', label: 'Цена', min: 0, admin: { description: 'В валюте продавца. На сайте — в евро по курсу из настроек.' } },
                 { name: 'currency', type: 'select', label: 'Валюта', defaultValue: 'EUR', options: ['EUR', 'USD', 'GBP', 'TRY'].map((c) => ({ label: c, value: c })) },
                 { name: 'priceCheckedAt', type: 'date', label: 'Цена проверена', admin: { description: 'Показывается на карточке: «цена проверена 24.09.2026».' } },
+                { name: 'priceFrom', type: 'checkbox', label: 'Цена «от»', admin: { description: 'Для новых проектов: на сайте «от 109 000 €».' } },
               ],
             },
             {
@@ -201,6 +210,16 @@ export const Properties: CollectionConfig = {
               hasMany: true,
               label: 'Фото',
               admin: { description: 'Первое фото — обложка. Порядок меняется перетаскиванием.' },
+            },
+            {
+              name: 'remotePhotos',
+              type: 'json',
+              label: 'Фото из Stay',
+              admin: {
+                readOnly: true,
+                condition: (data) => Array.isArray(data?.remotePhotos) && data.remotePhotos.length > 0,
+                description: 'Ссылки на фото в Stay Portfolio, обновляются при синхронизации. Если загрузить фото выше, на сайте будут они.',
+              },
             },
             {
               type: 'row',
@@ -292,6 +311,23 @@ export const Properties: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     slugField('title', { unique: false }),
+    {
+      name: 'stay',
+      type: 'group',
+      label: 'Stay Portfolio',
+      admin: {
+        position: 'sidebar',
+        condition: (data) => !!data?.stay?.objectId,
+        description: 'Объект приходит из Stay: заголовок, описание, цена, фото и параметры перезаписываются при синхронизации. Правьте их в Stay. Эксперт, метки, SEO и заметки остаются нашими.',
+      },
+      fields: [
+        { name: 'objectId', type: 'number', label: 'ID в Stay', unique: true, index: true, admin: { readOnly: true } },
+        { name: 'refNo', type: 'text', label: 'Ref. No', admin: { readOnly: true } },
+        { name: 'modified', type: 'text', label: 'Изменён в Stay', admin: { readOnly: true } },
+        { name: 'syncedAt', type: 'date', label: 'Синхронизирован', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } } },
+        { name: 'trHash', type: 'text', admin: { hidden: true } },
+      ],
+    },
     {
       name: 'notes',
       type: 'textarea',
