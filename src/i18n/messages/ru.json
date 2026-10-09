@@ -104,7 +104,8 @@
     "more": "Подробнее →",
     "availableFrom": "Свободна с {date}",
     "updated": "цена обновлена {date}",
-    "fromPrice": "от"
+    "fromPrice": "от",
+    "priceOnRequest": "Цена по запросу"
   },
   "home": {
     "eyebrow": "Недвижимость в Алании",
@@ -365,7 +366,8 @@
     "more": "Подробнее →",
     "mapCount": "На карте {n}",
     "k": "{n} тыс",
-    "mln": "{n} млн"
+    "mln": "{n} млн",
+    "onRequest": "по запросу"
   },
   "property": {
     "openPhoto": "Открыть фото {n}",

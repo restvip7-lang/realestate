@@ -104,7 +104,8 @@
     "more": "Details →",
     "availableFrom": "Available from {date}",
     "updated": "price updated {date}",
-    "fromPrice": "from"
+    "fromPrice": "from",
+    "priceOnRequest": "Price on request"
   },
   "home": {
     "eyebrow": "Real estate in Alanya",
@@ -365,7 +366,8 @@
     "more": "Details →",
     "mapCount": "{n} on the map",
     "k": "{n}K",
-    "mln": "{n}M"
+    "mln": "{n}M",
+    "onRequest": "on request"
   },
   "property": {
     "openPhoto": "Open photo {n}",

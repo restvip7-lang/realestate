@@ -103,10 +103,12 @@ async function catalogWhere(locale: Locale, q: CatalogQuery, districts?: Distric
 
 export async function listProperties(locale: Locale, q: CatalogQuery, districts?: District[]) {
   const sort = { new: '-id', cheap: 'price', expensive: '-price', sea: 'sea' }[q.sort || 'new']
+  const where = await catalogWhere(locale, q, districts)
   return (await payloadClient()).find({
     collection: 'properties',
     locale,
-    where: await catalogWhere(locale, q, districts),
+    // при сортировке по цене объекты без цены («по запросу») не показываем: в Postgres они встали бы первыми в «сначала дорогие»
+    where: q.sort === 'cheap' || q.sort === 'expensive' ? { and: [where, { price: { greater_than: 0 } }] } : where,
     sort,
     limit: q.limit ?? 24,
     page: q.page ?? 1,
@@ -115,15 +117,16 @@ export async function listProperties(locale: Locale, q: CatalogQuery, districts?
   })
 }
 
-/** Все объекты по фильтру для карты каталога (только нужные поля). */
+/** Все объекты по фильтру для карты каталога: только нужные поля, у района — название, у фото — размеры (лимит трафика базы). */
 export async function mapProperties(locale: Locale, q: CatalogQuery, districts?: District[]): Promise<Property[]> {
   const { docs } = await (await payloadClient()).find({
     collection: 'properties',
     locale,
     where: await catalogWhere(locale, q, districts),
-    select: { title: true, slug: true, deal: true, price: true, priceFrom: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, remotePhotos: true, type: true },
+    select: { title: true, slug: true, deal: true, price: true, priceFrom: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, remoteCover: true, type: true },
+    populate: { districts: { name: true }, media: { url: true, filename: true, sizes: true } }, // url фото вычисляется из filename
     sort: '-id',
-    limit: 500,
+    limit: 3000,
     depth: 1,
     pagination: false,
     ...pub,
@@ -145,15 +148,14 @@ export async function getProperty(id: number, locale: Locale): Promise<Property 
 
 export async function similarProperties(p: Property, locale: Locale, limit = 3): Promise<Property[]> {
   const districtId = typeof p.district === 'object' ? p.district.id : p.district
-  const { docs } = await (await payloadClient()).find({
-    collection: 'properties',
-    locale,
-    where: { and: [{ status: { equals: 'published' } }, { deal: { equals: p.deal } }, { id: { not_equals: p.id } }] },
-    limit: 200,
-    depth: 1,
-    ...pub,
-  })
   const price = p.price ?? 0
+  // кандидаты: та же сделка, цена ±40% — сначала в том же районе, потом по всей Аланье (не грузим все объекты)
+  const base: Where[] = [{ status: { equals: 'published' } }, { deal: { equals: p.deal } }, { id: { not_equals: p.id } }]
+  if (price) base.push({ price: { greater_than_equal: price * 0.6 } }, { price: { less_than_equal: price * 1.4 } })
+  const find = async (extra: Where[]) =>
+    (await (await payloadClient()).find({ collection: 'properties', locale, where: { and: [...base, ...extra] }, sort: '-id', limit: 12, depth: 1, ...pub })).docs
+  let docs = districtId ? await find([{ district: { equals: districtId } }]) : []
+  if (docs.length < limit) docs = docs.concat((await find([])).filter((x) => !docs.some((y) => y.id === x.id)))
   return docs
     .sort((a, b) => {
       const da = (typeof a.district === 'object' ? a.district.id : a.district) === districtId ? 0 : 1
@@ -192,16 +194,18 @@ export const districtOf = (p: Property) => (typeof p.district === 'object' ? p.d
 export type PropertyPhoto = { src: string; full: string; alt?: string | null; remote: boolean }
 
 /** Фото объекта: загруженные в админке, а если их нет — ссылки на фото в Stay Portfolio (не копируются к нам). */
-export function propertyPhotos(p: Pick<Property, 'photos' | 'remotePhotos'>, size: 'thumb' | 'card' | 'large' = 'card'): PropertyPhoto[] {
+export function propertyPhotos(p: Partial<Pick<Property, 'photos' | 'remotePhotos' | 'remoteCover'>>, size: 'thumb' | 'card' | 'large' = 'card'): PropertyPhoto[] {
   const own = (p.photos || []).filter((m): m is Media => typeof m === 'object' && !!m?.url)
   if (own.length) return own.map((m) => ({ src: mediaUrl(m, size)!, full: m.url!, alt: m.alt, remote: false }))
-  const remote = Array.isArray(p.remotePhotos) ? p.remotePhotos.filter((u): u is string => typeof u === 'string' && u.startsWith('https://')) : []
+  // карте каталога приходит только обложка (remoteCover), странице объекта — весь список
+  const list = Array.isArray(p.remotePhotos) ? p.remotePhotos : p.remoteCover ? [p.remoteCover] : []
+  const remote = list.filter((u): u is string => typeof u === 'string' && u.startsWith('https://'))
   return remote.map((u) => {
     const url = u.replace(/([^:])\/\/+/g, '$1/') // в ссылках Stay бывает двойной слэш
     return { src: url, full: url, remote: true }
   })
 }
-export const propertyCover = (p: Pick<Property, 'photos' | 'remotePhotos'>, size: 'thumb' | 'card' | 'large' = 'card') => propertyPhotos(p, size)[0] ?? null
+export const propertyCover = (p: Partial<Pick<Property, 'photos' | 'remotePhotos' | 'remoteCover'>>, size: 'thumb' | 'card' | 'large' = 'card') => propertyPhotos(p, size)[0] ?? null
 
 /** Обложка публикации или услуги: загруженная в админке, а если её нет — ссылка на картинку в Stay Property (не копируется к нам). */
 export function coverOf(p: { cover?: number | Media | null; remoteCover?: string | null } | null | undefined, size: 'thumb' | 'card' | 'large' = 'card') {
@@ -234,19 +238,19 @@ export async function getDistrict(slug: string, locale: Locale): Promise<Distric
   return docs[0] ?? null
 }
 
-/** Опубликованные объекты района (продажа и аренда) — для страницы района. */
-export async function districtProperties(districtId: number, locale: Locale): Promise<Property[]> {
+export type PropertyStat = Pick<Property, 'id' | 'deal' | 'price' | 'area' | 'rooms' | 'sea' | 'type' | 'condition'>
+/** Цифры по объектам района (продажа и аренда) — только поля для статистики; карточки — через findPublished. */
+export async function districtProperties(districtId: number): Promise<PropertyStat[]> {
   const { docs } = await (await payloadClient()).find({
     collection: 'properties',
-    locale,
     where: { and: [{ status: { equals: 'published' } }, { district: { equals: districtId } }] },
-    sort: '-id',
-    limit: 500,
-    depth: 1,
+    select: { deal: true, price: true, area: true, rooms: true, sea: true, type: true, condition: true },
+    limit: 5000,
+    depth: 0,
     pagination: false,
     ...pub,
   })
-  return docs
+  return docs as PropertyStat[]
 }
 
 export type DistrictStat = { sale: number; rent: number; minSea: number | null }
@@ -277,12 +281,32 @@ export async function getMember(slug: string, locale: Locale): Promise<Team | nu
   return docs[0] ?? null
 }
 
-/** Все опубликованные объекты (для распределения по экспертам и избранного). */
-export async function allPublished(locale: Locale): Promise<Property[]> {
-  const { docs } = await (await payloadClient()).find({
-    collection: 'properties', locale, where: { status: { equals: 'published' } }, sort: '-id', limit: 2000, depth: 1, pagination: false, ...pub,
+/**
+ * Опубликованные объекты по условию: первые `limit` карточек и общее число.
+ * Все объекты целиком не загружаем: в каталоге их больше тысячи, а трафик бесплатной базы Neon — 5 ГБ в месяц.
+ */
+export async function findPublished(locale: Locale, where: Where | null, opts: { sort?: string; limit?: number } = {}) {
+  const res = await (await payloadClient()).find({
+    collection: 'properties', locale, where: { and: [{ status: { equals: 'published' } }, ...(where ? [where] : [])] },
+    sort: opts.sort ?? '-id', limit: opts.limit ?? 6, depth: 1, ...pub,
   })
-  return docs
+  return { docs: res.docs, total: res.totalDocs }
+}
+
+/** Объекты эксперта, как в agentFor: выбранные в админке или по кругу. Сначала лёгкий запрос только ID и сотрудника. */
+export async function expertProperties(locale: Locale, memberId: number, team: Team[], limit = 6) {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', where: { status: { equals: 'published' } }, select: { agent: true }, sort: '-id', limit: 5000, depth: 0, pagination: false, ...pub,
+  })
+  const experts = team.filter((t) => t.kind === 'expert')
+  const ids = docs
+    .filter((p) => {
+      const agent = typeof p.agent === 'object' ? p.agent?.id : p.agent
+      if (agent) return agent === memberId
+      return (experts.length ? experts[p.id % experts.length] : team[0])?.id === memberId
+    })
+    .map((p) => p.id)
+  return { docs: await getPropertiesByIds(ids.slice(0, limit), locale), total: ids.length }
 }
 
 export type PostQuery = { kind?: 'article' | 'news'; category?: string; author?: number; page?: number; limit?: number; exclude?: number }

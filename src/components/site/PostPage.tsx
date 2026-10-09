@@ -7,7 +7,7 @@ import { getTranslations } from 'next-intl/server'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { allPublished, coverOf, getCompany, getPost, listPosts, mediaUrl } from '@/lib/data'
+import { coverOf, findPublished, getCompany, getPost, getPropertiesByIds, listPosts, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import { lexicalText } from '@/lib/lexical'
 import { pageMeta, SITE_URL } from '@/lib/seo'
@@ -28,8 +28,8 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
   const p = await getPost(slug, locale)
   if (!p) notFound()
   if (p.kind !== kind) permanentRedirect(getPathname({ href: postPath(p), locale }))
-  const [t, tc, tcat, company, published, others] = await Promise.all([
-    getTranslations('journal'), getTranslations('catalog'), getTranslations('catalogCats'), getCompany(locale), allPublished(locale),
+  const [t, tc, tcat, company, others] = await Promise.all([
+    getTranslations('journal'), getTranslations('catalog'), getTranslations('catalogCats'), getCompany(locale),
     listPosts(locale, { kind: p.kind, exclude: p.id, limit: 20 }),
   ])
   const news = p.kind === 'news'
@@ -48,9 +48,11 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
   const idOf = (x: unknown) => (x && typeof x === 'object' ? (x as { id: number }).id : (x as number))
   const relIds = (p.relatedProperties || []).map(idOf)
   const relDistricts = (p.relatedDistricts || []).map(idOf)
-  let objs: Property[] = relIds.map((id) => published.find((o) => o.id === id)).filter((o): o is Property => !!o)
+  let objs: Property[] = (await getPropertiesByIds(relIds.slice(0, 3), locale)).filter((o) => o.status === 'published')
   if (objs.length < 3 && relDistricts.length) {
-    objs = objs.concat(published.filter((o) => o.deal === 'sale' && relDistricts.includes(idOf(o.district)) && !objs.includes(o))).slice(0, 3)
+    const notThese = objs.length ? [{ id: { not_in: objs.map((o) => o.id) } }] : []
+    const more = await findPublished(locale, { and: [{ deal: { equals: 'sale' } }, { district: { in: relDistricts } }, ...notThese] }, { limit: 3 - objs.length })
+    objs = objs.concat(more.docs)
   }
   const related = others.docs.sort((x, y) => Number(y.category === p.category) - Number(x.category === p.category)).slice(0, 3)
   const ld = [

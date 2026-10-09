@@ -12,7 +12,7 @@ import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { aytKm, gzpKm } from '@/lib/coast'
-import { districtProperties, districtStats, getDistrict, listDistricts, mediaUrl } from '@/lib/data'
+import { districtProperties, districtStats, findPublished, getDistrict, listDistricts, mediaUrl, type PropertyStat } from '@/lib/data'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District, Property } from '@/payload-types'
 
@@ -27,7 +27,7 @@ export function generateStaticParams() {
 const pos = (d: District) => d.coastKm ?? 0
 const km = (d: District) => Math.abs(pos(d))
 const minOf = (a: number[]) => (a.length ? Math.min(...a) : 0)
-const rentFromOf = (d: District, rent: Property[]) => minOf(rent.map((o) => o.price ?? 0)) || Math.round(((d.pricePerM2 ?? 0) * 0.38) / 10) * 10
+const rentFromOf = (d: District, rent: PropertyStat[]) => minOf(rent.map((o) => o.price ?? 0)) || Math.round(((d.pricePerM2 ?? 0) * 0.38) / 10) * 10
 const ROOMS = ['1+0', '1+1', '2+1', '3+1', '4+1', '5+1']
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v))
 
@@ -49,19 +49,26 @@ export default async function DistrictPage({ params }: Props) {
   setRequestLocale(locale)
   const d = await getDistrict(slug, locale)
   if (!d) notFound()
-  const [t, tc, tcard, districts, objs, stats] = await Promise.all([
+  // цифры — по лёгкой выборке всех объектов района, карточки — первые 6 продажи и аренды
+  const [t, tc, tcard, districts, objs, stats, saleCards, rentCards] = await Promise.all([
     getTranslations('districts'),
     getTranslations('catalog'),
     getTranslations('card'),
     listDistricts(locale),
-    districtProperties(d.id, locale),
+    districtProperties(d.id),
     districtStats(),
+    findPublished(locale, { and: [{ district: { equals: d.id } }, { deal: { not_equals: 'rent' } }] }),
+    findPublished(locale, { and: [{ district: { equals: d.id } }, { deal: { equals: 'rent' } }] }),
   ])
+  // цены считаем только по объектам с ценой (у инвестиционных проектов Stay её нет)
   const sale = objs.filter((o) => o.deal !== 'rent')
   const rent = objs.filter((o) => o.deal === 'rent')
+  const priced = sale.filter((o) => o.price)
   const where = tc('inDistrict', { where: d.nameIn || d.name })
-  const rentFrom = rentFromOf(d, rent)
-  const seaTxt = d.inland ? (d.slug === 'tepe' ? t('seaTepe') : t('seaInland')) : objs.length ? t('seaFrom', { m: minOf(objs.map((o) => o.sea ?? 0)) }) : t('seaNear')
+  const rentFrom = rentFromOf(d, rent.filter((o) => o.price))
+  // у объектов Stay расстояние до моря бывает не указано — такие не считаем (иначе «от 0 м»)
+  const seas = objs.map((o) => o.sea).filter((s): s is number => typeof s === 'number' && s > 0)
+  const seaTxt = d.inland ? (d.slug === 'tepe' ? t('seaTepe') : t('seaInland')) : seas.length ? t('seaFrom', { m: minOf(seas) }) : t('seaNear')
   const nbrs = districts
     .filter((x) => x.slug !== d.slug)
     .sort((a, b) => Math.abs(pos(a) - pos(d)) - Math.abs(pos(b) - pos(d)) || (a.inland === d.inland ? -1 : 1))
@@ -74,7 +81,7 @@ export default async function DistrictPage({ params }: Props) {
 
   // цены по планировкам (по объектам каталога)
   const rows = ROOMS.map((r) => {
-    const list = sale.filter((o) => o.rooms === r)
+    const list = priced.filter((o) => o.rooms === r)
     if (!list.length) return null
     const ppm = list.reduce((s, o) => s + (o.price ?? 0) / (o.area || 1), 0) / list.length
     return { r, n: list.length, from: minOf(list.map((o) => o.price ?? 0)), ppm, q: r === '4+1' || r === '5+1' ? '4+' : r }
@@ -84,7 +91,7 @@ export default async function DistrictPage({ params }: Props) {
   const eur = (n: number) => `${Math.round(n).toLocaleString('ru-RU').replace(/[  ]/g, ' ')} €`
   const rentScore = sc.rent ?? 0
   const faq: [string, string][] = [
-    [t('faq.priceQ', { where }), t('faq.priceA', { inCatalog: sale.length ? t('faq.priceInCatalog', { n: sale.length, from: eur(minOf(sale.map((o) => o.price ?? 0))) }) : '', pm: eur(d.pricePerM2 ?? 0) })],
+    [t('faq.priceQ', { where }), t('faq.priceA', { inCatalog: priced.length ? t('faq.priceInCatalog', { n: sale.length, from: eur(minOf(priced.map((o) => o.price ?? 0))) }) : '', pm: eur(d.pricePerM2 ?? 0) })],
     [t('faq.rentQ', { where }), t('faq.rentA', { rent: eur(rentFrom) })],
     [t('faq.vnzhQ', { where }), t('faq.vnzhA')],
     [t('faq.airportQ'), t('faq.airportA', { gzp: gzpKm(d), ayt: aytKm(d) })],
@@ -103,12 +110,12 @@ export default async function DistrictPage({ params }: Props) {
     },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ]
-  const grid = (list: Property[], deal: 'sale' | 'rent') =>
+  const grid = ({ docs: list, total }: { docs: Property[]; total: number }, deal: 'sale' | 'rent') =>
     list.length ? (
       <>
-        <div className="grid3 limit4">{list.slice(0, 6).map((p) => <PropertyCard key={p.id} p={p} />)}</div>
+        <div className="grid3 limit4">{list.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
         <div className="res-actions">
-          <Link href={`/${deal}?district=${d.slug}`} className="btn btn-dark">{t('allInCatalog', { n: list.length })}</Link>
+          <Link href={`/${deal}?district=${d.slug}`} className="btn btn-dark">{t('allInCatalog', { n: total })}</Link>
         </div>
       </>
     ) : (
@@ -198,8 +205,8 @@ export default async function DistrictPage({ params }: Props) {
             label={t('dealLabel')}
             tabs={[t('tabSale', { n: sale.length }), t('tabRent', { n: rent.length })]}
           >
-            {grid(sale, 'sale')}
-            {grid(rent, 'rent')}
+            {grid(saleCards, 'sale')}
+            {grid(rentCards, 'rent')}
           </DealTabs>
         </div>
       </section>

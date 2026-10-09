@@ -82,6 +82,7 @@ export function CatalogLayout({ points, children }: { points: MapPoint[]; childr
     const sym = CURRENCY_SYMBOL[cur]
     const fmt = (eur: number) => `${formatNum(eur * rate)} ${sym}`
     const short = (p: MapPoint) => {
+      if (!p.eur) return t('onRequest')
       const v = p.eur * rate
       if (p.deal === 'rent') return fmt(p.eur)
       return v >= 1e6 ? `${t('mln', { n: (v / 1e6).toFixed(1).replace('.0', '') })} ${sym}` : `${t('k', { n: Math.round(v / 1000) })} ${sym}`
@@ -94,7 +95,7 @@ export function CatalogLayout({ points, children }: { points: MapPoint[]; childr
         keyboard: true,
       })
       mk.bindPopup(
-        `<div class="pop">${p.img ? `<img src="${esc(p.img)}" alt="">` : ''}<div><span class="hint">${esc(p.hint)}</span><b>${esc(fmt(p.eur) + (p.deal === 'rent' ? tc('perMonth') : ''))}</b><span>${esc(p.title)}</span><a href="${esc(p.href)}">${esc(t('more'))}</a></div></div>`,
+        `<div class="pop">${p.img ? `<img src="${esc(p.img)}" alt="">` : ''}<div><span class="hint">${esc(p.hint)}</span><b>${esc(p.eur ? fmt(p.eur) + (p.deal === 'rent' ? tc('perMonth') : '') : tc('priceOnRequest'))}</b><span>${esc(p.title)}</span><a href="${esc(p.href)}">${esc(t('more'))}</a></div></div>`,
         { maxWidth: 240 },
       )
       return mk

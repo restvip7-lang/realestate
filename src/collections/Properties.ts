@@ -221,6 +221,8 @@ export const Properties: CollectionConfig = {
                 description: 'Ссылки на фото в Stay Portfolio, обновляются при синхронизации. Если загрузить фото выше, на сайте будут они.',
               },
             },
+            // первое фото из Stay отдельно: карте каталога нужна только обложка, а не весь список фото каждого объекта
+            { name: 'remoteCover', type: 'text', admin: { hidden: true } },
             {
               type: 'row',
               fields: [

@@ -51,13 +51,14 @@ export async function PropertyCard({ p, priority = false }: { p: Property; prior
           {p.sea != null && <span>{t('toSea', { m: p.sea })}</span>}
         </div>
         <div className="price-row">
-          <span className="price">{p.priceFrom && `${t('fromPrice')} `}<Price eur={p.price ?? 0} suffix={rent ? t('perMonth') : ''} /></span>
+          {/* у инвестиционных проектов Stay цены нет («(inv)», в Stay 0) */}
+          <span className="price">{p.price ? <>{p.priceFrom && `${t('fromPrice')} `}<Price eur={p.price} suffix={rent ? t('perMonth') : ''} /></> : t('priceOnRequest')}</span>
           <span className="more">{t('more')}</span>
         </div>
         <span className="upd">
           {rent
             ? t('availableFrom', { date: fmtDate(p.rent?.availableFrom, locale) || '—' })
-            : <>{p.area ? <><Price eur={(p.price ?? 0) / p.area} suffix={t('perM2')} /> · </> : null}{p.priceCheckedAt ? <>{t('updated', { date: fmtDate(p.priceCheckedAt, locale) })} · </> : null}</>}
+            : <>{p.area && p.price ? <><Price eur={p.price / p.area} suffix={t('perM2')} /> · </> : null}{p.priceCheckedAt ? <>{t('updated', { date: fmtDate(p.priceCheckedAt, locale) })} · </> : null}</>}
           {rent && ' · '}<span className="id">ID {p.id}</span>
         </span>
       </div>

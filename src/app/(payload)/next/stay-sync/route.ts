@@ -8,7 +8,8 @@ import { newCursor, runStaySync, type StaySyncCursor } from '@/lib/stay-sync'
 // Синхронизация объектов из Stay Portfolio (docs/stay-import.md).
 // POST — кнопка в админке (только администратор): один шаг за запрос, тело { cursor } → { next, message }.
 // GET — ежедневный запуск Vercel Cron (vercel.json), заголовок Authorization: Bearer <CRON_SECRET>:
-//        делает столько шагов, сколько успеет за минуту; остальное догонит на следующий день.
+//        делает столько шагов, сколько успеет за ~50 с (без изменений шаг — 1–2 с, все ~25 страниц успевают);
+//        если изменений много и не успел — остальное догонит на следующий день.
 export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 
@@ -37,9 +38,9 @@ export async function GET(req: Request) {
   let cursor: StaySyncCursor | null = newCursor()
   let message = ''
   try {
-    while (cursor && Date.now() - started < 10_000) {
-      // новый шаг начинаем, только если до лимита функции остаётся с запасом
-      const res = await runStaySync(payload, cursor)
+    while (cursor && Date.now() - started < 45_000) {
+      // каждому шагу — остаток времени до 50 с, чтобы уложиться в лимит функции 60 с
+      const res = await runStaySync(payload, cursor, 50_000 - (Date.now() - started))
       cursor = res.next
       message = res.message
     }

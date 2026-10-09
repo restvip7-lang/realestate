@@ -239,6 +239,7 @@ export interface Property {
     | number
     | boolean
     | null;
+  remoteCover?: string | null;
   video?: string | null;
   tour?: string | null;
   /**
@@ -865,6 +866,7 @@ export interface PropertiesSelect<T extends boolean = true> {
       };
   photos?: T;
   remotePhotos?: T;
+  remoteCover?: T;
   video?: T;
   tour?: T;
   description?: T;
