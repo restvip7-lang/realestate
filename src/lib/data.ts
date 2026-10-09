@@ -121,7 +121,7 @@ export async function mapProperties(locale: Locale, q: CatalogQuery, districts?:
     collection: 'properties',
     locale,
     where: await catalogWhere(locale, q, districts),
-    select: { title: true, slug: true, deal: true, price: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, type: true },
+    select: { title: true, slug: true, deal: true, price: true, priceFrom: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, remotePhotos: true, type: true },
     sort: '-id',
     limit: 500,
     depth: 1,
@@ -188,6 +188,20 @@ export function mediaUrl(m: number | Media | null | undefined, size: 'thumb' | '
 }
 
 export const districtOf = (p: Property) => (typeof p.district === 'object' ? p.district : null)
+
+export type PropertyPhoto = { src: string; full: string; alt?: string | null; remote: boolean }
+
+/** Фото объекта: загруженные в админке, а если их нет — ссылки на фото в Stay Portfolio (не копируются к нам). */
+export function propertyPhotos(p: Pick<Property, 'photos' | 'remotePhotos'>, size: 'thumb' | 'card' | 'large' = 'card'): PropertyPhoto[] {
+  const own = (p.photos || []).filter((m): m is Media => typeof m === 'object' && !!m?.url)
+  if (own.length) return own.map((m) => ({ src: mediaUrl(m, size)!, full: m.url!, alt: m.alt, remote: false }))
+  const remote = Array.isArray(p.remotePhotos) ? p.remotePhotos.filter((u): u is string => typeof u === 'string' && u.startsWith('https://')) : []
+  return remote.map((u) => {
+    const url = u.replace(/([^:])\/\/+/g, '$1/') // в ссылках Stay бывает двойной слэш
+    return { src: url, full: url, remote: true }
+  })
+}
+export const propertyCover = (p: Pick<Property, 'photos' | 'remotePhotos'>, size: 'thumb' | 'card' | 'large' = 'card') => propertyPhotos(p, size)[0] ?? null
 
 /** Сколько опубликованных объектов в каждом районе (для карточек районов). */
 export async function districtCounts(deal: 'sale' | 'rent' = 'sale'): Promise<Record<number, number>> {

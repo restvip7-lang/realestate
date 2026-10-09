@@ -13,7 +13,11 @@ const nextConfig: NextConfig = {
   images: {
     // фото из админки: локально через /api/media, на Vercel — из Blob
     localPatterns: [{ pathname: '/api/media/file/**' }],
-    remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
+    // фото объектов из Stay Portfolio показываем по ссылке, без оптимизатора Vercel (unoptimized), см. docs/stay-import.md
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+      { protocol: 'https', hostname: 'portfolio.stayrepo.com', pathname: '/lbi-content/**' },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   webpack: (webpackConfig) => {

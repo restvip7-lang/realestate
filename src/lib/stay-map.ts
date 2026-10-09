@@ -148,6 +148,10 @@ export function mapStayObject(o: StayObject, districts: Map<string, StayDistrict
       floors: num(m.floors_villa),
       sea,
       view,
+      // в Stay этого нет: null, чтобы не подставились значения по умолчанию («Без мебели», «От застройщика»)
+      furnished: null,
+      source: null,
+      floor: null,
       citizenship: m.citizenship === 'Y',
       residence: m.residence_permit === 'yes',
       priceFrom: m.price_from === 'Y',

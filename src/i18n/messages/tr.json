@@ -103,7 +103,8 @@
     "perM2": "/m²",
     "more": "Detaylar →",
     "availableFrom": "{date} tarihinden itibaren boş",
-    "updated": "fiyat güncellendi: {date}"
+    "updated": "fiyat güncellendi: {date}",
+    "fromPrice": "başlangıç"
   },
   "home": {
     "eyebrow": "Alanya'da emlak",

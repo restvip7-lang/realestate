@@ -6,7 +6,7 @@ import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { PROPERTY_TYPES, type PropertyType } from '@/lib/catalog'
 import { catalogQueryString, hasFilters } from '@/lib/catalog-params'
-import { type CatalogQuery, districtOf, listDistricts, listProperties, mapProperties, mediaUrl } from '@/lib/data'
+import { type CatalogQuery, districtOf, listDistricts, listProperties, mapProperties, propertyCover } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
 
 import { CatalogFilters, SortSelect } from './CatalogFilters'
@@ -44,7 +44,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
       deal: p.deal,
       hint: [districtOf(p)?.name, p.rooms, p.area && `${p.area} ${tf('m2')}`].filter(Boolean).join(' · '),
       title: p.title,
-      img: mediaUrl((p.photos || []).find((m) => typeof m === 'object'), 'thumb'),
+      img: propertyCover(p, 'thumb')?.src ?? null,
     }))
   const title = await catalogTitle(locale, q)
   const d = districts.find((x) => x.slug === q.district)

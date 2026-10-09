@@ -103,7 +103,8 @@
     "perM2": "/m²",
     "more": "Details →",
     "availableFrom": "Available from {date}",
-    "updated": "price updated {date}"
+    "updated": "price updated {date}",
+    "fromPrice": "from"
   },
   "home": {
     "eyebrow": "Real estate in Alanya",

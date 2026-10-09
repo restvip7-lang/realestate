@@ -103,7 +103,8 @@
     "perM2": "/м²",
     "more": "Подробнее →",
     "availableFrom": "Свободна с {date}",
-    "updated": "цена обновлена {date}"
+    "updated": "цена обновлена {date}",
+    "fromPrice": "от"
   },
   "home": {
     "eyebrow": "Недвижимость в Алании",

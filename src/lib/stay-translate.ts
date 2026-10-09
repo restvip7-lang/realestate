@@ -21,13 +21,14 @@ let client: Anthropic | null = null
 
 export async function translateToTurkish(en: { title: string; description: string }) {
   client ??= new Anthropic()
+  // Haiku не принимает effort и резервные модели — для неё только формат ответа
+  const haiku = MODEL.startsWith('claude-haiku')
   const response = await client.beta.messages.parse({
     model: MODEL,
     max_tokens: 16000,
     // при отказе модели запрос сам переходит на резервную модель (серверная функция API)
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
-    output_config: { effort: 'low', format: betaZodOutputFormat(Translation) },
+    ...(haiku ? {} : { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' as const }),
+    output_config: haiku ? { format: betaZodOutputFormat(Translation) } : { effort: 'low', format: betaZodOutputFormat(Translation) },
     system:
       'You translate real estate listings for an agency in Alanya, Turkey, from English into natural Turkish for Turkish-speaking buyers. ' +
       'Keep every number, price, area, distance, room layout (like 2+1) and proper name exactly as in the source. ' +
