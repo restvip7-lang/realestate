@@ -9,7 +9,7 @@ import { PostCard } from '@/components/site/PostCard'
 import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { agentFor, allPublished, districtStats, getCompany, getMember, listPosts, listReviews, listTeam, mediaUrl } from '@/lib/data'
+import { districtStats, expertProperties, findPublished, getCompany, getMember, listPosts, listReviews, listTeam, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District } from '@/payload-types'
@@ -38,14 +38,14 @@ export default async function MemberPage({ params }: Props) {
   setRequestLocale(locale)
   const m = await getMember(slug, locale)
   if (!m) notFound()
-  const [t, tc, company, team, props, arts, reviews, stats] = await Promise.all([
-    getTranslations('member'), getTranslations('catalog'), getCompany(locale), listTeam(locale), allPublished(locale),
+  const [t, tc, company, team, arts, reviews, stats] = await Promise.all([
+    getTranslations('member'), getTranslations('catalog'), getCompany(locale), listTeam(locale),
     listPosts(locale, { kind: 'article', author: m.id, limit: 3 }), listReviews(), districtStats(),
   ])
   // объекты эксперта — как на странице объекта; основатель ведёт виллы и премиум, юрист объектов не ведёт
-  const objs = m.kind === 'founder'
-    ? props.filter((o) => o.deal === 'sale' && (o.type === 'villa' || (o.price ?? 0) >= 250000))
-    : m.kind === 'lawyer' ? [] : props.filter((o) => agentFor(o, team)?.id === m.id)
+  const { docs: objs, total: objsTotal } = m.kind === 'founder'
+    ? await findPublished(locale, { and: [{ deal: { equals: 'sale' } }, { or: [{ type: { equals: 'villa' } }, { price: { greater_than_equal: 250000 } }] }] })
+    : m.kind === 'lawyer' ? { docs: [], total: 0 } : await expertProperties(locale, m.id, team)
   const revs = reviews.filter((r) => (typeof r.expert === 'object' ? r.expert?.id : r.expert) === m.id)
   const areas = (m.areas || []).filter((a): a is District => typeof a === 'object')
   const img = mediaUrl(m.photo, 'large')
@@ -90,7 +90,7 @@ export default async function MemberPage({ params }: Props) {
           <div role="listitem"><span>{t('langs')}</span><b>{m.langs}</b><small>{t('langsNote')}</small></div>
           <div role="listitem">
             <span>{m.kind === 'lawyer' ? t('checks') : t('leads')}</span>
-            <b>{m.kind === 'lawyer' ? t('everyDeal') : objs.length}</b>
+            <b>{m.kind === 'lawyer' ? t('everyDeal') : objsTotal}</b>
             <small>{m.kind === 'lawyer' ? t('beforeBooking') : t('inCatalogNow')}</small>
           </div>
           <div role="listitem"><span>{t('articles')}</span><b>{arts.totalDocs}</b><small>{arts.totalDocs ? t('inJournal') : t('noneYet')}</small></div>
@@ -120,7 +120,7 @@ export default async function MemberPage({ params }: Props) {
       {objs.length > 0 && (
         <section className="sec" id="objs">
           <div className="wrap">
-            <div className="sec-head"><div><span className="eyebrow">{t('objsEyebrow')}</span><h2>{m.kind === 'founder' ? t('objsFounder') : t('objsExpert')}</h2></div><span className="hint">{t('objsCount', { n: objs.length })}</span></div>
+            <div className="sec-head"><div><span className="eyebrow">{t('objsEyebrow')}</span><h2>{m.kind === 'founder' ? t('objsFounder') : t('objsExpert')}</h2></div><span className="hint">{t('objsCount', { n: objsTotal })}</span></div>
             <div className="grid3 limit4">{objs.slice(0, 6).map((p) => <PropertyCard key={p.id} p={p} />)}</div>
           </div>
         </section>

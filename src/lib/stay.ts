@@ -43,6 +43,26 @@ export type StayObject = {
 
 type ApiResponse<T> = { status: number; statusText: string; messageCode: number; messageText: string; result: T }
 
+/**
+ * Ответ Stay → JSON. У объектов с битыми файлами фото сервер Stay (PHP) печатает перед JSON
+ * предупреждения («Notice: getimagesize(): Error reading from …/media/142/cd4a….jpg!»):
+ * отрезаем их, а имена битых файлов возвращаем, чтобы убрать эти фото из галереи.
+ */
+function parseResponse<T>(text: string): { json: ApiResponse<T> | null; broken: string[] } {
+  try {
+    return { json: JSON.parse(text) as ApiResponse<T>, broken: [] }
+  } catch {
+    const start = text.indexOf('{"status"')
+    if (start < 0) return { json: null, broken: [] }
+    const broken = [...text.slice(0, start).matchAll(/Error reading from \S*\/([^/\s!<]+)!/g)].map((m) => m[1])
+    try {
+      return { json: JSON.parse(text.slice(start)) as ApiResponse<T>, broken }
+    } catch {
+      return { json: null, broken }
+    }
+  }
+}
+
 export class StayError extends Error {}
 
 export function stayConfigured() {
@@ -51,6 +71,7 @@ export function stayConfigured() {
 
 export class StayClient {
   private cookie = ''
+  private broken: string[] = [] // битые файлы фото из последнего ответа
 
   private async call<T>(path: string, init: RequestInit = {}, retry = 2): Promise<T> {
     const headers = new Headers(init.headers)
@@ -74,7 +95,8 @@ export class StayClient {
       }
       this.cookie = [...jar].map(([k, v]) => `${k}=${v}`).join('; ')
     }
-    const json = (await res.json().catch(() => null)) as ApiResponse<T> | null
+    const { json, broken } = parseResponse<T>(await res.text().catch(() => ''))
+    this.broken = broken
     if (res.status >= 500 && retry > 0) return this.call(path, init, retry - 1)
     if (!json || json.status !== 200) {
       throw new StayError(`Stay: ${json?.messageText || res.statusText || res.status} (${path})`)
@@ -114,7 +136,13 @@ export class StayClient {
       gallery_images: 'large',
       object_terms: Object.values(TERMS).join(','),
     })
-    return this.call<StayObject>(`/objects/get/${id}?${q}`)
+    const o = await this.call<StayObject>(`/objects/get/${id}?${q}`)
+    // фото, файлы которых на сервере Stay битые (пустые), на сайте были бы пустыми картинками — убираем
+    const gallery = o.post_meta?.object_gallery
+    if (this.broken.length && Array.isArray(gallery)) {
+      o.post_meta.object_gallery = gallery.filter((u) => typeof u !== 'string' || !this.broken.some((b) => u.endsWith(`/${b}`)))
+    }
+    return o
   }
 }
 

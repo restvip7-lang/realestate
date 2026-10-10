@@ -22,12 +22,23 @@ export const syncLimit = () => {
 
 export const newCursor = (): StaySyncCursor => ({ page: 1, startedAt: new Date().toISOString(), added: 0, updated: 0, skipped: 0, hidden: 0, problems: [] })
 
+/** Предупреждения, сгруппированные по виду: «район «…» не сопоставлен — 23 (ID 4254, 4256, 4301…)». */
+function groupProblems(problems: string[]) {
+  const groups = new Map<string, string[]>()
+  for (const p of problems) {
+    const m = /^ID (\d+): (.*)$/.exec(p)
+    const kind = (m?.[2] ?? p).replace(/\(\/objects[^)]*\)/g, '').replace(/планировка .* не из/, 'планировка … не из').trim()
+    groups.set(kind, [...(groups.get(kind) ?? []), m?.[1] ?? ''])
+  }
+  return [...groups].map(([kind, ids]) => `${kind} — ${ids.length}${ids[0] ? ` (ID ${ids.slice(0, 3).join(', ')}${ids.length > 3 ? '…' : ''})` : ''}`).join('; ')
+}
+
 const summary = (c: StaySyncCursor) =>
   `добавлено ${c.added}, обновлено ${c.updated}, без изменений ${c.skipped}${c.hidden ? `, снято с сайта ${c.hidden}` : ''}` +
-  (c.problems.length ? `. Внимание: ${c.problems.length} — ${c.problems.slice(0, 5).join('; ')}${c.problems.length > 5 ? '…' : ''}` : '')
+  (c.problems.length ? `. Внимание: ${groupProblems(c.problems)}` : '')
 
-/** Один шаг синхронизации. Вызывать, пока next не станет null (кнопка в админке или cron). */
-export async function runStaySync(payload: Payload, cursor: StaySyncCursor = newCursor()): Promise<StaySyncResult> {
+/** Один шаг синхронизации. Вызывать, пока next не станет null (кнопка в админке или cron). budgetMs — сколько можно работать. */
+export async function runStaySync(payload: Payload, cursor: StaySyncCursor = newCursor(), budgetMs = BUDGET_MS): Promise<StaySyncResult> {
   const started = Date.now()
   const c: StaySyncCursor = { ...cursor, problems: [...cursor.problems] }
   const limit = syncLimit()
@@ -54,7 +65,7 @@ export async function runStaySync(payload: Payload, cursor: StaySyncCursor = new
   let processed = 0
   const seenIds: number[] = []
   for (const item of items) {
-    if (Date.now() - started > BUDGET_MS) break // остальное — следующим шагом с той же страницы (обработанные уже не изменятся)
+    if (Date.now() - started > budgetMs) break // остальное — следующим шагом с той же страницы (обработанные уже не изменятся)
     processed++
     seenIds.push(Number(item.ID))
     const existing = byStayId.get(item.ID)
@@ -73,6 +84,7 @@ export async function runStaySync(payload: Payload, cursor: StaySyncCursor = new
         ...mapped.data,
         slug: slugify(String(mapped.data.title)),
         remotePhotos: mapped.photos,
+        remoteCover: mapped.photos[0] ?? null,
         stay: { objectId: o.ID, refNo: String(o.post_meta.refno || ''), modified: item.post_modified, syncedAt: now, trHash: existing?.stay?.trHash ?? null },
       }
       const doc = existing

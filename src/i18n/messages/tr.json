@@ -104,7 +104,8 @@
     "more": "Detaylar →",
     "availableFrom": "{date} tarihinden itibaren boş",
     "updated": "fiyat güncellendi: {date}",
-    "fromPrice": "başlangıç"
+    "fromPrice": "başlangıç",
+    "priceOnRequest": "Fiyat sorunuz"
   },
   "home": {
     "eyebrow": "Alanya'da emlak",
@@ -365,7 +366,8 @@
     "more": "Detaylar →",
     "mapCount": "Haritada {n}",
     "k": "{n} bin",
-    "mln": "{n} mn"
+    "mln": "{n} mn",
+    "onRequest": "sorunuz"
   },
   "property": {
     "openPhoto": "{n}. fotoğrafı aç",

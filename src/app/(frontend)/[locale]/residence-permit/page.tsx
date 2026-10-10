@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { Price } from '@/components/site/Currency'
 import { PropertyCard } from '@/components/site/PropertyCard'
-import { allPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/data'
+import { findPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/data'
 import { setRequestLocale } from 'next-intl/server'
 
 import { getPathname, Link } from '@/i18n/navigation'
@@ -22,9 +22,13 @@ export async function generateMetadata({ params }: Props) {
 export default async function ResidencePage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
-  const [company, team, rates, published] = await Promise.all([getCompany(locale), listTeam(locale), getRates(), allPublished(locale)])
+  const [company, team, rates] = await Promise.all([getCompany(locale), listTeam(locale), getRates()])
   const minEur = 200000 / (rates.USD || 1)
-  const objs = published.filter((o) => o.deal === 'sale' && ((o.price ?? 0) >= minEur || o.residence)).sort((a, b) => (b.price ?? 0) - (a.price ?? 0))
+  const { docs: objs, total: objsTotal } = await findPublished(
+    locale,
+    { and: [{ deal: { equals: 'sale' } }, { or: [{ price: { greater_than_equal: minEur } }, { residence: { equals: true } }] }] },
+    { sort: '-price' },
+  )
   const lawyer = team.find((t) => t.kind === 'lawyer') || team[0]
   const lawyerImg = mediaUrl(lawyer?.photo, 'thumb')
   const FAQ: [string, React.ReactNode, string][] = [["Можно ли получить ВНЖ, если жильё дешевле 200 000 $?", <>По основанию собственности — нет (демо-условие для Анталии). Можно оформить туристический ВНЖ по договору аренды или купить объект дороже. Поможем выбрать вариант.</>, "По основанию собственности — нет (демо-условие для Анталии). Можно оформить туристический ВНЖ по договору аренды или купить объект дороже. Поможем выбрать вариант."], ["Как продлить ВНЖ?", <>Пока объект в вашей собственности, ВНЖ продлевается: подаёте заявку до окончания срока карты. Напомним и подготовим документы.</>, "Пока объект в вашей собственности, ВНЖ продлевается: подаёте заявку до окончания срока карты. Напомним и подготовим документы."], ["Получит ли ВНЖ семья?", <>Да, супруг(а) и дети до 18 лет получают ВНЖ как члены семьи собственника. Нужны свидетельства о браке и рождении с апостилем и переводом.</>, "Да, супруг(а) и дети до 18 лет получают ВНЖ как члены семьи собственника. Нужны свидетельства о браке и рождении с апостилем и переводом."], ["Можно ли работать с ВНЖ собственника?", <>Нет. Для работы в Турции нужно отдельное разрешение на работу. ВНЖ даёт право жить, открыть счёт, подключить коммунальные услуги и оформить страховку.</>, "Нет. Для работы в Турции нужно отдельное разрешение на работу. ВНЖ даёт право жить, открыть счёт, подключить коммунальные услуги и оформить страховку."], ["Как узнать, открыт ли квартал для ВНЖ?", <>Список закрытых кварталов публикует миграционная служба и регулярно обновляет. Мы проверяем адрес каждого объекта до брони и пишем об изменениях в <Link href="/news" className="link">новостях</Link>.</>, "Список закрытых кварталов публикует миграционная служба и регулярно обновляет. Мы проверяем адрес каждого объекта до брони и пишем об изменениях в новостях."], ["Можно ли потом получить гражданство?", <>После нескольких лет непрерывного проживания можно подать на гражданство на общих основаниях, а при покупке от 400 000 $ — по <Link href="/citizenship" className="link">программе инвестиций</Link>.</>, "После нескольких лет непрерывного проживания можно подать на гражданство на общих основаниях, а при покупке от 400 000 $ — по программе инвестиций."]]
@@ -136,7 +140,7 @@ export default async function ResidencePage({ params }: Props) {
 
       <section className="sec" style={{ background: "var(--mist)" }} id="objects">
         <div className="wrap">
-          <div className="sec-head"><div><span className="eyebrow">Каталог {objs.length ? <span className="hint">{objs.length} в каталоге</span> : null}</span><h2>Объекты под ВНЖ</h2></div><p>От 200 000 $ (<span>≈ <Price eur={minEur} /></span>). Статус квартала проверяем на дату сделки. Районы для жизни круглый год — <Link href="/districts?f=life" className="link">в гиде по районам</Link>.</p></div>
+          <div className="sec-head"><div><span className="eyebrow">Каталог {objsTotal ? <span className="hint">{objsTotal} в каталоге</span> : null}</span><h2>Объекты под ВНЖ</h2></div><p>От 200 000 $ (<span>≈ <Price eur={minEur} /></span>). Статус квартала проверяем на дату сделки. Районы для жизни круглый год — <Link href="/districts?f=life" className="link">в гиде по районам</Link>.</p></div>
           {objsBlock}
           <div className="res-actions"><Link href={`/sale?min=${Math.round(minEur)}`} className="btn btn-dark">Все объекты от 200 000 $</Link><a href="#lead" className="btn btn-line">Проверить мой объект</a></div>
         </div>

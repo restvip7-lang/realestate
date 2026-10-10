@@ -9,7 +9,7 @@ import { type CmpItem, FavActions, FavCompare, FavSync } from '@/components/site
 import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { agentFor, allPublished, districtOf, getCompany, getPropertiesByIds, listTeam, propertyCover } from '@/lib/data'
+import { agentFor, districtOf, findPublished, getCompany, getPropertiesByIds, listTeam, propertyCover } from '@/lib/data'
 import { buyCosts } from '@/lib/costs'
 import { fmtDate, propertyPath, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
@@ -35,8 +35,6 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
   const [t, tc, tcard, company, list, team] = await Promise.all([
     getTranslations('favs'), getTranslations('catalog'), getTranslations('card'), getCompany(locale), getPropertiesByIds(ids, locale), listTeam(locale),
   ])
-  const need = list.length === 0 || (!shared && list.length < 4)
-  const published = need ? await allPublished(locale) : []
   const ST: Record<string, string | undefined> = { reserved: t('reserved'), sold: t('sold'), rented: t('rented') }
   const url = (p: Property) => `${SITE_URL}${getPathname({ href: propertyPath(p), locale })}`
   const title = (p: Property) => `${typeName(p.type, locale)} ${p.rooms ?? ''}, ${districtOf(p)?.name ?? ''}`
@@ -45,7 +43,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
 
   let body: React.ReactNode
   if (!list.length) {
-    const fresh = published.filter((p) => p.deal === 'sale').slice(0, 3)
+    const { docs: fresh } = await findPublished(locale, { deal: { equals: 'sale' } }, { limit: 3 })
     body = (
       <>
         <div className="empty" style={{ marginBottom: 32 }}>
@@ -61,7 +59,9 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
   } else {
     const lines = list.map((p) => `• ID ${p.id} — ${title(p)} — ${url(p)}`).join('\n')
     const wa = `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(`${t('waText')}\n${lines}`)}`
-    const more = !shared && list.length < 4 ? published.filter((p) => p.deal === list[0].deal && !ids.includes(p.id)).slice(0, 3) : []
+    const more = !shared && list.length < 4
+      ? (await findPublished(locale, { and: [{ deal: { equals: list[0].deal } }, { id: { not_in: ids } }] }, { limit: 3 })).docs
+      : []
     body = (
       <>
         {shared && (
@@ -98,7 +98,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
     const area = p.area || 1
     const d = districtOf(p)
     const agent = agentFor(p, team)
-    const costs = rent ? null : buyCosts(price, { resale: !(p.condition !== 'resale' && p.source !== 'owner') }).total
+    const costs = rent || !price ? null : buyCosts(price, { resale: !(p.condition !== 'resale' && p.source !== 'owner') }).total
     const cover = propertyCover(p, 'card')
     return {
       id: p.id,
@@ -112,8 +112,8 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
         </>
       ),
       cells: [
-        <Price key="p" eur={price} suffix={rent ? tcard('perMonth') : ''} />,
-        rent ? '—' : <Price key="m" eur={price / area} suffix={tcard('perM2')} />,
+        price ? <Price key="p" eur={price} suffix={rent ? tcard('perMonth') : ''} /> : tcard('priceOnRequest'),
+        rent || !price ? '—' : <Price key="m" eur={price / area} suffix={tcard('perM2')} />,
         costs == null ? '—' : <Price key="c" eur={costs} />,
         d ? <><Link href={`/districts/${d.slug}`} className="link">{d.name}</Link>{d.inland && ` · ${t('inland')}`}</> : '—',
         `${typeName(p.type, locale)} ${p.rooms ?? ''}`,
@@ -127,7 +127,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
         agent ? (agent.slug ? <Link href={`/team/${agent.slug}`} className="link">{agent.name}</Link> : agent.name) : '—',
         ST[p.status ?? ''] ?? (rent ? t('forRent') : t('onSale')),
       ].map((c, i) => <Fragment key={i}>{c}</Fragment>),
-      vals: [price, rent ? null : price / area, costs, null, null, p.area ?? null, null, p.sea ?? null, null, null, null, null, null, null],
+      vals: [price || null, rent || !price ? null : price / area, costs, null, null, p.area ?? null, null, p.sea ?? null, null, null, null, null, null, null],
     }
   })
 

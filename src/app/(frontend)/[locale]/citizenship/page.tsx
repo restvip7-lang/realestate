@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { Price } from '@/components/site/Currency'
 import { PropertyCard } from '@/components/site/PropertyCard'
-import { allPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/data'
+import { findPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/data'
 import { setRequestLocale } from 'next-intl/server'
 
 import { getPathname, Link } from '@/i18n/navigation'
@@ -22,9 +22,13 @@ export async function generateMetadata({ params }: Props) {
 export default async function CitizenshipPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
-  const [company, team, rates, published] = await Promise.all([getCompany(locale), listTeam(locale), getRates(), allPublished(locale)])
+  const [company, team, rates] = await Promise.all([getCompany(locale), listTeam(locale), getRates()])
   const minEur = 400000 / (rates.USD || 1)
-  const objs = published.filter((o) => o.deal === 'sale' && ((o.price ?? 0) >= minEur || o.citizenship)).sort((a, b) => (b.price ?? 0) - (a.price ?? 0))
+  const { docs: objs, total: objsTotal } = await findPublished(
+    locale,
+    { and: [{ deal: { equals: 'sale' } }, { or: [{ price: { greater_than_equal: minEur } }, { citizenship: { equals: true } }] }] },
+    { sort: '-price' },
+  )
   const lawyer = team.find((t) => t.kind === 'lawyer') || team[0]
   const lawyerImg = mediaUrl(lawyer?.photo, 'thumb')
   const FAQ: [string, React.ReactNode, string][] = [["Можно ли купить несколько квартир вместо одной?", <>Да. Можно купить несколько объектов, если их общая стоимость по отчётам об оценке — от 400 000 $ (демо-условие). Все объекты получают отметку о запрете продажи на 3 года.</>, "Да. Можно купить несколько объектов, если их общая стоимость по отчётам об оценке — от 400 000 $ (демо-условие). Все объекты получают отметку о запрете продажи на 3 года."], ["Можно ли сдавать объект в аренду?", <>Да, сдавать можно все 3 года — это частый вариант: объект приносит доход, пока идёт оформление. Посчитаем доходность, <Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="link">как в статье об аренде</Link>.</>, "Да, сдавать можно все 3 года — это частый вариант: объект приносит доход, пока идёт оформление. Посчитаем доходность, как в статье об аренде."], ["Нужно ли жить в Турции?", <>Нет. Требований к проживанию и знанию языка нет. Приехать нужно для подачи биометрии; остальное можно сделать по доверенности.</>, "Нет. Требований к проживанию и знанию языка нет. Приехать нужно для подачи биометрии; остальное можно сделать по доверенности."], ["Получат ли паспорт дети старше 18 лет?", <>Нет, по программе паспорт получают супруг(а) и дети до 18 лет. Взрослым детям нужна отдельная покупка или другое основание.</>, "Нет, по программе паспорт получают супруг(а) и дети до 18 лет. Взрослым детям нужна отдельная покупка или другое основание."], ["Что будет, если продать объект раньше 3 лет?", <>Продать нельзя: отметка в ТАПУ не даст зарегистрировать сделку. По истечении 3 лет объект можно продать, паспорт остаётся.</>, "Продать нельзя: отметка в ТАПУ не даст зарегистрировать сделку. По истечении 3 лет объект можно продать, паспорт остаётся."], ["Подходит ли новостройка?", <>Да, если объект оценён на нужную сумму и оплата прошла через банк. Для строящихся объектов есть особые правила оформления — юрист расскажет на консультации.</>, "Да, если объект оценён на нужную сумму и оплата прошла через банк. Для строящихся объектов есть особые правила оформления — юрист расскажет на консультации."]]
@@ -141,7 +145,7 @@ export default async function CitizenshipPage({ params }: Props) {
 
       <section className="sec" style={{ background: "var(--mist)" }} id="objects">
         <div className="wrap">
-          <div className="sec-head"><div><span className="eyebrow">Каталог {objs.length ? <span className="hint">{objs.length} в каталоге</span> : null}</span><h2>Объекты под гражданство</h2></div><p>От 400 000 $ (<span>≈ <Price eur={minEur} /></span>) или несколько объектов на эту сумму. Окончательно подходящий объект подтверждает юрист.</p></div>
+          <div className="sec-head"><div><span className="eyebrow">Каталог {objsTotal ? <span className="hint">{objsTotal} в каталоге</span> : null}</span><h2>Объекты под гражданство</h2></div><p>От 400 000 $ (<span>≈ <Price eur={minEur} /></span>) или несколько объектов на эту сумму. Окончательно подходящий объект подтверждает юрист.</p></div>
           {objsBlock}
           <div className="res-actions"><Link href={`/sale?min=${Math.round(minEur)}`} className="btn btn-dark">Все объекты от 400 000 $</Link><a href="#lead" className="btn btn-line">Подобрать несколько объектов</a></div>
         </div>

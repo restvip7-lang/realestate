@@ -97,8 +97,7 @@ export default async function PropertyPage({ params }: Props) {
     datePosted: p.createdAt,
     offers: {
       '@type': 'Offer',
-      price: p.price,
-      priceCurrency: 'EUR',
+      ...(p.price ? { price: p.price, priceCurrency: 'EUR' } : {}),
       availability: `https://schema.org/${closed ? 'SoldOut' : p.status === 'reserved' ? 'LimitedAvailability' : 'InStock'}`,
       businessFunction: rent ? 'http://purl.org/goodrelations/v1#LeaseOut' : 'http://purl.org/goodrelations/v1#Sell',
     },
@@ -164,7 +163,7 @@ export default async function PropertyPage({ params }: Props) {
                 ) : (
                   <>
                     {p.source ? <div><dt>{t('source')}</dt><dd>{t(`sources.${p.source}` as never)}</dd></div> : null}
-                    {p.area ? <div><dt>{t('pricePerM2')}</dt><dd>{p.priceFrom && `${tc('fromPrice')} `}<Price eur={(p.price ?? 0) / p.area} suffix={tc('perM2')} /></dd></div> : null}
+                    {p.area && p.price ? <div><dt>{t('pricePerM2')}</dt><dd>{p.priceFrom && `${tc('fromPrice')} `}<Price eur={(p.price ?? 0) / p.area} suffix={tc('perM2')} /></dd></div> : null}
                     {p.installment?.months ? <div><dt>{t('installment')}</dt><dd>{t('installmentVal', { months: p.installment.months, down: p.installment.down ?? 0 })}</dd></div> : null}
                     {p.citizenship ? <div><dt>{t('citizenship')}</dt><dd>{t('yes')}</dd></div> : null}
                   </>
@@ -187,7 +186,7 @@ export default async function PropertyPage({ params }: Props) {
               <p className="hint" style={{ marginTop: 8 }}>{t('addressNote')}</p>
               {d && <p style={{ marginTop: 10 }}><Link href={`/districts/${d.slug}`} className="link">{t('aboutDistrict', { name: d.name })}</Link></p>}
             </div>
-            {!closed && (
+            {!closed && !!p.price && (
               <div className="block" id="costs">
                 <h2>{t(rent ? 'costsRent' : 'costsBuy')}</h2>
                 <Costs price={p.price ?? 0} resale={resale} rent={rentInfo} />
@@ -204,13 +203,13 @@ export default async function PropertyPage({ params }: Props) {
           <aside className="side">
             <div className="pricebox">
               <span className="sub">{t(rent ? 'rent' : 'price')}</span>
-              <span className="big">{p.priceFrom && `${tc('fromPrice')} `}<Price eur={p.price ?? 0} suffix={rent ? tc('perMonth') : ''} /></span>
+              <span className="big">{p.price ? <>{p.priceFrom && `${tc('fromPrice')} `}<Price eur={p.price} suffix={rent ? tc('perMonth') : ''} /></> : tc('priceOnRequest')}</span>
               {rent && p.rent ? (
                 <span className="sub">{t('depositLine', { months: p.rent.minTerm ?? 1 })} <Price eur={p.rent.deposit ?? 0} /></span>
-              ) : (
-                <span className="sub"><Price eur={(p.price ?? 0) / (p.area || 1)} suffix={tc('perM2')} /></span>
-              )}
-              {!closed && <CostsLine price={p.price ?? 0} resale={resale} rent={rentInfo} />}
+              ) : p.price ? (
+                <span className="sub"><Price eur={p.price / (p.area || 1)} suffix={tc('perM2')} /></span>
+              ) : null}
+              {!closed && !!p.price && <CostsLine price={p.price} resale={resale} rent={rentInfo} />}
               {p.priceCheckedAt && (
                 <div className="checked">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M5 12l4 4 10-10" /></svg>
