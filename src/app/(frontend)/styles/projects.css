@@ -1,0 +1,33 @@
+/* Новостройки (/projects). Все правила — внутри обёртки .pg-projects: Next не выгружает CSS страниц при переходах. */
+.pg-projects .dhero{padding:22px 0 44px}
+.pg-projects .dhero .lead-t{max-width:62ch}
+.pg-projects .pstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:28px;max-width:860px}
+.pg-projects .pstats>div{display:flex;flex-direction:column-reverse;gap:4px;border:1px solid var(--line-d);border-radius:var(--r);padding:14px 16px}
+.pg-projects .pstats dd{font:700 clamp(18px,2vw,26px)/1.1 var(--f-display);color:#fff;white-space:nowrap}
+.pg-projects .pstats dt{font-size:13.5px;color:rgba(255,255,255,.7)}
+
+.pg-projects .pfilters{display:flex;justify-content:space-between;align-items:center;gap:14px 20px;flex-wrap:wrap;margin-bottom:18px}
+.pg-projects .chip{display:inline-flex;align-items:center}
+.pg-projects .selects{display:flex;gap:10px 16px;flex-wrap:wrap}
+.pg-projects .selects label{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
+.pg-projects .selects select{min-height:42px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;color:var(--ink);max-width:220px}
+.pg-projects .pres{display:flex;justify-content:space-between;align-items:baseline;gap:8px 20px;flex-wrap:wrap;margin-bottom:18px}
+.pg-projects .pres .cnt{color:var(--muted)}
+
+.pg-projects .prj .specs span:first-child{font-weight:600}
+.pg-projects .empty .btn{margin-top:14px}
+
+.pg-projects .ppages{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.pg-projects .ppages a,.pg-projects .ppages span{min-width:40px;height:40px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:600;font-size:14px}
+.pg-projects .ppages [aria-current]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.pg-projects .seo h3{font-size:17px;margin-top:22px}
+
+@media (max-width:760px){
+  .pg-projects .pstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg-projects .selects{width:100%}
+  .pg-projects .selects label{width:100%;justify-content:space-between}
+  .pg-projects .selects select{flex:1;max-width:none}
+  .pg-projects .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 4px;scrollbar-width:none}
+  .pg-projects .chip{flex:none}
+}

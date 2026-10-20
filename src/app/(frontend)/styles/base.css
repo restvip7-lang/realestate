@@ -58,7 +58,7 @@ h3{font-size:20px}
 .logo b{font:700 19px var(--f-display);letter-spacing:.03em}
 .logo small{font:500 9.5px var(--f-mono);letter-spacing:.42em;opacity:.7;margin-top:4px}
 .nav{display:flex;gap:4px;font-size:15px;font-weight:500}
-.nav a{padding:8px 12px;border-radius:6px;opacity:.85}
+.nav a{padding:8px 12px;border-radius:6px;opacity:.85;white-space:nowrap}
 .nav a:hover,.nav a[aria-current]{opacity:1;background:rgba(255,255,255,.08)}
 .hdr-r{margin-left:auto;display:flex;align-items:center;gap:10px}
 .seg{display:flex;border:1px solid var(--line-d);border-radius:999px;padding:3px}
@@ -161,6 +161,8 @@ h3{font-size:20px}
 .js .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .rv{opacity:1;transform:none}}
 
+/* 6 пунктов меню: на ноутбуках сжимаем отступы, чтобы меню не переносилось */
+@media (max-width:1320px){.hdr .wrap{gap:14px}.nav{gap:0;font-size:14.5px}.nav a{padding:8px 7px}}
 @media (max-width:1100px){
   .nav,.hdr-r .hide-t{display:none}.burger{display:grid}
   .grid3{grid-template-columns:repeat(2,1fr)}

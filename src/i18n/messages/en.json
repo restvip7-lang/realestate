@@ -22,7 +22,8 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "Menu",
-    "quick": "Quick actions"
+    "quick": "Quick actions",
+    "projects": "New builds"
   },
   "footer": {
     "tagline": "Real estate in Alanya · Alanya Gayrimenkul",
@@ -484,7 +485,11 @@
     },
     "share": "Share",
     "copied": "Link copied",
-    "pdf": "Download PDF"
+    "pdf": "Download PDF",
+    "handoverLabel": "Completion",
+    "allProjects": "All new builds in Alanya",
+    "districtProjects": "New builds {where}",
+    "layoutsTitle": "Layouts"
   },
   "costs": {
     "rows": {
@@ -879,5 +884,78 @@
     "previewTip": "Open “Find with AI” below. Try: buy → 150000 EUR → 2+1.",
     "from": "from",
     "demoPrivacy": "The demo runs in your browser. Messages and contact details are not sent anywhere."
+  },
+  "projects": {
+    "crumbs": "New builds",
+    "eyebrow": "Developer projects",
+    "title": "New builds in Alanya",
+    "titleIn": "New builds {where}",
+    "metaTitle": "New builds in Alanya: {n} developer projects",
+    "metaDesc": "Residential complexes in Alanya from developers: layouts, sizes, completion dates and prices from €{price}. Search and purchase support.",
+    "lead": "Residential complexes under construction and recently completed: layouts, sizes, completion dates and developer prices. Our services are free for buyers of new builds from a developer.",
+    "statProjects": "{n, plural, one {project} other {projects}} listed",
+    "statFrom": "lowest price",
+    "statDistricts": "Alanya {n, plural, one {district} other {districts}}",
+    "statYears": "completion years",
+    "whenLabel": "Completion",
+    "whenAll": "All",
+    "cit": "Citizenship eligible",
+    "district": "District",
+    "districtAll": "All districts",
+    "budget": "Budget",
+    "budgetAll": "Any",
+    "budgetTo": "up to €{sum}",
+    "sort": "Sort",
+    "sorts": {
+      "new": "Newest listings",
+      "cheap": "Price: low to high",
+      "expensive": "Price: high to low",
+      "soon": "Earliest completion"
+    },
+    "found": "{n, plural, one {# project found} other {# projects found}}",
+    "empty": "No projects match these filters",
+    "emptyHint": "Change the filters or leave a request at the bottom of the page — we will find a project for you.",
+    "reset": "Reset filters",
+    "units": "Individual apartments in new builds →",
+    "pagination": "Pages",
+    "handover": "Completion {year}",
+    "citizenship": "Citizenship",
+    "installment": "Installments",
+    "features": "{n, plural, one {# amenity} other {# amenities}} on site",
+    "coverAlt": "{title}, {district} — new build in Alanya",
+    "faqEyebrow": "FAQ",
+    "faqTitle": "How to buy a new build in Alanya",
+    "faqHint": "Didn’t find an answer?",
+    "faqAsk": "Ask a manager",
+    "faq": [
+      {
+        "q": "How does payment for a new build work?",
+        "a": "Usually: you reserve the apartment, sign a contract with the developer at a notary, pay a 30–50% deposit and the rest on a schedule until completion. Each project has its own schedule, set out in the contract."
+      },
+      {
+        "q": "Are installments available?",
+        "a": "Many developers offer interest-free installments until completion, some for 12–36 months after it. Terms vary by project; a manager will confirm the current ones."
+      },
+      {
+        "q": "When do I get the TAPU (title deed)?",
+        "a": "If the project already has kat irtifakı, you can get a title deed during construction. The final deed (kat mülkiyeti) is issued after the occupancy permit (iskân). Until then, your rights are protected by the notarised contract with the developer."
+      },
+      {
+        "q": "How much do your services cost?",
+        "a": "Nothing for buyers of a new build from a developer: the developer pays our commission, and the price is the same as in their sales office."
+      },
+      {
+        "q": "Can a new build qualify for citizenship or a residence permit?",
+        "a": "Citizenship requires property worth $400,000 or more; a residence permit in Alanya requires $200,000 or more. Projects marked “Citizenship” are sold by the developer under this programme; a lawyer checks the documents before the deal."
+      },
+      {
+        "q": "What if the developer delays completion?",
+        "a": "Before you buy, we check the building permit, encumbrances on the plot and the developer’s past projects. The completion date and a penalty for delay are fixed in the contract."
+      }
+    ],
+    "seoTitle": "New builds in Alanya from developers",
+    "seo1": "This section lists residential complexes in Alanya and Gazipaşa: projects under construction and buildings completed in recent years. Each project shows layouts from studios to penthouses, sizes, distance to the sea, on-site amenities and the completion date.",
+    "seo2": "Buying off-plan is usually cheaper than buying a finished home, and developer installments spread payments until completion. We check the developer and the documents, show properties online and support the deal until you receive the TAPU.",
+    "seoByDistrict": "New builds by district"
   }
 }

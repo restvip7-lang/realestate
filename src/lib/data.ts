@@ -134,6 +134,49 @@ export async function mapProperties(locale: Locale, q: CatalogQuery, districts?:
   return docs as Property[]
 }
 
+// Новостройки (/projects): проекты застройщиков из Stay — объекты с type 'project'. Связи «комплекс → квартиры» в Stay нет,
+// поэтому проект и есть карточка комплекса (docs/projects.md).
+export type ProjectQuery = {
+  district?: string
+  /** год сдачи (поле year). Сдан ли дом, Stay не сообщает — поэтому только год, без «сдан / строится» */
+  when?: number
+  max?: number
+  citizenship?: boolean
+  sort?: 'new' | 'cheap' | 'expensive' | 'soon'
+  page?: number
+}
+
+const projectBase: Where[] = [{ status: { equals: 'published' } }, { deal: { equals: 'sale' } }, { type: { equals: 'project' } }]
+
+export async function listProjects(locale: Locale, q: ProjectQuery, districts: District[]) {
+  const and = [...projectBase]
+  if (q.district) and.push({ district: { equals: districts.find((x) => x.slug === q.district)?.id ?? -1 } })
+  if (q.when) and.push({ year: { equals: q.when } })
+  if (q.max) and.push({ price: { less_than_equal: q.max } })
+  if (q.citizenship) and.push({ citizenship: { equals: true } })
+  // при сортировке по цене проекты без цены («по запросу») не показываем, как в каталоге
+  if (q.sort === 'cheap' || q.sort === 'expensive') and.push({ price: { greater_than: 0 } })
+  const sort = { new: '-id', cheap: 'price', expensive: '-price', soon: 'year' }[q.sort || 'new']
+  return (await payloadClient()).find({ collection: 'properties', locale, where: { and }, sort, limit: 24, page: q.page ?? 1, depth: 1, ...pub })
+}
+
+export type ProjectStats = { total: number; minPrice: number; years: Record<number, number>; byDistrict: Record<number, number> }
+
+/** Цифры раздела новостроек: лёгкий запрос только цены, года и района (~170 строк, лимит трафика базы). */
+export async function projectStats(): Promise<ProjectStats> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties', where: { and: projectBase }, select: { price: true, year: true, district: true }, limit: 2000, depth: 0, pagination: false, ...pub,
+  })
+  const s: ProjectStats = { total: docs.length, minPrice: 0, years: {}, byDistrict: {} }
+  for (const p of docs) {
+    if (p.price && (!s.minPrice || p.price < s.minPrice)) s.minPrice = p.price
+    if (p.year) s.years[p.year] = (s.years[p.year] ?? 0) + 1
+    const d = typeof p.district === 'object' ? p.district?.id : p.district
+    if (d) s.byDistrict[d] = (s.byDistrict[d] ?? 0) + 1
+  }
+  return s
+}
+
 export async function getProperty(id: number, locale: Locale): Promise<Property | null> {
   const { docs } = await (await payloadClient()).find({
     collection: 'properties',
@@ -151,6 +194,7 @@ export async function similarProperties(p: Property, locale: Locale, limit = 3):
   const price = p.price ?? 0
   // кандидаты: та же сделка, цена ±40% — сначала в том же районе, потом по всей Аланье (не грузим все объекты)
   const base: Where[] = [{ status: { equals: 'published' } }, { deal: { equals: p.deal } }, { id: { not_equals: p.id } }]
+  if (p.type === 'project') base.push({ type: { equals: 'project' } }) // к новостройке — другие новостройки
   if (price) base.push({ price: { greater_than_equal: price * 0.6 } }, { price: { less_than_equal: price * 1.4 } })
   const find = async (extra: Where[]) =>
     (await (await payloadClient()).find({ collection: 'properties', locale, where: { and: [...base, ...extra] }, sort: '-id', limit: 12, depth: 1, ...pub })).docs

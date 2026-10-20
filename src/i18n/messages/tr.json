@@ -22,7 +22,8 @@
     "openMenu": "Menüyü aç",
     "closeMenu": "Menüyü kapat",
     "menu": "Menü",
-    "quick": "Hızlı işlemler"
+    "quick": "Hızlı işlemler",
+    "projects": "Yeni projeler"
   },
   "footer": {
     "tagline": "Alanya'da emlak · Alanya Gayrimenkul",
@@ -484,7 +485,11 @@
     },
     "share": "Paylaş",
     "copied": "Bağlantı kopyalandı",
-    "pdf": "PDF indir"
+    "pdf": "PDF indir",
+    "handoverLabel": "Teslim",
+    "allProjects": "Alanya’daki tüm yeni projeler",
+    "districtProjects": "{where} yeni projeler",
+    "layoutsTitle": "Daire tipleri"
   },
   "costs": {
     "rows": {
@@ -879,5 +884,78 @@
     "previewTip": "Aşağıdaki “AI ile emlak bul” düğmesine basın. Deneyin: satın alma → 150000 EUR → 2+1.",
     "from": "başlangıç",
     "demoPrivacy": "Demo tarayıcınızda çalışır. Mesajlar ve iletişim bilgileri hiçbir yere gönderilmez."
+  },
+  "projects": {
+    "crumbs": "Yeni projeler",
+    "eyebrow": "Müteahhit projeleri",
+    "title": "Alanya’da yeni projeler",
+    "titleIn": "{where} yeni projeler",
+    "metaTitle": "Alanya’da yeni projeler: {n} müteahhit projesi",
+    "metaDesc": "Alanya’da müteahhitten konut projeleri: daire tipleri, metrekareler, teslim tarihleri ve {price} €’dan başlayan fiyatlar. Seçim ve satış desteği.",
+    "lead": "İnşaatı süren ve yakın zamanda teslim edilen konut projeleri: daire tipleri, metrekareler, teslim tarihleri ve müteahhit fiyatları. Müteahhitten yeni konut alan müşteri için hizmetimiz ücretsizdir.",
+    "statProjects": "katalogdaki proje",
+    "statFrom": "en düşük fiyat",
+    "statDistricts": "Alanya bölgesi",
+    "statYears": "teslim yılları",
+    "whenLabel": "Teslim",
+    "whenAll": "Tümü",
+    "cit": "Vatandaşlığa uygun",
+    "district": "Bölge",
+    "districtAll": "Tüm bölgeler",
+    "budget": "Bütçe",
+    "budgetAll": "Farketmez",
+    "budgetTo": "{sum} €’ya kadar",
+    "sort": "Sıralama",
+    "sorts": {
+      "new": "Yeni eklenenler",
+      "cheap": "Önce ucuz",
+      "expensive": "Önce pahalı",
+      "soon": "Önce teslim"
+    },
+    "found": "{n} proje bulundu",
+    "empty": "Bu filtrelere uygun proje yok",
+    "emptyHint": "Filtreleri değiştirin veya sayfanın altından talep bırakın — size uygun projeyi bulalım.",
+    "reset": "Filtreleri sıfırla",
+    "units": "Yeni projelerdeki daireler →",
+    "pagination": "Sayfalar",
+    "handover": "Teslim {year}",
+    "citizenship": "Vatandaşlık",
+    "installment": "Taksit",
+    "features": "Sitede {n} olanak",
+    "coverAlt": "{title}, {district} — Alanya’da yeni proje",
+    "faqEyebrow": "Sorular",
+    "faqTitle": "Alanya’da yeni konut nasıl alınır",
+    "faqHint": "Cevabı bulamadınız mı?",
+    "faqAsk": "Danışmana sorun",
+    "faq": [
+      {
+        "q": "Yeni konutun ödemesi nasıl yapılır?",
+        "a": "Genellikle: daire rezerve edilir, noterde müteahhitle sözleşme imzalanır, %30–50 peşinat ödenir ve kalanı teslime kadar plana göre ödenir. Her projenin ödeme planı farklıdır ve sözleşmede yazılıdır."
+      },
+      {
+        "q": "Taksit imkânı var mı?",
+        "a": "Birçok müteahhit teslime kadar faizsiz taksit, bazıları teslimden sonra 12–36 ay taksit sunar. Koşullar projeye göre değişir; güncel bilgiyi danışmanımız verir."
+      },
+      {
+        "q": "Tapuyu ne zaman alırım?",
+        "a": "Projede kat irtifakı kurulmuşsa tapu inşaat sırasında alınabilir. Kat mülkiyeti tapusu iskân alındıktan sonra verilir. O zamana kadar alıcının hakları noter onaylı satış sözleşmesiyle korunur."
+      },
+      {
+        "q": "Hizmetiniz ne kadar?",
+        "a": "Müteahhitten yeni konut alan müşteri için ücretsiz: komisyonu müteahhit öder, fiyat satış ofisindekiyle aynıdır."
+      },
+      {
+        "q": "Yeni konut vatandaşlık veya oturma izni için uygun mu?",
+        "a": "Vatandaşlık için en az 400.000 $, Alanya’da oturma izni için en az 200.000 $ değerinde mülk gerekir. “Vatandaşlık” işaretli projeler müteahhit tarafından bu programa uygun satılır; belgeleri işlemden önce avukat kontrol eder."
+      },
+      {
+        "q": "Müteahhit teslimi geciktirirse ne olur?",
+        "a": "Satın almadan önce yapı ruhsatını, arsadaki şerhleri ve müteahhidin önceki projelerini kontrol ederiz. Teslim tarihi ve gecikme cezası sözleşmeye yazılır."
+      }
+    ],
+    "seoTitle": "Alanya’da müteahhitten yeni projeler",
+    "seo1": "Bu bölümde Alanya ve Gazipaşa’daki konut projeleri yer alır: inşaatı süren projeler ve son yıllarda teslim edilen binalar. Her projede stüdyodan çatı katına daire tipleri, metrekareler, denize mesafe, site olanakları ve teslim tarihi gösterilir.",
+    "seo2": "İnşaat aşamasında almak genellikle hazır konuttan daha ucuzdur; müteahhit taksiti ödemeleri teslime kadar yaymayı sağlar. Müteahhidi ve belgeleri kontrol eder, mülkleri online gösterir ve tapuya kadar işlemi takip ederiz.",
+    "seoByDistrict": "Bölgelere göre yeni projeler"
   }
 }

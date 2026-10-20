@@ -1,4 +1,4 @@
-import type { CatalogQuery } from './data'
+import type { CatalogQuery, ProjectQuery } from './data'
 
 export type SearchParams = Record<string, string | string[] | undefined>
 
@@ -60,3 +60,29 @@ export function catalogQueryString(q: CatalogQuery, patch: Partial<CatalogQuery>
 
 export const hasFilters = (q: CatalogQuery) =>
   !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship || q.floor || q.owner || q.video || q.pets)
+
+/** Параметры адреса раздела новостроек (/projects). */
+export function parseProjects(sp: SearchParams): ProjectQuery {
+  const year = int(sp.when)
+  return {
+    district: one(sp.district) || undefined,
+    when: year && year >= 2000 && year < 2100 ? year : undefined,
+    max: int(sp.max),
+    citizenship: one(sp.cit) === '1',
+    sort: (['new', 'cheap', 'expensive', 'soon'] as const).find((s) => s === one(sp.sort)),
+    page: int(sp.page),
+  }
+}
+
+export function projectsQueryString(q: ProjectQuery, patch: Partial<ProjectQuery> = {}): string {
+  const x = { ...q, ...patch }
+  const p = new URLSearchParams()
+  if (x.district) p.set('district', x.district)
+  if (x.when) p.set('when', String(x.when))
+  if (x.max) p.set('max', String(x.max))
+  if (x.citizenship) p.set('cit', '1')
+  if (x.sort && x.sort !== 'new') p.set('sort', x.sort)
+  if (x.page && x.page > 1) p.set('page', String(x.page))
+  const s = p.toString()
+  return s ? `?${s}` : ''
+}

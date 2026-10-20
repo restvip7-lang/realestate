@@ -92,7 +92,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="wrap">
           <div className="chips" role="group" aria-label={t('chipsLabel')}>
             <Link className="chip" href="/sale?sea=300">{t('chipSea')}</Link>
-            <Link className="chip" href="/sale?new=1">{t('chipNew')}</Link>
+            <Link className="chip" href="/projects">{t('chipNew')}</Link>
             <Link className="chip" href="/sale?furn=1">{t('chipFurn')}</Link>
             <Link className="chip" href="/sale?max=150000">{t('chipBudget')} <Price eur={150000} /></Link>
             <Link className="chip" href="/sale?view=sea">{t('chipView')}</Link>
