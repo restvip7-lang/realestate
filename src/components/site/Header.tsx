@@ -12,6 +12,7 @@ import { MobileMenu } from './MobileMenu'
 
 const NAV = [
   ['sale', '/sale'],
+  ['projects', '/projects'],
   ['districts', '/districts'],
   ['services', '/services'],
   ['about', '/team'],

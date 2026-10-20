@@ -277,7 +277,11 @@ export default async function DistrictPage({ params }: Props) {
           <div className="links">
             <Link href={`/sale?district=${d.slug}&type=apartment`}>{t('seoApartments', { where })}</Link>
             {sale.some((o) => o.type === 'villa') && <Link href={`/sale?district=${d.slug}&type=villa`}>{t('seoVillas', { where })}</Link>}
-            {sale.some((o) => o.condition !== 'resale') && <Link href={`/sale?district=${d.slug}&new=1`}>{t('seoNew', { where })}</Link>}
+            {sale.some((o) => o.type === 'project') ? (
+              <Link href={`/projects?district=${d.slug}`}>{t('seoNew', { where })}</Link>
+            ) : sale.some((o) => o.condition !== 'resale') ? (
+              <Link href={`/sale?district=${d.slug}&new=1`}>{t('seoNew', { where })}</Link>
+            ) : null}
             <Link href={`/rent?district=${d.slug}`}>{t('seoRent', { where })}</Link>
           </div>
         </div>

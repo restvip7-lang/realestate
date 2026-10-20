@@ -9,6 +9,7 @@ import { Price } from '@/components/site/Currency'
 import { FavButton } from '@/components/site/FavButton'
 import { Gallery } from '@/components/site/Gallery'
 import { PrintButton } from '@/components/site/PrintButton'
+import { handover } from '@/components/site/ProjectCard'
 import { PropertyCard } from '@/components/site/PropertyCard'
 import { ShareButton } from '@/components/site/ShareButton'
 import { ViewForm } from '@/components/site/ViewForm'
@@ -59,9 +60,11 @@ export default async function PropertyPage({ params }: Props) {
   const canonical = propertyPath(p)
   if (`/property/${slug}` !== canonical) permanentRedirect(getPathname({ href: canonical, locale }))
 
-  const [t, tc, company, team, similar] = await Promise.all([
+  const [t, tc, tcat, tp, company, team, similar] = await Promise.all([
     getTranslations('property'),
     getTranslations('card'),
+    getTranslations('catalog'),
+    getTranslations('projects'),
     getCompany(locale),
     listTeam(locale),
     similarProperties(p, locale),
@@ -86,6 +89,9 @@ export default async function PropertyPage({ params }: Props) {
   const rentInfo = rent && p.rent ? { deposit: p.rent.deposit ?? p.price ?? 0, advance: p.rent.advance ?? 1, utilities: !!p.rent.utilities } : undefined
   const para = (p.description || '').split(/\n\s*\n/).filter(Boolean)
   const view = { sea: t('views.sea'), mountain: t('views.mountain'), castle: t('views.castle'), city: t('views.city') }[p.view || 'city']
+  const project = p.type === 'project'
+  const when = project ? await handover(p.year) : null // «Сдача 2026»
+  const layouts = project && p.layouts ? p.layouts.split(',').map((x) => x.trim()).filter(Boolean) : []
   const furn = { yes: t('furn.yes'), no: t('furn.no'), partial: t('furn.partial') }[p.furnished || 'no']
 
   const ld = {
@@ -114,8 +120,9 @@ export default async function PropertyPage({ params }: Props) {
       <main className="wrap pg-property">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
         <nav className="crumbs" aria-label={t('crumbs')}>
-          <Link href="/">{t('home')}</Link>›<Link href={`/${p.deal}`}>{t(rent ? 'rent' : 'sale')}</Link>›
-          {d && <><Link href={`/${p.deal}?district=${d.slug}`}>{d.name}</Link>›</>}
+          <Link href="/">{t('home')}</Link>›
+          {project ? <Link href="/projects">{tp('crumbs')}</Link> : <Link href={`/${p.deal}`}>{t(rent ? 'rent' : 'sale')}</Link>}›
+          {d && <><Link href={project ? `/projects?district=${d.slug}` : `/${p.deal}?district=${d.slug}`}>{d.name}</Link>›</>}
           <span aria-current="page">ID {p.id}</span>
         </nav>
         <div className="p-head">
@@ -134,6 +141,8 @@ export default async function PropertyPage({ params }: Props) {
               <div><span>{t('area')}</span><b>{p.area ? `${p.areaTo ? `${p.area}–${p.areaTo}` : p.area} ${tc('sqm')}` : '—'}</b></div>
               {p.type === 'villa' ? (
                 p.floors ? <div><span>{t('floor')}</span><b>{tc('floors', { n: p.floors })}</b></div> : p.year ? <div><span>{t('year')}</span><b>{p.year}</b></div> : null
+              ) : when ? (
+                <div><span>{t('handoverLabel')}</span><b>{when}</b></div>
               ) : p.floor ? (
                 <div><span>{t('floor')}</span><b>{t('floorOf', { floor: p.floor, floors: p.floors ?? p.floor })}</b></div>
               ) : p.year ? (
@@ -149,7 +158,7 @@ export default async function PropertyPage({ params }: Props) {
                 <div><dt>{t('district')}</dt><dd>{d?.name}</dd></div>
                 {p.furnished ? <div><dt>{t('furniture')}</dt><dd>{furn}</dd></div> : null}
                 {p.view ? <div><dt>{t('view')}</dt><dd>{view}</dd></div> : null}
-                {p.year ? <div><dt>{t('year')}</dt><dd>{p.year}</dd></div> : null}
+                {when ? <div><dt>{t('handoverLabel')}</dt><dd>{when}</dd></div> : p.year ? <div><dt>{t('year')}</dt><dd>{p.year}</dd></div> : null}
                 {p.complex ? <div><dt>{t('complex')}</dt><dd>{p.complex}</dd></div> : null}
                 {rent && p.rent ? (
                   <>
@@ -170,6 +179,9 @@ export default async function PropertyPage({ params }: Props) {
                 )}
               </dl>
             </div>
+            {layouts.length > 1 && (
+              <div className="block"><h2>{t('layoutsTitle')}</h2><div className="feats">{layouts.map((x) => <span key={x}>{x}</span>)}</div></div>
+            )}
             {para.length > 0 && (
               <div className="block desc"><h2>{t('description')}</h2>{para.map((x, i) => <p key={i}>{x}</p>)}</div>
             )}
@@ -185,6 +197,7 @@ export default async function PropertyPage({ params }: Props) {
               </div>
               <p className="hint" style={{ marginTop: 8 }}>{t('addressNote')}</p>
               {d && <p style={{ marginTop: 10 }}><Link href={`/districts/${d.slug}`} className="link">{t('aboutDistrict', { name: d.name })}</Link></p>}
+              {project && d && <p style={{ marginTop: 6 }}><Link href={`/projects?district=${d.slug}`} className="link">{t('districtProjects', { where: tcat('inDistrict', { where: d.nameIn || d.name }) })}</Link></p>}
             </div>
             {!closed && !!p.price && (
               <div className="block" id="costs">
@@ -244,7 +257,7 @@ export default async function PropertyPage({ params }: Props) {
           <div className="wrap">
             <div className="sec-head">
               <div><span className="eyebrow">{t('similarEyebrow')}</span><h2>{closed ? t('similarForSale') : t('similarIn', { name: d?.name ?? '' })}</h2></div>
-              <Link href={`/${p.deal}${d ? `?district=${d.slug}` : ''}`} className="link">{t('toCatalog')}</Link>
+              {project ? <Link href="/projects" className="link">{t('allProjects')}</Link> : <Link href={`/${p.deal}${d ? `?district=${d.slug}` : ''}`} className="link">{t('toCatalog')}</Link>}
             </div>
             <div className="grid3">{similar.map((s) => <PropertyCard key={s.id} p={s} />)}</div>
           </div>
