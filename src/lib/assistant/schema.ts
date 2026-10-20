@@ -35,10 +35,16 @@ export type Card = { id: number; title: string; url: string; image: string | nul
 export type ChatReply = Decision & { cards: Card[]; total: number | null; notice: 'currency' | 'location' | 'budget' | null; demo: boolean }
 export const emptyFilters: Filters = { deal: null, city: null, district: null, type: null, rooms: null, minBudget: null, maxBudget: null, currency: null, sea: null, furnished: null, purpose: null, timing: null }
 
+// Catalogue covers Alanya and Gazipaşa (a separate town, stored as our district `gazipasa`).
+const CITIES: Record<string, string | null> = { alanya: null, alania: null, 'алания': null, 'аланья': null, gazipasa: 'gazipasa', 'газипаша': 'gazipasa' }
+const cityKey = (city: string) => city.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim()
+/** District slug implied by the city (Gazipaşa), or null for Alanya / no city. */
+export const cityDistrict = (city: string | null) => (city ? (CITIES[cityKey(city)] ?? null) : null)
+
 // Independent of the provider: never silently discard a location or convert an unknown currency.
 export function searchBounds(f: Filters, rates: Record<string, number>) {
   if (!f.deal || (f.minBudget != null && f.maxBudget != null && f.minBudget > f.maxBudget)) return { error: 'budget' as const }
-  if (f.city && !['alanya', 'алания', 'аланья', 'alania'].includes(f.city.toLowerCase().trim())) return { error: 'location' as const }
+  if (f.city && !(cityKey(f.city) in CITIES)) return { error: 'location' as const }
   const hasBudget = f.minBudget != null || f.maxBudget != null
   const rate = f.currency ? rates[f.currency] : undefined
   if (hasBudget && (!rate || !Number.isFinite(rate) || rate <= 0)) return { error: 'currency' as const }

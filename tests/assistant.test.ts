@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { randomBytes } from 'node:crypto'
 import { encryptCredential, decryptCredential } from '../src/lib/assistant/credentials'
-import { emptyFilters, requestSchema, searchBounds, type ChatRequest, type Decision } from '../src/lib/assistant/schema'
+import { cityDistrict, emptyFilters, requestSchema, searchBounds, type ChatRequest, type Decision } from '../src/lib/assistant/schema'
 import { qualify } from '../src/lib/assistant/provider'
 import { readBody } from '../src/lib/assistant/http'
 import { isAdmin, ownByAgent } from '../src/access'
@@ -42,6 +42,11 @@ test('budget requires known currency, preserves min/max boundaries and does not 
   assert.deepEqual(searchBounds({ ...filters, currency: 'USD' }, { EUR: 1 }), { error: 'currency' })
   assert.deepEqual(searchBounds({ ...filters, currency: 'USD' }, { USD: 2 }), { min: 51, max: 99 })
   assert.deepEqual(searchBounds({ ...filters, city: 'Istanbul' }, { EUR: 1 }), { error: 'location' })
+  for (const city of ['Gazipaşa', 'GAZİPAŞA', 'Газипаша', 'gazipasa']) {
+    assert.deepEqual(searchBounds({ ...filters, city, currency: 'EUR' }, { EUR: 1 }), { min: 101, max: 199 })
+    assert.equal(cityDistrict(city), 'gazipasa')
+  }
+  assert.equal(cityDistrict('Аланья'), null)
   assert.deepEqual(searchBounds({ ...filters, minBudget: 200 }, { EUR: 1 }), { error: 'budget' })
 })
 
