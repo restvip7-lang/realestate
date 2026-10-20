@@ -1,6 +1,6 @@
 import type { CollectionConfig, Condition } from 'payload'
 
-import { adminOnly, isStaff, ownByAgent, staffOnly } from '@/access'
+import { adminOnly, agentMember, isEditor, isStaff, ownByAgent, staffOnly } from '@/access'
 import { slugField } from '@/fields/slug'
 import { FEATURES, PROPERTY_STATUS, PROPERTY_TYPES, PUBLIC_STATUSES, ROOMS } from '@/lib/catalog'
 import { revalidateAfterChange, revalidateAfterDelete } from '@/lib/revalidate'
@@ -22,7 +22,8 @@ export const Properties: CollectionConfig = {
   },
   defaultSort: '-id',
   access: {
-    read: ({ req }) => (isStaff({ req }) ? true : { status: { in: [...PUBLIC_STATUSES] } }),
+    // в админке агент видит только свои объекты (иначе в списке ~1250 чужих и из Stay); посетитель — опубликованные
+    read: (args) => (isEditor(args) ? true : isStaff(args) ? ownByAgent('agent')(args) : { status: { in: [...PUBLIC_STATUSES] } }),
     create: staffOnly,
     update: ownByAgent('agent'),
     delete: adminOnly,
@@ -302,7 +303,14 @@ export const Properties: CollectionConfig = {
       type: 'relationship',
       relationTo: 'team',
       label: 'Ведёт объект',
-      admin: { position: 'sidebar', description: 'Пусто — распределяется между экспертами автоматически.' },
+      admin: {
+        position: 'sidebar',
+        description: 'Пусто — распределяется между экспертами автоматически.',
+        // агенту поле не показываем: его объекты всегда закреплены за ним
+        condition: (_data, _sibling, { user }) => (user as { role?: string } | null)?.role !== 'agent',
+      },
+      // объект, созданный или изменённый агентом, закрепляется за ним: иначе, забыв выбрать себя, он потерял бы доступ к объекту
+      hooks: { beforeChange: [({ req, value }) => agentMember(req.user) ?? value] },
     },
     {
       name: 'labels',
