@@ -11,6 +11,21 @@ type Source = { result?: string; rates?: Record<string, number> }
 /** Курсы сильно отличаются от прошлых (больше чем в 2 раза) — скорее ошибка источника: не записываем. */
 const suspicious = (next: number, prev: number) => prev > 0 && (next > prev * 2 || next < prev / 2)
 
+type PriceRates = { USD?: number | null; GBP?: number | null; TRY?: number | null }
+
+/**
+ * Цены продажи, указанные не в евро, — заново в евро по курсам (как хук beforeChange в Properties при сохранении).
+ * Один запрос: пересчитываются все валюты сразу или ни одна. У объекта валюты только EUR/USD/GBP/TRY.
+ */
+export async function recalcPrices(payload: Payload, rates: PriceRates) {
+  const { USD, GBP, TRY } = rates
+  if (![USD, GBP, TRY].every((v) => Number(v) > 0)) return
+  await payload.db.drizzle.execute(
+    sql`UPDATE properties SET price = round(price_original / CASE currency::text WHEN 'USD' THEN ${USD}::numeric WHEN 'GBP' THEN ${GBP}::numeric WHEN 'TRY' THEN ${TRY}::numeric END)
+        WHERE currency::text IN ('USD', 'GBP', 'TRY') AND deal <> 'rent' AND price_original IS NOT NULL`,
+  )
+}
+
 export async function runRatesSync(payload: Payload, fetcher: typeof fetch = fetch) {
   const res = await fetcher(SOURCE, { cache: 'no-store', signal: AbortSignal.timeout(15000) }).catch(() => {
     throw new Error('источник курсов (open.er-api.com) недоступен')
@@ -28,13 +43,7 @@ export async function runRatesSync(payload: Payload, fetcher: typeof fetch = fet
     next[code] = value >= 10 ? Math.round(value * 100) / 100 : Math.round(value * 10000) / 10000
   }
 
-  // цены продажи, указанные не в евро, — заново в евро (как хук beforeChange в Properties при сохранении).
-  // Один запрос: пересчитываются все валюты сразу или ни одна. У объекта валюты только EUR/USD/GBP/TRY.
-  await payload.db.drizzle.execute(
-    sql`UPDATE properties SET price = round(price_original / CASE currency::text WHEN 'USD' THEN ${next.USD}::numeric WHEN 'GBP' THEN ${next.GBP}::numeric WHEN 'TRY' THEN ${next.TRY}::numeric END)
-        WHERE currency::text IN ('USD', 'GBP', 'TRY') AND deal <> 'rent' AND price_original IS NOT NULL`,
-  )
-  // после записи курсов хук глобала сбрасывает кэш сайта — пересчитанные цены тоже попадут на страницы
+  // хуки глобала (src/globals/Rates.ts) пересчитают цены объектов и сбросят кэш сайта
   await payload.updateGlobal({ slug: 'rates', overrideAccess: true, data: { ...next, checkedAt: new Date().toISOString() } as never })
   return `Курсы за 1 €: ${CODES.map((c) => `${c} ${next[c]}`).join(', ')}`
 }
