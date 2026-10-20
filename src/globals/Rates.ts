@@ -10,7 +10,10 @@ const rate = (name: string, label: string) => ({ name, type: 'number' as const, 
 export const Rates: GlobalConfig = {
   slug: 'rates',
   label: 'Курсы валют',
-  admin: { group: 'Настройки', description: 'Сколько единиц валюты стоит 1 €.' },
+  admin: {
+    group: 'Настройки',
+    description: 'Сколько единиц валюты стоит 1 €. Обновляются автоматически каждую ночь (open.er-api.com). Ручная правка действует до следующего обновления.',
+  },
   access: { read: anyone, update: editorsOnly },
   hooks: { afterChange: [revalidateGlobal] },
   fields: [
@@ -22,6 +25,7 @@ export const Rates: GlobalConfig = {
       type: 'row',
       fields: [rate('KZT', '₸ KZT'), rate('GBP', '£ GBP')],
     },
-    { name: 'checkedAt', type: 'date', label: 'Курсы обновлены' },
+    { name: 'checkedAt', type: 'date', label: 'Курсы обновлены', admin: { date: { pickerAppearance: 'dayAndTime' } } },
+    { name: 'refresh', type: 'ui', admin: { components: { Field: '@/components/admin/RatesButton#RatesButton' } } },
   ],
 }

@@ -3,10 +3,12 @@ import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 
 import { runContentSync } from '@/lib/content-sync'
+import { runRatesSync } from '@/lib/rates-sync'
 
 // Синхронизация новостей, отзывов и услуг из Stay Property (docs/content-import.md).
 // POST — кнопка в админке (только администратор). GET — ежедневный запуск Vercel Cron (vercel.json),
 // заголовок Authorization: Bearer <CRON_SECRET>. Ключи не нужны: сервис отдаёт контент без авторизации.
+// Ночной запуск заодно обновляет курсы валют (src/lib/rates-sync.ts).
 export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +30,12 @@ export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET
   if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) return fail('Нет доступа', 401)
   const payload = await getPayload({ config })
+  // заодно курсы валют за 1 € (src/lib/rates-sync.ts); ошибка курсов не мешает синхронизации контента
+  try {
+    payload.logger.info({ msg: `Курсы cron: ${await runRatesSync(payload)}` })
+  } catch (err) {
+    payload.logger.warn({ msg: `Курсы cron: не обновлены — ${err instanceof Error ? err.message : err}` })
+  }
   try {
     const res = await runContentSync(payload)
     payload.logger.info({ msg: `Stay Property cron: ${res.message}` })
