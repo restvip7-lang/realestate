@@ -17,7 +17,9 @@ export function RatesButton() {
       const json = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(json.error || `Ошибка ${res.status}`)
       setError(false)
-      setMsg(`${json.message}. Обновите страницу, чтобы увидеть новые значения.`)
+      setMsg(`${json.message}. Обновляю страницу…`)
+      // форма показывает прежние курсы: перезагрузить, иначе «Сохранить» вернёт старые значения
+      setTimeout(() => window.location.reload(), 1500)
     } catch (e) {
       setError(true)
       setMsg(e instanceof Error ? e.message : String(e))
