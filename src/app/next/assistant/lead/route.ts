@@ -18,6 +18,9 @@ export async function POST(request: Request) {
   if (input.website) return json({ ok: true })
   try {
     const payload = await payloadClient()
+    // заявки через помощника принимаем, только пока он включён (как и чат)
+    const settings = await payload.findGlobal({ slug: 'assistant-settings', overrideAccess: true })
+    if (!settings.enabled) return json({ error: 'unavailable' }, 503)
     if (!await visitorLimit(payload, request, 'lead')) return json({ error: 'rate' }, 429)
     const { docs } = input.ids.length ? await findPublished(input.locale, { id: { in: input.ids } }, { limit: 4 }) : { docs: [] }
     // Assignment uses the first selected, still-published property. Without a property: first available expert.

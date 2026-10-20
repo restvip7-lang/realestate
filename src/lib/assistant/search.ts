@@ -3,13 +3,15 @@ import type { Locale } from '@/i18n/locales'
 import type { District } from '@/payload-types'
 import { findPublished, getRates, propertyCover, districtOf } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
-import { searchBounds, type Filters, type Card } from './schema'
+import { cityDistrict, searchBounds, type Filters, type Card } from './schema'
 
 export async function searchProperties(locale: Locale, f: Filters, districts: District[]) {
   const bounds = searchBounds(f, await getRates())
   if ('error' in bounds) return { cards: [], total: null, notice: bounds.error }
-  const district = f.district ? districts.find((d) => d.slug === f.district) : null
-  if (f.district && !district) return { cards: [], total: null, notice: 'location' as const }
+  // Gazipaşa is a town for the visitor but a district in our catalogue
+  const slug = cityDistrict(f.city) ?? f.district
+  const district = slug ? districts.find((d) => d.slug === slug) : null
+  if (slug && !district) return { cards: [], total: null, notice: 'location' as const }
   const and: Where[] = [{ deal: { equals: f.deal } }]
   if (district) and.push({ district: { equals: district.id } })
   if (f.type) and.push({ type: { equals: f.type } })
