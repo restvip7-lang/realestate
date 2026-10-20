@@ -1292,7 +1292,7 @@ export interface Company {
   createdAt?: string | null;
 }
 /**
- * Сколько единиц валюты стоит 1 €.
+ * Сколько единиц валюты стоит 1 €. Обновляются автоматически каждую ночь (open.er-api.com). Ручная правка действует до следующего обновления.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "rates".
