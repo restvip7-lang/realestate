@@ -98,6 +98,7 @@ export const Leads: CollectionConfig = {
       ],
     },
     { name: 'message', type: 'textarea', label: 'Сообщение' },
+    { name: 'assistantTranscript', type: 'textarea', label: 'Диалог с ИИ (передан посетителем)', admin: { readOnly: true }, access: { update: () => false } },
     { name: 'property', type: 'relationship', relationTo: 'properties', label: 'Объект' },
     { name: 'page', type: 'text', label: 'Страница' },
     {
