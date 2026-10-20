@@ -69,7 +69,7 @@
 ## Этап 5 — Маркетинг
 - [ ] [ ] GTM, GA4, Метрика, Meta Pixel, Consent Mode v2
 - [ ] [ ] UTM/gclid в лидах, фиды Google/Яндекс/Meta
-- [~] [claude] Импорт объектов из Stay Portfolio Service (docs/stay-import.md): готово, тест на 50 объектах; дальше — полный импорт по решению владельца
+- [x] [claude] Импорт объектов из Stay Portfolio Service (docs/stay-import.md): полный импорт на рабочем сайте 20.10.2026 — 1204 объекта; синхронизация раз в сутки
 - [x] [claude] Новости, отзывы и услуги из Stay Property (docs/content-import.md)
 - [ ] [ ] Конструктор лендингов /lp/*
 
