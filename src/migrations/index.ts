@@ -3,6 +3,7 @@ import * as migration_20260926_131842_company_photos from './20260926_131842_com
 import * as migration_20261007_141623_stay_import from './20261007_141623_stay_import';
 import * as migration_20261009_142042_content_import from './20261009_142042_content_import';
 import * as migration_20261009_144634_property_remote_cover from './20261009_144634_property_remote_cover';
+import * as migration_20261019_124840_assistant_settings from './20261019_124840_assistant_settings';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261009_144634_property_remote_cover.up,
     down: migration_20261009_144634_property_remote_cover.down,
-    name: '20261009_144634_property_remote_cover'
+    name: '20261009_144634_property_remote_cover',
+  },
+  {
+    up: migration_20261019_124840_assistant_settings.up,
+    down: migration_20261019_124840_assistant_settings.down,
+    name: '20261019_124840_assistant_settings'
   },
 ];

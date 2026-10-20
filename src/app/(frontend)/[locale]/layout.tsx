@@ -10,6 +10,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { CookieBanner } from '@/components/site/CookieBanner'
+import { AssistantLoader } from '@/components/site/AssistantLoader'
 import { CurrencyProvider } from '@/components/site/Currency'
 import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
@@ -63,6 +64,7 @@ export default async function Layout({ children, params }: { children: React.Rea
               <a href={`https://wa.me/${company.whatsapp}`} className="wa">WhatsApp</a>
             </nav>
             <CookieBanner />
+            <AssistantLoader whatsapp={company.whatsapp} />
           </CurrencyProvider>
         </NextIntlClientProvider>
       </body>

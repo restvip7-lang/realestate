@@ -11,6 +11,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "typecheck": "tsc --noEmit",
+    "test:assistant": "node --import tsx --test tests/assistant.test.ts",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -56,6 +57,7 @@
     "eslint": "9.39.1",
     "eslint-config-next": "16.3.3",
     "prettier": "3.6.2",
+    "tsx": "4.22.4",
     "typescript": "5.7.3"
   }
 }

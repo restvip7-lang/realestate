@@ -76,6 +76,7 @@ export interface Config {
     leads: Lead;
     media: Media;
     users: User;
+    'assistant-limits': AssistantLimit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -96,6 +97,7 @@ export interface Config {
     leads: LeadsSelect<false> | LeadsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'assistant-limits': AssistantLimitsSelect<false> | AssistantLimitsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -109,11 +111,13 @@ export interface Config {
     company: Company;
     rates: Rate;
     'team-page': TeamPage;
+    'assistant-settings': AssistantSetting;
   };
   globalsSelect: {
     company: CompanySelect<false> | CompanySelect<true>;
     rates: RatesSelect<false> | RatesSelect<true>;
     'team-page': TeamPageSelect<false> | TeamPageSelect<true>;
+    'assistant-settings': AssistantSettingsSelect<false> | AssistantSettingsSelect<true>;
   };
   locale: 'ru' | 'en' | 'tr';
   widgets: {
@@ -660,6 +664,7 @@ export interface Lead {
   form?: ('pick' | 'viewing' | 'question' | 'cheaper' | 'costs' | 'consult' | 'sell') | null;
   locale?: string | null;
   message?: string | null;
+  assistantTranscript?: string | null;
   property?: (number | null) | Property;
   page?: string | null;
   /**
@@ -711,6 +716,16 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-limits".
+ */
+export interface AssistantLimit {
+  id: number;
+  bucket: string;
+  hits: number;
+  expires: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -771,6 +786,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'assistant-limits';
+        value: number | AssistantLimit;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1086,6 +1105,7 @@ export interface LeadsSelect<T extends boolean = true> {
   form?: T;
   locale?: T;
   message?: T;
+  assistantTranscript?: T;
   property?: T;
   page?: T;
   utm?:
@@ -1185,6 +1205,15 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-limits_select".
+ */
+export interface AssistantLimitsSelect<T extends boolean = true> {
+  bucket?: T;
+  hits?: T;
+  expires?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1306,6 +1335,31 @@ export interface TeamPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-settings".
+ */
+export interface AssistantSetting {
+  id: number;
+  enabled?: boolean | null;
+  provider: 'openai' | 'anthropic';
+  /**
+   * API ID модели с Responses API и Structured Outputs. Для GPT-6 Astra используется reasoning low.
+   */
+  openaiModel: string;
+  /**
+   * API ID модели с поддержкой Structured Outputs.
+   */
+  anthropicModel: string;
+  /**
+   * Общий лимит для сайта, включая неудачные обращения. Это лимит запросов, не точный бюджет в деньгах.
+   */
+  dailyRequests: number;
+  openaiKey?: string | null;
+  anthropicKey?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "company_select".
  */
 export interface CompanySelect<T extends boolean = true> {
@@ -1372,6 +1426,22 @@ export interface TeamPageSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "assistant-settings_select".
+ */
+export interface AssistantSettingsSelect<T extends boolean = true> {
+  enabled?: T;
+  provider?: T;
+  openaiModel?: T;
+  anthropicModel?: T;
+  dailyRequests?: T;
+  openaiKey?: T;
+  anthropicKey?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -10,6 +10,7 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Districts } from './collections/Districts'
+import { AssistantLimits } from './collections/AssistantLimits'
 import { Leads } from './collections/Leads'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
@@ -19,6 +20,7 @@ import { Services } from './collections/Services'
 import { Team } from './collections/Team'
 import { Users } from './collections/Users'
 import { Company } from './globals/Company'
+import { AssistantSettings } from './globals/AssistantSettings'
 import { Rates } from './globals/Rates'
 import { TeamPage } from './globals/TeamPage'
 import { LOCALES, DEFAULT_LOCALE } from './i18n/locales'
@@ -46,8 +48,8 @@ export default buildConfig({
     defaultLocale: DEFAULT_LOCALE,
     fallback: true,
   },
-  collections: [Properties, Districts, Posts, Services, Team, Reviews, Leads, Media, Users],
-  globals: [Company, Rates, TeamPage],
+  collections: [Properties, Districts, Posts, Services, Team, Reviews, Leads, Media, Users, AssistantLimits],
+  globals: [Company, Rates, TeamPage, AssistantSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
