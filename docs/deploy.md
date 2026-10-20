@@ -19,6 +19,9 @@
 ## Что делает владелец (один раз)
 1. **Подключить GitHub.** Vercel → проект kleo-homes → Settings → Git → Connect Git Repository → GitHub → установить приложение Vercel для аккаунта `restvip7-lang` (достаточно доступа к репозиторию `realestate`) → выбрать `restvip7-lang/realestate`. Production Branch — `main`.
 2. **Создать базу.** Vercel → Storage → Create Database → **Neon** (Serverless Postgres) → регион Frankfurt (`eu-central-1`) → бесплатный план → Connect Project → kleo-homes, все окружения (Production, Preview, Development). Интеграция сама добавит `DATABASE_URL`.
+   - **Preview — отдельная копия базы** (владелец включил 20.10.2026): Storage → neon-almond-marble → Projects → kleo-homes → ⋯ → Update Project Connection → «Create Database Branch For Deployment»: **Preview** отмечен, Production — нет.
+     - Тестовые сборки веток получают свою ветку базы Neon с копией данных, их миграции рабочую базу не трогают. До этого `DATABASE_URL` был общим для Production и Preview.
+     - На бесплатном тарифе до 10 веток на проект. Если сборка упадёт из-за лимита веток — удалить старые в консоли Neon (Open in Neon → Branches).
 3. **Запустить деплой.** После слияния PR с этапом 2 Vercel соберёт `main` сам. До слияния: Deployments → Create Deployment → ветка `claude/modest-hamilton-62z9bd`.
 4. **Первый вход.** Открыть https://kleo-homes.vercel.app/admin → создать первого пользователя (он получает роль «Администратор»).
 5. **Демо-данные.** На главной странице админки нажать «Загрузить демо-данные» (1–3 минуты: скачивает ~40 фото с Unsplash в Blob). Сайт: https://kleo-homes.vercel.app/ru
