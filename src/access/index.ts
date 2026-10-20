@@ -23,6 +23,9 @@ const memberId = (user: unknown) => {
   return m && typeof m === 'object' ? m.id : m
 }
 
+/** Карточка в «Команде» пользователя с ролью «Агент» (для остальных ролей — null). */
+export const agentMember = (user: unknown): number | null => (role(user) === 'agent' ? (memberId(user) ?? null) : null)
+
 /** Редактор и админ — всё; агент — только документы, где поле `field` указывает на его карточку в «Команде». */
 export const ownByAgent =
   (field: string): Access =>
