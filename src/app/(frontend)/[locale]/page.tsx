@@ -31,7 +31,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
     getCompany(locale),
     listDistricts(locale),
     districtCounts('sale'),
-    listProperties(locale, { deal: 'sale', limit: 8 }),
+    listProperties(locale, { deal: 'sale', limit: 6 }), // 6 — ровные ряды и в 3, и в 2 колонки
     listTeam(locale),
     latestReviews(3),
     latestPosts(locale, 'article', 3),

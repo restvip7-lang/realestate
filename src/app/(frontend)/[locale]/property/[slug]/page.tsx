@@ -122,7 +122,7 @@ export default async function PropertyPage({ params }: Props) {
           <div>
             {status && <span className="badge rent" style={{ display: 'inline-block', marginBottom: 10 }}>{status}</span>}
             <h1>{p.title}</h1>
-            <div className="loc"><span>{d?.name}, {tc('alanya')}</span><span>{tc('toSea', { m: p.sea ?? 0 })}</span><span className="mono">ID {p.id}</span></div>
+            <div className="loc"><span>{d?.slug === 'gazipasa' ? d.name : `${d?.name}, ${tc('alanya')}`}</span>{p.sea != null && <span>{tc('toSea', { m: p.sea })}</span>}<span className="mono">ID {p.id}</span></div>
           </div>
           <div className="acts"><FavButton id={p.id} variant="page" /><ShareButton label={t('share')} done={t('copied')} title={p.title} /><PrintButton label={t('pdf')} className="btn btn-line btn-sm pdf" /></div>
         </div>

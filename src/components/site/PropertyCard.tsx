@@ -42,7 +42,8 @@ export async function PropertyCard({ p, priority = false }: { p: Property; prior
         </span>
       </div>
       <div className="bd">
-        <span className="loc">{PIN}{d?.name} · {t('alanya')}</span>
+        {/* Газипаша — отдельный город, а не район Аланьи */}
+        <span className="loc">{PIN}{d?.slug === 'gazipasa' ? d.name : <>{d?.name} · {t('alanya')}</>}</span>
         <h3><Link href={propertyPath(p)}>{p.title}</Link></h3>
         <div className="specs">
           {p.layouts ? <span>{p.layouts}</span> : p.rooms ? <span><abbr title={t(roomsHint(p.rooms).key, roomsHint(p.rooms).values)}>{p.rooms}</abbr></span> : null}
