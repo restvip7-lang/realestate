@@ -112,7 +112,7 @@ export default async function MemberPage({ params }: Props) {
         <section className="sec" style={{ background: 'var(--mist)' }}>
           <div className="wrap">
             <div className="sec-head"><div><span className="eyebrow">{t('areasEyebrow')}</span><h2>{t('areasTitle', { name: m.name.split(' ')[0] })}</h2></div><Link href="/districts" className="link">{t('allDistricts')}</Link></div>
-            <div className="dgrid nbr">{areas.map((d) => <DistrictCard key={d.slug} d={d} sale={stats[d.id]?.sale ?? 0} />)}</div>
+            <div className="dgrid nbr">{areas.map((d) => <DistrictCard key={d.slug} d={d} stat={stats[d.id]} />)}</div>
           </div>
         </section>
       )}

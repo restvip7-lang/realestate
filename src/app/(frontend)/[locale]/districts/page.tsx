@@ -9,6 +9,7 @@ import { NavSelect } from '@/components/site/NavSelect'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { type DistrictStat, districtStats, listDistricts } from '@/lib/data'
+import { districtPm } from '@/lib/district-prices'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District } from '@/payload-types'
 
@@ -39,21 +40,23 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
   const tc = await getTranslations('catalog')
   const tcard = await getTranslations('card')
   const [districts, stats] = await Promise.all([listDistricts(locale), districtStats()])
-  const st = (d: District): DistrictStat => stats[d.id] ?? { sale: 0, rent: 0, minSea: null }
+  const st = (d: District): DistrictStat => stats[d.id] ?? { sale: 0, rent: 0, minSea: null, pm: 0, pmN: 0, pmAll: 0, pmAllN: 0, rentFrom: 0 }
+  // цена за м² — медиана по квартирам каталога или запасное значение из админки (src/lib/district-prices.ts)
+  const pm = (d: District) => districtPm(d, stats[d.id])?.eur ?? 0
   const f = FILTERS.find((x) => x === sp.f) as F | undefined
   const sort: S = SORTS.find((x) => x === sp.sort) ?? 'geo'
 
-  const byPm = [...districts].sort((a, b) => (a.pricePerM2 ?? 0) - (b.pricePerM2 ?? 0))
-  const budgetMax = byPm[Math.min(4, byPm.length - 1)]?.pricePerM2 ?? 0
+  const byPm = [...districts].filter((d) => pm(d)).sort((a, b) => pm(a) - pm(b))
+  const budgetMax = byPm.length ? pm(byPm[Math.min(4, byPm.length - 1)]) : 0
   const sc = (d: District, k: 'life' | 'rent' | 'beach' | 'infra' | 'quiet') => d.scores?.[k] ?? 0
   const FN: Record<F, (d: District) => boolean> = {
     sea: (d) => !d.inland, inland: (d) => !!d.inland, life: (d) => sc(d, 'life') >= 4, rent: (d) => sc(d, 'rent') >= 4,
-    quiet: (d) => sc(d, 'quiet') >= 4, budget: (d) => (d.pricePerM2 ?? 0) <= budgetMax,
+    quiet: (d) => sc(d, 'quiet') >= 4, budget: (d) => !!pm(d) && pm(d) <= budgetMax,
   }
   const SN: Record<S, (a: District, b: District) => number> = {
     geo: (a, b) => (a.inland ? pos(a) - 0.5 : pos(a)) - (b.inland ? pos(b) - 0.5 : pos(b)),
-    cheap: (a, b) => (a.pricePerM2 ?? 0) - (b.pricePerM2 ?? 0),
-    exp: (a, b) => (b.pricePerM2 ?? 0) - (a.pricePerM2 ?? 0),
+    cheap: (a, b) => (pm(a) || 1e9) - (pm(b) || 1e9),
+    exp: (a, b) => pm(b) - pm(a),
     objs: (a, b) => st(b).sale - st(a).sale,
     center: (a, b) => km(a) - km(b),
   }
@@ -80,7 +83,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
   const faq = [
     [t('listFaq.lifeQ'), t('listFaq.lifeA', { names: names((d) => sc(d, 'life') >= 5) })],
     [t('listFaq.rentQ'), t('listFaq.rentA', { names: names((d) => sc(d, 'rent') >= 4) })],
-    [t('listFaq.cheapQ'), t('listFaq.cheapA', { names: byPm.slice(0, 4).map((d) => d.name).join(', ') })],
+    [t('listFaq.cheapQ'), t('listFaq.cheapA', { names: byPm.slice(0, 4).map((d) => d.name).join(', '), top: byPm.slice(-2).reverse().map((d) => d.name).join(', ') })],
     [t('listFaq.inlandQ'), t('listFaq.inlandA', { names: names((d) => !!d.inland) })],
     [t('listFaq.airportQ'), t('listFaq.airportA')],
   ]
@@ -124,7 +127,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
           </div>
           {f && <p className="hint" aria-live="polite" style={{ margin: '-8px 0 16px' }}>{t('found', { n: list.length })}</p>}
           <div className="dgrid">
-            {list.map((d) => <DistrictCard key={d.slug} d={d} sale={st(d).sale} />)}
+            {list.map((d) => <DistrictCard key={d.slug} d={d} stat={st(d)} />)}
           </div>
           <p className="hint" style={{ marginTop: 10 }}>{t('photoNote')}</p>
         </div>
@@ -148,7 +151,7 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
                     <td><Link href={`/districts/${d.slug}`}>{d.name}</Link>{d.inland && <span className="hint"> · {t('inlandShort')}</span>}</td>
                     <td className="num">{kmTxt(d)}</td>
                     <td className="num">{seaTxt(d)}</td>
-                    <td className="num"><Price eur={d.pricePerM2 || 0} suffix={tcard('perM2')} /></td>
+                    <td className="num">{pm(d) ? <Price eur={pm(d)} suffix={tcard('perM2')} /> : '—'}</td>
                     <td className="num"><Link href={`/sale?district=${d.slug}`}>{st(d).sale}</Link></td>
                     <td className="num"><Link href={`/rent?district=${d.slug}`}>{st(d).rent}</Link></td>
                     <td className="num">{dots(sc(d, 'life'))}</td>

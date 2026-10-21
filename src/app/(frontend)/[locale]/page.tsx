@@ -9,7 +9,8 @@ import { SearchForm } from '@/components/site/SearchForm'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
-import { coverOf, districtCounts, getCompany, latestPosts, latestReviews, listDistricts, listProperties, listTeam, mediaUrl } from '@/lib/data'
+import { coverOf, districtStats, getCompany, latestPosts, latestReviews, listDistricts, listProperties, listTeam, mediaUrl } from '@/lib/data'
+import { districtPm } from '@/lib/district-prices'
 import { fmtDate } from '@/lib/format'
 import { pageMeta } from '@/lib/seo'
 
@@ -27,10 +28,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   setRequestLocale(locale)
   const t = await getTranslations('home')
   const tc = await getTranslations('catalogCats')
-  const [company, districts, counts, props, team, reviews, articles, news] = await Promise.all([
+  const [company, districts, stats, props, team, reviews, articles, news] = await Promise.all([
     getCompany(locale),
     listDistricts(locale),
-    districtCounts('sale'),
+    districtStats(),
     listProperties(locale, { deal: 'sale', limit: 6 }), // 6 — ровные ряды и в 3, и в 2 колонки
     listTeam(locale),
     latestReviews(3),
@@ -38,7 +39,9 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
     latestPosts(locale, 'news', 4),
   ])
   const heroImg = mediaUrl(districts.find((d) => d.slug === HERO_IMG)?.image, 'large')
-  const minPm = Math.min(...districts.map((d) => d.pricePerM2 || Infinity))
+  // цены за м² — медиана по квартирам каталога (src/lib/district-prices.ts)
+  const pmOf = (d: (typeof districts)[number]) => districtPm(d, stats[d.id])?.eur ?? 0
+  const minPm = Math.min(...districts.map((d) => pmOf(d) || Infinity))
   const hasPm = Number.isFinite(minPm)
   const cat = (v: string) => (POST_CATEGORIES.some((c) => c.value === v) ? tc(v) : v)
   const trust = t.raw('trust') as { b: string; s: string }[]
@@ -75,7 +78,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           <Link className="hero-ph" href="/districts">
             {heroImg && <Image src={heroImg} alt={t('heroAlt')} width={1100} height={733} priority sizes="(max-width: 760px) 100vw, 50vw" />}
             <span className="tagline">
-              <span>{t('heroTag', { n: districts.length })} {hasPm && <b><Price eur={minPm} suffix={t('perM2')} /></b>}{company.isDemo && <> <span className="demo-tag">{t('demo')}</span></>}</span>
+              <span>{t('heroTag', { n: districts.length })} {hasPm && <b><Price eur={minPm} suffix={t('perM2')} /></b>}</span>
               <span className="more" style={{ color: 'var(--sea-light)' }}>{t('compare')}</span>
             </span>
           </Link>
@@ -141,8 +144,8 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
                   {img && <Image src={img} alt="" width={600} height={400} sizes="(max-width: 760px) 50vw, 400px" />}
                   <h3>{d!.name}</h3>
                   <div className="meta">
-                    <span><Price eur={d!.pricePerM2 || 0} suffix={t('perM2')} />{company.isDemo ? ` · ${t('demo')}` : ''}</span>
-                    <span>{t('onSale', { n: counts[d!.id] || 0 })}</span>
+                    <span>{pmOf(d!) ? <Price eur={pmOf(d!)} suffix={t('perM2')} /> : null}</span>
+                    <span>{t('onSale', { n: stats[d!.id]?.sale ?? 0 })}</span>
                   </div>
                   <Link href={`/districts/${d!.slug}`} className="dcard-link" aria-label={t('aboutDistrict', { name: d!.name })} />
                 </div>

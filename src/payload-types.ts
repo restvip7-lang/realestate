@@ -376,8 +376,15 @@ export interface District {
       }[]
     | null;
   image?: (number | null) | Media;
+  guide?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
-   * Ориентир для страницы района и калькулятора.
+   * Сайт считает цену за м² сам — медиана по квартирам каталога. Это значение показывается, только если в районе меньше 5 квартир с ценой.
    */
   pricePerM2?: number | null;
   pricePerM2Date?: string | null;
@@ -947,6 +954,13 @@ export interface DistrictsSelect<T extends boolean = true> {
         id?: T;
       };
   image?: T;
+  guide?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
   pricePerM2?: T;
   pricePerM2Date?: T;
   coastKm?: T;

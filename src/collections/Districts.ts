@@ -79,6 +79,24 @@ export const Districts: CollectionConfig = {
           ],
         },
         {
+          label: 'Гид',
+          description: 'Разделы гида на странице района: заголовок и текст. Абзацы — через пустую строку. Переводы — переключателем «Локаль» вверху.',
+          fields: [
+            {
+              name: 'guide',
+              type: 'array',
+              label: 'Разделы гида',
+              localized: true,
+              labels: { singular: 'Раздел', plural: 'Разделы' },
+              admin: { initCollapsed: true, components: { RowLabel: '@/components/admin/GuideRowLabel#GuideRowLabel' } },
+              fields: [
+                { name: 'title', type: 'text', label: 'Заголовок', required: true },
+                { name: 'text', type: 'textarea', label: 'Текст', required: true, admin: { rows: 8 } },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Цифры и оценки',
           fields: [
             {
@@ -87,8 +105,11 @@ export const Districts: CollectionConfig = {
                 {
                   name: 'pricePerM2',
                   type: 'number',
-                  label: 'Цена за м², €',
-                  admin: { description: 'Ориентир для страницы района и калькулятора.' },
+                  label: 'Цена за м², € (запасная)',
+                  admin: {
+                    description:
+                      'Сайт считает цену за м² сам — медиана по квартирам каталога. Это значение показывается, только если в районе меньше 5 квартир с ценой.',
+                  },
                 },
                 { name: 'pricePerM2Date', type: 'date', label: 'Цена проверена' },
                 {
