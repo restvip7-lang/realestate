@@ -1,8 +1,9 @@
 /* Новостройки (/projects). Все правила — внутри обёртки .pg-projects: Next не выгружает CSS страниц при переходах. */
 .pg-projects .dhero{padding:22px 0 44px}
 .pg-projects .dhero .lead-t{max-width:62ch}
-.pg-projects .pstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:28px;max-width:860px}
-.pg-projects .pstats>div{display:flex;flex-direction:column-reverse;gap:4px;border:1px solid var(--line-d);border-radius:var(--r);padding:14px 16px}
+/* плитки растут по содержимому: «2023–2027» крупным шрифтом не помещался в равные колонки */
+.pg-projects .pstats{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;max-width:960px}
+.pg-projects .pstats>div{flex:1 1 auto;min-width:160px;display:flex;flex-direction:column-reverse;gap:4px;border:1px solid var(--line-d);border-radius:var(--r);padding:14px 16px}
 .pg-projects .pstats dd{font:700 clamp(18px,2vw,26px)/1.1 var(--f-display);color:#fff;white-space:nowrap}
 .pg-projects .pstats dt{font-size:13.5px;color:rgba(255,255,255,.7)}
 
@@ -24,7 +25,7 @@
 .pg-projects .seo h3{font-size:17px;margin-top:22px}
 
 @media (max-width:760px){
-  .pg-projects .pstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pg-projects .pstats>div{flex:1 1 calc(50% - 6px);min-width:0}
   .pg-projects .selects{width:100%}
   .pg-projects .selects label{width:100%;justify-content:space-between}
   .pg-projects .selects select{flex:1;max-width:none}
