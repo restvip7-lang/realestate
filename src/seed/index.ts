@@ -10,6 +10,7 @@ import { POST_CATEGORIES } from '@/lib/catalog'
 import { htmlToLexical } from '@/lib/lexical'
 import { slugify } from '@/lib/slug'
 
+import { applyDistrictGuides } from './district-guides'
 import { descriptionI18n, DISTRICTS_I18N, titleI18n } from './i18n'
 import data from './prototype-data.json'
 
@@ -142,6 +143,7 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
         })
       }
     }
+    await applyDistrictGuides(payload) // гиды и переводы en/tr (только пустые поля)
     return { next: after('districts'), message: `Районы: ${data.districts.length}` }
   }
 

@@ -6,6 +6,7 @@ import type { Locale } from '@/i18n/locales'
 import type { Company, District, Media, Post, Property, Rate, Review, Service, Team, TeamPage } from '@/payload-types'
 
 import { PUBLIC_STATUSES } from './catalog'
+import { FLAT_TYPES, pmOf, priceSample } from './district-prices'
 import { payloadClient } from './payload'
 
 // Все запросы — с правами анонимного посетителя (overrideAccess: false):
@@ -258,37 +259,18 @@ export function coverOf(p: { cover?: number | Media | null; remoteCover?: string
   return p?.remoteCover?.startsWith('https://') ? { src: p.remoteCover, remote: true } : null
 }
 
-/** Сколько опубликованных объектов в каждом районе (для карточек районов). */
-export async function districtCounts(deal: 'sale' | 'rent' = 'sale'): Promise<Record<number, number>> {
-  const { docs } = await (await payloadClient()).find({
-    collection: 'properties',
-    where: { and: [{ status: { equals: 'published' } }, { deal: { equals: deal } }] },
-    select: { district: true },
-    limit: 5000,
-    depth: 0,
-    pagination: false,
-    ...pub,
-  })
-  const out: Record<number, number> = {}
-  docs.forEach((p) => {
-    const id = typeof p.district === 'object' ? p.district?.id : p.district
-    if (id) out[id] = (out[id] || 0) + 1
-  })
-  return out
-}
-
 export async function getDistrict(slug: string, locale: Locale): Promise<District | null> {
   const { docs } = await (await payloadClient()).find({ collection: 'districts', locale, where: { slug: { equals: slug } }, limit: 1, depth: 1, ...pub })
   return docs[0] ?? null
 }
 
-export type PropertyStat = Pick<Property, 'id' | 'deal' | 'price' | 'area' | 'rooms' | 'sea' | 'type' | 'condition'>
+export type PropertyStat = Pick<Property, 'id' | 'deal' | 'price' | 'area' | 'rooms' | 'sea' | 'type' | 'condition' | 'priceFrom'>
 /** Цифры по объектам района (продажа и аренда) — только поля для статистики; карточки — через findPublished. */
 export async function districtProperties(districtId: number): Promise<PropertyStat[]> {
   const { docs } = await (await payloadClient()).find({
     collection: 'properties',
     where: { and: [{ status: { equals: 'published' } }, { district: { equals: districtId } }] },
-    select: { deal: true, price: true, area: true, rooms: true, sea: true, type: true, condition: true },
+    select: { deal: true, price: true, area: true, rooms: true, sea: true, type: true, condition: true, priceFrom: true },
     limit: 5000,
     depth: 0,
     pagination: false,
@@ -297,26 +279,45 @@ export async function districtProperties(districtId: number): Promise<PropertySt
   return docs as PropertyStat[]
 }
 
-export type DistrictStat = { sale: number; rent: number; minSea: number | null }
-/** Для каждого района: сколько объектов в продаже и аренде, ближайший к морю. */
+export type DistrictStat = {
+  sale: number
+  rent: number
+  minSea: number | null
+  /** медиана €/м² по квартирам района и по скольким объектам; pmAll — по всему жилью с виллами (src/lib/district-prices.ts) */
+  pm: number
+  pmN: number
+  pmAll: number
+  pmAllN: number
+  /** самая низкая месячная аренда; 0 — объектов в аренде с ценой нет */
+  rentFrom: number
+}
+/** Для каждого района: сколько объектов в продаже и аренде, ближайший к морю, цена за м², аренда от. Лёгкий запрос: только нужные поля. */
 export async function districtStats(): Promise<Record<number, DistrictStat>> {
   const { docs } = await (await payloadClient()).find({
     collection: 'properties',
     where: { status: { equals: 'published' } },
-    select: { district: true, deal: true, sea: true },
+    select: { district: true, deal: true, sea: true, price: true, area: true, type: true, priceFrom: true },
     limit: 5000,
     depth: 0,
     pagination: false,
     ...pub,
   })
   const out: Record<number, DistrictStat> = {}
+  const flats: Record<number, typeof docs> = {}
+  const housing: Record<number, typeof docs> = {}
   docs.forEach((p) => {
     const id = typeof p.district === 'object' ? p.district?.id : p.district
     if (!id) return
-    const s = (out[id] ??= { sale: 0, rent: 0, minSea: null })
+    const s = (out[id] ??= { sale: 0, rent: 0, minSea: null, pm: 0, pmN: 0, pmAll: 0, pmAllN: 0, rentFrom: 0 })
     s[p.deal === 'rent' ? 'rent' : 'sale']++
     if (p.sea != null) s.minSea = s.minSea == null ? p.sea : Math.min(s.minSea, p.sea)
+    if (p.deal === 'rent' && p.price) s.rentFrom = s.rentFrom ? Math.min(s.rentFrom, p.price) : p.price
+    if (!priceSample(p)) return
+    housing[id] = [...(housing[id] ?? []), p]
+    if (FLAT_TYPES.includes(p.type ?? '')) flats[id] = [...(flats[id] ?? []), p]
   })
+  for (const [id, list] of Object.entries(flats)) Object.assign(out[+id], { pm: pmOf(list), pmN: list.length })
+  for (const [id, list] of Object.entries(housing)) Object.assign(out[+id], { pmAll: pmOf(list), pmAllN: list.length })
   return out
 }
 

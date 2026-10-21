@@ -153,7 +153,7 @@
     "allDistricts": "All {n} districts",
     "onSale": "{n} for sale",
     "aboutDistrict": "{name}: more about the district",
-    "districtsNote": "Photos: views of Alanya (illustrations, not necessarily of this district). Prices per m² are demo.",
+    "districtsNote": "Photos: views of Alanya (illustrations, not necessarily of this district). Prices per m² are the median for apartments in our listings.",
     "teamEyebrow": "Team and service",
     "teamTitle": "Who will help you buy a home",
     "services": [
@@ -591,7 +591,7 @@
     "center": "centre",
     "toCenter": "to the centre",
     "onSale": "{n} for sale",
-    "photoNote": "Photos: views of Alanya (illustrations, not necessarily of this district). Prices per m² and ratings are demo.",
+    "photoNote": "Photos: views of Alanya (illustrations, not necessarily of this district). Prices per m² are the median for apartments in our listings; district ratings are our experts’ opinion.",
     "cmpEyebrow": "Comparison",
     "cmpTitle": "All districts in one table",
     "cmpNote": "Ratings from 1 to 5 are the opinion of Kleo Homes experts. Tap a name to open the district guide.",
@@ -622,7 +622,7 @@
       "rentQ": "Where is it best to buy to rent out?",
       "rentA": "Demand is steady by the sea and closer to the centre: {names}. We'll calculate the yield of a specific property including complex fees and management.",
       "cheapQ": "Where are prices most affordable?",
-      "cheapA": "The cheapest areas are on the outskirts: {names}. The most expensive are the centre and Tepe.",
+      "cheapA": "Apartments are cheapest on the outskirts: {names}. The most expensive: {top}.",
       "inlandQ": "What's different about hillside districts?",
       "inlandA": "{names} are not by the sea: the beach is 1.5–5 km away. But you get panoramic views, cooler summers and more space. Living there without a car is inconvenient.",
       "airportQ": "How far is the airport?",
@@ -656,11 +656,13 @@
       "ayt": "AYT airport",
       "aytName": "Antalya",
       "pm": "Price per m²",
-      "pmNote": "average",
+      "pmNote": "{n, plural, one {median of # apartment} other {median of # apartments}}",
+      "pmNoteAll": "{n, plural, one {median of # home, incl. villas} other {median of # homes, incl. villas}}",
       "inCatalog": "Listings",
-      "saleRent": "for sale / for rent"
+      "saleRent": "for sale / for rent",
+      "pmManual": "agency estimate"
     },
-    "fitEyebrow": "Who it suits",
+    "fitEyebrow": "Ratings and pros",
     "fitTitle": "{name}: pros and cons",
     "scoresTitle": "District rating",
     "scores": {
@@ -690,11 +692,11 @@
       "layout": "Layout",
       "count": "Listings",
       "from": "Price from",
-      "avg": "Average per m²"
+      "avg": "Median per m²"
     },
     "studio": "Studio 1+0",
-    "pricesNote": "Based on our listings. Rent for a 1+1 from {rent} per month.",
-    "noPrices": "There are no properties for sale in this district yet. The average price is about {pm} per m².",
+    "pricesNote": "Based on our listings: median, excluding “from” prices and obvious listing errors. Rent from {rent} per month.",
+    "noPrices": "There are only a few apartments for sale in this district in our listings. As a guide, about {pm} per m².",
     "mapZoomLabel": "Map of the Alanya coast: {name} and neighbouring districts",
     "mapScale": "Not to scale",
     "mapDistrict": "{name} district",
@@ -708,9 +710,9 @@
     "faq": {
       "priceQ": "How much does an apartment cost {where}?",
       "priceInCatalog": "Our catalogue currently has {n, plural, one {# property} other {# properties}} in the district, from {from}. ",
-      "priceA": "{inCatalog}The average price is about {pm} per m². The price depends on the distance to the sea, the view, the floor and the age of the complex. The table by layout is above on this page.",
+      "priceA": "{inCatalog}The median for apartments is about {pm} per m². The price depends on the distance to the sea, the view, the floor and the age of the complex. The table by layout is above on this page.",
       "rentQ": "How much does renting cost {where}?",
-      "rentA": "Long-term rent for a 1+1 apartment starts from {rent} per month. Landlords usually ask for a deposit of one month's rent and a contract of 6–12 months; utilities are paid separately.",
+      "rentA": "Long-term rent starts from {rent} per month in our listings. Landlords usually ask for a deposit of one month’s rent and a contract of 6–12 months; utilities are paid separately.",
       "vnzhQ": "Can I get a residence permit if I buy {where}?",
       "vnzhA": "The Turkish migration service periodically closes certain neighbourhoods to new residence permits, and the list changes. Before booking we check the status of the specific address on the date of the deal and tell you in advance.",
       "airportQ": "How do I get to the airport?",
@@ -718,15 +720,23 @@
       "rentabilityQ": "Is {name} good for renting out?",
       "rentabilityHigh": "Yes: rental demand {where} is steady, especially for 1+1 and 2+1 apartments near the sea. We'll calculate the yield of a specific property and explain rental management.",
       "rentabilityMid": "Yes, but mostly in season: demand is high in summer and lower in winter. For year-round renting people usually choose districts closer to the centre. We'll calculate the yield of a specific property.",
-      "rentabilityLow": "{name} is less suited to renting out than seaside districts and those closer to the centre: people buy here mainly to live. If income matters, we'll find an option in another district."
+      "rentabilityLow": "{name} is less suited to renting out than seaside districts and those closer to the centre: people buy here mainly to live. If income matters, we'll find an option in another district.",
+      "rentANone": "There are no rentals {where} in our listings right now. Leave a request and we will find options from owners or in nearby districts. Landlords usually ask for a deposit of one month’s rent and a contract of 6–12 months."
     },
     "seoTitle": "Property {where}: what to know",
-    "seo1": "{lead} The average price is about {pm} per m², long-term rent for a 1+1 from {rent} per month.",
+    "seo1": "{lead} The median for apartments is about {pm} per m², long-term rent from {rent} per month.",
     "seo2": "Before buying, check the TAPU and that there are no debts, the occupancy permit (iskan), the complex maintenance fees (aidat) and whether a residence permit is possible at the address. A Kleo Homes expert for {name} will show you properties in person or by video.",
     "seoApartments": "Apartments {where}",
     "seoVillas": "Villas {where}",
     "seoNew": "New builds {where}",
-    "seoRent": "Rentals {where}"
+    "seoRent": "Rentals {where}",
+    "pricesNoteNoRent": "Based on our listings: median, excluding “from” prices and obvious listing errors. There are no rentals in this district right now.",
+    "noPricesNone": "There are no apartments for sale in this district in our listings yet.",
+    "seo1NoRent": "{lead} The median for apartments is about {pm} per m².",
+    "villas": "Villas",
+    "guideEyebrow": "District guide",
+    "guideTitle": "Living {where}",
+    "guideNote": "The guide is based on our experts’ experience; check the details with a manager."
   },
   "cookies": {
     "label": "Cookie consent",

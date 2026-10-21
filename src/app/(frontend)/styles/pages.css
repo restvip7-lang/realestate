@@ -111,6 +111,14 @@
 .pg .faq details[open] summary::after{content:"–"}
 .pg .faq details p{padding:0 0 18px;color:#2B323C}
 
+/* гид по району: первый раздел («Кому подходит») во всю ширину, остальные в две колонки */
+.pg .dguide{padding-bottom:24px}
+.pg .dguide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 48px}
+.pg .dguide-grid>article:first-child{grid-column:1/-1;max-width:78ch}
+.pg .dguide h3{font-size:18px;margin-bottom:8px}
+.pg .dguide p{color:#2B323C;margin-bottom:10px;max-width:68ch}
+@media (max-width:760px){.pg .dguide-grid{grid-template-columns:1fr;gap:22px}}
+
 /* соседи */
 .pg .nbr .dcard{min-height:200px}
 

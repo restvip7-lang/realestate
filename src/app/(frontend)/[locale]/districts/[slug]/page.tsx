@@ -13,6 +13,7 @@ import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { aytKm, gzpKm } from '@/lib/coast'
 import { districtProperties, districtStats, findPublished, getDistrict, listDistricts, mediaUrl, type PropertyStat } from '@/lib/data'
+import { districtPm, FLAT_TYPES, median, priceSample } from '@/lib/district-prices'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District, Property } from '@/payload-types'
 
@@ -27,7 +28,6 @@ export function generateStaticParams() {
 const pos = (d: District) => d.coastKm ?? 0
 const km = (d: District) => Math.abs(pos(d))
 const minOf = (a: number[]) => (a.length ? Math.min(...a) : 0)
-const rentFromOf = (d: District, rent: PropertyStat[]) => minOf(rent.map((o) => o.price ?? 0)) || Math.round(((d.pricePerM2 ?? 0) * 0.38) / 10) * 10
 const ROOMS = ['1+0', '1+1', '2+1', '3+1', '4+1', '5+1']
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v))
 
@@ -60,12 +60,14 @@ export default async function DistrictPage({ params }: Props) {
     findPublished(locale, { and: [{ district: { equals: d.id } }, { deal: { not_equals: 'rent' } }] }),
     findPublished(locale, { and: [{ district: { equals: d.id } }, { deal: { equals: 'rent' } }] }),
   ])
-  // цены считаем только по объектам с ценой (у инвестиционных проектов Stay её нет)
+  // цены — по объектам каталога (src/lib/district-prices.ts): без цен «от», проектов и объявлений с ценой аренды в продаже
   const sale = objs.filter((o) => o.deal !== 'rent')
   const rent = objs.filter((o) => o.deal === 'rent')
-  const priced = sale.filter((o) => o.price)
+  const samples = sale.filter(priceSample)
+  const priced = sale.filter((o) => (o.price ?? 0) >= 20000)
   const where = tc('inDistrict', { where: d.nameIn || d.name })
-  const rentFrom = rentFromOf(d, rent.filter((o) => o.price))
+  const pm = districtPm(d, stats[d.id])
+  const rentFrom = stats[d.id]?.rentFrom ?? 0 // 0 — объектов в аренде нет, цену аренды не показываем
   // у объектов Stay расстояние до моря бывает не указано — такие не считаем (иначе «от 0 м»)
   const seas = objs.map((o) => o.sea).filter((s): s is number => typeof s === 'number' && s > 0)
   const seaTxt = d.inland ? (d.slug === 'tepe' ? t('seaTepe') : t('seaInland')) : seas.length ? t('seaFrom', { m: minOf(seas) }) : t('seaNear')
@@ -79,20 +81,22 @@ export default async function DistrictPage({ params }: Props) {
   const sc = d.scores || {}
   const SC = ['life', 'rent', 'beach', 'infra', 'quiet'] as const
 
-  // цены по планировкам (по объектам каталога)
-  const rows = ROOMS.map((r) => {
-    const list = priced.filter((o) => o.rooms === r)
-    if (!list.length) return null
-    const ppm = list.reduce((s, o) => s + (o.price ?? 0) / (o.area || 1), 0) / list.length
-    return { r, n: list.length, from: minOf(list.map((o) => o.price ?? 0)), ppm, q: r === '4+1' || r === '5+1' ? '4+' : r }
-  }).filter((v): v is NonNullable<typeof v> => !!v)
+  // цены по планировкам квартир и отдельно виллы: медиана €/м² (по объектам каталога)
+  const row = (list: PropertyStat[], r: string, q: string, label?: string) =>
+    list.length ? { r, q, label, n: list.length, from: minOf(list.map((o) => o.price ?? 0)), ppm: median(list.map((o) => (o.price ?? 0) / (o.area || 1))) } : null
+  const flats = samples.filter((o) => FLAT_TYPES.includes(o.type ?? ''))
+  const rows = [
+    ...ROOMS.map((r) => row(flats.filter((o) => o.rooms === r), r, `rooms=${encodeURIComponent(r === '4+1' || r === '5+1' ? '4+' : r)}`)),
+    row(samples.filter((o) => o.type === 'villa'), 'villa', 'type=villa', t('villas')),
+  ].filter((v): v is NonNullable<typeof v> => !!v)
 
   // текстовые цены для FAQ (в евро: FAQ попадает в JSON-LD, валюта посетителя там не нужна)
   const eur = (n: number) => `${Math.round(n).toLocaleString('ru-RU').replace(/[  ]/g, ' ')} €`
   const rentScore = sc.rent ?? 0
+  const pmTxt = pm ? eur(pm.eur) : '—'
   const faq: [string, string][] = [
-    [t('faq.priceQ', { where }), t('faq.priceA', { inCatalog: priced.length ? t('faq.priceInCatalog', { n: sale.length, from: eur(minOf(priced.map((o) => o.price ?? 0))) }) : '', pm: eur(d.pricePerM2 ?? 0) })],
-    [t('faq.rentQ', { where }), t('faq.rentA', { rent: eur(rentFrom) })],
+    [t('faq.priceQ', { where }), t('faq.priceA', { inCatalog: priced.length ? t('faq.priceInCatalog', { n: sale.length, from: eur(minOf(priced.map((o) => o.price ?? 0))) }) : '', pm: pmTxt })],
+    [t('faq.rentQ', { where }), rentFrom ? t('faq.rentA', { rent: eur(rentFrom) }) : t('faq.rentANone', { where, name: d.name })],
     [t('faq.vnzhQ', { where }), t('faq.vnzhA')],
     [t('faq.airportQ'), t('faq.airportA', { gzp: gzpKm(d), ayt: aytKm(d) })],
     [t('faq.rentabilityQ', { name: d.name }), rentScore >= 4 ? t('faq.rentabilityHigh', { where }) : rentScore === 3 ? t('faq.rentabilityMid') : t('faq.rentabilityLow', { name: d.name })],
@@ -161,10 +165,29 @@ export default async function DistrictPage({ params }: Props) {
           <div role="listitem"><span>{t('kf.toSea')}</span><b>{seaTxt}</b><small>{d.inland ? t('kf.serpentine') : t('kf.byCatalog')}</small></div>
           <div role="listitem"><span>{t('kf.gzp')}</span><b>≈ {t('km', { n: gzpKm(d) })}</b><small>{t('kf.gzpName')}</small></div>
           <div role="listitem"><span>{t('kf.ayt')}</span><b>≈ {t('km', { n: aytKm(d) })}</b><small>{t('kf.aytName')}</small></div>
-          <div role="listitem"><span>{t('kf.pm')}</span><b><Price eur={d.pricePerM2 || 0} suffix={tcard('perM2')} /></b><small>{t('kf.pmNote')}</small></div>
+          <div role="listitem"><span>{t('kf.pm')}</span><b>{pm ? <Price eur={pm.eur} suffix={tcard('perM2')} /> : '—'}</b><small>{pm ? (pm.kind === 'manual' ? t('kf.pmManual') : t(pm.kind === 'all' ? 'kf.pmNoteAll' : 'kf.pmNote', { n: pm.n })) : null}</small></div>
           <div role="listitem"><span>{t('kf.inCatalog')}</span><b>{sale.length} / {rent.length}</b><small>{t('kf.saleRent')}</small></div>
         </div>
       </div>
+
+      {!!d.guide?.length && (
+        <section className="sec dguide" aria-labelledby="guide-h">
+          <div className="wrap">
+            <div className="sec-head">
+              <div><span className="eyebrow">{t('guideEyebrow')}</span><h2 id="guide-h">{t('guideTitle', { where, name: d.name })}</h2></div>
+              <p>{t('guideNote')}</p>
+            </div>
+            <div className="dguide-grid">
+              {d.guide.map((g) => (
+                <article key={g.id ?? g.title}>
+                  <h3>{g.title}</h3>
+                  {g.text.split(/\n\s*\n/).filter(Boolean).map((x, i) => <p key={i}>{x}</p>)}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="sec">
         <div className="wrap">
@@ -225,7 +248,7 @@ export default async function DistrictPage({ params }: Props) {
                   <tbody>
                     {rows.map((r) => (
                       <tr key={r.r}>
-                        <td><Link href={`/sale?district=${d.slug}&rooms=${encodeURIComponent(r.q)}`}>{r.r === '1+0' ? t('studio') : r.r}</Link></td>
+                        <td><Link href={`/sale?district=${d.slug}&${r.q}`}>{r.label ?? (r.r === '1+0' ? t('studio') : r.r)}</Link></td>
                         <td className="num">{r.n}</td>
                         <td className="num"><Price eur={r.from} /></td>
                         <td className="num"><Price eur={r.ppm} suffix={tcard('perM2')} /></td>
@@ -234,9 +257,9 @@ export default async function DistrictPage({ params }: Props) {
                   </tbody>
                 </table>
               ) : (
-                <div className="empty"><span>{t('noPrices', { pm: eur(d.pricePerM2 ?? 0) })}</span></div>
+                <div className="empty"><span>{pm ? t('noPrices', { pm: pmTxt }) : t('noPricesNone')}</span></div>
               )}
-              <p className="hint" style={{ marginTop: 10 }}>{t('pricesNote', { rent: eur(rentFrom) })}</p>
+              <p className="hint" style={{ marginTop: 10 }}>{rentFrom ? t('pricesNote', { rent: eur(rentFrom) }) : t('pricesNoteNoRent')}</p>
             </div>
             <div className="map-box">
               <CoastMap districts={districts} locale={locale} current={d.slug} labels={nbrs.map((n) => n.slug)} viewBox={vb} zoom label={t('mapZoomLabel', { name: d.name })} />
@@ -252,7 +275,7 @@ export default async function DistrictPage({ params }: Props) {
             <div><span className="eyebrow">{t('nbrEyebrow')}</span><h2>{t('nbrTitle')}</h2></div>
             <Link href="/districts" className="link">{t('allDistricts', { n: districts.length })}</Link>
           </div>
-          <div className="dgrid nbr">{nbrs.map((n) => <DistrictCard key={n.slug} d={n} sale={stats[n.id]?.sale ?? 0} />)}</div>
+          <div className="dgrid nbr">{nbrs.map((n) => <DistrictCard key={n.slug} d={n} stat={stats[n.id]} />)}</div>
         </div>
       </section>
 
@@ -272,7 +295,7 @@ export default async function DistrictPage({ params }: Props) {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap seo">
           <h2>{t('seoTitle', { where })}</h2>
-          <p>{t('seo1', { lead: d.lead || '', pm: eur(d.pricePerM2 ?? 0), rent: eur(rentFrom) })}</p>
+          <p>{rentFrom ? t('seo1', { lead: d.lead || '', pm: pmTxt, rent: eur(rentFrom) }) : t('seo1NoRent', { lead: d.lead || '', pm: pmTxt })}</p>
           <p>{t('seo2', { name: d.name })}</p>
           <div className="links">
             <Link href={`/sale?district=${d.slug}&type=apartment`}>{t('seoApartments', { where })}</Link>
