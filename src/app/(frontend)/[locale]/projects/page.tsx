@@ -88,11 +88,11 @@ export default async function ProjectsPage({ params, searchParams }: Props) {
         <div className="wrap">
           <div className="pfilters">
             <div className="chips" role="group" aria-label={t('whenLabel')}>
-              <Link className="chip" href={href({ when: undefined })} aria-current={!q.when ? 'true' : undefined}>{t('whenAll')}</Link>
+              <Link className="chip" scroll={false} href={href({ when: undefined })} aria-current={!q.when ? 'true' : undefined}>{t('whenAll')}</Link>
               {years.map((y) => (
-                <Link key={y} className="chip" href={href({ when: y })} aria-current={q.when === y ? 'true' : undefined}>{y}</Link>
+                <Link key={y} className="chip" scroll={false} href={href({ when: y })} aria-current={q.when === y ? 'true' : undefined}>{y}</Link>
               ))}
-              <Link className="chip" href={href({ citizenship: !q.citizenship })} aria-current={q.citizenship ? 'true' : undefined}>{t('cit')}</Link>
+              <Link className="chip" scroll={false} href={href({ citizenship: !q.citizenship })} aria-current={q.citizenship ? 'true' : undefined}>{t('cit')}</Link>
             </div>
             <div className="selects">
               <NavSelect

@@ -143,9 +143,9 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
         <div className="wrap">
           <div className="dfilters">
             <div className="chips" role="group" aria-label={t('filterLabel')}>
-              <Link className="chip" href={href({ f: undefined })} aria-current={!f ? 'true' : undefined}>{t('filters.all', { n: districts.length })}</Link>
+              <Link className="chip" scroll={false} href={href({ f: undefined })} aria-current={!f ? 'true' : undefined}>{t('filters.all', { n: districts.length })}</Link>
               {FILTERS.map((x) => (
-                <Link key={x} className="chip" href={href({ f: x })} aria-current={f === x ? 'true' : undefined}>{t(`filters.${x}`)}</Link>
+                <Link key={x} className="chip" scroll={false} href={href({ f: x })} aria-current={f === x ? 'true' : undefined}>{t(`filters.${x}`)}</Link>
               ))}
             </div>
             <NavSelect className="dsort" label={t('sortLabel')} value={sort} options={SORTS.map((s) => ({ value: s, label: t(`sorts.${s}`), href: href({ sort: s }) }))} />
