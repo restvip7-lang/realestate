@@ -43,7 +43,18 @@ export const Districts: CollectionConfig = {
       fields: [
         { name: 'slug', type: 'text', label: 'Адрес (slug)', required: true, unique: true, index: true },
         { name: 'order', type: 'number', label: 'Порядок', defaultValue: 0 },
-        { name: 'inland', type: 'checkbox', label: 'В горах, не у моря' },
+        {
+          name: 'inland',
+          type: 'checkbox',
+          label: 'Не у моря',
+          admin: { description: 'Нет выхода к берегу (Джикджилли, Тепе).' },
+        },
+        {
+          name: 'mountains',
+          type: 'checkbox',
+          label: 'В горах',
+          admin: { description: 'Подпись «в горах» и «по серпантину» (Тепе). Только вместе с «Не у моря».', condition: (data) => !!data?.inland },
+        },
       ],
     },
     {

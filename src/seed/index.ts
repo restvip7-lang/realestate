@@ -130,7 +130,7 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
     const have = await bySlug(payload, 'districts')
     for (const d of data.districts) {
       const doc = await upsert(payload, 'districts', have.get(d.slug), {
-        name: d.name, nameIn: d.nameIn, slug: d.slug, order: d.order, inland: d.inland, about: d.about, lead: d.lead,
+        name: d.name, nameIn: d.nameIn, slug: d.slug, order: d.order, inland: d.inland, mountains: d.slug === 'tepe', about: d.about, lead: d.lead,
         pros: d.pros.map((text) => ({ text })), cons: d.cons.map((text) => ({ text })), infra: d.infra.map((text) => ({ text })),
         image: media.get(d.img), pricePerM2: d.pricePerM2, pricePerM2Date: ruDate('24.09.2026'), coastKm: d.coastKm,
         scores: d.scores, lat: d.lat, lng: d.lng, schema: { x: d.x, y: d.y },

@@ -79,7 +79,9 @@
 .pg .dcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,17,22,0) 20%,rgba(14,17,22,.6) 55%,rgba(14,17,22,.94))}
 .pg .dcard>*{position:relative;z-index:1}
 .pg .dcard h3{font-size:21px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
-.pg .dcard h3 a::after{content:"";position:absolute;inset:0;z-index:2}
+/* вся плитка — ссылка: отдельный слой поверх карточки (::after у ссылки в заголовке ограничен заголовком, у него position:relative) */
+.pg .dcard .dcard-link{position:absolute;inset:0;z-index:2}
+.pg .dcard .dcard-link:focus-visible{outline:3px solid var(--sea-light);outline-offset:-3px}
 .pg .dcard h3 a:focus-visible{outline:none}
 .pg .dcard:has(a:focus-visible){outline:3px solid var(--sea-light);outline-offset:2px}
 .pg .dcard .about{font-size:14px;color:rgba(255,255,255,.85);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -98,6 +100,18 @@
 .pg .dsort select{min-height:42px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;color:var(--ink)}
 .pg .cmp-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
 .pg .cmp-wrap .ptable{border:0;border-radius:0;min-width:760px}
+/* сортировка таблицы сравнения: заголовки-ссылки, стрелка, подсветка столбца, места 1–3 */
+.pg .cmp-state{margin:-12px 0 12px}
+.pg .ptable th a{color:inherit;font-weight:inherit;display:inline-flex;gap:4px;align-items:center;white-space:nowrap}
+.pg .ptable th a:hover{color:var(--sea-deep)}
+.pg .ptable th .arr{font-size:10px;color:#A5AFBA}
+.pg .ptable th.sorted{color:var(--sea-deep)}
+.pg .ptable th.sorted .arr{color:var(--sea-deep)}
+.pg .ptable td.sorted{background:#F0FAFC;font-weight:600}
+.pg .ptable .rank{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-right:8px;border-radius:999px;background:var(--mist);color:var(--muted);font:600 12px var(--f-body)}
+.pg .ptable tr.top .rank{background:var(--sea-deep);color:#fff}
+.pg .ptable tr.top td{background:#F7FCFD}
+.pg .ptable tr.top td.sorted{background:#E3F4F8}
 .pg .dots{letter-spacing:2px;color:var(--sea);white-space:nowrap}
 .pg .dots i{font-style:normal;color:#CFD6DD}
 

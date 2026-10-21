@@ -18,7 +18,7 @@ export async function DistrictCard({ d, stat }: { d: District; stat?: DistrictSt
     <article className="dcard">
       {img && <Image src={img} alt="" width={700} height={467} sizes="(max-width: 760px) 100vw, 400px" />}
       <div className="tl">
-        {d.inland ? <span className="in">{t('tagInland')}</span> : <span>{t('tagSea')}</span>}
+        {d.inland ? <span className="in">{t(d.mountains ? 'tagMountains' : 'tagInland')}</span> : <span>{t('tagSea')}</span>}
         {(d.scores?.life ?? 0) >= 5 && <span>{t('tagLife')}</span>}
       </div>
       <h3><Link href={`/districts/${d.slug}`}>{d.name}</Link></h3>
@@ -28,6 +28,8 @@ export async function DistrictCard({ d, stat }: { d: District; stat?: DistrictSt
         <span>{km ? `${t('km', { n: km })} ${t('toCenter')}` : t('center')}</span>
         <span>{t('onSale', { n: stat?.sale ?? 0 })}</span>
       </div>
+      {/* вся плитка кликабельна; для клавиатуры и экранного диктора ссылка — в заголовке */}
+      <Link href={`/districts/${d.slug}`} className="dcard-link" aria-hidden="true" tabIndex={-1} />
     </article>
   )
 }

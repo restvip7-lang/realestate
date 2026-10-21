@@ -70,7 +70,8 @@ export default async function DistrictPage({ params }: Props) {
   const rentFrom = stats[d.id]?.rentFrom ?? 0 // 0 — объектов в аренде нет, цену аренды не показываем
   // у объектов Stay расстояние до моря бывает не указано — такие не считаем (иначе «от 0 м»)
   const seas = objs.map((o) => o.sea).filter((s): s is number => typeof s === 'number' && s > 0)
-  const seaTxt = d.inland ? (d.slug === 'tepe' ? t('seaTepe') : t('seaInland')) : seas.length ? t('seaFrom', { m: minOf(seas) }) : t('seaNear')
+  // Тепе — в горах (по серпантину), Джикджилли — не у моря, но расстояние берём из каталога (владелец 21.10.2026)
+  const seaTxt = d.mountains ? t('seaTepe') : seas.length ? t('seaFrom', { m: minOf(seas) }) : d.inland ? t('seaInland') : t('seaNear')
   const nbrs = districts
     .filter((x) => x.slug !== d.slug)
     .sort((a, b) => Math.abs(pos(a) - pos(d)) - Math.abs(pos(b) - pos(d)) || (a.inland === d.inland ? -1 : 1))
@@ -140,7 +141,7 @@ export default async function DistrictPage({ params }: Props) {
           </nav>
           <div className="dhero-grid">
             <div className="dhero-txt">
-              <span className="eyebrow">{t('guideOne')}{d.inland && <span className="tag-inland">{t('inlandShort')}</span>}</span>
+              <span className="eyebrow">{t('guideOne')}{d.inland && <span className="tag-inland">{t(d.mountains ? 'mountainsShort' : 'inlandShort')}</span>}</span>
               <h1>{t('h1', { name: d.name })}</h1>
               {d.lead && <p className="lead-t">{d.lead}</p>}
               <div className="cta">
@@ -160,9 +161,9 @@ export default async function DistrictPage({ params }: Props) {
         <div className="kfacts" role="list" aria-label={t('kf.label')}>
           <div role="listitem">
             <span>{t('kf.toCenter')}</span><b>{km(d) ? t('km', { n: km(d) }) : t('kf.isCenter')}</b>
-            <small>{pos(d) < 0 ? t('kf.west') : pos(d) > 0 ? (d.inland ? t('kf.mountains') : t('kf.east')) : t('kf.castle')}</small>
+            <small>{pos(d) < 0 ? t('kf.west') : pos(d) > 0 ? (d.mountains ? t('kf.mountains') : t('kf.east')) : t('kf.castle')}</small>
           </div>
-          <div role="listitem"><span>{t('kf.toSea')}</span><b>{seaTxt}</b><small>{d.inland ? t('kf.serpentine') : t('kf.byCatalog')}</small></div>
+          <div role="listitem"><span>{t('kf.toSea')}</span><b>{seaTxt}</b><small>{d.mountains ? t('kf.serpentine') : t('kf.byCatalog')}</small></div>
           <div role="listitem"><span>{t('kf.gzp')}</span><b>≈ {t('km', { n: gzpKm(d) })}</b><small>{t('kf.gzpName')}</small></div>
           <div role="listitem"><span>{t('kf.ayt')}</span><b>≈ {t('km', { n: aytKm(d) })}</b><small>{t('kf.aytName')}</small></div>
           <div role="listitem"><span>{t('kf.pm')}</span><b>{pm ? <Price eur={pm.eur} suffix={tcard('perM2')} /> : '—'}</b><small>{pm ? (pm.kind === 'manual' ? t('kf.pmManual') : t(pm.kind === 'all' ? 'kf.pmNoteAll' : 'kf.pmNote', { n: pm.n })) : null}</small></div>

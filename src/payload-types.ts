@@ -354,7 +354,14 @@ export interface District {
   nameIn?: string | null;
   slug: string;
   order?: number | null;
+  /**
+   * Нет выхода к берегу (Джикджилли, Тепе).
+   */
   inland?: boolean | null;
+  /**
+   * Подпись «в горах» и «по серпантину» (Тепе). Только вместе с «Не у моря».
+   */
+  mountains?: boolean | null;
   about?: string | null;
   lead?: string | null;
   pros?:
@@ -933,6 +940,7 @@ export interface DistrictsSelect<T extends boolean = true> {
   slug?: T;
   order?: T;
   inland?: T;
+  mountains?: T;
   about?: T;
   lead?: T;
   pros?:
