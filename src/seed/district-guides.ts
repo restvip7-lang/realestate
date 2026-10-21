@@ -243,36 +243,36 @@ export const DISTRICT_GUIDES: Record<string, Record<Loc, Texts>> = {
     ru: {
       guide: sec(T.ru, [
         'Семьям и тем, кто живёт в Аланье круглый год и хочет современный комплекс дешевле, чем у моря. Хороший вариант для жизни, для сезонной аренды — слабее прибрежных районов.',
-        'Район на склоне за Оба, до моря 1,5–2,5 км: пешком далеко, на машине или автобусе — несколько минут. Из верхних частей района открываются виды на море.',
+        'Выхода к морю у района нет: южная граница проходит по шоссе D400, за ним — Оба и пляжи. От южной части до моря около 700 м, от северной, у склонов, — 2–2,5 км. Из домов на склонах видно море.',
         'Школы и детские сады, торговые центры и супермаркеты, рынок, клиники, спортивные площадки. Много местных жителей, жизнь не замирает зимой.',
         'Городские автобусы в центр и Оба. В часы пик на главных улицах много машин.',
         'Много новых комплексов с бассейнами, фитнесом и охраной, квартиры от 1+1 до просторных 3+1 и дуплексы. Цены ниже, чем у моря в Оба и центре.',
       ]),
     },
     en: {
-      lead: 'A residential district on the slope behind Oba: schools, markets and many local residents.',
+      lead: 'A residential district behind Oba, north of the D400 highway: schools, markets, a shopping mall and many local residents. 700 m to 2.5 km to the sea.',
       guide: sec(T.en, [
         'For families and people living in Alanya all year who want a modern complex for less than by the sea. A good place to live; for seasonal rentals it is weaker than the coastal districts.',
-        'The district lies on the slope behind Oba, 1.5–2.5 km from the sea: too far to walk, a few minutes by car or bus. The upper parts have sea views.',
+        'The district has no seafront: its southern border runs along the D400 highway, with Oba and the beaches beyond it. The southern part is about 700 m from the sea, the northern part by the slopes 2–2.5 km. Homes on the slopes have sea views.',
         'Schools and kindergartens, shopping centres and supermarkets, a market, clinics and sports grounds. Many local residents, so life goes on in winter.',
         'City buses to the centre and Oba. The main streets get busy at rush hour.',
         'Many new complexes with pools, gyms and security, from 1+1 apartments to spacious 3+1 and duplexes. Prices are lower than by the sea in Oba and the centre.',
       ]),
       pros: ['Everything for daily life: schools, shops, clinics', 'Lower prices than by the sea', 'Many new complexes with pools'],
-      cons: ['1.5–2.5 km to the sea: too far to walk', 'Heavy traffic at rush hour'],
+      cons: ['No seafront: 700 m to 2.5 km to the beach', 'Heavy traffic at rush hour'],
       infra: ['Schools and kindergartens', 'Shopping centres and supermarkets', 'Market', 'Clinics', 'Sports grounds'],
     },
     tr: {
-      lead: 'Oba’nın arkasındaki yamaçta bir yerleşim bölgesi: okullar, pazarlar ve çok sayıda yerli sakin.',
+      lead: 'Oba’nın arkasında, D400 karayolunun kuzeyinde bir yerleşim bölgesi: okullar, pazarlar, alışveriş merkezi ve çok sayıda yerli sakin. Denize 700 m ile 2,5 km arası.',
       guide: sec(T.tr, [
         'Aileler ve Alanya’da yıl boyu yaşayıp denize yakın bölgelerden daha uygun fiyata modern bir site isteyenler için. Yaşamak için iyi; sezonluk kiralamada kıyı bölgelerinden zayıf.',
-        'Bölge Oba’nın arkasındaki yamaçta, denize 1,5–2,5 km: yürüyerek uzak, arabayla veya otobüsle birkaç dakika. Yukarı kısımlardan deniz manzarası açılır.',
+        'Bölgenin denize kıyısı yok: güney sınırı D400 karayolu boyunca, ötesinde Oba ve plajlar var. Güney kısmı denize yaklaşık 700 m, kuzeyde yamaçlara yakın kısmı 2–2,5 km. Yamaçlardaki evlerden deniz görünür.',
         'Okullar ve anaokulları, alışveriş merkezleri ve süpermarketler, pazar, klinikler, spor alanları. Yerli sakin çok, kışın da hayat devam eder.',
         'Merkeze ve Oba’ya şehir otobüsleri. Ana caddelerde iş çıkış saatlerinde trafik yoğun.',
         'Havuzlu, spor salonlu ve güvenlikli çok sayıda yeni site; 1+1’den geniş 3+1’e kadar daireler ve dubleksler. Fiyatlar Oba ve merkezde denize yakın konutlardan düşük.',
       ]),
       pros: ['Günlük yaşam için her şey: okullar, marketler, klinikler', 'Denize yakın bölgelerden düşük fiyatlar', 'Havuzlu çok sayıda yeni site'],
-      cons: ['Denize 1,5–2,5 km: yürüyerek uzak', 'İş çıkış saatlerinde trafik'],
+      cons: ['Denize kıyısı yok: plaja 700 m ile 2,5 km arası', 'İş çıkış saatlerinde trafik'],
       infra: ['Okullar ve anaokulları', 'Alışveriş merkezleri ve süpermarketler', 'Pazar', 'Klinikler', 'Spor alanları'],
     },
   },
@@ -537,8 +537,8 @@ export const DISTRICT_GUIDES: Record<string, Record<Loc, Texts>> = {
   },
 }
 
-// районы в горах — «Море и природа» вместо «Море и пляжи»
-for (const slug of ['tepe', 'cikcilli']) {
+// район в горах — «Море и природа» вместо «Море и пляжи» (Джикджилли — не у моря, но не в горах: владелец 21.10.2026)
+for (const slug of ['tepe']) {
   const g = DISTRICT_GUIDES[slug]
   g.ru.guide[1][0] = T.ruIn[1]
   g.en.guide[1][0] = T.enIn[1]
@@ -577,6 +577,59 @@ export async function applyDistrictGuides(payload: Payload, req?: Partial<Payloa
         payload.logger.warn({ err, msg: `Гид района ${d.slug} (${locale}) не записан` })
       }
     }
+  }
+  return updated
+}
+
+// Джикджилли не в горах (владелец 21.10.2026): старые тексты «на склоне, до моря 1,5–2,5 км» → новые.
+// Заменяем только точное совпадение со старым текстом — правки в админке не трогаем.
+const OLD_GUIDE_SEA: Record<Loc, [string, string]> = {
+  ru: ['Море и природа', 'Район на склоне за Оба, до моря 1,5–2,5 км: пешком далеко, на машине или автобусе — несколько минут. Из верхних частей района открываются виды на море.'],
+  en: ['Sea and nature', 'The district lies on the slope behind Oba, 1.5–2.5 km from the sea: too far to walk, a few minutes by car or bus. The upper parts have sea views.'],
+  tr: ['Deniz ve doğa', 'Bölge Oba’nın arkasındaki yamaçta, denize 1,5–2,5 km: yürüyerek uzak, arabayla veya otobüsle birkaç dakika. Yukarı kısımlardan deniz manzarası açılır.'],
+}
+const CIKCILLI_FIX: Record<Loc, { about: [string, string]; lead: [string, string]; cons: [string, string] }> = {
+  ru: {
+    about: ['Жилой район на склоне за Оба: школы, рынки, много местных жителей. До моря 1,5–2,5 км.', 'Жилой район за Оба, к северу от шоссе D400: школы, рынки, торговый центр и много местных жителей. До моря — от 700 м до 2,5 км.'],
+    lead: ['Жилой район на склоне за Оба: школы, рынки и много местных жителей. До моря 1,5–2,5 км.', 'Жилой район за Оба, к северу от шоссе D400: школы, рынки, торговый центр и много местных жителей. До моря — от 700 м до 2,5 км.'],
+    cons: ['До моря 1,5–2,5 км: пешком далеко', 'Выхода к морю нет: до пляжа от 700 м до 2,5 км'],
+  },
+  en: {
+    about: ['A residential area on the slope behind Oba: schools, markets and many local residents. 1.5–2.5 km to the sea.', 'A residential area behind Oba, north of the D400 highway: schools, markets, a shopping mall and many local residents. 700 m to 2.5 km to the sea.'],
+    lead: ['A residential district on the slope behind Oba: schools, markets and many local residents.', DISTRICT_GUIDES.cikcilli.en.lead!],
+    cons: ['1.5–2.5 km to the sea: too far to walk', DISTRICT_GUIDES.cikcilli.en.cons![0]],
+  },
+  tr: {
+    about: ['Oba’nın arkasındaki yamaçta yerleşim bölgesi: okullar, pazarlar, çok sayıda yerel halk. Denize 1,5–2,5 km.', 'Oba’nın arkasında, D400 karayolunun kuzeyinde yerleşim bölgesi: okullar, pazarlar, alışveriş merkezi, çok sayıda yerel halk. Denize 700 m ile 2,5 km arası.'],
+    lead: ['Oba’nın arkasındaki yamaçta bir yerleşim bölgesi: okullar, pazarlar ve çok sayıda yerli sakin.', DISTRICT_GUIDES.cikcilli.tr.lead!],
+    cons: ['Denize 1,5–2,5 km: yürüyerek uzak', DISTRICT_GUIDES.cikcilli.tr.cons![0]],
+  },
+}
+
+type Item = { id?: string | null; text?: string | null; title?: string | null }
+type FixDoc = { id: number; about?: string | null; lead?: string | null; cons?: Item[] | null; guide?: Item[] | null }
+
+export async function fixCikcilliTexts(payload: Payload, req?: Partial<PayloadRequest>) {
+  let updated = 0
+  for (const locale of ['ru', 'en', 'tr'] as const) {
+    const { docs } = (await payload.find({
+      collection: 'districts', locale, fallbackLocale: false, where: { slug: { equals: 'cikcilli' } }, limit: 1, depth: 0, overrideAccess: true, req,
+      select: { about: true, lead: true, cons: true, guide: true },
+    })) as unknown as { docs: FixDoc[] }
+    const d = docs[0]
+    if (!d) continue
+    const f = CIKCILLI_FIX[locale]
+    const [oldTitle, oldText] = OLD_GUIDE_SEA[locale]
+    const [newTitle, newText] = DISTRICT_GUIDES.cikcilli[locale].guide[1]
+    const data: Record<string, unknown> = {}
+    if (d.about === f.about[0]) data.about = f.about[1]
+    if (d.lead === f.lead[0]) data.lead = f.lead[1]
+    if (d.cons?.some((x) => x.text === f.cons[0])) data.cons = d.cons.map((x) => (x.text === f.cons[0] ? { ...x, text: f.cons[1] } : x))
+    if (d.guide?.some((x) => x.text === oldText))
+      data.guide = d.guide.map((x) => (x.text === oldText ? { ...x, title: x.title === oldTitle ? newTitle : x.title, text: newText } : x))
+    if (!Object.keys(data).length) continue
+    await payload.update({ collection: 'districts', id: d.id, locale, data: data as never, overrideAccess: true, req })
+    updated++
   }
   return updated
 }

@@ -310,7 +310,7 @@ export async function districtStats(): Promise<Record<number, DistrictStat>> {
     if (!id) return
     const s = (out[id] ??= { sale: 0, rent: 0, minSea: null, pm: 0, pmN: 0, pmAll: 0, pmAllN: 0, rentFrom: 0 })
     s[p.deal === 'rent' ? 'rent' : 'sale']++
-    if (p.sea != null) s.minSea = s.minSea == null ? p.sea : Math.min(s.minSea, p.sea)
+    if (p.sea) s.minSea = s.minSea == null ? p.sea : Math.min(s.minSea, p.sea) // 0 — не указано в Stay
     if (p.deal === 'rent' && p.price) s.rentFrom = s.rentFrom ? Math.min(s.rentFrom, p.price) : p.price
     if (!priceSample(p)) return
     housing[id] = [...(housing[id] ?? []), p]

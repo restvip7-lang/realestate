@@ -19,6 +19,11 @@ type Props = { params: Promise<{ locale: Locale }>; searchParams: SP }
 const FILTERS = ['sea', 'inland', 'life', 'rent', 'quiet', 'budget'] as const
 const SORTS = ['geo', 'cheap', 'exp', 'objs', 'center'] as const
 type F = (typeof FILTERS)[number]
+// столбцы таблицы сравнения; у первых трёх «лучше» — меньше
+const CMP = ['toCenter', 'toSea', 'pm', 'sale', 'rent', 'life', 'rentScore', 'beach', 'quiet'] as const
+type C = (typeof CMP)[number]
+type Dir = 'asc' | 'desc'
+const ASC_FIRST: readonly C[] = ['toCenter', 'toSea', 'pm']
 type S = (typeof SORTS)[number]
 
 const pos = (d: District) => d.coastKm ?? 0
@@ -29,7 +34,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const sp = await searchParams
   const t = await getTranslations({ locale, namespace: 'districts' })
   const n = (await listDistricts(locale)).length
-  return pageMeta(locale, '/districts', { title: t('listTitle'), description: t('listMetaDesc', { n }), noindex: !!(sp.f || sp.sort) })
+  return pageMeta(locale, '/districts', { title: t('listTitle'), description: t('listMetaDesc', { n }), noindex: !!(sp.f || sp.sort || sp.cmp) })
 }
 
 export default async function DistrictsPage({ params, searchParams }: Props) {
@@ -61,20 +66,40 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
     center: (a, b) => km(a) - km(b),
   }
   const list = districts.filter(f ? FN[f] : () => true).sort(SN[sort])
-  const all = [...districts].sort(SN[sort])
-  const href = (patch: { f?: string; sort?: string }) => {
+
+  // таблица сравнения сортируется отдельно, по клику на заголовок столбца (?cmp=beach&dir=desc#compare).
+  // Первый клик — «лучшие первыми»: ближе, дешевле, больше объектов, выше оценка; повторный — наоборот.
+  const seaVal = (d: District) => (d.mountains ? 1e6 : (st(d).minSea ?? (d.inland ? 5e5 : 9e5)))
+  const CV: Record<C, (d: District) => number> = {
+    toCenter: km, toSea: seaVal, pm: (d) => pm(d) || 1e9, sale: (d) => st(d).sale, rent: (d) => st(d).rent,
+    life: (d) => sc(d, 'life'), rentScore: (d) => sc(d, 'rent'), beach: (d) => sc(d, 'beach'), quiet: (d) => sc(d, 'quiet'),
+  }
+  const firstDir = (k: C): Dir => (ASC_FIRST.includes(k) ? 'asc' : 'desc')
+  const cmp = CMP.find((x) => x === sp.cmp)
+  const dir: Dir | undefined = cmp ? (sp.dir === 'asc' || sp.dir === 'desc' ? sp.dir : firstDir(cmp)) : undefined
+  const all = cmp
+    ? [...districts].sort((a, b) => (dir === 'asc' ? 1 : -1) * (CV[cmp](a) - CV[cmp](b)) || SN.geo(a, b))
+    : [...districts].sort(SN[sort])
+  const href = (patch: { f?: string; sort?: string; cmp?: C; dir?: Dir }, hash = '') => {
     const q = new URLSearchParams()
     const nf = 'f' in patch ? patch.f : f
     const ns = 'sort' in patch ? patch.sort : sort
+    const nc = 'cmp' in patch ? patch.cmp : cmp
     if (nf) q.set('f', nf)
     if (ns && ns !== 'geo') q.set('sort', ns)
-    return `/districts${q.size ? `?${q}` : ''}`
+    if (nc) {
+      q.set('cmp', nc)
+      const nd = 'dir' in patch ? patch.dir : dir
+      if (nd && nd !== firstDir(nc)) q.set('dir', nd)
+    }
+    return `/districts${q.size ? `?${q}` : ''}${hash}`
   }
   const seaTxt = (d: District) => {
-    if (d.inland) return d.slug === 'tepe' ? t('seaTepe') : t('seaInland')
+    if (d.mountains) return t('seaTepe')
     const m = st(d).minSea
     return m != null ? t('seaFrom', { m }) : t('seaNear')
   }
+  const cls = (k: C) => `num${cmp === k ? ' sorted' : ''}`
   const kmTxt = (d: District) => (km(d) ? t('km', { n: km(d) }) : t('center'))
   const dots = (n: number) => (
     <span className="dots" role="img" aria-label={t('outOf5', { n })}>{'●'.repeat(n)}<i>{'●'.repeat(5 - n)}</i></span>
@@ -136,28 +161,43 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
       <section className="sec" id="compare" style={{ background: 'var(--mist)' }}>
         <div className="wrap">
           <div className="sec-head"><div><span className="eyebrow">{t('cmpEyebrow')}</span><h2>{t('cmpTitle')}</h2></div><p>{t('cmpNote')}</p></div>
+          <p className="cmp-state hint" aria-live="polite">
+            {cmp ? (
+              <>{t('cmpSortedBy', { col: t(`th.${cmp}`) })} {dir === 'asc' ? '▲' : '▼'} · <Link href={href({ cmp: undefined }, '#compare')} scroll={false} className="link">{t('cmpReset')}</Link></>
+            ) : t('cmpSortHint')}
+          </p>
           <div className="cmp-wrap">
-            <table className="ptable">
+            <table className={`ptable${cmp ? ' is-sorted' : ''}`}>
               <caption className="vh">{t('cmpTitle')}</caption>
               <thead>
                 <tr>
                   <th scope="col">{t('th.district')}</th>
-                  {(['toCenter', 'toSea', 'pm', 'sale', 'rent', 'life', 'rentScore', 'beach', 'quiet'] as const).map((k) => <th key={k} scope="col" className="num">{t(`th.${k}`)}</th>)}
+                  {CMP.map((k) => {
+                    const on = cmp === k
+                    const next: Dir = on ? (dir === 'asc' ? 'desc' : 'asc') : firstDir(k)
+                    return (
+                      <th key={k} scope="col" className={`num${on ? ' sorted' : ''}`} aria-sort={on ? (dir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                        <Link href={href({ cmp: k, dir: next }, '#compare')} scroll={false} aria-label={t('cmpSortBy', { col: t(`th.${k}`) })}>
+                          {t(`th.${k}`)}<span className="arr" aria-hidden="true">{on ? (dir === 'asc' ? '▲' : '▼') : '↕'}</span>
+                        </Link>
+                      </th>
+                    )
+                  })}
                 </tr>
               </thead>
               <tbody>
-                {all.map((d) => (
-                  <tr key={d.slug}>
-                    <td><Link href={`/districts/${d.slug}`}>{d.name}</Link>{d.inland && <span className="hint"> · {t('inlandShort')}</span>}</td>
-                    <td className="num">{kmTxt(d)}</td>
-                    <td className="num">{seaTxt(d)}</td>
-                    <td className="num">{pm(d) ? <Price eur={pm(d)} suffix={tcard('perM2')} /> : '—'}</td>
-                    <td className="num"><Link href={`/sale?district=${d.slug}`}>{st(d).sale}</Link></td>
-                    <td className="num"><Link href={`/rent?district=${d.slug}`}>{st(d).rent}</Link></td>
-                    <td className="num">{dots(sc(d, 'life'))}</td>
-                    <td className="num">{dots(sc(d, 'rent'))}</td>
-                    <td className="num">{dots(sc(d, 'beach'))}</td>
-                    <td className="num">{dots(sc(d, 'quiet'))}</td>
+                {all.map((d, i) => (
+                  <tr key={d.slug} className={cmp && i < 3 ? 'top' : undefined}>
+                    <td>{cmp && <span className="rank">{i + 1}</span>}<Link href={`/districts/${d.slug}`}>{d.name}</Link>{d.inland && <span className="hint"> · {t(d.mountains ? 'mountainsShort' : 'inlandShort')}</span>}</td>
+                    <td className={cls('toCenter')}>{kmTxt(d)}</td>
+                    <td className={cls('toSea')}>{seaTxt(d)}</td>
+                    <td className={cls('pm')}>{pm(d) ? <Price eur={pm(d)} suffix={tcard('perM2')} /> : '—'}</td>
+                    <td className={cls('sale')}><Link href={`/sale?district=${d.slug}`}>{st(d).sale}</Link></td>
+                    <td className={cls('rent')}><Link href={`/rent?district=${d.slug}`}>{st(d).rent}</Link></td>
+                    <td className={cls('life')}>{dots(sc(d, 'life'))}</td>
+                    <td className={cls('rentScore')}>{dots(sc(d, 'rent'))}</td>
+                    <td className={cls('beach')}>{dots(sc(d, 'beach'))}</td>
+                    <td className={cls('quiet')}>{dots(sc(d, 'quiet'))}</td>
                   </tr>
                 ))}
               </tbody>

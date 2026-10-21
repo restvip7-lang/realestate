@@ -192,7 +192,7 @@ export default async function PropertyPage({ params }: Props) {
               <h2>{t('location')}</h2>
               <div className="dist-list">
                 <div><b>{p.sea} {t('m')}</b>{t('toSeaLower')}</div>
-                <div><b>{d?.coastKm ? `${Math.abs(d.coastKm)} ${t('km')}` : t('center')}</b>{t('toCenter')}{d?.inland ? ` · ${t('inland')}` : ''}</div>
+                <div><b>{d?.coastKm ? `${Math.abs(d.coastKm)} ${t('km')}` : t('center')}</b>{t('toCenter')}{d?.inland ? ` · ${t(d.mountains ? 'inlandMountains' : 'inland')}` : ''}</div>
                 {p.airport ? <div><b>{p.airport} {t('km')}</b>{t('toAirport')}</div> : null}
               </div>
               <p className="hint" style={{ marginTop: 8 }}>{t('addressNote')}</p>

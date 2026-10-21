@@ -115,7 +115,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
         price ? <Price key="p" eur={price} suffix={rent ? tcard('perMonth') : ''} /> : tcard('priceOnRequest'),
         rent || !price ? '—' : <Price key="m" eur={price / area} suffix={tcard('perM2')} />,
         costs == null ? '—' : <Price key="c" eur={costs} />,
-        d ? <><Link href={`/districts/${d.slug}`} className="link">{d.name}</Link>{d.inland && ` · ${t('inland')}`}</> : '—',
+        d ? <><Link href={`/districts/${d.slug}`} className="link">{d.name}</Link>{d.inland && ` · ${t(d.mountains ? 'inlandMountains' : 'inland')}`}</> : '—',
         `${typeName(p.type, locale)} ${p.rooms ?? ''}`,
         `${p.area ?? '—'} ${t('m2')}`,
         p.type === 'villa' ? t('floors', { n: p.floors ?? 1 }) : t('floorOf', { floor: p.floor ?? '—', floors: p.floors ?? '—' }),
