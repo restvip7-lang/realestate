@@ -124,14 +124,14 @@ export async function runStaySync(payload: Payload, cursor: StaySyncCursor = new
   }
 
   if (processed < items.length) {
-    return { next: c, cursor: c, message: `Stay, страница ${c.page}: ${summary(c)}. Продолжаю…` }
+    return { next: c, cursor: c, message: `CRM, страница ${c.page}: ${summary(c)}. Продолжаю…` }
   }
 
   const seen = offset + items.length
   const more = limit ? seen < Math.min(limit, list.total_results) : c.page < list.total_pages
   if (more) {
     const next = { ...c, page: c.page + 1 }
-    return { next, cursor: next, message: `Stay: обработано ${seen} из ${limit ? Math.min(limit, list.total_results) : list.total_results}. ${summary(c)}` }
+    return { next, cursor: next, message: `CRM: обработано ${seen} из ${limit ? Math.min(limit, list.total_results) : list.total_results}. ${summary(c)}` }
   }
 
   // полный импорт закончен: объекты, которых больше нет в Stay, снимаем с сайта (не удаляем). В тестовом режиме — нет.

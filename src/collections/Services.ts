@@ -59,6 +59,6 @@ export const Services: CollectionConfig = {
     },
     { name: 'published', type: 'checkbox', label: 'Показывать на сайте', defaultValue: true, admin: { position: 'sidebar' } },
     slugField('title'),
-    externalField('Услуга приходит из Stay Property: название, раздел, текст и обложка перезаписываются при синхронизации, правьте их там. Порядок, публикация и SEO остаются нашими.'),
+    externalField('Услуга приходит из CRM: название, раздел, текст и обложка перезаписываются при синхронизации, правьте их там. Порядок, публикация и SEO остаются нашими.'),
   ],
 }

@@ -11,6 +11,7 @@ import { htmlToLexical } from '@/lib/lexical'
 import { slugify } from '@/lib/slug'
 
 import { applyDistrictGuides } from './district-guides'
+import { applyTeamPhotos } from './team-photos'
 import { descriptionI18n, DISTRICTS_I18N, titleI18n } from './i18n'
 import data from './prototype-data.json'
 
@@ -158,6 +159,7 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
         help: t.help.map((text) => ({ text })), order: t.order,
       })
     }
+    await applyTeamPhotos(payload) // фото в едином стиле вместо демо-фото прототипа
     return { next: after('team'), message: `Команда: ${data.team.length}` }
   }
 

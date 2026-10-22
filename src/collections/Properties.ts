@@ -215,11 +215,11 @@ export const Properties: CollectionConfig = {
             {
               name: 'remotePhotos',
               type: 'json',
-              label: 'Фото из Stay',
+              label: 'Фото из CRM',
               admin: {
                 readOnly: true,
                 condition: (data) => Array.isArray(data?.remotePhotos) && data.remotePhotos.length > 0,
-                description: 'Ссылки на фото в Stay Portfolio, обновляются при синхронизации. Если загрузить фото выше, на сайте будут они.',
+                description: 'Ссылки на фото в CRM, обновляются при синхронизации. Если загрузить фото выше, на сайте будут они.',
               },
             },
             // первое фото из Stay отдельно: карте каталога нужна только обложка, а не весь список фото каждого объекта
@@ -324,16 +324,16 @@ export const Properties: CollectionConfig = {
     {
       name: 'stay',
       type: 'group',
-      label: 'Stay Portfolio',
+      label: 'CRM (импорт)',
       admin: {
         position: 'sidebar',
         condition: (data) => !!data?.stay?.objectId,
-        description: 'Объект приходит из Stay: заголовок, описание, цена, фото и параметры перезаписываются при синхронизации. Правьте их в Stay. Эксперт, метки, SEO и заметки остаются нашими.',
+        description: 'Объект приходит из CRM: заголовок, описание, цена, фото и параметры перезаписываются при синхронизации. Правьте их в CRM. Эксперт, метки, SEO и заметки остаются нашими.',
       },
       fields: [
-        { name: 'objectId', type: 'number', label: 'ID в Stay', unique: true, index: true, admin: { readOnly: true } },
+        { name: 'objectId', type: 'number', label: 'ID в CRM', unique: true, index: true, admin: { readOnly: true } },
         { name: 'refNo', type: 'text', label: 'Ref. No', admin: { readOnly: true } },
-        { name: 'modified', type: 'text', label: 'Изменён в Stay', admin: { readOnly: true } },
+        { name: 'modified', type: 'text', label: 'Изменён в CRM', admin: { readOnly: true } },
         { name: 'syncedAt', type: 'date', label: 'Синхронизирован', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } } },
         { name: 'trHash', type: 'text', admin: { hidden: true } },
       ],

@@ -10,7 +10,7 @@ export function ContentButton() {
 
   async function run() {
     setState('busy')
-    setMsg('Забираю новости, отзывы и услуги из Stay Property…')
+    setMsg('Забираю новости, отзывы и услуги из CRM…')
     try {
       // если за один запрос не успели (первая загрузка), повторяем — уже загруженное пропускается
       for (let i = 0; i < 5; i++) {
@@ -29,9 +29,9 @@ export function ContentButton() {
 
   return (
     <div style={{ border: '1px solid var(--theme-elevation-150)', borderRadius: 8, padding: '16px 20px', marginBottom: 24 }}>
-      <h4 style={{ margin: '0 0 6px' }}>Новости, отзывы и услуги из Stay Property</h4>
+      <h4 style={{ margin: '0 0 6px' }}>Новости, отзывы и услуги из CRM</h4>
       <p style={{ margin: '0 0 12px', color: 'var(--theme-elevation-600)' }}>
-        Забираются из admin.stayproperty.com автоматически раз в сутки, а этой кнопкой — сразу. Только чтение: в Stay Property ничего не меняется.
+        Забираются из CRM автоматически раз в сутки, а этой кнопкой — сразу. Только чтение: в CRM ничего не меняется.
         Тексты и обложки правьте там. Чтобы убрать запись с сайта, снимите её с публикации здесь — синхронизация её обратно не включит.
       </p>
       <Button buttonStyle="secondary" size="small" margin={false} disabled={state === 'busy'} onClick={run}>

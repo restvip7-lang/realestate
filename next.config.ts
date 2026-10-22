@@ -33,6 +33,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  // фото команды для кнопки «Загрузить демо-данные» (src/seed/team-photos.ts читает их с диска)
+  outputFileTracingIncludes: { '/next/seed': ['./src/seed/team/*.jpg'] },
 }
 
 export default withPayload(withNextIntl(nextConfig), { devBundleServerPackages: false })

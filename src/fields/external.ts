@@ -7,11 +7,11 @@ import type { Field } from 'payload'
 export const externalField = (description: string): Field => ({
   name: 'external',
   type: 'group',
-  label: 'Stay Property',
+  label: 'CRM (импорт)',
   admin: { position: 'sidebar', condition: (data) => !!data?.external?.sourceId, description },
   fields: [
-    { name: 'sourceId', type: 'text', label: 'ID в Stay Property', unique: true, index: true, admin: { readOnly: true } },
-    { name: 'modified', type: 'text', label: 'Изменён в Stay Property', admin: { readOnly: true } },
+    { name: 'sourceId', type: 'text', label: 'ID в CRM', unique: true, index: true, admin: { readOnly: true } },
+    { name: 'modified', type: 'text', label: 'Изменён в CRM', admin: { readOnly: true } },
     { name: 'syncedAt', type: 'date', label: 'Синхронизирован', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } } },
   ],
 })
@@ -20,7 +20,7 @@ export const externalField = (description: string): Field => ({
 export const remoteCoverField: Field = {
   name: 'remoteCover',
   type: 'text',
-  label: 'Обложка из Stay Property',
+  label: 'Обложка из CRM',
   admin: {
     readOnly: true,
     condition: (data) => !!data?.remoteCover,

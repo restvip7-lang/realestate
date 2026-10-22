@@ -402,7 +402,8 @@
 .pg .tgrid>*{min-width:0}
 .pg .mcard{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;display:flex;flex-direction:column;scroll-margin-top:90px}
 .pg .mcard:target{border-color:var(--sea-deep);box-shadow:0 0 0 3px #E9F7FA}
-.pg .mcard>img{aspect-ratio:4/3;width:100%;object-fit:cover;object-position:top;background:var(--mist)}
+/* фото команды — портреты 4:5 (src/seed/team): в карточке квадрат, голова и плечи */
+.pg .mcard>img{aspect-ratio:1;width:100%;object-fit:cover;object-position:50% 30%;background:var(--mist)}
 .pg .mcard .bd{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .pg .mcard h3{font:700 19px var(--f-body);letter-spacing:0}
 .pg .mcard .role{color:var(--sea-deep);font-weight:600;font-size:14.5px}
