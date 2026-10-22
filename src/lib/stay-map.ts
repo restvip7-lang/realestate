@@ -1,6 +1,7 @@
 // Объект Stay → поля нашего объекта (docs/stay-import.md). Чистые функции, без запросов.
 import { FEATURES, ROOMS } from './catalog'
 import { type StayObject, termsOf } from './stay'
+import { rebrand } from './rebrand'
 
 type Feature = (typeof FEATURES)[number]
 type Room = (typeof ROOMS)[number]
@@ -160,11 +161,12 @@ export function mapStayObject(o: StayObject, districts: Map<string, StayDistrict
       video: video || null,
       lat,
       lng,
-      title: (ruTitle || enTitle).slice(0, 120),
-      description: htmlToText(i18n.post_content?.ru || o.post_content),
+      // «Stay Property company offers…» → Kleo Homes (src/lib/rebrand.ts)
+      title: rebrand((ruTitle || enTitle).slice(0, 120)),
+      description: rebrand(htmlToText(i18n.post_content?.ru || o.post_content)),
       status: m.relevance === 'sold' ? 'sold' : 'published',
     },
-    en: enTitle ? { title: enTitle.slice(0, 120), description: htmlToText(i18n.post_content?.en) } : null,
+    en: enTitle ? { title: rebrand(enTitle.slice(0, 120)), description: rebrand(htmlToText(i18n.post_content?.en)) } : null,
     photos: gallery,
     problems,
   }

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await headers() })
   if (!user || (user as { role?: string }).role !== 'admin') return fail('Только для администратора', 403)
-  if (!stayConfigured()) return fail('Не заданы ключи Stay: STAY_TOKEN, STAY_USERNAME, STAY_PASSWORD (Vercel → Settings → Environment Variables)', 400)
+  if (!stayConfigured()) return fail('Не заданы ключи CRM: STAY_TOKEN, STAY_USERNAME, STAY_PASSWORD (Vercel → Settings → Environment Variables)', 400)
   const body = (await req.json().catch(() => ({}))) as { cursor?: StaySyncCursor }
   try {
     return Response.json(await runStaySync(payload, body.cursor ?? newCursor()))
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET
   if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) return fail('Нет доступа', 401)
-  if (!stayConfigured()) return fail('Не заданы ключи Stay', 400)
+  if (!stayConfigured()) return fail('Не заданы ключи CRM', 400)
   const payload = await getPayload({ config })
   const started = Date.now()
   let cursor: StaySyncCursor | null = newCursor()

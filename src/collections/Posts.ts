@@ -118,6 +118,6 @@ export const Posts: CollectionConfig = {
     { name: 'pinned', type: 'checkbox', label: 'Закрепить наверху', admin: { position: 'sidebar' } },
     slugField('title'),
     { name: 'readingMins', type: 'number', label: 'Минут чтения', admin: { position: 'sidebar', readOnly: true } },
-    externalField('Новость приходит из Stay Property: заголовок, лид, текст и обложка перезаписываются при синхронизации, правьте их там (дату — тоже, если она указана там полностью). Рубрика, автор, публикация и SEO остаются нашими.'),
+    externalField('Новость приходит из CRM: заголовок, лид, текст и обложка перезаписываются при синхронизации, правьте их там (дату — тоже, если она указана там полностью). Рубрика, автор, публикация и SEO остаются нашими.'),
   ],
 }

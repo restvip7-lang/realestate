@@ -6,6 +6,7 @@ import type { Payload } from 'payload'
 
 import { CONTENT_KINDS, type ContentItem, type ContentKind, type ContentText, listContent } from './content-api'
 import { blocksToLexical, blocksToText, clip, shortText, textBlocks } from './content-text'
+import { mentionsStay, rebrand } from './rebrand'
 import { slugify } from './slug'
 
 const LOCALES = ['ru', 'en', 'tr'] as const
@@ -39,8 +40,9 @@ function dateOf(item: ContentItem) {
   return Number.isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString()
 }
 
-/** Данные одного языка для коллекции. */
-function localized(kind: ContentKind, t: ContentText): Record<string, unknown> {
+/** Данные одного языка для коллекции. В новостях и услугах «Stay Property» → Kleo Homes; отзывы не переписываем. */
+function localized(kind: ContentKind, src: ContentText): Record<string, unknown> {
+  const t = kind === 'reviews' ? src : { ...src, title: rebrand(src.title), excerpt: rebrand(src.excerpt), body: rebrand(src.body) }
   const title = (t.title || '').trim()
   if (kind === 'news') {
     return { title: clip(title, 140), lead: shortText(t.excerpt, title, 320) || null, body: blocksToLexical(textBlocks(t.body, title)) }
@@ -101,7 +103,10 @@ async function syncKind(payload: Payload, kind: ContentKind, started: number, pr
           ? { ...base, ...fullDate, remoteCover, external, _status: existing._status }
           : { ...base, remoteCover, external, kind: 'news', category: 'market', publishedAt: dateOf(item), _status: 'published' }
       } else if (kind === 'reviews') {
-        data = existing ? { ...base, date: dateOf(item), external } : { ...base, date: dateOf(item), rating: null, service: null, published: true, external }
+        // отзыв, где хвалят Stay Property, — слова клиента о другой компании: создаём скрытым (владелец 22.10.2026)
+        const hide = mentionsStay(String(base.text ?? ''))
+        if (!existing && hide) problems.push(`Отзывы: «${base.who}» хвалит другую компанию — скрыт`)
+        data = existing ? { ...base, date: dateOf(item), external } : { ...base, date: dateOf(item), rating: null, service: null, published: !hide, external }
       } else {
         const cats = Object.values(item.translations ?? {}).map((x) => x?.category || '').concat(item.category || '')
         const group = cats.some((x) => /free|бесплат|ücretsiz/i.test(x)) ? 'free' : 'page'
@@ -173,6 +178,6 @@ export async function runContentSync(payload: Payload): Promise<ContentSyncResul
     }
   }
   const tail = problems.length ? `. Внимание: ${problems.slice(0, 5).join('; ')}${problems.length > 5 ? '…' : ''}` : ''
-  const head = parts.length ? `${done ? 'Готово' : 'Не всё успел, продолжу'}: ${parts.join('. ')}` : 'Stay Property не ответил, данные не получены'
+  const head = parts.length ? `${done ? 'Готово' : 'Не всё успел, продолжу'}: ${parts.join('. ')}` : 'CRM не ответила, данные не получены'
   return { done, message: `${head}${tail}`, problems }
 }

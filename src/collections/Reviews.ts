@@ -45,7 +45,7 @@ export const Reviews: CollectionConfig = {
           min: 1,
           max: 5,
           defaultValue: 5,
-          admin: { description: 'Пусто — без звёзд (у отзывов из Stay Property оценки нет).' },
+          admin: { description: 'Пусто — без звёзд (у отзывов из CRM оценки нет).' },
         },
         {
           name: 'service',
@@ -70,6 +70,6 @@ export const Reviews: CollectionConfig = {
       admin: { description: 'На языке клиента, без перевода.' },
     },
     { name: 'published', type: 'checkbox', label: 'Показывать на сайте', defaultValue: true },
-    externalField('Отзыв приходит из Stay Property: имя, страна, текст и дата перезаписываются при синхронизации. Галочка «Показывать на сайте», услуга и сотрудник остаются нашими.'),
+    externalField('Отзыв приходит из CRM: имя, страна, текст и дата перезаписываются при синхронизации. Галочка «Показывать на сайте», услуга и сотрудник остаются нашими.'),
   ],
 }

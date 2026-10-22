@@ -6,6 +6,7 @@ import * as migration_20261009_144634_property_remote_cover from './20261009_144
 import * as migration_20261019_124840_assistant_settings from './20261019_124840_assistant_settings';
 import * as migration_20261021_111150_district_guide from './20261021_111150_district_guide';
 import * as migration_20261021_114026_district_mountains from './20261021_114026_district_mountains';
+import * as migration_20261022_090000_rebrand_stay from './20261022_090000_rebrand_stay';
 
 export const migrations = [
   {
@@ -47,5 +48,10 @@ export const migrations = [
     up: migration_20261021_114026_district_mountains.up,
     down: migration_20261021_114026_district_mountains.down,
     name: '20261021_114026_district_mountains'
+  },
+  {
+    up: migration_20261022_090000_rebrand_stay.up,
+    down: migration_20261022_090000_rebrand_stay.down,
+    name: '20261022_090000_rebrand_stay'
   },
 ];

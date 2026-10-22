@@ -14,7 +14,7 @@ export function StayButton({ configured, limit }: { configured: boolean; limit: 
 
   async function run(start: Cursor) {
     setState('busy')
-    setMsg('Подключаюсь к Stay…')
+    setMsg('Подключаюсь к CRM…')
     let cursor = start
     try {
       do {
@@ -39,10 +39,10 @@ export function StayButton({ configured, limit }: { configured: boolean; limit: 
 
   return (
     <div style={{ border: '1px solid var(--theme-elevation-150)', borderRadius: 8, padding: '16px 20px', marginBottom: 24 }}>
-      <h4 style={{ margin: '0 0 6px' }}>Объекты из Stay Portfolio</h4>
+      <h4 style={{ margin: '0 0 6px' }}>Объекты из CRM</h4>
       <p style={{ margin: '0 0 12px', color: 'var(--theme-elevation-600)' }}>
-        Объекты Аланьи и Газипаши забираются из Stay автоматически раз в сутки, а этой кнопкой — сразу. Только чтение: в Stay ничего не меняется.
-        Объекты из Stay правьте в Stay — заголовок, описание, цена и фото перезапишутся. Эксперт, метки, SEO и заметки остаются нашими.
+        Объекты Аланьи и Газипаши забираются из CRM автоматически раз в сутки, а этой кнопкой — сразу. Только чтение: в CRM ничего не меняется.
+        Объекты из CRM правьте в CRM — заголовок, описание, цена и фото перезапишутся. Эксперт, метки, SEO и заметки остаются нашими.
         {limit ? ` Тестовый режим: только ${limit} самых свежих объектов (STAY_SYNC_LIMIT).` : ''}
       </p>
       {configured ? (
@@ -53,7 +53,7 @@ export function StayButton({ configured, limit }: { configured: boolean; limit: 
           disabled={state === 'busy'}
           onClick={() => run(state === 'error' ? resume : null)}
         >
-          {state === 'busy' ? 'Обновляю…' : state === 'error' ? 'Продолжить' : 'Обновить объекты из Stay'}
+          {state === 'busy' ? 'Обновляю…' : state === 'error' ? 'Продолжить' : 'Обновить объекты из CRM'}
         </Button>
       ) : (
         <p style={{ margin: 0 }}>
