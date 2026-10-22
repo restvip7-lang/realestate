@@ -91,7 +91,7 @@ export default async function TeamPage({ params }: Props) {
               const areas = (m.areas || []).filter((a): a is District => typeof a === 'object')
               return (
                 <article className="mcard" id={m.slug || undefined} key={m.id}>
-                  {img && <Image src={img} alt={m.name} width={600} height={450} sizes="(max-width: 760px) 100vw, 400px" />}
+                  {img && <Image src={img} alt={m.name} width={600} height={600} sizes="(max-width: 760px) 100vw, 400px" />}
                   <div className="bd">
                     <h3><Link href={`/team/${m.slug}`}>{m.name}</Link></h3>
                     <span className="role">{m.role}</span>

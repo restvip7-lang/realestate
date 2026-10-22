@@ -7,6 +7,7 @@ import * as migration_20261019_124840_assistant_settings from './20261019_124840
 import * as migration_20261021_111150_district_guide from './20261021_111150_district_guide';
 import * as migration_20261021_114026_district_mountains from './20261021_114026_district_mountains';
 import * as migration_20261022_090000_rebrand_stay from './20261022_090000_rebrand_stay';
+import * as migration_20261022_110000_team_photos from './20261022_110000_team_photos';
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20261022_090000_rebrand_stay.up,
     down: migration_20261022_090000_rebrand_stay.down,
     name: '20261022_090000_rebrand_stay'
+  },
+  {
+    up: migration_20261022_110000_team_photos.up,
+    down: migration_20261022_110000_team_photos.down,
+    name: '20261022_110000_team_photos'
   },
 ];
