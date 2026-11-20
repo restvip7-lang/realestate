@@ -31,7 +31,7 @@ export default async function PrivacyEn({ locale }: { locale: Locale }) {
           <article className="prose legal" id="prose">
             <h2 id="who">1. Who processes your data</h2>
             <p>The data controller is <b>{company.legal?.name}</b> (Kleo Homes), <span>{company.address}</span>. Real estate trading licence TTYB No. <span>{company.legal?.license}</span>, registered in the VERBİS data controller registry under No. <span>{company.legal?.verbis}</span>.</p>
-            <p>For any questions about your data, email <a href={mail}>{company.email}</a> with the subject "Personal data".</p>
+            <p>For any questions about your data, email <a href={mail}>{company.email}</a> with the subject “Personal data”.</p>
 
             <h2 id="what">2. What data we collect</h2>
             <ul>

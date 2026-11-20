@@ -223,8 +223,8 @@ export async function latestPosts(locale: Locale, kind: 'article' | 'news', limi
   return docs
 }
 
-export async function latestReviews(limit = 3): Promise<Review[]> {
-  const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit, depth: 0, ...pub })
+export async function latestReviews(locale: Locale, limit = 3): Promise<Review[]> {
+  const { docs } = await (await payloadClient()).find({ collection: 'reviews', locale, sort: '-date', limit, depth: 0, ...pub })
   return docs
 }
 
@@ -239,12 +239,13 @@ export const districtOf = (p: Property) => (typeof p.district === 'object' ? p.d
 export type PropertyPhoto = { src: string; full: string; alt?: string | null; remote: boolean }
 
 /**
- * Внешние фото (из CRM) отдаём по адресу нашего сайта: /img/p/… и /img/m/… проксируются на хранилища
+ * Внешние фото (из CRM) отдаём по адресу нашего сайта: /img/p/…, /img/m/… и /img/n/… проксируются на хранилища
  * (rewrites в next.config.ts), чтобы в коде страниц не было чужих доменов. Неизвестные адреса — как есть.
  */
 export const IMAGE_PROXIES = [
   ['https://portfolio.stayrepo.com/lbi-content/', '/img/p/'],
   ['https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9:stay-media/', '/img/m/'],
+  ['https://stay-property.fra1.cdn.digitaloceanspaces.com/', '/img/n/'],
 ] as const
 export function proxiedImage(u: string) {
   for (const [from, to] of IMAGE_PROXIES) if (u.startsWith(from)) return to + u.slice(from.length)
@@ -396,8 +397,8 @@ export async function getService(slug: string, locale: Locale): Promise<Service 
   return docs[0] ?? null
 }
 
-export async function listReviews(): Promise<Review[]> {
-  const { docs } = await (await payloadClient()).find({ collection: 'reviews', sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
+export async function listReviews(locale: Locale): Promise<Review[]> {
+  const { docs } = await (await payloadClient()).find({ collection: 'reviews', locale, sort: '-date', limit: 500, depth: 0, pagination: false, ...pub })
   return docs
 }
 

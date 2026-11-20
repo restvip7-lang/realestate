@@ -11,6 +11,7 @@ import { htmlToLexical } from '@/lib/lexical'
 import { slugify } from '@/lib/slug'
 
 import { applyDistrictGuides } from './district-guides'
+import { applyEnglish } from './english'
 import { applyTeamPhotos } from './team-photos'
 import { descriptionI18n, DISTRICTS_I18N, titleI18n } from './i18n'
 import data from './prototype-data.json'
@@ -283,6 +284,7 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
       stats: data.teamPage.stats.map(([value, label]) => ({ value, label })),
     },
   })
+  await applyEnglish(payload) // английские тексты демо-контента (src/seed/english.ts)
   return { next: null, message: `Готово: объектов ${data.properties.length}, статей и новостей ${data.posts.length}, районов ${data.districts.length}, сотрудников ${data.team.length}, отзывов ${data.reviews.length}, фото ${photoList().length}` }
 }
 

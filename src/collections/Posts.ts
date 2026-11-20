@@ -81,7 +81,7 @@ export const Posts: CollectionConfig = {
         { name: 'reviewedAt', type: 'date', label: 'Проверено юристом' },
       ],
     },
-    { name: 'tags', type: 'text', hasMany: true, label: 'Теги' },
+    { name: 'tags', type: 'text', hasMany: true, label: 'Теги', localized: true },
     {
       type: 'row',
       fields: [

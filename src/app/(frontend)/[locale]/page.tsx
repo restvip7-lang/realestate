@@ -11,7 +11,7 @@ import type { Locale } from '@/i18n/locales'
 import { POST_CATEGORIES } from '@/lib/catalog'
 import { coverOf, districtStats, getCompany, latestPosts, latestReviews, listDistricts, listProperties, listTeam, mediaUrl } from '@/lib/data'
 import { districtPm } from '@/lib/district-prices'
-import { fmtDate } from '@/lib/format'
+import { fmtDate, quoted } from '@/lib/format'
 import { pageMeta } from '@/lib/seo'
 
 const TOP = ['mahmutlar', 'oba', 'kestel', 'center', 'kargicak', 'avsallar']
@@ -34,7 +34,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
     districtStats(),
     listProperties(locale, { deal: 'sale', limit: 6 }), // 6 — ровные ряды и в 3, и в 2 колонки
     listTeam(locale),
-    latestReviews(3),
+    latestReviews(locale, 3),
     latestPosts(locale, 'article', 3),
     latestPosts(locale, 'news', 4),
   ])
@@ -223,7 +223,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             {reviews.map((r) => (
               <div className="rev" key={r.id}>
                 {r.rating ? <div className="stars" aria-label={t('stars', { n: r.rating })}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div> : null}
-                <p>«{r.text}»</p>
+                <p>{quoted(r.text, locale)}</p>
                 <div className="who"><span>{r.who}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>
               </div>
             ))}

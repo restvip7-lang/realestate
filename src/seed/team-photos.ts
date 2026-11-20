@@ -5,6 +5,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { sql } from '@payloadcms/db-postgres'
 import type { Payload, PayloadRequest } from 'payload'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -22,6 +23,9 @@ export const TEAM_PHOTOS: Record<string, [string, string, string]> = {
 type Member = { id: number; slug?: string | null; name: string; photo?: number | { id: number; filename?: string | null } | null }
 
 export async function applyTeamPhotos(payload: Payload, req?: Partial<PayloadRequest>) {
+  // пустая база (первый запуск миграций): менять нечего, а запрос через API шёл бы по схеме из кода,
+  // в которой уже есть поля из более поздних миграций (например, переводимое имя сотрудника)
+  if (!(await hasRows(payload, 'team'))) return 0
   const { docs } = (await payload.find({ collection: 'team', limit: 100, depth: 1, pagination: false, overrideAccess: true, req })) as unknown as { docs: Member[] }
   let updated = 0
   for (const [slug, [name, oldId, newId]] of Object.entries(TEAM_PHOTOS)) {
@@ -44,4 +48,10 @@ export async function applyTeamPhotos(payload: Payload, req?: Partial<PayloadReq
     }
   }
   return updated
+}
+
+/** Есть ли строки в таблице — прямым запросом, без схемы Payload. */
+export async function hasRows(payload: Payload, table: string) {
+  const res = (await payload.db.drizzle.execute(sql.raw(`SELECT EXISTS (SELECT 1 FROM "${table}") AS "ok"`))) as { rows?: { ok: boolean }[] }
+  return !!res.rows?.[0]?.ok
 }

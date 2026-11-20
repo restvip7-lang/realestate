@@ -18,12 +18,13 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   // Фото объектов и обложки из CRM — по адресу нашего сайта, без чужих доменов в коде страниц.
-  // Префиксы совпадают с IMAGE_PROXIES в src/lib/data.ts. «\\:» — двоеточие в имени корзины, а не параметр.
+  // Префиксы совпадают с IMAGE_PROXIES в src/lib/data.ts. «%3A» — двоеточие в имени корзины (просто «:» Next читает как параметр).
   async rewrites() {
     return {
       beforeFiles: [
         { source: '/img/p/:path*', destination: 'https://portfolio.stayrepo.com/lbi-content/:path*' },
-        { source: '/img/m/:path*', destination: 'https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9\\:stay-media/:path*' },
+        { source: '/img/m/:path*', destination: 'https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9%3Astay-media/:path*' },
+        { source: '/img/n/:path*', destination: 'https://stay-property.fra1.cdn.digitaloceanspaces.com/:path*' },
       ],
     }
   },

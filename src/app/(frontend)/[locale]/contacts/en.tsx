@@ -87,13 +87,13 @@ export default async function ContactsEn({ locale }: { locale: Locale }) {
 
       <section className="sec" style={{ background: "var(--mist)" }}>
         <div className="wrap">
-          <div className="sec-head"><div><span className="eyebrow">Addresses</span><h2>Office and showroom</h2></div><p>Drop in during opening hours without an appointment, or arrange a meeting: we'll meet you and show you properties.</p></div>
+          <div className="sec-head"><div><span className="eyebrow">Addresses</span><h2>Office and showroom</h2></div><p>Drop in during opening hours without an appointment, or arrange a meeting: we’ll meet you and show you properties.</p></div>
           <div className="offices">
             <div className="box"><h3>Office in the centre</h3><dl><dt>Address</dt><dd>{company.address}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>Nearby</dt><dd>A 5-minute walk to Cleopatra Beach</dd></dl><a href="#lead" className="btn btn-dark btn-sm">Book a meeting</a></div>
-            <div className="box"><h3>Showroom in Mahmutlar</h3><dl><dt>Address</dt><dd>{company.showroom}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>What's there</dt><dd>New-build presentations, lawyer consultations</dd></dl><Link href="/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">About the showroom</Link></div>
+            <div className="box"><h3>Showroom in Mahmutlar</h3><dl><dt>Address</dt><dd>{company.showroom}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>What’s there</dt><dd>New-build presentations, lawyer consultations</dd></dl><Link href="/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">About the showroom</Link></div>
             <div className="map-box">
               {map}
-              <span className="map-note"><span>The map is not to scale. We'll send you the exact route on WhatsApp.</span></span>
+              <span className="map-note"><span>The map is not to scale. We’ll send you the exact route on WhatsApp.</span></span>
             </div>
           </div>
         </div>
@@ -122,8 +122,8 @@ export default async function ContactsEn({ locale }: { locale: Locale }) {
           <div className="faq" style={{ display: "block" }}>
             <h3 style={{ fontSize: "19px", marginBottom: "4px" }}>Frequently asked questions</h3>
             <details open><summary>Do you work at weekends?</summary><p>The office and showroom are open Monday to Saturday. On Sundays we hold viewings by appointment, and we reply on WhatsApp every day.</p></details>
-            <details><summary>Can we meet if I'm not in Turkey yet?</summary><p>Yes. We hold consultations and viewings by video call at a time that suits you, taking your time zone into account.</p></details>
-            <details><summary>How do I request or delete my data?</summary><p>Email us with the subject "Personal data". The procedure is described in our <Link href="/privacy#how" className="link">privacy policy</Link>.</p></details>
+            <details><summary>Can we meet if I’m not in Turkey yet?</summary><p>Yes. We hold consultations and viewings by video call at a time that suits you, taking your time zone into account.</p></details>
+            <details><summary>How do I request or delete my data?</summary><p>Email us with the subject “Personal data”. The procedure is described in our <Link href="/privacy#how" className="link">privacy policy</Link>.</p></details>
           </div>
         </div>
       </section>

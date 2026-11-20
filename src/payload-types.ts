@@ -526,7 +526,7 @@ export interface Review {
   service?: ('buy' | 'rent' | 'docs' | 'sell') | null;
   expert?: (number | null) | Team;
   /**
-   * На языке клиента, без перевода.
+   * Как написал клиент. В английской версии — перевод (пусто — показывается текст клиента).
    */
   text: string;
   published?: boolean | null;

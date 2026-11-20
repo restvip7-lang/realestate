@@ -8,6 +8,9 @@ import * as migration_20261021_111150_district_guide from './20261021_111150_dis
 import * as migration_20261021_114026_district_mountains from './20261021_114026_district_mountains';
 import * as migration_20261022_090000_rebrand_stay from './20261022_090000_rebrand_stay';
 import * as migration_20261022_110000_team_photos from './20261022_110000_team_photos';
+import * as migration_20261120_180421_team_name_localized from './20261120_180421_team_name_localized';
+import * as migration_20261120_180856_reviews_tags_localized from './20261120_180856_reviews_tags_localized';
+import * as migration_20261120_190000_demo_english from './20261120_190000_demo_english';
 
 export const migrations = [
   {
@@ -48,16 +51,31 @@ export const migrations = [
   {
     up: migration_20261021_114026_district_mountains.up,
     down: migration_20261021_114026_district_mountains.down,
-    name: '20261021_114026_district_mountains'
+    name: '20261021_114026_district_mountains',
   },
   {
     up: migration_20261022_090000_rebrand_stay.up,
     down: migration_20261022_090000_rebrand_stay.down,
-    name: '20261022_090000_rebrand_stay'
+    name: '20261022_090000_rebrand_stay',
   },
   {
     up: migration_20261022_110000_team_photos.up,
     down: migration_20261022_110000_team_photos.down,
-    name: '20261022_110000_team_photos'
+    name: '20261022_110000_team_photos',
+  },
+  {
+    up: migration_20261120_180421_team_name_localized.up,
+    down: migration_20261120_180421_team_name_localized.down,
+    name: '20261120_180421_team_name_localized',
+  },
+  {
+    up: migration_20261120_180856_reviews_tags_localized.up,
+    down: migration_20261120_180856_reviews_tags_localized.down,
+    name: '20261120_180856_reviews_tags_localized',
+  },
+  {
+    up: migration_20261120_190000_demo_english.up,
+    down: migration_20261120_190000_demo_english.down,
+    name: '20261120_190000_demo_english'
   },
 ];

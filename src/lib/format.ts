@@ -15,3 +15,6 @@ export function roomsHint(rooms: string | null | undefined): { key: 'studioHint'
   const [a, b] = String(rooms || '').split('+').map((x) => parseInt(x, 10) || 0)
   return { key: a === 1 && b === 0 ? 'studioHint' : 'roomsHint', values: { a, b } }
 }
+
+/** Цитата в кавычках языка: «…» по-русски, “…” по-английски. */
+export const quoted = (text: string, locale: string) => (locale === 'ru' ? `«${text}»` : `“${text}”`)

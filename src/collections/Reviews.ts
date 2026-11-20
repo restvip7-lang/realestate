@@ -24,8 +24,8 @@ export const Reviews: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'who', type: 'text', label: 'Имя клиента', required: true },
-        { name: 'country', type: 'text', label: 'Страна' },
+        { name: 'who', type: 'text', label: 'Имя клиента', required: true, localized: true },
+        { name: 'country', type: 'text', label: 'Страна', localized: true },
         {
           name: 'date',
           type: 'date',
@@ -67,7 +67,8 @@ export const Reviews: CollectionConfig = {
       type: 'textarea',
       label: 'Текст отзыва',
       required: true,
-      admin: { description: 'На языке клиента, без перевода.' },
+      localized: true,
+      admin: { description: 'Как написал клиент. В английской версии — перевод (пусто — показывается текст клиента).' },
     },
     { name: 'published', type: 'checkbox', label: 'Показывать на сайте', defaultValue: true },
     externalField('Отзыв приходит из CRM: имя, страна, текст и дата перезаписываются при синхронизации. Галочка «Показывать на сайте», услуга и сотрудник остаются нашими.'),

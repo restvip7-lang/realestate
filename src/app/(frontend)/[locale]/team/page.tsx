@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { PostCard } from '@/components/site/PostCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
+import { quoted } from '@/lib/format'
 import { getCompany, getTeamPage, listPosts, listTeam, mediaUrl } from '@/lib/data'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District } from '@/payload-types'
@@ -68,7 +69,7 @@ export default async function TeamPage({ params }: Props) {
               <span className="eyebrow">{t('founderEyebrow')}</span>
               <h2 style={{ marginTop: 8 }}>{founder.name}</h2>
               <p className="hint" style={{ marginTop: 4 }}>{t('founderMeta', { role: founder.role, n: founder.exp ?? 0, langs: founder.langs ?? '' })}</p>
-              {quote && <blockquote>«{quote}»</blockquote>}
+              {quote && <blockquote>{quoted(quote, locale)}</blockquote>}
               {founder.bio && <p>{founder.bio}</p>}
               <p>{t('founderTeam', { n: team.length })}</p>
               <div className="contacts" style={{ marginTop: 18 }}>

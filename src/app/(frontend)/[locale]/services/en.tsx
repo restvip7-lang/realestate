@@ -21,8 +21,8 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
     const m = team.find((t) => t.slug === slug) || (kind !== 'expert' ? team.find((t) => t.kind === kind) : undefined)
     return m ? <p className="hint">Your contact: <Link href={`/team/${m.slug}`} className="link">{m.name}</Link>, {m.role.toLowerCase()}</p> : null
   }
-  const FAQ: [string, string][] = [["Do I pay for the shortlist and viewings?", "No. The consultation, shortlist and viewings are free. Agency services are paid only after the sale contract is signed."], ["Who pays the commission on a new build?", "If the property is from a partner developer, the developer pays the commission, and your price is the same as at the sales office."], ["Can I order just a document check?", "Yes. If you found a property yourself, the lawyer will check the TAPU, debts, permits and the neighbourhood's residence-permit status, from €300 (demo), in 3–5 days."], ["Do you work with sellers?", "Yes. We value the apartment, take photos and video, list it in Russian, English and Turkish, and handle viewings and the deal. Terms: 2% + KDV (demo)."], ["What does rental management include?", "Finding and vetting tenants, the contract, collecting rent, checking the apartment's condition, minor repairs and a monthly report."]]
-  const SERVICES: [string, string][] = [["Selection and viewings", "We pick properties for your budget and goal, show them in person or by video, and tell you honestly about the drawbacks."], ["Document checks", "Our lawyer checks the property before booking. If you found an apartment yourself, we'll check it separately."], ["Deal support", "We handle the deal from booking to the TAPU and the keys: tax number, bank account, contract, valuation, land registry, translator."], ["Residence permit and citizenship", "We arrange residence permits for the whole family after the purchase and handle the citizenship-by-investment programme."], ["Rental management", "We rent out your apartment while you're away from Turkey: we find and vet tenants, collect rent and look after the apartment."], ["Help after the purchase", "We stay with you after the deal: we help you settle in and sort out everyday matters."], ["Selling your property", "For owners in Alanya: we'll value your apartment, take photos and video, list it in our catalogue and on portals, and handle the deal."]]
+  const FAQ: [string, string][] = [["Do I pay for the shortlist and viewings?", "No. The consultation, shortlist and viewings are free. Agency services are paid only after the sale contract is signed."], ["Who pays the commission on a new build?", "If the property is from a partner developer, the developer pays the commission, and your price is the same as at the sales office."], ["Can I order just a document check?", "Yes. If you found a property yourself, the lawyer will check the TAPU, debts, permits and the neighbourhood’s residence-permit status, from €300 (demo), in 3–5 days."], ["Do you work with sellers?", "Yes. We value the apartment, take photos and video, list it in Russian, English and Turkish, and handle viewings and the deal. Terms: 2% + KDV (demo)."], ["What does rental management include?", "Finding and vetting tenants, the contract, collecting rent, checking the apartment’s condition, minor repairs and a monthly report."]]
+  const SERVICES: [string, string][] = [["Selection and viewings", "We pick properties for your budget and goal, show them in person or by video, and tell you honestly about the drawbacks."], ["Document checks", "Our lawyer checks the property before booking. If you found an apartment yourself, we’ll check it separately."], ["Deal support", "We handle the deal from booking to the TAPU and the keys: tax number, bank account, contract, valuation, land registry, translator."], ["Residence permit and citizenship", "We arrange residence permits for the whole family after the purchase and handle the citizenship-by-investment programme."], ["Rental management", "We rent out your apartment while you’re away from Turkey: we find and vet tenants, collect rent and look after the apartment."], ["Help after the purchase", "We stay with you after the deal: we help you settle in and sort out everyday matters."], ["Selling your property", "For owners in Alanya: we’ll value your apartment, take photos and video, list it in our catalogue and on portals, and handle the deal."]]
   const crumbs = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', '/'], ['Services', '/services']].map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: p, locale })}` })) }
   const ld = [
     crumbs,
@@ -55,9 +55,9 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
             </article>
             <article className="scard rv" id="legal">
               <div className="top"><span className="ic" aria-hidden="true">§</span><span className="price-tag free">Included in the deal</span></div>
-              <h3>Document checks</h3><p>Our lawyer checks the property before booking. If you found an apartment yourself, we'll check it separately.</p>
-              <ul className="checklist"><li>TAPU, debts and encumbrances</li><li>Occupancy permit (iskan) and alterations</li><li>The neighbourhood's residence-permit status</li><li>The developer's reputation and permits</li><li>A separate property check from €300 (demo)</li></ul>
-              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">When we check</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">The agency's lawyer</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
+              <h3>Document checks</h3><p>Our lawyer checks the property before booking. If you found an apartment yourself, we’ll check it separately.</p>
+              <ul className="checklist"><li>TAPU, debts and encumbrances</li><li>Occupancy permit (iskan) and alterations</li><li>The neighbourhood’s residence-permit status</li><li>The developer’s reputation and permits</li><li>A separate property check from €300 (demo)</li></ul>
+              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">When we check</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">The agency’s lawyer</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("murat-kaya", "lawyer")}
             </article>
             <article className="scard rv" id="deal">
@@ -76,21 +76,21 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
             </article>
             <article className="scard rv" id="rental">
               <div className="top"><span className="ic" aria-hidden="true">⌂</span><span className="price-tag">from 15% of rent</span></div>
-              <h3>Rental management</h3><p>We rent out your apartment while you're away from Turkey: we find and vet tenants, collect rent and look after the apartment.</p>
+              <h3>Rental management</h3><p>We rent out your apartment while you’re away from Turkey: we find and vet tenants, collect rent and look after the apartment.</p>
               <ul className="checklist"><li>Long-term rental: 15% of the rent (demo)</li><li>Seasonal rental: 25% of income (demo)</li><li>Photos, listings, viewings, contract</li><li>Monthly report and minor repairs</li><li>Free yield calculation before you buy</li></ul>
               <div className="acts"><Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="btn btn-line btn-sm">Rental yield</Link><Link href="/rent" className="btn btn-line btn-sm">Apartments for rent</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("daniel-marten", "expert")}
             </article>
             <article className="scard rv" id="after">
-              <div className="top"><span className="ic" aria-hidden="true">✓</span><span className="price-tag">At partners' prices</span></div>
+              <div className="top"><span className="ic" aria-hidden="true">✓</span><span className="price-tag">At partners’ prices</span></div>
               <h3>Help after the purchase</h3><p>We stay with you after the deal: we help you settle in and sort out everyday matters.</p>
-              <ul className="checklist"><li>Transfer of water, electricity and internet to your name</li><li>DASK earthquake insurance and home insurance</li><li>Furniture packages and repairs by trusted tradespeople</li><li>Paying aidat and utilities while you're away from Turkey</li></ul>
+              <ul className="checklist"><li>Transfer of water, electricity and internet to your name</li><li>DASK earthquake insurance and home insurance</li><li>Furniture packages and repairs by trusted tradespeople</li><li>Paying aidat and utilities while you’re away from Turkey</li></ul>
               <div className="acts"><Link href="/how-to-buy#step-6" className="btn btn-line btn-sm">What happens after the TAPU</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("elena-demir", "expert")}
             </article>
             <article className="scard rv wide" id="sell">
               <div className="top"><span className="ic" aria-hidden="true">€</span><span className="price-tag">2% + KDV</span></div>
-              <h3>Selling your property</h3><p>For owners in Alanya: we'll value your apartment, take photos and video, list it in our catalogue and on portals, and handle the deal.</p>
+              <h3>Selling your property</h3><p>For owners in Alanya: we’ll value your apartment, take photos and video, list it in our catalogue and on portals, and handle the deal.</p>
               <ul className="checklist"><li>Free market valuation</li><li>Professional photos and video</li><li>Advertising in Russian, English and Turkish</li><li>Viewings and negotiations without you</li></ul>
               <div className="acts"><a href="#lead" className="btn btn-line btn-sm">Value my apartment</a><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("emre-yyldyz", "founder")}
@@ -126,14 +126,14 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
             <div className="contacts" style={{ marginTop: "18px" }}><Link href="/how-to-buy#costs" className="btn btn-dark">Purchase cost calculator</Link></div>
           </div>
           <table className="ptable"><caption className="vh">Service prices (demo)</caption><thead><tr><th scope="col">Service</th><th scope="col" className="num">Price (demo)</th></tr></thead><tbody>
-            <tr><td>Selection and viewings</td><td className="num">free</td></tr><tr><td>Document check when buying through us</td><td className="num">included in the deal</td></tr><tr><td>Separate property check</td><td className="num">from €300</td></tr><tr><td>Purchase support (resale)</td><td className="num">2% + KDV 20%</td></tr><tr><td>Purchase support (partner new build)</td><td className="num">paid by the developer</td></tr><tr><td>Residence permit for buyers</td><td className="num">free (state fees extra)</td></tr><tr><td>Citizenship by investment</td><td className="num">by agreement</td></tr><tr><td>Long-term rental: finding a tenant</td><td className="num">one month's rent</td></tr><tr><td>Rental management</td><td className="num">15–25% of income</td></tr><tr><td>Selling your property</td><td className="num">2% + KDV 20%</td></tr>
+            <tr><td>Selection and viewings</td><td className="num">free</td></tr><tr><td>Document check when buying through us</td><td className="num">included in the deal</td></tr><tr><td>Separate property check</td><td className="num">from €300</td></tr><tr><td>Purchase support (resale)</td><td className="num">2% + KDV 20%</td></tr><tr><td>Purchase support (partner new build)</td><td className="num">paid by the developer</td></tr><tr><td>Residence permit for buyers</td><td className="num">free (state fees extra)</td></tr><tr><td>Citizenship by investment</td><td className="num">by agreement</td></tr><tr><td>Long-term rental: finding a tenant</td><td className="num">one month’s rent</td></tr><tr><td>Rental management</td><td className="num">15–25% of income</td></tr><tr><td>Selling your property</td><td className="num">2% + KDV 20%</td></tr>
           </tbody></table>
         </div>
       </section>
 
       <section className="sec">
         <div className="wrap faq">
-          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about our services</h2><p className="hint" style={{ marginTop: "10px" }}>Didn't find an answer? <a href="#lead" className="link">Ask us →</a></p></div>
+          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about our services</h2><p className="hint" style={{ marginTop: "10px" }}>Didn’t find an answer? <a href="#lead" className="link">Ask us →</a></p></div>
           <div id="faq">{FAQ.map(([q, a], i) => <details key={q} open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}</div>
         </div>
       </section>

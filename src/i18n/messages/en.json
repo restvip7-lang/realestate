@@ -3,7 +3,7 @@
     "homeTitle": "Property in Alanya: sea-view apartments and villas — Kleo Homes",
     "homeDescription": "Apartments, penthouses and villas in Alanya from developers and owners. Property search, video viewings, legal checks and support through to the title deed (TAPU).",
     "demo": "Demo version: listings, prices, reviews, people and contacts are fictional",
-    "translationNote": "Translation in progress: some listings and articles are shown in Russian"
+    "translationNote": ""
   },
   "nav": {
     "sale": "Properties",
@@ -535,7 +535,17 @@
     "newNote": "New build from the developer: the developer pays the agency fee.",
     "how": "How we calculate →",
     "rentLine": "To move in ≈ {sum} →",
-    "buyLine": "+ ≈ {sum} purchase costs ({pct}%) →"
+    "buyLine": "+ ≈ {sum} purchase costs ({pct}%) →",
+    "priceLabel": "Property price, {sym}",
+    "typeLabel": "Property type",
+    "resale": "Resale",
+    "newBuild": "New build from a partner developer",
+    "colItem": "Item",
+    "colSum": "Amount",
+    "totalOver": "Total on top of the price",
+    "totalWithPrice": "Total including the property price:",
+    "articleLink": "Cost breakdown in our article",
+    "enterPrice": "Enter the property price."
   },
   "view": {
     "title": "Book a viewing",
@@ -945,7 +955,20 @@
     "label": "Cookie consent",
     "text": "We use cookies: essential ones to make the site work, analytics and advertising only with your consent. <link>Details and settings</link>",
     "necessary": "Essential only",
-    "all": "Accept all"
+    "all": "Accept all",
+    "settingsLabel": "Cookie settings",
+    "necessaryTitle": "Necessary",
+    "necessaryText": "The site doesn't work without them; they can't be turned off.",
+    "analyticsTitle": "Analytics",
+    "analyticsText": "Helps us understand what to improve on the site.",
+    "adsTitle": "Advertising",
+    "adsText": "Selections and ads with properties you've viewed.",
+    "save": "Save choice",
+    "allowAll": "Allow all",
+    "saved": "Saved {date}: analytics — {analytics}, advertising — {ads}.",
+    "yes": "yes",
+    "no": "no",
+    "notChosen": "You haven't made a choice yet: only necessary cookies are active."
   },
   "favs": {
     "title": "Favourites",

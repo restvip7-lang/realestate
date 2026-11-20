@@ -23,11 +23,11 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
   )
   const lawyer = team.find((t) => t.kind === 'lawyer') || team[0]
   const lawyerImg = mediaUrl(lawyer?.photo, 'thumb')
-  const FAQ: [string, React.ReactNode, string][] = [["Can I buy several apartments instead of one?", <>Yes. You can buy several properties if their total value under the valuation reports is from $400,000 (demo condition). All of them get a no-sale annotation for 3 years.</>, "Yes. You can buy several properties if their total value under the valuation reports is from $400,000 (demo condition). All of them get a no-sale annotation for 3 years."], ["Can I rent the property out?", <>Yes, you can rent it out for all 3 years. This is a common choice: the property earns income while the application is processed. We'll calculate the yield, <Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="link">as in our rental article</Link>.</>, "Yes, you can rent it out for all 3 years. This is a common choice: the property earns income while the application is processed. We'll calculate the yield, as in our rental article."], ["Do I have to live in Turkey?", <>No. There are no residence or language requirements. You need to come to give biometrics; everything else can be done by power of attorney.</>, "No. There are no residence or language requirements. You need to come to give biometrics; everything else can be done by power of attorney."], ["Will children over 18 get a passport?", <>No. Under the programme, passports are issued to the spouse and children under 18. Adult children need a separate purchase or another basis.</>, "No. Under the programme, passports are issued to the spouse and children under 18. Adult children need a separate purchase or another basis."], ["What if I sell the property before 3 years?", <>You can't: the annotation on the TAPU blocks the sale from being registered. After 3 years you can sell, and you keep the passport.</>, "You can't: the annotation on the TAPU blocks the sale from being registered. After 3 years you can sell, and you keep the passport."], ["Does a new build qualify?", <>Yes, if it is valued at the required amount and paid through a bank. Properties under construction have special rules; the lawyer will explain them at the consultation.</>, "Yes, if it is valued at the required amount and paid through a bank. Properties under construction have special rules; the lawyer will explain them at the consultation."]]
+  const FAQ: [string, React.ReactNode, string][] = [["Can I buy several apartments instead of one?", <>Yes. You can buy several properties if their total value under the valuation reports is from $400,000 (demo condition). All of them get a no-sale annotation for 3 years.</>, "Yes. You can buy several properties if their total value under the valuation reports is from $400,000 (demo condition). All of them get a no-sale annotation for 3 years."], ["Can I rent the property out?", <>Yes, you can rent it out for all 3 years. This is a common choice: the property earns income while the application is processed. We’ll calculate the yield, <Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="link">as in our rental article</Link>.</>, "Yes, you can rent it out for all 3 years. This is a common choice: the property earns income while the application is processed. We’ll calculate the yield, as in our rental article."], ["Do I have to live in Turkey?", <>No. There are no residence or language requirements. You need to come to give biometrics; everything else can be done by power of attorney.</>, "No. There are no residence or language requirements. You need to come to give biometrics; everything else can be done by power of attorney."], ["Will children over 18 get a passport?", <>No. Under the programme, passports are issued to the spouse and children under 18. Adult children need a separate purchase or another basis.</>, "No. Under the programme, passports are issued to the spouse and children under 18. Adult children need a separate purchase or another basis."], ["What if I sell the property before 3 years?", <>You can’t: the annotation on the TAPU blocks the sale from being registered. After 3 years you can sell, and you keep the passport.</>, "You can’t: the annotation on the TAPU blocks the sale from being registered. After 3 years you can sell, and you keep the passport."], ["Does a new build qualify?", <>Yes, if it is valued at the required amount and paid through a bank. Properties under construction have special rules; the lawyer will explain them at the consultation.</>, "Yes, if it is valued at the required amount and paid through a bank. Properties under construction have special rules; the lawyer will explain them at the consultation."]]
   const objsBlock = objs.length ? (
     <div className="grid3 limit4">{objs.slice(0, 6).map((p) => <PropertyCard key={p.id} p={p} />)}</div>
   ) : (
-    <div className="empty"><b>There are no properties from $400,000 in the catalogue right now</b>We'll find options with partner developers or suggest several properties for the required amount.<a href="#lead" className="btn btn-line btn-sm" style={{ marginTop: 14 }}>Send a request</a></div>
+    <div className="empty"><b>There are no properties from $400,000 in the catalogue right now</b>We’ll find options with partner developers or suggest several properties for the required amount.<a href="#lead" className="btn btn-line btn-sm" style={{ marginTop: 14 }}>Send a request</a></div>
   )
   const lawyerBox = lawyer ? (
     <div className="author-box" style={{ maxWidth: 'none' }}>
@@ -54,7 +54,7 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
           <nav className="crumbs" aria-label="Breadcrumbs"><Link href="/">Home</Link>›<span aria-current="page">Turkish citizenship</span></nav>
           <span className="eyebrow">Citizenship programme</span>
           <h1>Turkish citizenship by buying property</h1>
-          <p className="lead-t">Buy a home from $400,000 and get a Turkish passport for yourself, your spouse and children. We'll find properties in Alanya, check the documents and handle the whole application.</p>
+          <p className="lead-t">Buy a home from $400,000 and get a Turkish passport for yourself, your spouse and children. We’ll find properties in Alanya, check the documents and handle the whole application.</p>
           <div className="cta"><a href="#objects" className="btn btn-coral">Properties for citizenship</a><a href="#lead" className="btn btn-ghost">Free consultation</a></div>
         </div>
       </section>
@@ -95,10 +95,10 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
 
       <section className="sec" style={{ background: "var(--mist)" }}>
         <div className="wrap">
-          <div className="sec-head"><div><span className="eyebrow">Process</span><h2>How the application works</h2></div><p>Timelines are approximate (demo). Each step is handled by the agency's lawyer.</p></div>
+          <div className="sec-head"><div><span className="eyebrow">Process</span><h2>How the application works</h2></div><p>Timelines are approximate (demo). Each step is handled by the agency’s lawyer.</p></div>
           <ol className="timeline">
             <li><b>Consultation and shortlist</b><p>Budget, family members, goal: living, renting out or just the passport.</p><span className="t">1–2 weeks</span></li>
-            <li><b>Checks and booking</b><p>The lawyer checks the TAPU, debts and the property's history.</p><span className="t">3–7 days</span></li>
+            <li><b>Checks and booking</b><p>The lawyer checks the TAPU, debts and the property’s history.</p><span className="t">3–7 days</span></li>
             <li><b>Valuation report</b><p>A licensed valuer confirms the value.</p><span className="t">1 week</span></li>
             <li><b>Bank payment</b><p>A Turkish bank account, the transfer and the conversion certificate.</p><span className="t">1–2 weeks</span></li>
             <li><b>TAPU with annotation</b><p>Registration of ownership and the 3-year no-sale restriction.</p><span className="t">1–2 weeks</span></li>
@@ -115,7 +115,7 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
             <h3>Documents</h3>
             <ul className="checklist">
               <li>Passports of all family members</li>
-              <li>Marriage and children's birth certificates, apostilled and translated</li>
+              <li>Marriage and children’s birth certificates, apostilled and translated</li>
               <li>Photos meeting the migration office requirements</li>
               <li>Tax number and Turkish bank account (we arrange them in 1 day)</li>
               <li>TAPU, valuation report, bank payment documents</li>
@@ -128,7 +128,7 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
               <tr><td>Valuation report</td><td className="num">€400–700</td></tr>
               <tr><td>Translations, notary, apostilles</td><td className="num">€300–800</td></tr>
               <tr><td>Fees and state charges for the family</td><td className="num">€500–1,000</td></tr>
-              <tr><td>Lawyer's support</td><td className="num">by agreement</td></tr>
+              <tr><td>Lawyer’s support</td><td className="num">by agreement</td></tr>
             </tbody></table>
             <p className="hint" style={{ marginTop: "10px" }}>We give an exact estimate for your family and property before booking. Purchase costs are explained <Link href="/blog/skolko-stoit-pokupka-sverkh-tseny-kvartiry-nalogi-tapu-dask" className="link">in this article</Link>.</p>
           </div>
@@ -152,7 +152,7 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
 
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap faq">
-          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about citizenship</h2><p className="hint" style={{ marginTop: "10px" }}>Didn't find an answer? <a href="#lead" className="link">Ask the lawyer →</a></p></div>
+          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about citizenship</h2><p className="hint" style={{ marginTop: "10px" }}>Didn’t find an answer? <a href="#lead" className="link">Ask the lawyer →</a></p></div>
           <div id="faq">{FAQ.map(([q, a], i) => <details key={q} open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}</div>
         </div>
       </section>

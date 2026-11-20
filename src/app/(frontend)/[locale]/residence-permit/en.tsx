@@ -23,11 +23,11 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
   )
   const lawyer = team.find((t) => t.kind === 'lawyer') || team[0]
   const lawyerImg = mediaUrl(lawyer?.photo, 'thumb')
-  const FAQ: [string, React.ReactNode, string][] = [["Can I get a residence permit if the home costs less than $200,000?", <>Not on the basis of ownership (demo condition for Antalya). You can get a tourist residence permit with a rental contract or buy a more expensive property. We'll help you choose.</>, "Not on the basis of ownership (demo condition for Antalya). You can get a tourist residence permit with a rental contract or buy a more expensive property. We'll help you choose."], ["How do I renew the residence permit?", <>As long as you own the property, the permit can be renewed: you apply before the card expires. We'll remind you and prepare the documents.</>, "As long as you own the property, the permit can be renewed: you apply before the card expires. We'll remind you and prepare the documents."], ["Will my family get a residence permit?", <>Yes, your spouse and children under 18 get residence permits as the owner's family members. You need apostilled and translated marriage and birth certificates.</>, "Yes, your spouse and children under 18 get residence permits as the owner's family members. You need apostilled and translated marriage and birth certificates."], ["Can I work with an owner's residence permit?", <>No. Working in Turkey requires a separate work permit. The residence permit lets you live here, open a bank account, connect utilities and take out insurance.</>, "No. Working in Turkey requires a separate work permit. The residence permit lets you live here, open a bank account, connect utilities and take out insurance."], ["How do I find out whether a neighbourhood is open for residence permits?", <>The migration office publishes and regularly updates the list of closed neighbourhoods. We check the address of every property before booking and report changes in the <Link href="/news" className="link">news</Link>.</>, "The migration office publishes and regularly updates the list of closed neighbourhoods. We check the address of every property before booking and report changes in the news."], ["Can I get citizenship later?", <>After several years of continuous residence you can apply for citizenship on general grounds, and with a purchase from $400,000 through the <Link href="/citizenship" className="link">investment programme</Link>.</>, "After several years of continuous residence you can apply for citizenship on general grounds, and with a purchase from $400,000 through the investment programme."]]
+  const FAQ: [string, React.ReactNode, string][] = [["Can I get a residence permit if the home costs less than $200,000?", <>Not on the basis of ownership (demo condition for Antalya). You can get a tourist residence permit with a rental contract or buy a more expensive property. We’ll help you choose.</>, "Not on the basis of ownership (demo condition for Antalya). You can get a tourist residence permit with a rental contract or buy a more expensive property. We’ll help you choose."], ["How do I renew the residence permit?", <>As long as you own the property, the permit can be renewed: you apply before the card expires. We’ll remind you and prepare the documents.</>, "As long as you own the property, the permit can be renewed: you apply before the card expires. We’ll remind you and prepare the documents."], ["Will my family get a residence permit?", <>Yes, your spouse and children under 18 get residence permits as the owner’s family members. You need apostilled and translated marriage and birth certificates.</>, "Yes, your spouse and children under 18 get residence permits as the owner’s family members. You need apostilled and translated marriage and birth certificates."], ["Can I work with an owner’s residence permit?", <>No. Working in Turkey requires a separate work permit. The residence permit lets you live here, open a bank account, connect utilities and take out insurance.</>, "No. Working in Turkey requires a separate work permit. The residence permit lets you live here, open a bank account, connect utilities and take out insurance."], ["How do I find out whether a neighbourhood is open for residence permits?", <>The migration office publishes and regularly updates the list of closed neighbourhoods. We check the address of every property before booking and report changes in the <Link href="/news" className="link">news</Link>.</>, "The migration office publishes and regularly updates the list of closed neighbourhoods. We check the address of every property before booking and report changes in the news."], ["Can I get citizenship later?", <>After several years of continuous residence you can apply for citizenship on general grounds, and with a purchase from $400,000 through the <Link href="/citizenship" className="link">investment programme</Link>.</>, "After several years of continuous residence you can apply for citizenship on general grounds, and with a purchase from $400,000 through the investment programme."]]
   const objsBlock = objs.length ? (
     <div className="grid3 limit4">{objs.slice(0, 6).map((p) => <PropertyCard key={p.id} p={p} />)}</div>
   ) : (
-    <div className="empty"><b>There are no properties from $200,000 in the catalogue right now</b>We'll find options with partner developers or suggest several properties for the required amount.<a href="#lead" className="btn btn-line btn-sm" style={{ marginTop: 14 }}>Send a request</a></div>
+    <div className="empty"><b>There are no properties from $200,000 in the catalogue right now</b>We’ll find options with partner developers or suggest several properties for the required amount.<a href="#lead" className="btn btn-line btn-sm" style={{ marginTop: 14 }}>Send a request</a></div>
   )
   const lawyerBox = lawyer ? (
     <div className="author-box" style={{ maxWidth: 'none' }}>
@@ -54,7 +54,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
           <nav className="crumbs" aria-label="Breadcrumbs"><Link href="/">Home</Link>›<span aria-current="page">Residence permit when buying a home</span></nav>
           <span className="eyebrow">Residence permit</span>
           <h1>Turkish residence permit when buying a home in Alanya</h1>
-          <p className="lead-t">A home owner can get a residence permit for themselves and their family. We'll check whether the property qualifies and whether the neighbourhood is open for residence permits, and help with the documents until you receive the card.</p>
+          <p className="lead-t">A home owner can get a residence permit for themselves and their family. We’ll check whether the property qualifies and whether the neighbourhood is open for residence permits, and help with the documents until you receive the card.</p>
           <div className="cta"><a href="#objects" className="btn btn-coral">Properties for a residence permit</a><a href="#lead" className="btn btn-ghost">Check a property</a></div>
         </div>
       </section>
@@ -84,8 +84,8 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
             <h3>Good to know</h3>
             <ul className="checklist no">
               <li>Some neighbourhoods are closed to new residence permits, and the list changes several times a year. We check the status of every address before booking.</li>
-              <li>A residence permit doesn't give the right to work: that requires a separate work permit.</li>
-              <li>Haven't bought yet? You can get a residence permit with a rental contract: we'll find you <Link href="/rent" className="link">an apartment to rent</Link>.</li>
+              <li>A residence permit doesn’t give the right to work: that requires a separate work permit.</li>
+              <li>Haven’t bought yet? You can get a residence permit with a rental contract: we’ll find you <Link href="/rent" className="link">an apartment to rent</Link>.</li>
             </ul>
             <p className="hint" style={{ marginTop: "12px" }}>News about rule changes is in the <Link href="/news?cat=%D0%92%D0%9D%D0%96%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%B6%D0%B4%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%BE" className="link">News</Link> section.</p>
           </div>
@@ -94,7 +94,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
 
       <section className="sec" style={{ background: "var(--mist)" }}>
         <div className="wrap">
-          <div className="sec-head"><div><span className="eyebrow">Process</span><h2>How to get a residence permit</h2></div><p>Timelines are approximate (demo). The agency's lawyer prepares and checks the documents.</p></div>
+          <div className="sec-head"><div><span className="eyebrow">Process</span><h2>How to get a residence permit</h2></div><p>Timelines are approximate (demo). The agency’s lawyer prepares and checks the documents.</p></div>
           <ol className="timeline">
             <li><b>Shortlist with a neighbourhood check</b><p>We only show properties in neighbourhoods open for residence permits.</p><span className="t">1–2 weeks</span></li>
             <li><b>Purchase and TAPU</b><p>Document checks, valuation, ownership registration.</p><span className="t">2–4 weeks</span></li>
@@ -123,7 +123,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
               <tr><td>Card fee</td><td className="num">about €30–50</td></tr>
               <tr><td>Health insurance</td><td className="num">€100–400 a year</td></tr>
               <tr><td>Passport translation, notary</td><td className="num">€50–100</td></tr>
-              <tr><td>Lawyer's support</td><td className="num">free for buyers</td></tr>
+              <tr><td>Lawyer’s support</td><td className="num">free for buyers</td></tr>
             </tbody></table>
             <p className="hint" style={{ marginTop: "10px" }}>The full list of documents and timelines is <Link href="/blog/vnzh-pri-pokupke-nedvizhimosti-v-alanii-usloviya-i-dokumenty" className="link">in our residence permit article</Link>.</p>
           </div>
@@ -147,7 +147,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
 
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap faq">
-          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about residence permits</h2><p className="hint" style={{ marginTop: "10px" }}>Didn't find an answer? <a href="#lead" className="link">Ask the lawyer →</a></p></div>
+          <div><span className="eyebrow">Questions</span><h2 style={{ marginTop: "8px" }}>Frequently asked questions about residence permits</h2><p className="hint" style={{ marginTop: "10px" }}>Didn’t find an answer? <a href="#lead" className="link">Ask the lawyer →</a></p></div>
           <div id="faq">{FAQ.map(([q, a], i) => <details key={q} open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}</div>
         </div>
       </section>

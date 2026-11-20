@@ -24,7 +24,7 @@ export function BuyCalculator({ articleHref }: { articleHref?: string }) {
     <div className="calc">
       <form className="box" noValidate onSubmit={(e) => e.preventDefault()}>
         <div className="fld">
-          <label htmlFor="c-price">Цена объекта, {CURRENCY_SYMBOL[cur]}</label>
+          <label htmlFor="c-price">{t('priceLabel', { sym: CURRENCY_SYMBOL[cur] })}</label>
           <input
             id="c-price"
             inputMode="numeric"
@@ -39,10 +39,10 @@ export function BuyCalculator({ articleHref }: { articleHref?: string }) {
           />
         </div>
         <div className="fld">
-          <label htmlFor="c-type">Тип жилья</label>
+          <label htmlFor="c-type">{t('typeLabel')}</label>
           <select id="c-type" value={resale ? 'resale' : 'new'} onChange={(e) => setResale(e.target.value === 'resale')}>
-            <option value="resale">Вторичка</option>
-            <option value="new">Новостройка от застройщика-партнёра</option>
+            <option value="resale">{t('resale')}</option>
+            <option value="new">{t('newBuild')}</option>
           </select>
         </div>
         <label className="check"><input type="checkbox" checked={split} onChange={(e) => setSplit(e.target.checked)} />{t('split')}</label>
@@ -51,7 +51,7 @@ export function BuyCalculator({ articleHref }: { articleHref?: string }) {
       <div>
         <table className="ptable">
           <caption className="vh">{t('buyCaption')}</caption>
-          <thead><tr><th scope="col">Статья</th><th scope="col" className="num">Сумма</th></tr></thead>
+          <thead><tr><th scope="col">{t('colItem')}</th><th scope="col" className="num">{t('colSum')}</th></tr></thead>
           <tbody>
             {r.rows.map((row) => (
               <tr key={row.key}>
@@ -61,9 +61,9 @@ export function BuyCalculator({ articleHref }: { articleHref?: string }) {
             ))}
           </tbody>
         </table>
-        <div className="total" aria-live="polite"><span>Итого сверх цены</span><b>{fmt(r.total)} · {r.pct.toFixed(1)}%</b></div>
+        <div className="total" aria-live="polite"><span>{t('totalOver')}</span><b>{fmt(r.total)} · {r.pct.toFixed(1)}%</b></div>
         <p className="hint" style={{ marginTop: 10 }}>
-          {eur ? <>Итого с ценой объекта: <b>{fmt(eur + r.total)}</b>. {t('demoRates')}{articleHref && <> <Link href={articleHref} className="link">Разбор расходов в статье</Link>.</>}</> : 'Введите цену объекта.'}
+          {eur ? <>{t('totalWithPrice')} <b>{fmt(eur + r.total)}</b>. {t('demoRates')}{articleHref && <> <Link href={articleHref} className="link">{t('articleLink')}</Link>.</>}</> : t('enterPrice')}
         </p>
       </div>
     </div>

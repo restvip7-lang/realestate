@@ -8,7 +8,7 @@ import { ReviewForm } from '@/components/site/ReviewForm'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { getCompany, listReviews, listTeam, mediaUrl } from '@/lib/data'
-import { fmtDate } from '@/lib/format'
+import { fmtDate, quoted } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
@@ -25,7 +25,7 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const sp = await searchParams
-  const [t, tc, company, all, team] = await Promise.all([getTranslations('reviews'), getTranslations('catalog'), getCompany(locale), listReviews(), listTeam(locale)])
+  const [t, tc, company, all, team] = await Promise.all([getTranslations('reviews'), getTranslations('catalog'), getCompany(locale), listReviews(locale), listTeam(locale)])
   const svc = SVC.find((s) => s === sp.s)
   const expertSlug = typeof sp.e === 'string' ? sp.e : ''
   const expertOf = (r: (typeof all)[number]) => {
@@ -99,7 +99,7 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
                 <article className="rev" key={r.id}>
                   {r.service && <span className="tag">{t(`services.${r.service}`)}</span>}
                   {r.rating ? <div className="stars" aria-label={t('ofFive', { n: r.rating })}>{stars(r.rating)}</div> : null}
-                  <p>«{r.text}»</p>
+                  <p>{quoted(r.text, locale)}</p>
                   {m && <span className="by">{a && <Image src={a} alt="" width={56} height={56} />}{t('expertIs')} <Link href={`/team/${m.slug}`} className="link">{m.name}</Link></span>}
                   <div className="who"><span><b>{r.who}</b>{r.country ? ` · ${r.country}` : ''}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>
                 </article>
