@@ -30,4 +30,6 @@ export function rebrand<T extends string | null | undefined>(text: T): T {
 }
 
 /** Упоминает ли текст Stay Property (для отзывов: такие скрываем, а не переписываем — это слова клиентов о другой компании). */
-export const mentionsStay = (text?: string | null) => !!text && /stay ?property|виктори/i.test(text)
+/** Шаблон для JS и Postgres: «Stay Property», «СтэйПроперти» / «Стей Проперти», «Виктория» (прежнее название). */
+export const STAY_REVIEW_PATTERN = 'stay ?property|ст[эе]й[ -]?проперти|виктори'
+export const mentionsStay = (text?: string | null) => !!text && new RegExp(STAY_REVIEW_PATTERN, 'i').test(text)

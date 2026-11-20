@@ -10,7 +10,7 @@ import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { districtStats, expertProperties, findPublished, getCompany, getMember, listPosts, listReviews, listTeam, mediaUrl } from '@/lib/data'
-import { fmtDate } from '@/lib/format'
+import { fmtDate, quoted } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District } from '@/payload-types'
 
@@ -40,7 +40,7 @@ export default async function MemberPage({ params }: Props) {
   if (!m) notFound()
   const [t, tc, company, team, arts, reviews, stats] = await Promise.all([
     getTranslations('member'), getTranslations('catalog'), getCompany(locale), listTeam(locale),
-    listPosts(locale, { kind: 'article', author: m.id, limit: 3 }), listReviews(), districtStats(),
+    listPosts(locale, { kind: 'article', author: m.id, limit: 3 }), listReviews(locale), districtStats(),
   ])
   // объекты эксперта — как на странице объекта; основатель ведёт виллы и премиум, юрист объектов не ведёт
   const { docs: objs, total: objsTotal } = m.kind === 'founder'
@@ -67,7 +67,7 @@ export default async function MemberPage({ params }: Props) {
         <div className="wrap">
           <nav className="crumbs" aria-label={tc('crumbs')}><Link href="/">{tc('home')}</Link>›<Link href="/team">{t('crumbs')}</Link>›<span aria-current="page">{m.name}</span></nav>
           <div className="mhero-grid">
-            {img ? <Image src={img} alt={t('photoAlt', { name: m.name })} width={600} height={750} priority sizes="(max-width: 760px) 220px, 300px" /> : <div />}
+            {img ? <Image src={img} alt={m.kind === 'founder' ? m.name : t('photoAlt', { name: m.name })} width={600} height={750} priority sizes="(max-width: 760px) 220px, 300px" /> : <div />}
             <div>
               <span className="eyebrow">{m.kind === 'founder' ? t('founder') : t('expert')}</span>
               <h1>{m.name}</h1>
@@ -86,7 +86,7 @@ export default async function MemberPage({ params }: Props) {
 
       <div className="wrap">
         <div className="kfacts k4" role="list" aria-label={t('factsLabel')}>
-          <div role="listitem"><span>{t('exp')}</span><b>{t('years', { n: m.exp ?? 0 })}</b><small>{t('inRealty')}</small></div>
+          <div role="listitem"><span>{t('exp')}</span><b>{t('years', { n: m.exp ?? 0 })}</b><small>{t(m.kind === 'founder' ? 'inBusiness' : 'inRealty')}</small></div>
           <div role="listitem"><span>{t('langs')}</span><b>{m.langs}</b><small>{t('langsNote')}</small></div>
           <div role="listitem">
             <span>{m.kind === 'lawyer' ? t('checks') : t('leads')}</span>
@@ -146,7 +146,7 @@ export default async function MemberPage({ params }: Props) {
               {revs.slice(0, 3).map((r) => (
                 <div className="rev" key={r.id}>
                   {r.rating ? <div className="stars" aria-label={`${r.rating}/5`}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div> : null}
-                  <p>«{r.text}»</p>
+                  <p>{quoted(r.text, locale)}</p>
                   <div className="who"><span>{r.who}</span><span>{fmtDate(r.date, locale, { month: '2-digit', year: 'numeric' })}</span></div>
                 </div>
               ))}

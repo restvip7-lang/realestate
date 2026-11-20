@@ -53,7 +53,7 @@ export default async function Layout({ children, params }: { children: React.Rea
         <NextIntlClientProvider>
           <CurrencyProvider rates={rates}>
             {company.isDemo && <div className="demo-strip">{tm('demo')}</div>}
-            {locale !== 'ru' && <div className="i18n-note">{tm('translationNote')}</div>}
+            {locale !== 'ru' && tm('translationNote') && <div className="i18n-note">{tm('translationNote')}</div>}
             <Header company={company} />
             {children}
             <LeadSection company={company} />

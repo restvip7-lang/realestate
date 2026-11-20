@@ -131,7 +131,7 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
           <aside>
             <div className="aside-box">
               <h2>{t('rates')}</h2>
-              <div className="rates">{Object.entries(rates).filter(([k]) => k !== 'EUR').map(([k, r]) => <div key={k}><span>1 € → {k}</span><b>{r.toLocaleString('ru-RU')} {SYM[k] || ''}</b></div>)}</div>
+              <div className="rates">{Object.entries(rates).filter(([k]) => k !== 'EUR').map(([k, r]) => <div key={k}><span>1 € → {k}</span><b>{r.toLocaleString(locale)} {SYM[k] || ''}</b></div>)}</div>
               <p className="hint">{t('ratesNote')}</p>
             </div>
             <div className="aside-box">

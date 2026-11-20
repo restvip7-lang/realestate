@@ -25,7 +25,7 @@ export const Team: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        { name: 'name', type: 'text', label: 'Имя и фамилия', required: true },
+        { name: 'name', type: 'text', label: 'Имя и фамилия', required: true, localized: true },
         { name: 'role', type: 'text', label: 'Должность', required: true, localized: true },
       ],
     },
@@ -39,7 +39,7 @@ export const Team: CollectionConfig = {
           required: true,
           defaultValue: 'expert',
           options: [
-            { label: 'Основатель', value: 'founder' },
+            { label: 'Руководитель (директор)', value: 'founder' },
             { label: 'Эксперт (ведёт объекты)', value: 'expert' },
             { label: 'Юрист', value: 'lawyer' },
           ],

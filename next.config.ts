@@ -13,14 +13,24 @@ const nextConfig: NextConfig = {
   images: {
     // фото из админки: локально через /api/media, на Vercel — из Blob
     localPatterns: [{ pathname: '/api/media/file/**' }],
-    // фото объектов из Stay Portfolio показываем по ссылке, без оптимизатора Vercel (unoptimized), см. docs/stay-import.md
-    remotePatterns: [
-      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
-      { protocol: 'https', hostname: 'portfolio.stayrepo.com', pathname: '/lbi-content/**' },
-      // обложки новостей и услуг Stay Property (показываются без оптимизатора, unoptimized)
-      { protocol: 'https', hostname: 'eu2.contabostorage.com', pathname: '/eeb8c723fe9e48fb9591639419bc7af9:stay-media/**' },
-    ],
+    // фото из CRM показываем без оптимизатора Vercel (unoptimized) по адресам /img/… (rewrites ниже)
+    remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
     formats: ['image/avif', 'image/webp'],
+  },
+  // прежний адрес карточки руководителя (вымышленный основатель → директор, src/seed/director.ts)
+  async redirects() {
+    return [{ source: '/:locale(ru|en)/team/emre-yyldyz', destination: '/:locale/team/grigoriy-lazarev', permanent: true }]
+  },
+  // Фото объектов и обложки из CRM — по адресу нашего сайта, без чужих доменов в коде страниц.
+  // Префиксы совпадают с IMAGE_PROXIES в src/lib/data.ts. «%3A» — двоеточие в имени корзины (просто «:» Next читает как параметр).
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: '/img/p/:path*', destination: 'https://portfolio.stayrepo.com/lbi-content/:path*' },
+        { source: '/img/m/:path*', destination: 'https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9%3Astay-media/:path*' },
+        { source: '/img/n/:path*', destination: 'https://stay-property.fra1.cdn.digitaloceanspaces.com/:path*' },
+      ],
+    }
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
