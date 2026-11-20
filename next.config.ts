@@ -13,14 +13,19 @@ const nextConfig: NextConfig = {
   images: {
     // фото из админки: локально через /api/media, на Vercel — из Blob
     localPatterns: [{ pathname: '/api/media/file/**' }],
-    // фото объектов из Stay Portfolio показываем по ссылке, без оптимизатора Vercel (unoptimized), см. docs/stay-import.md
-    remotePatterns: [
-      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
-      { protocol: 'https', hostname: 'portfolio.stayrepo.com', pathname: '/lbi-content/**' },
-      // обложки новостей и услуг Stay Property (показываются без оптимизатора, unoptimized)
-      { protocol: 'https', hostname: 'eu2.contabostorage.com', pathname: '/eeb8c723fe9e48fb9591639419bc7af9:stay-media/**' },
-    ],
+    // фото из CRM показываем без оптимизатора Vercel (unoptimized) по адресам /img/… (rewrites ниже)
+    remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
     formats: ['image/avif', 'image/webp'],
+  },
+  // Фото объектов и обложки из CRM — по адресу нашего сайта, без чужих доменов в коде страниц.
+  // Префиксы совпадают с IMAGE_PROXIES в src/lib/data.ts. «\\:» — двоеточие в имени корзины, а не параметр.
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: '/img/p/:path*', destination: 'https://portfolio.stayrepo.com/lbi-content/:path*' },
+        { source: '/img/m/:path*', destination: 'https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9\\:stay-media/:path*' },
+      ],
+    }
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

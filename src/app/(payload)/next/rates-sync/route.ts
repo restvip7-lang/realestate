@@ -4,8 +4,8 @@ import { getPayload } from 'payload'
 
 import { runRatesSync } from '@/lib/rates-sync'
 
-// Кнопка «Обновить курсы» в админке (администратор и редактор — как права на «Курсы валют»).
-// Ночное обновление идёт вместе с синхронизацией контента: GET /next/content-sync (vercel.json).
+// POST — кнопка «Обновить курсы» в админке (администратор и редактор — как права на «Курсы валют»).
+// GET — ночной запуск Vercel Cron (vercel.json), заголовок Authorization: Bearer <CRON_SECRET>.
 export const dynamic = 'force-dynamic'
 
 export async function POST() {
@@ -18,5 +18,19 @@ export async function POST() {
   } catch (err) {
     payload.logger.warn({ msg: `Курсы валют не обновлены: ${err instanceof Error ? err.message : err}` })
     return Response.json({ error: `Курсы не обновлены: ${err instanceof Error ? err.message : err}. Прежние курсы оставлены.` }, { status: 502 })
+  }
+}
+
+export async function GET(req: Request) {
+  const secret = process.env.CRON_SECRET
+  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) return Response.json({ error: 'Нет доступа' }, { status: 401 })
+  const payload = await getPayload({ config })
+  try {
+    const message = await runRatesSync(payload)
+    payload.logger.info({ msg: `Курсы cron: ${message}` })
+    return Response.json({ message })
+  } catch (err) {
+    payload.logger.warn({ msg: `Курсы cron: не обновлены — ${err instanceof Error ? err.message : err}` })
+    return Response.json({ error: 'Курсы не обновлены, прежние оставлены' }, { status: 502 })
   }
 }

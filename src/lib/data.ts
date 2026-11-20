@@ -238,7 +238,20 @@ export const districtOf = (p: Property) => (typeof p.district === 'object' ? p.d
 
 export type PropertyPhoto = { src: string; full: string; alt?: string | null; remote: boolean }
 
-/** Фото объекта: загруженные в админке, а если их нет — ссылки на фото в Stay Portfolio (не копируются к нам). */
+/**
+ * Внешние фото (из CRM) отдаём по адресу нашего сайта: /img/p/… и /img/m/… проксируются на хранилища
+ * (rewrites в next.config.ts), чтобы в коде страниц не было чужих доменов. Неизвестные адреса — как есть.
+ */
+export const IMAGE_PROXIES = [
+  ['https://portfolio.stayrepo.com/lbi-content/', '/img/p/'],
+  ['https://eu2.contabostorage.com/eeb8c723fe9e48fb9591639419bc7af9:stay-media/', '/img/m/'],
+] as const
+export function proxiedImage(u: string) {
+  for (const [from, to] of IMAGE_PROXIES) if (u.startsWith(from)) return to + u.slice(from.length)
+  return u
+}
+
+/** Фото объекта: загруженные в админке, а если их нет — ссылки на фото из CRM (не копируются к нам). */
 export function propertyPhotos(p: Partial<Pick<Property, 'photos' | 'remotePhotos' | 'remoteCover'>>, size: 'thumb' | 'card' | 'large' = 'card'): PropertyPhoto[] {
   const own = (p.photos || []).filter((m): m is Media => typeof m === 'object' && !!m?.url)
   if (own.length) return own.map((m) => ({ src: mediaUrl(m, size)!, full: m.url!, alt: m.alt, remote: false }))
@@ -246,17 +259,17 @@ export function propertyPhotos(p: Partial<Pick<Property, 'photos' | 'remotePhoto
   const list = Array.isArray(p.remotePhotos) ? p.remotePhotos : p.remoteCover ? [p.remoteCover] : []
   const remote = list.filter((u): u is string => typeof u === 'string' && u.startsWith('https://'))
   return remote.map((u) => {
-    const url = u.replace(/([^:])\/\/+/g, '$1/') // в ссылках Stay бывает двойной слэш
+    const url = proxiedImage(u.replace(/([^:])\/\/+/g, '$1/')) // в ссылках CRM бывает двойной слэш
     return { src: url, full: url, remote: true }
   })
 }
 export const propertyCover = (p: Partial<Pick<Property, 'photos' | 'remotePhotos' | 'remoteCover'>>, size: 'thumb' | 'card' | 'large' = 'card') => propertyPhotos(p, size)[0] ?? null
 
-/** Обложка публикации или услуги: загруженная в админке, а если её нет — ссылка на картинку в Stay Property (не копируется к нам). */
+/** Обложка публикации или услуги: загруженная в админке, а если её нет — ссылка на картинку из CRM (не копируется к нам). */
 export function coverOf(p: { cover?: number | Media | null; remoteCover?: string | null } | null | undefined, size: 'thumb' | 'card' | 'large' = 'card') {
   const own = mediaUrl(p?.cover, size)
   if (own) return { src: own, remote: false }
-  return p?.remoteCover?.startsWith('https://') ? { src: p.remoteCover, remote: true } : null
+  return p?.remoteCover?.startsWith('https://') ? { src: proxiedImage(p.remoteCover), remote: true } : null
 }
 
 export async function getDistrict(slug: string, locale: Locale): Promise<District | null> {
