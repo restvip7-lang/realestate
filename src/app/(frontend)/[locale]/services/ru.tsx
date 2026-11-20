@@ -65,7 +65,7 @@ export default async function ServicesRu({ locale }: { locale: Locale }) {
               <h3>Сопровождение сделки</h3><p>Ведём сделку от брони до ТАПУ и ключей: налоговый номер, счёт в банке, договор, оценка, кадастр, переводчик.</p>
               <ul className="checklist"><li>Налоговый номер и счёт в банке за 1 день</li><li>Договор на двух языках</li><li>Отчёт об оценке и запись в кадастр</li><li>Сделка удалённо по доверенности</li><li>Новостройки партнёров — комиссию платит застройщик</li></ul>
               <div className="acts"><Link href="/how-to-buy" className="btn btn-line btn-sm">Все 6 шагов покупки</Link><Link href="/how-to-buy#costs" className="btn btn-line btn-sm">Калькулятор расходов</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
-              {by("emre-yyldyz", "founder")}
+              {by("grigoriy-lazarev", "founder")}
             </article>
             <article className="scard rv" id="permits">
               <div className="top"><span className="ic" aria-hidden="true">✈</span><span className="price-tag free">ВНЖ — бесплатно</span></div>
@@ -93,7 +93,7 @@ export default async function ServicesRu({ locale }: { locale: Locale }) {
               <h3>Продажа вашей недвижимости</h3><p>Собственникам в Алании: оценим квартиру, сделаем фото и видео, разместим в каталоге и на площадках, проведём сделку.</p>
               <ul className="checklist"><li>Бесплатная оценка рыночной цены</li><li>Профессиональные фото и видео</li><li>Реклама на русском, английском и турецком</li><li>Показы и переговоры без вашего участия</li></ul>
               <div className="acts"><a href="#lead" className="btn btn-line btn-sm">Оценить мою квартиру</a><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
-              {by("emre-yyldyz", "founder")}
+              {by("grigoriy-lazarev", "founder")}
             </article>
           </div>
         </div>

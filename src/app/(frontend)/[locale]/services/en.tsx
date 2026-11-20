@@ -65,7 +65,7 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
               <h3>Deal support</h3><p>We handle the deal from booking to the TAPU and the keys: tax number, bank account, contract, valuation, land registry, translator.</p>
               <ul className="checklist"><li>Tax number and bank account in 1 day</li><li>Bilingual contract</li><li>Valuation report and land registry appointment</li><li>Remote deal by power of attorney</li><li>Partner new builds: the developer pays the commission</li></ul>
               <div className="acts"><Link href="/how-to-buy" className="btn btn-line btn-sm">All 6 steps of buying</Link><Link href="/how-to-buy#costs" className="btn btn-line btn-sm">Cost calculator</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
-              {by("emre-yyldyz", "founder")}
+              {by("grigoriy-lazarev", "founder")}
             </article>
             <article className="scard rv" id="permits">
               <div className="top"><span className="ic" aria-hidden="true">✈</span><span className="price-tag free">Residence permit: free</span></div>
@@ -93,7 +93,7 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
               <h3>Selling your property</h3><p>For owners in Alanya: we’ll value your apartment, take photos and video, list it in our catalogue and on portals, and handle the deal.</p>
               <ul className="checklist"><li>Free market valuation</li><li>Professional photos and video</li><li>Advertising in Russian, English and Turkish</li><li>Viewings and negotiations without you</li></ul>
               <div className="acts"><a href="#lead" className="btn btn-line btn-sm">Value my apartment</a><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
-              {by("emre-yyldyz", "founder")}
+              {by("grigoriy-lazarev", "founder")}
             </article>
           </div>
         </div>

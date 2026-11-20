@@ -11,6 +11,7 @@ import * as migration_20261022_110000_team_photos from './20261022_110000_team_p
 import * as migration_20261120_180421_team_name_localized from './20261120_180421_team_name_localized';
 import * as migration_20261120_180856_reviews_tags_localized from './20261120_180856_reviews_tags_localized';
 import * as migration_20261120_190000_demo_english from './20261120_190000_demo_english';
+import * as migration_20261120_200000_director from './20261120_200000_director';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261120_190000_demo_english.up,
     down: migration_20261120_190000_demo_english.down,
-    name: '20261120_190000_demo_english'
+    name: '20261120_190000_demo_english',
+  },
+  {
+    up: migration_20261120_200000_director.up,
+    down: migration_20261120_200000_director.down,
+    name: '20261120_200000_director',
   },
 ];

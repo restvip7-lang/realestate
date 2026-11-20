@@ -11,6 +11,7 @@ import { htmlToLexical } from '@/lib/lexical'
 import { slugify } from '@/lib/slug'
 
 import { applyDistrictGuides } from './district-guides'
+import { applyDirector } from './director'
 import { applyEnglish } from './english'
 import { applyTeamPhotos } from './team-photos'
 import { descriptionI18n, DISTRICTS_I18N, titleI18n } from './i18n'
@@ -285,6 +286,7 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
     },
   })
   await applyEnglish(payload) // английские тексты демо-контента (src/seed/english.ts)
+  await applyDirector(payload) // директор вместо вымышленного основателя (src/seed/director.ts)
   return { next: null, message: `Готово: объектов ${data.properties.length}, статей и новостей ${data.posts.length}, районов ${data.districts.length}, сотрудников ${data.team.length}, отзывов ${data.reviews.length}, фото ${photoList().length}` }
 }
 

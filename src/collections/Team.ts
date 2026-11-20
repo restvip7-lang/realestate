@@ -39,7 +39,7 @@ export const Team: CollectionConfig = {
           required: true,
           defaultValue: 'expert',
           options: [
-            { label: 'Основатель', value: 'founder' },
+            { label: 'Руководитель (директор)', value: 'founder' },
             { label: 'Эксперт (ведёт объекты)', value: 'expert' },
             { label: 'Юрист', value: 'lawyer' },
           ],

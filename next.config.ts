@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
     formats: ['image/avif', 'image/webp'],
   },
+  // прежний адрес карточки руководителя (вымышленный основатель → директор, src/seed/director.ts)
+  async redirects() {
+    return [{ source: '/:locale(ru|en)/team/emre-yyldyz', destination: '/:locale/team/grigoriy-lazarev', permanent: true }]
+  },
   // Фото объектов и обложки из CRM — по адресу нашего сайта, без чужих доменов в коде страниц.
   // Префиксы совпадают с IMAGE_PROXIES в src/lib/data.ts. «%3A» — двоеточие в имени корзины (просто «:» Next читает как параметр).
   async rewrites() {

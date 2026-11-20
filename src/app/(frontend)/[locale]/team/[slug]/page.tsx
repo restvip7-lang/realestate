@@ -67,7 +67,7 @@ export default async function MemberPage({ params }: Props) {
         <div className="wrap">
           <nav className="crumbs" aria-label={tc('crumbs')}><Link href="/">{tc('home')}</Link>›<Link href="/team">{t('crumbs')}</Link>›<span aria-current="page">{m.name}</span></nav>
           <div className="mhero-grid">
-            {img ? <Image src={img} alt={t('photoAlt', { name: m.name })} width={600} height={750} priority sizes="(max-width: 760px) 220px, 300px" /> : <div />}
+            {img ? <Image src={img} alt={m.kind === 'founder' ? m.name : t('photoAlt', { name: m.name })} width={600} height={750} priority sizes="(max-width: 760px) 220px, 300px" /> : <div />}
             <div>
               <span className="eyebrow">{m.kind === 'founder' ? t('founder') : t('expert')}</span>
               <h1>{m.name}</h1>
@@ -86,7 +86,7 @@ export default async function MemberPage({ params }: Props) {
 
       <div className="wrap">
         <div className="kfacts k4" role="list" aria-label={t('factsLabel')}>
-          <div role="listitem"><span>{t('exp')}</span><b>{t('years', { n: m.exp ?? 0 })}</b><small>{t('inRealty')}</small></div>
+          <div role="listitem"><span>{t('exp')}</span><b>{t('years', { n: m.exp ?? 0 })}</b><small>{t(m.kind === 'founder' ? 'inBusiness' : 'inRealty')}</small></div>
           <div role="listitem"><span>{t('langs')}</span><b>{m.langs}</b><small>{t('langsNote')}</small></div>
           <div role="listitem">
             <span>{m.kind === 'lawyer' ? t('checks') : t('leads')}</span>

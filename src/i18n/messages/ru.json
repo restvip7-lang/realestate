@@ -2,7 +2,7 @@
   "meta": {
     "homeTitle": "Недвижимость в Алании: квартиры и виллы у моря — Kleo Homes",
     "homeDescription": "Квартиры, пентхаусы и виллы в Алании от застройщиков и собственников. Подбор, показ по видео, проверка документов и сопровождение сделки до ТАПУ.",
-    "demo": "Демо-версия: объекты, цены, отзывы, люди и контакты выдуманы",
+    "demo": "Демо-версия: объекты, цены, отзывы и часть команды — примеры",
     "translationNote": ""
   },
   "nav": {
@@ -811,11 +811,11 @@
     "crumbs": "О компании и команда",
     "eyebrow": "О компании",
     "statsLabel": "Коротко о компании",
-    "founderEyebrow": "Основатель",
-    "founderAlt": "{name}, основатель Kleo Homes",
-    "founderMeta": "{role} · {n, plural, one {# год} few {# года} other {# лет}} в недвижимости · {langs}",
+    "founderEyebrow": "Директор",
+    "founderAlt": "{name}, директор Kleo Homes",
+    "founderMeta": "{role} · {n, plural, one {# год} few {# года} other {# лет}} в бизнесе · {langs}",
     "founderTeam": "Сегодня в команде {n, plural, one {# специалист} few {# специалиста} other {# специалистов}}: эксперты по районам, аренде и новостройкам и штатный юрист. Каждую сделку ведёт один эксперт — от первой подборки до получения ТАПУ и ключей.",
-    "writeFounder": "Написать основателю",
+    "writeFounder": "Написать директору",
     "more": "Подробнее",
     "allTeam": "Вся команда",
     "expertsEyebrow": "Эксперты",
@@ -867,7 +867,7 @@
   },
   "member": {
     "crumbs": "Команда",
-    "founder": "Основатель",
+    "founder": "Директор",
     "expert": "Эксперт Kleo Homes",
     "photoAlt": "{name} (фото для примера)",
     "meta": "{role} · {n, plural, one {# год} few {# года} other {# лет}} опыта · {langs}",
@@ -896,7 +896,7 @@
     "areasTitle": "Где {name} знает каждый дом",
     "allDistricts": "Все районы →",
     "objsEyebrow": "Объекты",
-    "objsFounder": "Виллы и премиум, которые ведёт лично",
+    "objsFounder": "Объекты, которые ведёт лично",
     "objsExpert": "Объекты, которые ведёт эксперт",
     "objsCount": "{n, plural, one {# объект} few {# объекта} other {# объектов}}",
     "artsEyebrow": "Журнал",
@@ -909,7 +909,8 @@
     "othersTitle": "Другие эксперты",
     "allTeam": "Вся команда →",
     "metaTitle": "{name} — {role} Kleo Homes",
-    "metaDesc": "{name}, {role} агентства Kleo Homes: {years} опыта, {langs}. {spec}."
+    "metaDesc": "{name}, {role} агентства Kleo Homes: {years} опыта, {langs}. {spec}.",
+    "inBusiness": "в бизнесе"
   },
   "reviews": {
     "crumbs": "Отзывы",

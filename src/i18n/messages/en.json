@@ -2,7 +2,7 @@
   "meta": {
     "homeTitle": "Property in Alanya: sea-view apartments and villas — Kleo Homes",
     "homeDescription": "Apartments, penthouses and villas in Alanya from developers and owners. Property search, video viewings, legal checks and support through to the title deed (TAPU).",
-    "demo": "Demo version: listings, prices, reviews, people and contacts are fictional",
+    "demo": "Demo version: listings, prices, reviews and some team members are examples",
     "translationNote": ""
   },
   "nav": {
@@ -811,11 +811,11 @@
     "crumbs": "About us and team",
     "eyebrow": "About us",
     "statsLabel": "The company in brief",
-    "founderEyebrow": "Founder",
-    "founderAlt": "{name}, founder of Kleo Homes",
-    "founderMeta": "{role} · {n, plural, one {# year} other {# years}} in real estate · {langs}",
+    "founderEyebrow": "Director",
+    "founderAlt": "{name}, director of Kleo Homes",
+    "founderMeta": "{role} · {n, plural, one {# year} other {# years}} in business · {langs}",
     "founderTeam": "Today the team has {n, plural, one {# specialist} other {# specialists}}: district, rental and new-build experts and an in-house lawyer. Each deal is handled by one expert, from the first shortlist to the TAPU and the keys.",
-    "writeFounder": "Message the founder",
+    "writeFounder": "Message the director",
     "more": "Learn more",
     "allTeam": "Whole team",
     "expertsEyebrow": "Experts",
@@ -867,7 +867,7 @@
   },
   "member": {
     "crumbs": "Team",
-    "founder": "Founder",
+    "founder": "Director",
     "expert": "Kleo Homes expert",
     "photoAlt": "{name} (sample photo)",
     "meta": "{role} · {n, plural, one {# year} other {# years}} of experience · {langs}",
@@ -896,7 +896,7 @@
     "areasTitle": "Where {name} knows every building",
     "allDistricts": "All districts →",
     "objsEyebrow": "Properties",
-    "objsFounder": "Villas and premium homes handled personally",
+    "objsFounder": "Properties he handles personally",
     "objsExpert": "Properties handled by this expert",
     "objsCount": "{n, plural, one {# property} other {# properties}}",
     "artsEyebrow": "Journal",
@@ -909,7 +909,8 @@
     "othersTitle": "Other experts",
     "allTeam": "Whole team →",
     "metaTitle": "{name}, {role} at Kleo Homes",
-    "metaDesc": "{name}, {role} at Kleo Homes: {years} of experience, {langs}. {spec}."
+    "metaDesc": "{name}, {role} at Kleo Homes: {years} of experience, {langs}. {spec}.",
+    "inBusiness": "in business"
   },
   "reviews": {
     "crumbs": "Reviews",
