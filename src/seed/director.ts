@@ -1,16 +1,10 @@
 // Директор компании — реальный человек (владелец 20.11.2026): Григорий Лазарев встаёт на место вымышленного
 // основателя Эмре Йылдыза (та же карточка: его объекты, статьи и заявки сохраняются).
 // Факты только от владельца: 20 лет в бизнесе, родом из Татарстана, служил в МЧС. Ничего сверх этого не придумываем.
-// Фото — src/seed/team/grigoriy-lazarev.jpg (кадр 4:5, как у остальных). Вызывают сид и миграция 20261120_200000_director.
-import fs from 'fs/promises'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
+// Фото — прежнее фото основателя (владелец попросил вернуть его). Вызывают сид и миграции director, director_old_photo.
 import type { Payload, PayloadRequest } from 'payload'
 
 import { hasRows } from './team-photos'
-
-const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export const DIRECTOR = {
   oldSlug: 'emre-yyldyz',
@@ -54,25 +48,15 @@ export async function applyDirector(payload: Payload, req?: Partial<PayloadReque
   const m = docs[0]
   if (!m || m.name !== DIRECTOR.oldName) return false
 
-  let photo: number | undefined
-  try {
-    const data = await fs.readFile(path.join(dirname, 'team', `${DIRECTOR.slug}.jpg`))
-    const media = await payload.create({
-      collection: 'media', locale: 'ru', ...opts(req),
-      data: { alt: DIRECTOR.ru.name, credit: 'Фото предоставлено владельцем сайта' } as never,
-      file: { data, mimetype: 'image/jpeg', name: `team-${DIRECTOR.slug}.jpg`, size: data.length },
-    })
-    await payload.update({ collection: 'media', id: media.id, locale: 'en', data: { alt: DIRECTOR.en.name } as never, ...opts(req) })
-    photo = media.id
-  } catch (err) {
-    payload.logger.warn({ err, msg: 'Фото директора не загружено, оставлено прежнее' })
-  }
+  // фото остаётся прежним (владелец 20.11.2026: «фото верни старое»), меняем только его описание
+  const photoId = typeof m.photo === 'object' && m.photo ? m.photo.id : m.photo
+  if (photoId) await nameDirectorPhoto(payload, photoId, req)
 
   const help = (list: string[]) => list.map((text) => ({ text }))
   await payload.update({
     collection: 'team', id: m.id, locale: 'ru', ...opts(req),
     // районы были у вымышленного основателя — у директора их не указываем
-    data: { ...DIRECTOR.ru, help: help(DIRECTOR.ru.help), slug: DIRECTOR.slug, langs: DIRECTOR.langs, exp: DIRECTOR.exp, areas: [], ...(photo ? { photo } : {}) },
+    data: { ...DIRECTOR.ru, help: help(DIRECTOR.ru.help), slug: DIRECTOR.slug, langs: DIRECTOR.langs, exp: DIRECTOR.exp, areas: [] },
   })
   await payload.update({ collection: 'team', id: m.id, locale: 'en', ...opts(req), data: { ...DIRECTOR.en, help: help(DIRECTOR.en.help) } })
 
@@ -87,5 +71,31 @@ export async function applyDirector(payload: Payload, req?: Partial<PayloadReque
     const cur = await payload.findByID({ collection: 'reviews', id: r.id, locale: 'en', fallbackLocale: false, ...opts(req) })
     await payload.update({ collection: 'reviews', id: r.id, locale: 'en', ...opts(req), data: { who: cur.who || r.who, text: en } })
   }
+  return true
+}
+
+/** Описание фото (alt) — имя директора на обоих языках. */
+async function nameDirectorPhoto(payload: Payload, id: number, req?: Partial<PayloadRequest>) {
+  await payload.update({ collection: 'media', id, locale: 'ru', data: { alt: DIRECTOR.ru.name } as never, ...opts(req) })
+  await payload.update({ collection: 'media', id, locale: 'en', data: { alt: DIRECTOR.en.name } as never, ...opts(req) })
+}
+
+/**
+ * Вернуть директору прежнее фото основателя вместо присланного (владелец 20.11.2026).
+ * Меняем, только если стоит присланное фото (team-grigoriy-lazarev…): фото, выбранное в админке, не трогаем.
+ * Присланное фото остаётся в «Медиа».
+ */
+export async function restoreDirectorPhoto(payload: Payload, req?: Partial<PayloadRequest>) {
+  if (!(await hasRows(payload, 'team'))) return false
+  const { docs } = await payload.find({ collection: 'team', where: { slug: { equals: DIRECTOR.slug } }, locale: 'ru', limit: 1, ...opts(req), depth: 1 })
+  const m = docs[0]
+  const current = m && typeof m.photo === 'object' && m.photo ? m.photo.filename || '' : ''
+  if (!m || !current.startsWith(`team-${DIRECTOR.slug}`)) return false
+  const { docs: old } = await payload.find({
+    collection: 'media', where: { filename: { like: `team-${DIRECTOR.oldSlug}` } }, sort: '-createdAt', limit: 1, ...opts(req),
+  })
+  if (!old[0]) return false
+  await payload.update({ collection: 'team', id: m.id, locale: 'ru', data: { photo: old[0].id }, ...opts(req) })
+  await nameDirectorPhoto(payload, old[0].id, req)
   return true
 }
