@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
-export const localeSchema = z.enum(['ru', 'en', 'tr'])
+import { LOCALES } from '@/i18n/locales'
+
+export const localeSchema = z.enum(LOCALES)
 export const messageSchema = z.object({ role: z.enum(['user', 'assistant']), content: z.string().trim().min(1).max(1800) }).strict()
 export const requestSchema = z.object({
   locale: localeSchema,

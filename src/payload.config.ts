@@ -23,7 +23,7 @@ import { Company } from './globals/Company'
 import { AssistantSettings } from './globals/AssistantSettings'
 import { Rates } from './globals/Rates'
 import { TeamPage } from './globals/TeamPage'
-import { LOCALES, DEFAULT_LOCALE } from './i18n/locales'
+import { CONTENT_LOCALES, DEFAULT_LOCALE } from './i18n/locales'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,7 +44,7 @@ export default buildConfig({
   },
   i18n: { supportedLanguages: { ru, en }, fallbackLanguage: 'ru' },
   localization: {
-    locales: LOCALES.map((code) => ({ code, label: { ru: 'Русский', en: 'English', tr: 'Türkçe' }[code] })),
+    locales: CONTENT_LOCALES.map((code) => ({ code, label: { ru: 'Русский', en: 'English', tr: 'Türkçe' }[code] })),
     defaultLocale: DEFAULT_LOCALE,
     fallback: true,
   },
