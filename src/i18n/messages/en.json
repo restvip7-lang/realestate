@@ -340,7 +340,16 @@
     "emptyHint": "Remove some filters or leave a request — we'll find options that aren't on the website yet.",
     "pagination": "Pages",
     "pageN": "page {n}",
-    "landing": {"sea-view": "with sea view", "first-line": "on the first line", "near-sea": "within 500 m of the sea", "with-pool": "with a pool", "furnished": "furnished", "new-build": "in new buildings", "citizenship": "eligible for citizenship", "pets": "pets allowed"},
+    "landing": {
+      "sea-view": "with sea view",
+      "first-line": "on the first line",
+      "near-sea": "within 500 m of the sea",
+      "with-pool": "with a pool",
+      "furnished": "furnished",
+      "new-build": "in new buildings",
+      "citizenship": "eligible for citizenship",
+      "pets": "pets allowed"
+    },
     "altTitle": "Similar selections",
     "altNoFeature": "Without this condition",
     "altAllAlanya": "All of Alanya",
@@ -1202,5 +1211,19 @@
     "seo1": "This section lists residential complexes in Alanya and Gazipaşa: projects under construction and buildings completed in recent years. Each project shows layouts from studios to penthouses, sizes, distance to the sea, on-site amenities and the completion date.",
     "seo2": "Buying off-plan is usually cheaper than buying a finished home, and developer installments spread payments until completion. We check the developer and the documents, show properties online and support the deal until you receive the TAPU.",
     "seoByDistrict": "New builds by district"
+  },
+  "searchPage": {
+    "title": "Site search",
+    "titleQ": "Search: “{q}”",
+    "desc": "Search Kleo Homes properties, districts and articles.",
+    "label": "Search for",
+    "placeholder": "Title, complex, district or property ID",
+    "submit": "Search",
+    "hint": "Type at least two characters or a property ID.",
+    "nothing": "Nothing found for “{q}”",
+    "toCatalog": "Open the catalogue",
+    "districts": "Districts",
+    "properties": "{n, plural, one {# property} other {# properties}}",
+    "posts": "Articles and news"
   }
 }

@@ -435,6 +435,17 @@ export async function getPropertiesByIds(ids: number[], locale: Locale): Promise
   return ids.map((id) => docs.find((d) => d.id === id)).filter((d): d is Property => !!d)
 }
 
+/** Поиск по сайту (/search): объекты по заголовку и комплексу, районы и статьи по названию. Ограничено по числу. */
+export async function searchSite(locale: Locale, q: string) {
+  const p = await payloadClient()
+  const [properties, districts, posts] = await Promise.all([
+    p.find({ collection: 'properties', locale, where: { and: [{ status: { equals: 'published' } }, { or: [{ title: { like: q } }, { complex: { like: q } }] }] }, sort: '-id', limit: 24, depth: 1, ...pub }),
+    p.find({ collection: 'districts', locale, where: { name: { like: q } }, limit: 10, depth: 0, select: { name: true, slug: true }, ...pub }),
+    p.find({ collection: 'posts', locale, where: { title: { like: q } }, sort: '-publishedAt', limit: 6, depth: 1, ...pub }),
+  ])
+  return { properties: properties.docs, districts: districts.docs, posts: posts.docs }
+}
+
 /** Адреса для sitemap.xml и llms.txt: только то, что видит посетитель. */
 export async function sitemapData() {
   const p = await payloadClient()

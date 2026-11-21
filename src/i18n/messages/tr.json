@@ -340,7 +340,16 @@
     "emptyHint": "Bazı filtreleri kaldırın veya talep bırakın — sitede henüz olmayan seçenekleri bulalım.",
     "pagination": "Sayfalar",
     "pageN": "sayfa {n}",
-    "landing": {"sea-view": "deniz manzaralı", "first-line": "denize sıfır", "near-sea": "denize 500 m", "with-pool": "havuzlu", "furnished": "eşyalı", "new-build": "yeni binalarda", "citizenship": "vatandaşlığa uygun", "pets": "evcil hayvan kabul"},
+    "landing": {
+      "sea-view": "deniz manzaralı",
+      "first-line": "denize sıfır",
+      "near-sea": "denize 500 m",
+      "with-pool": "havuzlu",
+      "furnished": "eşyalı",
+      "new-build": "yeni binalarda",
+      "citizenship": "vatandaşlığa uygun",
+      "pets": "evcil hayvan kabul"
+    },
     "altTitle": "Benzer seçkiler",
     "altNoFeature": "Bu koşul olmadan",
     "altAllAlanya": "Tüm Alanya",
@@ -982,5 +991,19 @@
     "seo1": "Bu bölümde Alanya ve Gazipaşa’daki konut projeleri yer alır: inşaatı süren projeler ve son yıllarda teslim edilen binalar. Her projede stüdyodan çatı katına daire tipleri, metrekareler, denize mesafe, site olanakları ve teslim tarihi gösterilir.",
     "seo2": "İnşaat aşamasında almak genellikle hazır konuttan daha ucuzdur; müteahhit taksiti ödemeleri teslime kadar yaymayı sağlar. Müteahhidi ve belgeleri kontrol eder, mülkleri online gösterir ve tapuya kadar işlemi takip ederiz.",
     "seoByDistrict": "Bölgelere göre yeni projeler"
+  },
+  "searchPage": {
+    "title": "Site içi arama",
+    "titleQ": "Arama: “{q}”",
+    "desc": "Kleo Homes ilanları, bölgeler ve yazılar.",
+    "label": "Aranan",
+    "placeholder": "Başlık, site, bölge veya ilan no",
+    "submit": "Ara",
+    "hint": "En az iki karakter veya ilan numarası yazın.",
+    "nothing": "“{q}” için sonuç yok",
+    "toCatalog": "Kataloğa git",
+    "districts": "Bölgeler",
+    "properties": "{n} ilan",
+    "posts": "Yazılar ve haberler"
   }
 }
