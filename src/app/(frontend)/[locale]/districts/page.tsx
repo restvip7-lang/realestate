@@ -12,6 +12,7 @@ import { type DistrictStat, districtStats, listDistricts } from '@/lib/data'
 import { districtPm } from '@/lib/district-prices'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District } from '@/payload-types'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 type SP = Promise<Record<string, string | string[] | undefined>>
 type Props = { params: Promise<{ locale: Locale }>; searchParams: SP }
@@ -192,8 +193,8 @@ export default async function DistrictsPage({ params, searchParams }: Props) {
                     <td className={cls('toCenter')}>{kmTxt(d)}</td>
                     <td className={cls('toSea')}>{seaTxt(d)}</td>
                     <td className={cls('pm')}>{pm(d) ? <Price eur={pm(d)} suffix={tcard('perM2')} /> : '—'}</td>
-                    <td className={cls('sale')}><Link href={`/sale?district=${d.slug}`}>{st(d).sale}</Link></td>
-                    <td className={cls('rent')}><Link href={`/rent?district=${d.slug}`}>{st(d).rent}</Link></td>
+                    <td className={cls('sale')}><Link href={catalogBasePath({ deal: 'sale', district: d.slug })}>{st(d).sale}</Link></td>
+                    <td className={cls('rent')}><Link href={catalogBasePath({ deal: 'rent', district: d.slug })}>{st(d).rent}</Link></td>
                     <td className={cls('life')}>{dots(sc(d, 'life'))}</td>
                     <td className={cls('rentScore')}>{dots(sc(d, 'rent'))}</td>
                     <td className={cls('beach')}>{dots(sc(d, 'beach'))}</td>

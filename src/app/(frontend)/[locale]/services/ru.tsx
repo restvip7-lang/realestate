@@ -8,6 +8,7 @@ import { ServiceCard } from '@/components/site/ServiceCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { SITE_URL } from '@/lib/seo'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 // Русская версия страницы; английская — en.tsx (вёрстка одинаковая, меняется только текст)
 export const meta = { title: 'Услуги агентства недвижимости в Алании', description: 'Подбор и показы, проверка документов, сопровождение сделки, ВНЖ и гражданство, управление арендой и продажа недвижимости в Алании. Цены на услуги.' }
@@ -50,7 +51,7 @@ export default async function ServicesRu({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">⌕</span><span className="price-tag free">Бесплатно</span></div>
               <h3>Подбор и просмотр</h3><p>Подбираем объекты под бюджет и цель, показываем вживую или по видео и честно говорим о минусах.</p>
               <ul className="checklist"><li>Подборка 5–10 объектов за 2–5 дней</li><li>Цена за м², дата проверки цены и смета расходов</li><li>Показы вживую с трансфером или по видеосвязи</li><li>Сравнение районов под ваш образ жизни</li></ul>
-              <div className="acts"><Link href="/how-to-buy#step-2" className="btn btn-line btn-sm">Как проходит подбор</Link><Link href="/sale" className="btn btn-line btn-sm">Каталог</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
+              <div className="acts"><Link href="/how-to-buy#step-2" className="btn btn-line btn-sm">Как проходит подбор</Link><Link href={catalogBasePath({ deal: 'sale' })} className="btn btn-line btn-sm">Каталог</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
               {by("anna-sokolova", "expert")}
             </article>
             <article className="scard rv" id="legal">
@@ -78,7 +79,7 @@ export default async function ServicesRu({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">⌂</span><span className="price-tag">от 15% аренды</span></div>
               <h3>Управление арендой</h3><p>Сдаём квартиру, пока вас нет в Турции: находим арендаторов, проверяем их, собираем оплату и следим за квартирой.</p>
               <ul className="checklist"><li>Долгосрочная аренда — 15% от платы (демо)</li><li>Сезонная аренда — 25% от дохода (демо)</li><li>Фото, объявления, показы, договор</li><li>Ежемесячный отчёт и мелкий ремонт</li><li>Расчёт доходности до покупки — бесплатно</li></ul>
-              <div className="acts"><Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="btn btn-line btn-sm">Доходность аренды</Link><Link href="/rent" className="btn btn-line btn-sm">Квартиры в аренду</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
+              <div className="acts"><Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="btn btn-line btn-sm">Доходность аренды</Link><Link href={catalogBasePath({ deal: 'rent' })} className="btn btn-line btn-sm">Квартиры в аренду</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
               {by("daniel-marten", "expert")}
             </article>
             <article className="scard rv" id="after">

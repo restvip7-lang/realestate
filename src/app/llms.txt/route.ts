@@ -1,5 +1,6 @@
 import { getCompany, sitemapData } from '@/lib/data'
 import { INDEXABLE, SITE_URL } from '@/lib/seo'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 // Краткое описание сайта для ИИ-ассистентов (llmstxt.org); обновляется раз в час
 export const revalidate = 3600
@@ -16,8 +17,8 @@ export async function GET() {
     `Телефон и WhatsApp: ${c.phone}. E-mail: ${c.email}. Адрес: ${c.address}.${c.legal?.license ? ` Лицензия TTYB № ${c.legal.license}.` : ''}`,
     '',
     '## Каталог',
-    `- [Продажа](${u('/sale')}): квартиры, пентхаусы, виллы в Алании`,
-    `- [Аренда](${u('/rent')}): долгосрочная и сезонная`,
+    `- [Продажа](${u(catalogBasePath({ deal: 'sale' }))}): квартиры, пентхаусы, виллы в Алании`,
+    `- [Аренда](${u(catalogBasePath({ deal: 'rent' }))}): долгосрочная и сезонная`,
     `- [Новостройки](${u('/projects')}): проекты застройщиков, планировки, сроки сдачи, рассрочка`,
     `- [Районы Алании](${u('/districts')}): цены за м², плюсы и минусы`,
     ...districts.filter((d) => d.slug).map((d) => `- [${d.name}](${u(`/districts/${d.slug}`)})`),

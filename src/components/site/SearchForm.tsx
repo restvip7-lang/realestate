@@ -7,6 +7,7 @@ import { useRouter } from '@/i18n/navigation'
 import { CURRENCY_SYMBOL } from '@/lib/catalog'
 
 import { useMoney } from './Currency'
+import { catalogHref, parseCatalog } from '@/lib/catalog-params'
 
 // Поиск на главной: собирает фильтры и ведёт в каталог /sale или /rent. Бюджет вводится в выбранной валюте.
 export function SearchForm({ districts }: { districts: { slug: string; name: string }[] }) {
@@ -31,7 +32,7 @@ export function SearchForm({ districts }: { districts: { slug: string; name: str
       if (v) q.set(k, String(Math.round(toEur(v))))
     }
     for (const k of ['view', 'furn', 'new', 'cit']) if (f.get(k)) q.set(k, k === 'view' ? 'sea' : '1')
-    router.push(`/${deal}${q.size ? `?${q}` : ''}`)
+    router.push(catalogHref(parseCatalog(deal, Object.fromEntries(q))))
   }
 
   return (

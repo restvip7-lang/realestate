@@ -19,6 +19,7 @@ import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getCompany, getRates, listDistricts } from '@/lib/data'
 import { INDEXABLE, SITE_URL } from '@/lib/seo'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 export const revalidate = 600
 
@@ -59,7 +60,7 @@ export default async function Layout({ children, params }: { children: React.Rea
             <LeadSection company={company} />
             <Footer company={company} districts={districts} />
             <nav className="mbar" aria-label={t('quick')}>
-              <Link href="/sale">{t('sale')}</Link>
+              <Link href={catalogBasePath({ deal: 'sale' })}>{t('sale')}</Link>
               <a href="#lead" className="pick">{t('pickShort')}</a>
               <a href={`https://wa.me/${company.whatsapp}`} className="wa">WhatsApp</a>
             </nav>

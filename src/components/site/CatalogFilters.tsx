@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Link, useRouter } from '@/i18n/navigation'
 import { CURRENCY_SYMBOL } from '@/lib/catalog'
-import { catalogQueryString } from '@/lib/catalog-params'
+import { catalogBasePath, catalogHref } from '@/lib/catalog-params'
 import type { CatalogQuery } from '@/lib/data'
 
 import { ViewButtons } from './CatalogMap'
@@ -22,7 +22,7 @@ export function CatalogFilters({ q, districts }: Props) {
   const { cur, rate } = useMoney()
   const [sheet, setSheet] = useState(false)
   const deal = q.deal || 'sale'
-  const go = (patch: Partial<CatalogQuery>, d = deal) => router.push(`/${d}${catalogQueryString({ ...q, page: undefined, deal: d }, patch)}`, { scroll: false })
+  const go = (patch: Partial<CatalogQuery>, d = deal) => router.push(catalogHref({ ...q, page: undefined, deal: d }, patch), { scroll: false })
   const shown = (eur?: number) => (eur ? String(Math.round(eur * rate)) : '')
   const toEur = (v: string) => {
     const n = Number(v.replace(/\D/g, ''))
@@ -60,7 +60,7 @@ export function CatalogFilters({ q, districts }: Props) {
         <div className="wrap">
           <div className="dealsw" role="group" aria-label={ts('dealLabel')}>
             {(['sale', 'rent'] as const).map((d) => (
-              <Link key={d} href={`/${d}`} aria-pressed={deal === d} role="button">{ts(d)}</Link>
+              <Link key={d} href={catalogBasePath({ deal: d, district: q.district })} aria-pressed={deal === d} role="button">{ts(d)}</Link>
             ))}
           </div>
           <select className="hide-m" aria-label={ts('type')} value={q.type || ''} onChange={(e) => go({ type: e.target.value || undefined })}>
@@ -165,7 +165,7 @@ export function CatalogFilters({ q, districts }: Props) {
             </div>
           </div>
           <div className="pf">
-            <Link href={`/${deal}`} className="btn btn-line" onClick={() => setSheet(false)}>{t('reset')}</Link>
+            <Link href={catalogBasePath({ deal })} className="btn btn-line" onClick={() => setSheet(false)}>{t('reset')}</Link>
             <button type="button" className="btn btn-coral" onClick={() => setSheet(false)}>{t('show')}</button>
           </div>
         </div>
@@ -177,11 +177,10 @@ export function CatalogFilters({ q, districts }: Props) {
 export function SortSelect({ q }: { q: CatalogQuery }) {
   const t = useTranslations('catalog')
   const router = useRouter()
-  const deal = q.deal || 'sale'
   return (
     <>
       <label className="vh" htmlFor="sort">{t('sort')}</label>
-      <select id="sort" value={q.sort || 'new'} onChange={(e) => router.push(`/${deal}${catalogQueryString({ ...q, page: undefined }, { sort: e.target.value as CatalogQuery['sort'] })}`, { scroll: false })}>
+      <select id="sort" value={q.sort || 'new'} onChange={(e) => router.push(catalogHref({ ...q, page: undefined }, { sort: e.target.value as CatalogQuery['sort'] }), { scroll: false })}>
         {(['new', 'cheap', 'expensive', 'sea'] as const).map((s) => <option key={s} value={s}>{t(`sorts.${s}`)}</option>)}
       </select>
     </>

@@ -19,6 +19,7 @@ import { agentFor, districtOf, getCompany, getProperty, listTeam, mediaUrl, prop
 import { featureLabel } from '@/lib/catalog'
 import { fmtDate, propertyPath, roomsHint, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> }
 
@@ -121,8 +122,8 @@ export default async function PropertyPage({ params }: Props) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
         <nav className="crumbs" aria-label={t('crumbs')}>
           <Link href="/">{t('home')}</Link>›
-          {project ? <Link href="/projects">{tp('crumbs')}</Link> : <Link href={`/${p.deal}`}>{t(rent ? 'rent' : 'sale')}</Link>}›
-          {d && <><Link href={project ? `/projects?district=${d.slug}` : `/${p.deal}?district=${d.slug}`}>{d.name}</Link>›</>}
+          {project ? <Link href="/projects">{tp('crumbs')}</Link> : <Link href={catalogBasePath({ deal: p.deal })}>{t(rent ? 'rent' : 'sale')}</Link>}›
+          {d && <><Link href={project ? `/projects?district=${d.slug}` : catalogBasePath({ deal: p.deal, district: d.slug })}>{d.name}</Link>›</>}
           <span aria-current="page">ID {p.id}</span>
         </nav>
         <div className="p-head">
@@ -257,7 +258,7 @@ export default async function PropertyPage({ params }: Props) {
           <div className="wrap">
             <div className="sec-head">
               <div><span className="eyebrow">{t('similarEyebrow')}</span><h2>{closed ? t('similarForSale') : t('similarIn', { name: d?.name ?? '' })}</h2></div>
-              {project ? <Link href="/projects" className="link">{t('allProjects')}</Link> : <Link href={`/${p.deal}${d ? `?district=${d.slug}` : ''}`} className="link">{t('toCatalog')}</Link>}
+              {project ? <Link href="/projects" className="link">{t('allProjects')}</Link> : <Link href={catalogBasePath({ deal: p.deal, district: d?.slug })} className="link">{t('toCatalog')}</Link>}
             </div>
             <div className="grid3">{similar.map((s) => <PropertyCard key={s.id} p={s} />)}</div>
           </div>
