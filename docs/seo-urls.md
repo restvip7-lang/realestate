@@ -6,7 +6,7 @@
 ## Каталог (сделано, PR «Адреса каталога по ТЗ»)
 - `/{lang}/turkey/alanya/sale` и `/rent` — весь каталог.
 - `/{lang}/turkey/alanya/{район}/sale` — район (slug из коллекции «Районы»).
-- `/{lang}/turkey/alanya/[{район}/]sale/{тип}` — тип: `apartments`, `penthouses`, `villas`, `duplex`, `land`, `commercial`, `projects` (`PROPERTY_TYPES[...].path` в `src/lib/catalog.ts`).
+- `/{lang}/turkey/alanya/[{район}/]sale/{тип}` — тип: `apartments`, `penthouses`, `villas`, `duplex`, `land`, `commercial`, `complexes` (`PROPERTY_TYPES[...].path` в `src/lib/catalog.ts`).
 - Страницы списка: `…/page-2`, `…/page-3`. `page-1` → 308 на адрес без номера; номер больше числа страниц → 404.
 - Остальные фильтры (цена, планировка, до моря, мебель…) и сортировка — параметрами `?…`: такие страницы `noindex`, canonical — на ЧПУ без параметров.
 - Неизвестный район, тип или лишний сегмент → 404.
