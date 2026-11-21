@@ -13,6 +13,7 @@ import * as migration_20261120_180856_reviews_tags_localized from './20261120_18
 import * as migration_20261120_190000_demo_english from './20261120_190000_demo_english';
 import * as migration_20261120_200000_director from './20261120_200000_director';
 import * as migration_20261120_210000_director_old_photo from './20261120_210000_director_old_photo';
+import * as migration_20261121_154555_property_closed_at from './20261121_154555_property_closed_at';
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20261120_210000_director_old_photo.up,
     down: migration_20261120_210000_director_old_photo.down,
     name: '20261120_210000_director_old_photo',
+  },
+  {
+    up: migration_20261121_154555_property_closed_at.up,
+    down: migration_20261121_154555_property_closed_at.down,
+    name: '20261121_154555_property_closed_at'
   },
 ];

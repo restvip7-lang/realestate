@@ -313,6 +313,7 @@ export interface Property {
     description?: string | null;
   };
   status: 'published' | 'draft' | 'reserved' | 'sold' | 'rented' | 'hidden';
+  closedAt?: string | null;
   /**
    * Пусто — распределяется между экспертами автоматически.
    */
@@ -914,6 +915,7 @@ export interface PropertiesSelect<T extends boolean = true> {
         description?: T;
       };
   status?: T;
+  closedAt?: T;
   agent?: T;
   labels?: T;
   slug?: T;

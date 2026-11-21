@@ -18,7 +18,7 @@ export const Properties: CollectionConfig = {
     defaultColumns: ['id', 'title', 'district', 'price', 'status', 'agent', 'updatedAt'],
     listSearchableFields: ['id', 'title', 'complex'],
     pagination: { defaultLimit: 25 },
-    preview: (doc, { locale }) => `/${locale || 'ru'}/property/${doc.id}-${doc.slug || ''}`,
+    preview: (doc, { locale }) => `/${locale || 'ru'}/property/${doc.id}`, // ведёт 308 на адрес по ТЗ
   },
   defaultSort: '-id',
   access: {
@@ -297,6 +297,24 @@ export const Properties: CollectionConfig = {
       index: true,
       options: opts(PROPERTY_STATUS),
       admin: { position: 'sidebar' },
+    },
+    {
+      // когда объект стал «Продан» / «Сдан»: через 90 дней его адрес отвечает 410 (ТЗ, docs/seo-urls.md)
+      name: 'closedAt',
+      type: 'date',
+      label: 'Продан / сдан с',
+      index: true,
+      admin: { position: 'sidebar', readOnly: true, condition: (data) => data?.status === 'sold' || data?.status === 'rented' },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, originalDoc, value }) => {
+            const closed = siblingData.status === 'sold' || siblingData.status === 'rented'
+            if (!closed) return null
+            const wasClosed = originalDoc?.status === 'sold' || originalDoc?.status === 'rented'
+            return wasClosed && value ? value : new Date().toISOString()
+          },
+        ],
+      },
     },
     {
       name: 'agent',
