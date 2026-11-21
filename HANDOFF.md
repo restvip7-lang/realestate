@@ -7,6 +7,13 @@
 
 ---
 
+## 2026-11-21 · Claude · Страницы ЖК по ТЗ
+
+- Восьмой PR поверх PR #37.
+- Новый проект (ЖК) открывается по адресу `/turkey/alanya/{район}/sale/complexes/{slug}-id{номер}` (`propertyPath()` в `src/lib/format.ts`, `COMPLEX` в `src/proxy.ts`; внутренний маршрут тот же, что у объекта). Старые адреса → 308.
+- Тип «Новый проект» в ЧПУ каталога теперь `complexes` вместо `projects`: `/turkey/alanya/sale/complexes`.
+- JSON-LD `ApartmentComplex` + `AggregateOffer` (цена «от»). Подробности — `docs/seo-urls.md`.
+
 ## 2026-11-21 · Claude · SEO в админке: тексты разделов, редиректы, отчёт
 
 - Седьмой PR поверх PR #36.

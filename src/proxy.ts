@@ -8,6 +8,8 @@ const intl = createMiddleware(routing)
 
 // Адрес объекта по ТЗ: /{lang}/turkey/alanya/{район}/{сделка}/id{номер} (docs/seo-urls.md)
 const PROPERTY = new RegExp(`^/(${LOCALES.join('|')})/turkey/alanya/(?:([a-z0-9-]+)/)?(sale|rent)/id(\\d{1,9})$`)
+// ЖК (новый проект): /{lang}/turkey/alanya/{район}/sale/complexes/{slug}-id{номер}
+const COMPLEX = new RegExp(`^/(${LOCALES.join('|')})/turkey/alanya/(?:([a-z0-9-]+)/)?sale/complexes/(?:([a-z0-9-]+)-)?id(\\d{1,9})$`)
 const INTERNAL = new RegExp(`^/(${LOCALES.join('|')})/property-id(/|$)`)
 
 // Объекты, проданные больше 90 дней назад → 410 Gone. Список из /next/gone, в памяти на 10 минут.
@@ -81,7 +83,9 @@ export default async function proxy(req: NextRequest) {
     url.pathname = `/${pathname.split('/')[1]}/__not-found`
     return NextResponse.rewrite(url)
   }
-  const m = pathname.match(PROPERTY)
+  const c = pathname.match(COMPLEX)
+  // ЖК идёт в тот же внутренний маршрут: сделка «cx-{slug}» — чтобы страница проверила адрес целиком
+  const m = c ? [c[0], c[1], c[2], `cx-${c[3] ?? ''}`, c[4]] : pathname.match(PROPERTY)
   if (m) {
     const [, locale, district, deal, id] = m
     if ((await goneIds(req.nextUrl.origin)).has(Number(id))) {

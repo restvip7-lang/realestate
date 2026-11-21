@@ -463,7 +463,7 @@ export async function sitemapData() {
     p.find({ collection: 'districts', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'team', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'posts', ...opts, sort: '-publishedAt', select: { slug: true, kind: true, title: true, updatedAt: true } }),
-    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, deal: true, district: true, updatedAt: true } }),
+    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, deal: true, type: true, district: true, updatedAt: true } }),
     p.find({ collection: 'services', ...opts, sort: 'order', select: { slug: true, title: true, updatedAt: true } }),
   ])
   return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs, services: services.docs }
