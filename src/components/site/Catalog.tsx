@@ -10,6 +10,7 @@ import { catalogBasePath, catalogHref, hasQueryParams, LANDING_KEYS, LANDINGS, l
 import { type CatalogQuery, districtOf, landingSamples, listDistricts, listProperties, mapProperties, propertyCover } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
 import { abs, breadcrumbLd, JsonLd } from '@/lib/jsonld'
+import type { SeoPage } from '@/payload-types'
 import { INDEX_MIN, landingMatrix } from '@/lib/landings'
 
 import { CatalogFilters, SortSelect } from './CatalogFilters'
@@ -33,7 +34,7 @@ export async function catalogTitle(locale: Locale, q: CatalogQuery) {
   return q.deal === 'rent' && type ? t('rentOf', { what: type + phrase, where }) : `${what} ${where}`
 }
 
-export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }) {
+export async function Catalog({ locale, q, seo }: { locale: Locale; q: CatalogQuery; seo?: SeoPage | null }) {
   const t = await getTranslations('catalog')
   const ts = await getTranslations('search')
   const tf = await getTranslations('favs')
@@ -61,6 +62,9 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
       img: propertyCover(p, 'thumb')?.src ?? null,
     }))
   const title = await catalogTitle(locale, q)
+  // H1 и SEO-текст из админки — только на самом разделе: без фильтров в параметрах, текст — на первой странице
+  const own = seo && !hasQueryParams(q) ? seo : null
+  const ownText = own?.text && !(q.page && q.page > 1) ? own.text.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean) : null
   const d = districts.find((x) => x.slug === q.district)
 
   // активные фильтры — чипы с крестиком
@@ -102,7 +106,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
           </nav>
           <div className="res-head">
             <div>
-              <h1 id="h1">{title}</h1>
+              <h1 id="h1">{own?.h1 || title}</h1>
               <div className="cnt" aria-live="polite">{t('found', { n: res.totalDocs })}</div>
             </div>
             <div className="acts"><SortSelect q={q} /><PrintButton label={tf('print')} className="btn btn-line btn-sm btn-pdf" /></div>
@@ -151,7 +155,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
         <div className="wrap cols">
           <div>
             <h2 id="seo-h">{hasQueryParams(q) || q.district || q.type || f ? title : t(deal === 'rent' ? 'seoRentTitle' : 'seoSaleTitle')}</h2>
-            <p>{t(deal === 'rent' ? 'seoRentText' : 'seoSaleText')}</p>
+            {ownText ? ownText.map((x, i) => <p key={i}>{x}</p>) : <p>{t(deal === 'rent' ? 'seoRentText' : 'seoSaleText')}</p>}
           </div>
           <div>
             <h3>{t('byDistrict')}</h3>

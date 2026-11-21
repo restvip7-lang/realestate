@@ -14,6 +14,7 @@ import * as migration_20261120_190000_demo_english from './20261120_190000_demo_
 import * as migration_20261120_200000_director from './20261120_200000_director';
 import * as migration_20261120_210000_director_old_photo from './20261120_210000_director_old_photo';
 import * as migration_20261121_154555_property_closed_at from './20261121_154555_property_closed_at';
+import * as migration_20261121_160657_seo_pages_redirects from './20261121_160657_seo_pages_redirects';
 
 export const migrations = [
   {
@@ -94,6 +95,11 @@ export const migrations = [
   {
     up: migration_20261121_154555_property_closed_at.up,
     down: migration_20261121_154555_property_closed_at.down,
-    name: '20261121_154555_property_closed_at'
+    name: '20261121_154555_property_closed_at',
+  },
+  {
+    up: migration_20261121_160657_seo_pages_redirects.up,
+    down: migration_20261121_160657_seo_pages_redirects.down,
+    name: '20261121_160657_seo_pages_redirects'
   },
 ];

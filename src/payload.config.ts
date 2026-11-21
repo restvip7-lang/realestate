@@ -16,6 +16,8 @@ import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { Properties } from './collections/Properties'
 import { Reviews } from './collections/Reviews'
+import { Redirects } from './collections/Redirects'
+import { SeoPages } from './collections/SeoPages'
 import { Services } from './collections/Services'
 import { Team } from './collections/Team'
 import { Users } from './collections/Users'
@@ -48,7 +50,7 @@ export default buildConfig({
     defaultLocale: DEFAULT_LOCALE,
     fallback: true,
   },
-  collections: [Properties, Districts, Posts, Services, Team, Reviews, Leads, Media, Users, AssistantLimits],
+  collections: [Properties, Districts, Posts, Services, Team, Reviews, Leads, Media, Users, AssistantLimits, SeoPages, Redirects],
   globals: [Company, Rates, TeamPage, AssistantSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

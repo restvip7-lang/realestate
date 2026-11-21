@@ -5,7 +5,7 @@ import { Catalog, catalogTitle } from '@/components/site/Catalog'
 import { getPathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { CATALOG_BASE, catalogBasePath, catalogHref, hasQueryParams, LANDINGS, parseCatalog, parseCatalogPath, type SearchParams } from '@/lib/catalog-params'
-import { countProperties, listDistricts } from '@/lib/data'
+import { countProperties, getSeoPage, listDistricts } from '@/lib/data'
 import { INDEX_MIN } from '@/lib/landings'
 import { pageMeta } from '@/lib/seo'
 
@@ -26,12 +26,14 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const t = await getTranslations({ locale, namespace: 'catalog' })
   const title = await catalogTitle(locale, q)
   // порог ТЗ: меньше INDEX_MIN объектов — страница открыта, но не индексируется
-  const n = await countProperties(locale, q)
+  const [n, seo] = await Promise.all([countProperties(locale, q), getSeoPage(catalogBasePath({ ...q, page: undefined }), locale)])
+  // свои title и description из админки (SEO → SEO разделов), иначе шаблон
+  const base = seo?.title || title
   return pageMeta(locale, catalogBasePath(q), {
-    title: q.page && q.page > 1 ? `${title} — ${t('pageN', { n: q.page })}` : title,
-    description: t(q.deal === 'rent' ? 'seoRentText' : 'seoSaleText'),
-    // фильтры и сортировка параметрами — noindex, canonical на ЧПУ без параметров
-    noindex: hasQueryParams(q) || n < INDEX_MIN,
+    title: q.page && q.page > 1 ? `${base} — ${t('pageN', { n: q.page })}` : base,
+    description: seo?.description || t(q.deal === 'rent' ? 'seoRentText' : 'seoSaleText'),
+    // фильтры и сортировка параметрами — noindex, canonical на ЧПУ без параметров; галочка в админке закрывает страницу всегда
+    noindex: hasQueryParams(q) || n < INDEX_MIN || !!seo?.noindex,
   })
 }
 
@@ -42,5 +44,6 @@ export default async function Page({ params, searchParams }: Props) {
   // один адрес на страницу: /page-1, признак параметром (?view=sea), регистр — 308 на канонический ЧПУ
   const here = `${CATALOG_BASE}/${path.join('/')}`
   if (here !== catalogBasePath(q)) permanentRedirect(getPathname({ href: catalogHref(q), locale }))
-  return <Catalog locale={locale} q={q} />
+  const seo = await getSeoPage(catalogBasePath({ ...q, page: undefined }), locale)
+  return <Catalog locale={locale} q={q} seo={seo} />
 }

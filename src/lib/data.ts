@@ -3,7 +3,9 @@ import 'server-only'
 import type { Where } from 'payload'
 
 import type { Locale } from '@/i18n/locales'
-import type { Company, District, Media, Post, Property, Rate, Review, Service, Team, TeamPage } from '@/payload-types'
+import { cache } from 'react'
+
+import type { Company, District, Media, Post, Property, Rate, Review, SeoPage, Service, Team, TeamPage } from '@/payload-types'
 
 import { POOL_FEATURES, PUBLIC_STATUSES } from './catalog'
 import { FLAT_TYPES, pmOf, priceSample } from './district-prices'
@@ -34,6 +36,13 @@ export async function listDistricts(locale: Locale): Promise<District[]> {
   const { docs } = await (await payloadClient()).find({ collection: 'districts', locale, limit: 100, sort: 'order', depth: 1, ...pub })
   return docs
 }
+
+/** SEO раздела каталога из админки (коллекция «SEO разделов») по адресу без языка: /turkey/alanya/mahmutlar/sale. */
+export const getSeoPage = cache(async (path: string, locale: Locale): Promise<SeoPage | null> => {
+  // без подстановки русского: на /en пустые поля — шаблон сайта, а не русский заголовок
+  const { docs } = await (await payloadClient()).find({ collection: 'seo-pages', locale, where: { path: { equals: path } }, limit: 1, depth: 0, ...pub, fallbackLocale: false })
+  return docs[0] ?? null
+})
 
 export async function listTeam(locale: Locale): Promise<Team[]> {
   const { docs } = await (await payloadClient()).find({ collection: 'team', locale, limit: 100, sort: 'order', depth: 1, ...pub })

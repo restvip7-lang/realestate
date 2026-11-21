@@ -77,6 +77,8 @@ export interface Config {
     media: Media;
     users: User;
     'assistant-limits': AssistantLimit;
+    'seo-pages': SeoPage;
+    redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -98,6 +100,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'assistant-limits': AssistantLimitsSelect<false> | AssistantLimitsSelect<true>;
+    'seo-pages': SeoPagesSelect<false> | SeoPagesSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -743,6 +747,50 @@ export interface AssistantLimit {
   expires: string;
 }
 /**
+ * Заголовки и тексты страниц каталога. Адрес — без языка, как в строке браузера после /ru: /turkey/alanya/mahmutlar/sale/apartments. Отчёт о закрытых от индексации страницах — /next/seo-report.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-pages".
+ */
+export interface SeoPage {
+  id: number;
+  path: string;
+  /**
+   * Пусто — шаблон: «Квартиры в Махмутларе | Kleo Homes».
+   */
+  title?: string | null;
+  description?: string | null;
+  h1?: string | null;
+  /**
+   * По ТЗ — 1500–3000 знаков. Абзацы разделяйте пустой строкой. Показывается внизу страницы вместо общего текста.
+   */
+  text?: string | null;
+  /**
+   * Даже если объектов больше порога.
+   */
+  noindex?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Старый адрес → новый. «Откуда» — путь с языком или без: /ru/old-page или /old-page (тогда для всех языков). Изменения начинают работать в течение 10 минут.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  from: string;
+  /**
+   * Путь на сайте (/ru/turkey/alanya/sale) или полный адрес https://…
+   */
+  to: string;
+  code: '308' | '307';
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -805,6 +853,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'assistant-limits';
         value: number | AssistantLimit;
+      } | null)
+    | ({
+        relationTo: 'seo-pages';
+        value: number | SeoPage;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1238,6 +1294,32 @@ export interface AssistantLimitsSelect<T extends boolean = true> {
   bucket?: T;
   hits?: T;
   expires?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-pages_select".
+ */
+export interface SeoPagesSelect<T extends boolean = true> {
+  path?: T;
+  title?: T;
+  description?: T;
+  h1?: T;
+  text?: T;
+  noindex?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?: T;
+  code?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
