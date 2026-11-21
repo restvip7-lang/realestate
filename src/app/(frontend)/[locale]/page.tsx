@@ -252,12 +252,12 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             </div>
           </div>
           <div>
-            <div className="sec-head"><div><span className="eyebrow">{t('newsEyebrow')}</span><h2>{t('newsTitle')}</h2></div><Link href="/news" className="link">{t('allNews')}</Link></div>
+            <div className="sec-head"><div><span className="eyebrow">{t('newsEyebrow')}</span><h2>{t('newsTitle')}</h2></div><Link href="/blog/news" className="link">{t('allNews')}</Link></div>
             <div className="news">
               {news.map((p) => {
                 const img = coverOf(p, 'thumb')
                 return (
-                  <Link href={`/news/${p.slug}`} key={p.id}>
+                  <Link href={`/blog/news/${p.slug}`} key={p.id}>
                     {img ? <Image src={img.src} alt="" width={200} height={133} sizes="96px" unoptimized={img.remote} /> : <span />}
                     <span>
                       {p.pinned && <span className="pin-tag">{t('pinned')} · </span>}

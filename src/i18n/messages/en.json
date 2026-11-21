@@ -821,7 +821,13 @@
     "relPostsArticles": "Read also",
     "relPostsNews": "More news",
     "blogMetaDesc": "Articles about real estate in Alanya: prices by district, laws and taxes, residence permits and citizenship, life in Turkey.",
-    "newsMetaDesc": "News from Alanya and the Turkish property market: laws, residence permits, exchange rates, agency news."
+    "newsMetaDesc": "News from Alanya and the Turkish property market: laws, residence permits, exchange rates, agency news.",
+    "lawsTitle": "Property law in Turkey",
+    "lawsMetaDesc": "Laws and rules for foreign property buyers in Turkey: title deeds, taxes, residence permits, iskan and rule changes.",
+    "guidesTitle": "Alanya area guides",
+    "guidesLead": "Where to live in Alanya: sea and beaches, prices per m², amenities and who each district suits.",
+    "guidesMetaDesc": "Guides to 14 Alanya districts: beaches, prices per m², amenities, pros and cons for living and investing.",
+    "guidesArticles": "Articles about life in Alanya"
   },
   "team": {
     "crumbs": "About us and team",

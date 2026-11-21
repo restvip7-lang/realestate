@@ -58,7 +58,7 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">§</span><span className="price-tag free">Included in the deal</span></div>
               <h3>Document checks</h3><p>Our lawyer checks the property before booking. If you found an apartment yourself, we’ll check it separately.</p>
               <ul className="checklist"><li>TAPU, debts and encumbrances</li><li>Occupancy permit (iskan) and alterations</li><li>The neighbourhood’s residence-permit status</li><li>The developer’s reputation and permits</li><li>A separate property check from €300 (demo)</li></ul>
-              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">When we check</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">The agency’s lawyer</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
+              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">When we check</Link><Link href="/services/due-diligence" className="btn btn-line btn-sm">More about the check</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">The agency’s lawyer</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("murat-kaya", "lawyer")}
             </article>
             <article className="scard rv" id="deal">

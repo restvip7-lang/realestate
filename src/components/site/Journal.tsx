@@ -9,7 +9,9 @@ import { fmtDate } from '@/lib/format'
 import { SITE_URL } from '@/lib/seo'
 import type { Post } from '@/payload-types'
 
-import { PostCard, postPath } from './PostCard'
+import { CAT_SECTIONS, NEWS_BASE, PostCard, postPath } from './PostCard'
+
+export { CAT_SECTIONS }
 
 const host = (s: string) => {
   try {
@@ -19,7 +21,7 @@ const host = (s: string) => {
   }
 }
 
-/** Список статей (/blog) или новостей (/news) с фильтром по рубрике ?cat= */
+/** Список статей (/blog, /blog/laws) или новостей (/blog/news) с фильтром по рубрике ?cat= */
 export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat?: string }) {
   const locale = (await getLocale()) as Locale
   const [t, tc, tcat] = await Promise.all([getTranslations('journal'), getTranslations('catalog'), getTranslations('catalogCats')])
@@ -27,11 +29,13 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
   const cats = POST_CATEGORIES.map((c) => c.value).filter((c) => all.some((p) => p.category === c))
   const current = cats.find((c) => c === cat)
   const list = all.filter((p) => !current || p.category === current)
-  const base = kind === 'news' ? '/news' : '/blog'
+  const base = kind === 'news' ? NEWS_BASE : '/blog'
+  const catHref = (c: string) => (kind === 'article' && CAT_SECTIONS[c]) || `${base}?cat=${c}`
+  const section = kind === 'article' && current ? CAT_SECTIONS[current] : undefined
   const news = kind === 'news'
   const catName = (c: string) => tcat(c as never)
   const ld = [
-    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [[tc('home'), '/'], [t(news ? 'news' : 'blog'), base]].map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: p, locale })}` })) },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [[tc('home'), '/'], [t(news ? 'news' : 'blog'), base], ...(section ? [[catName(current!), section]] : [])].map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: p, locale })}` })) },
     news
       ? { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: all.slice(0, 10).map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}${getPathname({ href: postPath(p), locale })}` })) }
       : { '@context': 'https://schema.org', '@type': 'Blog', name: t('blogEyebrow'), blogPost: all.slice(0, 10).map((p) => ({ '@type': 'BlogPosting', headline: p.title, datePublished: p.publishedAt, url: `${SITE_URL}${getPathname({ href: postPath(p), locale })}` })) },
@@ -40,7 +44,7 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
     <div className="chips" role="group" aria-label={t('catsLabel')}>
       <Link className="chip" href={base} aria-current={!current ? 'true' : undefined}>{news ? t('all') : t('allN', { n: all.length })}</Link>
       {cats.map((c) => (
-        <Link key={c} className="chip" href={`${base}?cat=${c}`} aria-current={current === c ? 'true' : undefined}>
+        <Link key={c} className="chip" href={catHref(c)} aria-current={current === c ? 'true' : undefined}>
           {catName(c)}{news ? '' : ` · ${all.filter((p) => p.category === c).length}`}
         </Link>
       ))}
@@ -50,10 +54,10 @@ export async function JournalList({ kind, cat }: { kind: 'article' | 'news'; cat
   const hero = (
     <section className="dhero short">
       <div className="wrap">
-        <nav className="crumbs" aria-label={tc('crumbs')}><Link href="/">{tc('home')}</Link>›<span aria-current="page">{t(news ? 'news' : 'blog')}</span></nav>
+        <nav className="crumbs" aria-label={tc('crumbs')}><Link href="/">{tc('home')}</Link>›{section ? <><Link href={base}>{t('blog')}</Link>›<span aria-current="page">{catName(current!)}</span></> : <span aria-current="page">{t(news ? 'news' : 'blog')}</span>}</nav>
         <span className="eyebrow">{news ? t('news') : t('blogEyebrow')}</span>
-        <h1>{news ? t('newsTitle') : t('blogTitle')}</h1>
-        <p className="lead-t">{news ? t('newsLead') : t('blogLead')} <Link href={news ? '/blog' : '/news'} className="link" style={{ color: 'var(--sea-light)' }}>{news ? t('toBlog') : t('toNews')}</Link></p>
+        <h1>{news ? t('newsTitle') : section ? t('lawsTitle') : t('blogTitle')}</h1>
+        <p className="lead-t">{news ? t('newsLead') : t('blogLead')} <Link href={news ? '/blog' : NEWS_BASE} className="link" style={{ color: 'var(--sea-light)' }}>{news ? t('toBlog') : t('toNews')}</Link></p>
       </div>
     </section>
   )

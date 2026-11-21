@@ -14,7 +14,7 @@ type Entry = { path: string; lastModified?: string; priority: number }
 
 const SALE = catalogBasePath({ deal: 'sale' })
 const RENT = catalogBasePath({ deal: 'rent' })
-const STATIC = ['/', '/projects', '/districts', '/team', '/reviews', '/blog', '/news', '/services', '/how-to-buy', '/citizenship', '/residence-permit', '/contacts', '/privacy']
+const STATIC = ['/', '/projects', '/districts', '/team', '/reviews', '/about', '/blog', '/blog/news', '/blog/laws', '/blog/area-guides', '/services/due-diligence', '/services', '/how-to-buy', '/citizenship', '/residence-permit', '/contacts', '/privacy']
 
 export async function sitemapEntries(): Promise<Record<SitemapType, Entry[]>> {
   const [{ districts, team, posts, properties, services }, samples] = await Promise.all([sitemapData(), landingSamples()])
