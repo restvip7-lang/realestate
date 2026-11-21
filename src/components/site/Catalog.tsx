@@ -6,9 +6,10 @@ import { getTranslations } from 'next-intl/server'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { PROPERTY_TYPES, type PropertyType } from '@/lib/catalog'
-import { catalogBasePath, catalogHref, hasExtraFilters } from '@/lib/catalog-params'
-import { type CatalogQuery, districtOf, listDistricts, listProperties, mapProperties, propertyCover } from '@/lib/data'
+import { catalogBasePath, catalogHref, hasQueryParams, LANDING_KEYS, LANDINGS, landingFits, landingOf } from '@/lib/catalog-params'
+import { type CatalogQuery, districtOf, landingSamples, listDistricts, listProperties, mapProperties, propertyCover } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
+import { INDEX_MIN, landingMatrix } from '@/lib/landings'
 
 import { CatalogFilters, SortSelect } from './CatalogFilters'
 import { CatalogLayout, type MapPoint } from './CatalogMap'
@@ -16,15 +17,19 @@ import { Price } from './Currency'
 import { PrintButton } from './PrintButton'
 import { PropertyCard } from './PropertyCard'
 
+const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1)
+
 /** Заголовок каталога: «Квартиры в Махмутларе», «Аренда вилл» и т. п. */
 export async function catalogTitle(locale: Locale, q: CatalogQuery) {
   const t = await getTranslations({ locale, namespace: 'catalog' })
   const districts = await listDistricts(locale)
   const d = districts.find((x) => x.slug === q.district)
   const type = q.type && PROPERTY_TYPES[q.type as PropertyType]?.plural[locale]
-  const what = type || t(q.deal === 'rent' ? 'rentAll' : 'saleAll')
+  const f = landingOf(q)
+  const phrase = f ? ` ${t(`landing.${f}` as never)}` : ''
+  const what = (type || t(q.deal === 'rent' ? 'rentAll' : 'saleAll')) + phrase
   const where = d ? t('inDistrict', { where: d.nameIn || d.name }) : t('inAlanya')
-  return q.deal === 'rent' && type ? t('rentOf', { what: type, where }) : `${what} ${where}`
+  return q.deal === 'rent' && type ? t('rentOf', { what: type + phrase, where }) : `${what} ${where}`
 }
 
 export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }) {
@@ -33,7 +38,12 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
   const tf = await getTranslations('favs')
   const deal = q.deal || 'sale'
   const districts = await listDistricts(locale)
-  const [res, all] = await Promise.all([listProperties(locale, { ...q, limit: 24 }, districts), mapProperties(locale, q, districts)])
+  const [res, all, samples] = await Promise.all([listProperties(locale, { ...q, limit: 24 }, districts), mapProperties(locale, q, districts), landingSamples()])
+  // перелинковка — только на ЧПУ-страницы, где не меньше INDEX_MIN объектов (пороги ТЗ)
+  const live = new Map(landingMatrix(samples, districts).filter((x) => x.n >= INDEX_MIN).map((x) => [x.path, x.n]))
+  const ok = (x: CatalogQuery) => live.has(catalogBasePath(x))
+  const f = landingOf(q)
+  const base = { deal, district: q.district, type: q.type }
   // страница за пределами списка (/page-9 при двух страницах) — 404, а не пустой каталог
   if (q.page && q.page > 1 && q.page > res.totalPages) notFound()
   const points: MapPoint[] = all
@@ -67,6 +77,7 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
   if (q.owner) chips.push([t('owner'), { owner: false }])
   if (q.video) chips.push([t('video'), { video: false }])
   if (q.pets) chips.push([t('pets'), { pets: false }])
+  if (q.pool) chips.push([t('poolChip'), { pool: false }])
   const pages = Array.from({ length: res.totalPages }, (_, i) => i + 1)
 
   return (
@@ -107,6 +118,11 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
             <div className="empty">
               <b>{t('empty')}</b>
               <p className="hint">{t('emptyHint')}</p>
+              {/* 0 объектов на ЧПУ — альтернативы из ТЗ: без признака, без района */}
+              <div className="alts">
+                {f && ok(base) && <Link href={catalogBasePath(base)} className="link">{t('altNoFeature')}: {await catalogTitle(locale, base)}</Link>}
+                {q.district && ok({ ...base, district: undefined }) && <Link href={catalogBasePath({ ...base, district: undefined, ...(f ? LANDINGS[f].patch : {}) })} className="link">{t('altAllAlanya')}</Link>}
+              </div>
               <Link href={catalogBasePath({ deal })} className="btn btn-dark">{t('reset')}</Link>
             </div>
           )}
@@ -124,20 +140,19 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
       <section className="cat-seo" aria-labelledby="seo-h">
         <div className="wrap cols">
           <div>
-            <h2 id="seo-h">{hasExtraFilters(q) || q.district || q.type ? title : t(deal === 'rent' ? 'seoRentTitle' : 'seoSaleTitle')}</h2>
+            <h2 id="seo-h">{hasQueryParams(q) || q.district || q.type || f ? title : t(deal === 'rent' ? 'seoRentTitle' : 'seoSaleTitle')}</h2>
             <p>{t(deal === 'rent' ? 'seoRentText' : 'seoSaleText')}</p>
           </div>
           <div>
             <h3>{t('byDistrict')}</h3>
-            <div className="links">{districts.map((x) => <Link key={x.slug} href={catalogBasePath({ deal, district: x.slug, type: q.type })}>{x.name}</Link>)}</div>
+            <div className="links">{districts.filter((x) => ok({ deal, district: x.slug, type: q.type })).map((x) => <Link key={x.slug} href={catalogBasePath({ deal, district: x.slug, type: q.type })}>{x.name}</Link>)}</div>
             <h3>{t('byType')}</h3>
-            <div className="links">{(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).map((k) => <Link key={k} href={catalogBasePath({ deal, district: q.district, type: k })}>{t(`typesPlural.${k}`)}</Link>)}</div>
-            <h3>{t('collections')}</h3>
+            <div className="links">{(['apartment', 'penthouse', 'villa', 'duplex', 'project'] as const).filter((k) => ok({ deal, district: q.district, type: k })).map((k) => <Link key={k} href={catalogBasePath({ deal, district: q.district, type: k })}>{t(`typesPlural.${k}`)}</Link>)}</div>
+            <h3>{t('landingsTitle')}</h3>
             <div className="links">
-              <Link href={catalogHref({ deal, district: q.district, seaView: true })}>{ts('seaView')}</Link>
-              <Link href={catalogHref({ deal, district: q.district, sea: 100 })}>{t('firstLine')}</Link>
-              <Link href={catalogHref({ deal, district: q.district, newBuild: true })}>{ts('newBuild')}</Link>
-              <Link href={catalogHref({ deal, district: q.district, furnished: true })}>{ts('furnished')}</Link>
+              {LANDING_KEYS.filter((k) => landingFits(k, deal) && k !== f && ok({ ...base, ...LANDINGS[k].patch })).map((k) => (
+                <Link key={k} href={catalogBasePath({ ...base, ...LANDINGS[k].patch })}>{cap(t(`landing.${k}` as never))}</Link>
+              ))}
               {deal === 'sale' ? <Link href={catalogBasePath({ deal: 'rent', district: q.district })}>{t('rent')}</Link> : <Link href={catalogBasePath({ deal: 'sale', district: q.district })}>{t('sale')}</Link>}
             </div>
           </div>

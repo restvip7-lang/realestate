@@ -4,8 +4,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Catalog, catalogTitle } from '@/components/site/Catalog'
 import { getPathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { catalogBasePath, catalogHref, hasExtraFilters, parseCatalog, parseCatalogPath, type SearchParams } from '@/lib/catalog-params'
-import { listDistricts } from '@/lib/data'
+import { CATALOG_BASE, catalogBasePath, catalogHref, hasQueryParams, LANDINGS, parseCatalog, parseCatalogPath, type SearchParams } from '@/lib/catalog-params'
+import { countProperties, listDistricts } from '@/lib/data'
+import { INDEX_MIN } from '@/lib/landings'
 import { pageMeta } from '@/lib/seo'
 
 // Каталог по ЧПУ из ТЗ: /{lang}/turkey/alanya/{район}/{сделка}/{тип}/page-N (docs/seo-urls.md)
@@ -15,8 +16,8 @@ async function resolve(locale: Locale, path: string[], sp: SearchParams) {
   const districts = await listDistricts(locale)
   const seg = parseCatalogPath(path, districts.map((d) => d.slug))
   if (!seg) notFound()
-  // путь главнее параметров: ?district= и ?type= в адресе ЧПУ игнорируем
-  return { ...parseCatalog(seg.deal, sp), district: seg.district, type: seg.type, page: seg.page }
+  // путь главнее параметров: ?district= и ?type= в адресе ЧПУ игнорируем, признак из пути добавляется к фильтру
+  return { ...parseCatalog(seg.deal, sp), district: seg.district, type: seg.type, ...(seg.landing ? LANDINGS[seg.landing].patch : {}), page: seg.page }
 }
 
 export async function generateMetadata({ params, searchParams }: Props) {
@@ -24,11 +25,13 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const q = await resolve(locale, path, await searchParams)
   const t = await getTranslations({ locale, namespace: 'catalog' })
   const title = await catalogTitle(locale, q)
+  // порог ТЗ: меньше INDEX_MIN объектов — страница открыта, но не индексируется
+  const n = await countProperties(locale, q)
   return pageMeta(locale, catalogBasePath(q), {
     title: q.page && q.page > 1 ? `${title} — ${t('pageN', { n: q.page })}` : title,
     description: t(q.deal === 'rent' ? 'seoRentText' : 'seoSaleText'),
     // фильтры и сортировка параметрами — noindex, canonical на ЧПУ без параметров
-    noindex: hasExtraFilters(q) || !!q.sort,
+    noindex: hasQueryParams(q) || n < INDEX_MIN,
   })
 }
 
@@ -36,7 +39,8 @@ export default async function Page({ params, searchParams }: Props) {
   const { locale, path } = await params
   setRequestLocale(locale)
   const q = await resolve(locale, path, await searchParams)
-  // /page-1 — то же, что первая страница без номера
-  if (q.page === 1) permanentRedirect(getPathname({ href: catalogHref(q, { page: undefined }), locale }))
+  // один адрес на страницу: /page-1, признак параметром (?view=sea), регистр — 308 на канонический ЧПУ
+  const here = `${CATALOG_BASE}/${path.join('/')}`
+  if (here !== catalogBasePath(q)) permanentRedirect(getPathname({ href: catalogHref(q), locale }))
   return <Catalog locale={locale} q={q} />
 }

@@ -5,7 +5,7 @@ import type { Where } from 'payload'
 import type { Locale } from '@/i18n/locales'
 import type { Company, District, Media, Post, Property, Rate, Review, Service, Team, TeamPage } from '@/payload-types'
 
-import { PUBLIC_STATUSES } from './catalog'
+import { POOL_FEATURES, PUBLIC_STATUSES } from './catalog'
 import { FLAT_TYPES, pmOf, priceSample } from './district-prices'
 import { payloadClient } from './payload'
 
@@ -64,6 +64,8 @@ export type CatalogQuery = {
   owner?: boolean
   video?: boolean
   pets?: boolean
+  /** с бассейном (открытый или закрытый) — инфраструктура комплекса */
+  pool?: boolean
   sort?: 'new' | 'cheap' | 'expensive' | 'sea'
   page?: number
   limit?: number
@@ -81,12 +83,13 @@ async function catalogWhere(locale: Locale, q: CatalogQuery, districts?: Distric
   else if (q.rooms) and.push({ rooms: { equals: q.rooms } })
   if (q.min) and.push({ price: { greater_than_equal: q.min } })
   if (q.max) and.push({ price: { less_than_equal: q.max } })
-  if (q.sea) and.push({ sea: { less_than_equal: q.sea } })
+  if (q.sea) and.push({ sea: { greater_than: 0 } }, { sea: { less_than_equal: q.sea } }) // 0 — расстояние не указано
   if (q.area) and.push({ area: { greater_than_equal: q.area } })
   if (q.seaView) and.push({ view: { equals: 'sea' } })
   if (q.furnished) and.push({ furnished: { in: ['yes', 'partial'] } })
   if (q.newBuild) and.push({ condition: { in: ['new', 'construction'] } })
   if (q.citizenship) and.push({ citizenship: { equals: true } })
+  if (q.pool) and.push({ features: { in: POOL_FEATURES } })
   if (q.owner) and.push({ source: { equals: 'owner' } })
   if (q.video) and.push({ video: { exists: true } }, { video: { not_equals: '' } })
   if (q.pets && q.deal === 'rent') and.push({ 'rent.pets': { equals: true } })
@@ -116,6 +119,27 @@ export async function listProperties(locale: Locale, q: CatalogQuery, districts?
     depth: 1,
     ...pub,
   })
+}
+
+/** Сколько объектов по фильтру (для порогов индексации ЧПУ, docs/seo-urls.md). */
+export async function countProperties(locale: Locale, q: CatalogQuery, districts?: District[]) {
+  const { totalDocs } = await (await payloadClient()).count({ collection: 'properties', locale, where: await catalogWhere(locale, q, districts), ...pub })
+  return totalDocs
+}
+
+/** Объекты для подсчёта посадочных страниц: только поля признаков, без связей (лимит трафика базы). */
+export type LandingSample = Pick<Property, 'deal' | 'type' | 'sea' | 'view' | 'furnished' | 'condition' | 'citizenship' | 'features' | 'rent'> & { district: number | null }
+export async function landingSamples(): Promise<LandingSample[]> {
+  const { docs } = await (await payloadClient()).find({
+    collection: 'properties',
+    where: { status: { equals: 'published' } },
+    select: { deal: true, type: true, district: true, sea: true, view: true, furnished: true, condition: true, citizenship: true, features: true, rent: { pets: true } },
+    limit: 5000,
+    depth: 0,
+    pagination: false,
+    ...pub,
+  })
+  return docs.map((p) => ({ ...p, district: typeof p.district === 'object' ? (p.district?.id ?? null) : (p.district ?? null) })) as LandingSample[]
 }
 
 /** Все объекты по фильтру для карты каталога: только нужные поля, у района — название, у фото — размеры (лимит трафика базы). */
