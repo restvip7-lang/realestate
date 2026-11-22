@@ -237,9 +237,9 @@ export async function runSeedStep(payload: Payload, step: SeedStep, offset = 0):
       if (h.startsWith('member.html')) return `/ru/team/${memberKey.get(q.get('id') || '')?.slug || ''}`
       if (h.startsWith('post.html')) {
         const id = Number(q.get('id'))
-        return `/ru/${postKind.get(id) === 'news' ? 'news' : 'blog'}/${postSlug.get(id) || ''}`
+        return `/ru/${postKind.get(id) === 'news' ? 'blog/news' : 'blog'}/${postSlug.get(id) || ''}`
       }
-      if (h.startsWith('news.html')) return '/ru/news'
+      if (h.startsWith('news.html')) return '/ru/blog/news'
       if (h.startsWith('blog.html')) return '/ru/blog'
       if (h.startsWith('citizenship.html')) return '/ru/citizenship'
       if (h.startsWith('residence.html')) return '/ru/residence-permit'

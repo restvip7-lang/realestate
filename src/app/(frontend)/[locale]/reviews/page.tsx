@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { NavSelect } from '@/components/site/NavSelect'
 import { ReviewForm } from '@/components/site/ReviewForm'
-import { getPathname, Link } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { getCompany, listReviews, listTeam, mediaUrl } from '@/lib/data'
 import { fmtDate, quoted } from '@/lib/format'
