@@ -149,7 +149,7 @@ export async function mapProperties(locale: Locale, q: CatalogQuery, districts?:
     locale,
     where: await catalogWhere(locale, q, districts),
     select: { title: true, slug: true, deal: true, price: true, priceFrom: true, rooms: true, area: true, lat: true, lng: true, district: true, photos: true, remoteCover: true, type: true },
-    populate: { districts: { name: true }, media: { url: true, filename: true, sizes: true } }, // url фото вычисляется из filename
+    populate: { districts: { name: true, slug: true }, media: { url: true, filename: true, sizes: true } }, // url фото вычисляется из filename
     sort: '-id',
     limit: 3000,
     depth: 1,
@@ -443,7 +443,7 @@ export async function sitemapData() {
     p.find({ collection: 'districts', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'team', ...opts, sort: 'order', select: { slug: true, name: true, updatedAt: true } }),
     p.find({ collection: 'posts', ...opts, sort: '-publishedAt', select: { slug: true, kind: true, title: true, updatedAt: true } }),
-    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, updatedAt: true } }),
+    p.find({ collection: 'properties', ...opts, sort: '-id', where: { status: { equals: 'published' } }, select: { slug: true, deal: true, district: true, updatedAt: true } }),
     p.find({ collection: 'services', ...opts, sort: 'order', select: { slug: true, title: true, updatedAt: true } }),
   ])
   return { districts: districts.docs, team: team.docs, posts: posts.docs, properties: properties.docs, services: services.docs }

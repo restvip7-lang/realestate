@@ -5,7 +5,14 @@ import { PROPERTY_TYPES, type PropertyType } from './catalog'
 
 export const typeName = (type: string, locale: Locale) => PROPERTY_TYPES[type as PropertyType]?.[locale] ?? type
 
-export const propertyPath = (p: Pick<Property, 'id' | 'slug'>) => `/property/${p.id}${p.slug ? `-${p.slug}` : ''}`
+/**
+ * Адрес объекта по ТЗ: /turkey/alanya/{район}/{сделка}/id{номер} (docs/seo-urls.md).
+ * Район берётся из связи (нужен slug) или передаётся явно; без района адрес всё равно открывается и ведёт 308 на полный.
+ */
+export function propertyPath(p: Pick<Property, 'id' | 'deal'> & { district?: Property['district'] | null }, districtSlug?: string | null) {
+  const slug = districtSlug ?? (p.district && typeof p.district === 'object' ? p.district.slug : null)
+  return `/turkey/alanya/${slug ? `${slug}/` : ''}${p.deal === 'rent' ? 'rent' : 'sale'}/id${p.id}`
+}
 
 export const fmtDate = (iso: string | null | undefined, locale: Locale, opts: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }) =>
   iso ? new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : locale, { timeZone: 'Europe/Istanbul', ...opts }).format(new Date(iso)) : ''

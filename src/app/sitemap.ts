@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...STATIC.map((path) => ({ path, priority: path === '/' ? 1 : ['/projects', '/districts'].includes(path) ? 0.9 : 0.6 })),
     ...catalog,
     ...districts.filter((d) => d.slug).map((d) => ({ path: `/districts/${d.slug}`, lastModified: d.updatedAt, priority: 0.8 })),
-    ...properties.map((p) => ({ path: propertyPath(p), lastModified: p.updatedAt, priority: 0.7 })),
+    ...properties.map((p) => ({ path: propertyPath(p, districts.find((d) => d.id === p.district)?.slug), lastModified: p.updatedAt, priority: 0.7 })),
     ...posts.filter((p) => p.slug).map((p) => ({ path: `/${p.kind === 'news' ? 'news' : 'blog'}/${p.slug}`, lastModified: p.updatedAt, priority: 0.5 })),
     ...team.filter((m) => m.slug).map((m) => ({ path: `/team/${m.slug}`, lastModified: m.updatedAt, priority: 0.4 })),
     ...services.filter((x) => x.slug).map((x) => ({ path: `/services/${x.slug}`, lastModified: x.updatedAt, priority: 0.5 })),
