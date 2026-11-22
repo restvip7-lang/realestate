@@ -339,6 +339,7 @@
     "empty": "Bu filtrelere uygun ilan yok",
     "emptyHint": "Bazı filtreleri kaldırın veya talep bırakın — sitede henüz olmayan seçenekleri bulalım.",
     "pagination": "Sayfalar",
+    "pageN": "sayfa {n}",
     "seoSaleTitle": "Alanya'da satılık emlak",
     "seoRentTitle": "Alanya'da kiralık ev",
     "seoSaleText": "Alanya'nın 14 bölgesinde daireler, çatı katları ve villalar: denize yakın stüdyolardan havuzlu villalara. Her ilanda ilan numarası, fiyatın kontrol tarihi ve denize uzaklık yazılıdır. Yerinde ve video ile gezdiriyor, rezervasyondan önce belgeleri kontrol ediyoruz.",

@@ -14,6 +14,7 @@ import { buyCosts } from '@/lib/costs'
 import { fmtDate, propertyPath, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { Property } from '@/payload-types'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
 
@@ -50,7 +51,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
           <b>{shared ? t('emptyShared') : t('emptyTitle')}</b>
           {t('emptyText')}
           <br />
-          <Link href="/sale" className="btn btn-dark btn-sm" style={{ marginTop: 14 }}>{t('toCatalog')}</Link>
+          <Link href={catalogBasePath({ deal: 'sale' })} className="btn btn-dark btn-sm" style={{ marginTop: 14 }}>{t('toCatalog')}</Link>
         </div>
         <div className="sec-head"><div><span className="eyebrow">{t('freshEyebrow')}</span><h2>{t('freshTitle')}</h2></div></div>
         <div className="grid3">{fresh.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
@@ -76,7 +77,7 @@ export default async function FavoritesPage({ params, searchParams }: Props) {
           <>
             <div className="sec-head" style={{ marginTop: 40 }}>
               <div><span className="eyebrow">{t('moreEyebrow')}</span><h2>{t('moreTitle')}</h2></div>
-              <Link href={list[0].deal === 'rent' ? '/rent' : '/sale'} className="link">{t('allCatalog')}</Link>
+              <Link href={catalogBasePath({ deal: list[0].deal === 'rent' ? 'rent' : 'sale' })} className="link">{t('allCatalog')}</Link>
             </div>
             <div className="grid3">{more.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
           </>

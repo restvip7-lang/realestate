@@ -12,6 +12,7 @@ import { parseProjects, projectsQueryString, type SearchParams } from '@/lib/cat
 import { listDistricts, listProjects, type ProjectQuery, projectStats } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
+import { catalogHref } from '@/lib/catalog-params'
 
 // Новостройки: проекты застройщиков (объекты с type 'project'), docs/projects.md
 type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<SearchParams> }
@@ -114,7 +115,7 @@ export default async function ProjectsPage({ params, searchParams }: Props) {
           </div>
           <div className="pres">
             <p className="cnt" aria-live="polite">{t('found', { n: res.totalDocs })}</p>
-            <Link href="/sale?new=1" className="link">{t('units')}</Link>
+            <Link href={catalogHref({ deal: 'sale', newBuild: true })} className="link">{t('units')}</Link>
           </div>
           {res.docs.length ? (
             <div className="grid3">{res.docs.map((p, i) => <ProjectCard key={p.id} p={p} priority={i < 3} />)}</div>

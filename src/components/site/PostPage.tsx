@@ -17,6 +17,7 @@ import { CopyLink } from './CopyLink'
 import { PostCard, postPath } from './PostCard'
 import { PropertyCard } from './PropertyCard'
 import { Prose, tocOf } from './Prose'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 export async function postMeta(locale: Locale, slug: string) {
   const p = await getPost(slug, locale)
@@ -132,7 +133,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
       {objs.length > 0 && (
         <section className="sec" style={{ background: 'var(--mist)', marginTop: 48 }}>
           <div className="wrap">
-            <div className="sec-head"><div><span className="eyebrow">{t('relObjEyebrow')}</span><h2>{t('relObjTitle')}</h2></div><Link href="/sale" className="link">{t('relObjAll')}</Link></div>
+            <div className="sec-head"><div><span className="eyebrow">{t('relObjEyebrow')}</span><h2>{t('relObjTitle')}</h2></div><Link href={catalogBasePath({ deal: 'sale' })} className="link">{t('relObjAll')}</Link></div>
             <div className="grid3">{objs.slice(0, 3).map((o) => <PropertyCard key={o.id} p={o} />)}</div>
           </div>
         </section>

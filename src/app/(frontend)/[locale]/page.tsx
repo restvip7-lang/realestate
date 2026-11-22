@@ -13,6 +13,7 @@ import { coverOf, districtStats, getCompany, latestPosts, latestReviews, listDis
 import { districtPm } from '@/lib/district-prices'
 import { fmtDate, quoted } from '@/lib/format'
 import { pageMeta } from '@/lib/seo'
+import { catalogBasePath, catalogHref } from '@/lib/catalog-params'
 
 const TOP = ['mahmutlar', 'oba', 'kestel', 'center', 'kargicak', 'avsallar']
 const HERO_IMG = 'oba' // фото района на первом экране
@@ -94,11 +95,11 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <section className="sec-tight" style={{ background: 'var(--mist)' }}>
         <div className="wrap">
           <div className="chips" role="group" aria-label={t('chipsLabel')}>
-            <Link className="chip" href="/sale?sea=300">{t('chipSea')}</Link>
+            <Link className="chip" href={catalogHref({ deal: 'sale', sea: 300 })}>{t('chipSea')}</Link>
             <Link className="chip" href="/projects">{t('chipNew')}</Link>
-            <Link className="chip" href="/sale?furn=1">{t('chipFurn')}</Link>
-            <Link className="chip" href="/sale?max=150000">{t('chipBudget')} <Price eur={150000} /></Link>
-            <Link className="chip" href="/sale?view=sea">{t('chipView')}</Link>
+            <Link className="chip" href={catalogHref({ deal: 'sale', furnished: true })}>{t('chipFurn')}</Link>
+            <Link className="chip" href={catalogHref({ deal: 'sale', max: 150000 })}>{t('chipBudget')} <Price eur={150000} /></Link>
+            <Link className="chip" href={catalogHref({ deal: 'sale', seaView: true })}>{t('chipView')}</Link>
           </div>
           <div className="trust">
             {trust.map((x, i) => (
@@ -115,14 +116,14 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="wrap">
           <div className="sec-head">
             <div><span className="eyebrow">{t('saleEyebrow')}</span><h2>{t('objectsTitle')}</h2></div>
-            <Link href="/sale" className="link">{t('allCatalog')}</Link>
+            <Link href={catalogBasePath({ deal: 'sale' })} className="link">{t('allCatalog')}</Link>
           </div>
           <div className="grid3 limit4">
             {props.docs.map((p, i) => <PropertyCard key={p.id} p={p} priority={i < 3} />)}
           </div>
           <div className="res-actions">
-            <Link href="/sale" className="btn btn-dark">{t('allSale')}</Link>
-            <Link href="/rent" className="btn btn-line">{t('rent')}</Link>
+            <Link href={catalogBasePath({ deal: 'sale' })} className="btn btn-dark">{t('allSale')}</Link>
+            <Link href={catalogBasePath({ deal: 'rent' })} className="btn btn-line">{t('rent')}</Link>
           </div>
         </div>
       </section>

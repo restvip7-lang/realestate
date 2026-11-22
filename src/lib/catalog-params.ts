@@ -1,3 +1,4 @@
+import { PROPERTY_TYPES, type PropertyType } from './catalog'
 import type { CatalogQuery, ProjectQuery } from './data'
 
 export type SearchParams = Record<string, string | string[] | undefined>
@@ -57,6 +58,61 @@ export function catalogQueryString(q: CatalogQuery, patch: Partial<CatalogQuery>
   const s = p.toString()
   return s ? `?${s}` : ''
 }
+
+/**
+ * Адреса каталога по ТЗ (раздел «URL-иерархия»): /{lang}/turkey/alanya/{район}/{сделка}/{тип}/page-N.
+ * Район, сделка, тип и страница — часть пути (индексируемые ЧПУ), остальные фильтры — параметры
+ * (noindex + canonical на путь без параметров). Старые /sale и /rent ведут сюда 308-редиректом.
+ */
+export const CATALOG_BASE = '/turkey/alanya'
+export const DEALS = ['sale', 'rent'] as const
+export type Deal = (typeof DEALS)[number]
+
+const TYPE_BY_PATH = Object.fromEntries(Object.entries(PROPERTY_TYPES).map(([k, v]) => [v.path, k])) as Record<string, PropertyType>
+export const typePath = (type?: string) => (type && type in PROPERTY_TYPES ? PROPERTY_TYPES[type as PropertyType].path : undefined)
+
+/** Путь каталога без параметров: район, сделка, тип, страница. */
+export function catalogBasePath(q: Pick<CatalogQuery, 'deal' | 'district' | 'type' | 'page'>): string {
+  const segs = [q.district, q.deal || 'sale', typePath(q.type), q.page && q.page > 1 ? `page-${q.page}` : undefined].filter(Boolean)
+  return `${CATALOG_BASE}/${segs.join('/')}`
+}
+
+/** Полный адрес каталога: ЧПУ-путь + остальные фильтры параметрами. */
+export function catalogHref(q: CatalogQuery, patch: Partial<CatalogQuery> = {}): string {
+  const x = { ...q, ...patch }
+  const rest = catalogQueryString({ ...x, district: undefined, type: undefined, page: undefined })
+  return catalogBasePath(x) + rest
+}
+
+/**
+ * Разбор сегментов после /turkey/alanya/: [район]/сделка/[тип]/[page-N].
+ * null — такого адреса нет (404). Районы передаются списком slug, чтобы отличить район от сделки.
+ */
+export function parseCatalogPath(segs: string[], districtSlugs: string[]): { deal: Deal; district?: string; type?: PropertyType; page?: number } | null {
+  const s = segs.map((x) => decodeURIComponent(x).toLowerCase())
+  let i = 0
+  let district: string | undefined
+  if (s[i] && !DEALS.includes(s[i] as Deal)) {
+    if (!districtSlugs.includes(s[i])) return null
+    district = s[i++]
+  }
+  const deal = s[i++] as Deal
+  if (!DEALS.includes(deal)) return null
+  let type: PropertyType | undefined
+  if (s[i] && TYPE_BY_PATH[s[i]]) type = TYPE_BY_PATH[s[i++]]
+  let page: number | undefined
+  const m = s[i]?.match(/^page-(\d{1,4})$/)
+  if (m) {
+    page = Number(m[1])
+    if (page < 1) return null
+    i++
+  }
+  if (i !== s.length) return null
+  return { deal, district, type, page }
+}
+
+/** Фильтры кроме района и типа (они в ЧПУ-пути): такие страницы не индексируем. */
+export const hasExtraFilters = (q: CatalogQuery) => hasFilters({ ...q, district: undefined, type: undefined })
 
 export const hasFilters = (q: CatalogQuery) =>
   !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship || q.floor || q.owner || q.video || q.pets)

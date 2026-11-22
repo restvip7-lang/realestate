@@ -12,10 +12,11 @@ import { PropertyCard } from '@/components/site/PropertyCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { aytKm, gzpKm } from '@/lib/coast'
-import { districtProperties, districtStats, findPublished, getDistrict, listDistricts, mediaUrl, type PropertyStat } from '@/lib/data'
+import { districtProperties, districtStats, findPublished, getDistrict, listDistricts, mediaUrl, type CatalogQuery, type PropertyStat } from '@/lib/data'
 import { districtPm, FLAT_TYPES, median, priceSample } from '@/lib/district-prices'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { District, Property } from '@/payload-types'
+import { catalogBasePath, catalogHref } from '@/lib/catalog-params'
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> }
 
@@ -83,12 +84,12 @@ export default async function DistrictPage({ params }: Props) {
   const SC = ['life', 'rent', 'beach', 'infra', 'quiet'] as const
 
   // цены по планировкам квартир и отдельно виллы: медиана €/м² (по объектам каталога)
-  const row = (list: PropertyStat[], r: string, q: string, label?: string) =>
+  const row = (list: PropertyStat[], r: string, q: Partial<CatalogQuery>, label?: string) =>
     list.length ? { r, q, label, n: list.length, from: minOf(list.map((o) => o.price ?? 0)), ppm: median(list.map((o) => (o.price ?? 0) / (o.area || 1))) } : null
   const flats = samples.filter((o) => FLAT_TYPES.includes(o.type ?? ''))
   const rows = [
-    ...ROOMS.map((r) => row(flats.filter((o) => o.rooms === r), r, `rooms=${encodeURIComponent(r === '4+1' || r === '5+1' ? '4+' : r)}`)),
-    row(samples.filter((o) => o.type === 'villa'), 'villa', 'type=villa', t('villas')),
+    ...ROOMS.map((r) => row(flats.filter((o) => o.rooms === r), r, { rooms: r === '4+1' || r === '5+1' ? '4+' : r })),
+    row(samples.filter((o) => o.type === 'villa'), 'villa', { type: 'villa' }, t('villas')),
   ].filter((v): v is NonNullable<typeof v> => !!v)
 
   // текстовые цены для FAQ (в евро: FAQ попадает в JSON-LD, валюта посетителя там не нужна)
@@ -120,7 +121,7 @@ export default async function DistrictPage({ params }: Props) {
       <>
         <div className="grid3 limit4">{list.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
         <div className="res-actions">
-          <Link href={`/${deal}?district=${d.slug}`} className="btn btn-dark">{t('allInCatalog', { n: total })}</Link>
+          <Link href={catalogBasePath({ deal, district: d.slug })} className="btn btn-dark">{t('allInCatalog', { n: total })}</Link>
         </div>
       </>
     ) : (
@@ -145,7 +146,7 @@ export default async function DistrictPage({ params }: Props) {
               <h1>{t('h1', { name: d.name })}</h1>
               {d.lead && <p className="lead-t">{d.lead}</p>}
               <div className="cta">
-                <Link href={`/sale?district=${d.slug}`} className="btn btn-coral">{t('ctaObjects', { n: sale.length })}</Link>
+                <Link href={catalogBasePath({ deal: 'sale', district: d.slug })} className="btn btn-coral">{t('ctaObjects', { n: sale.length })}</Link>
                 <a href="#lead" className="btn btn-ghost">{t('ctaPick', { where })}</a>
               </div>
             </div>
@@ -249,7 +250,7 @@ export default async function DistrictPage({ params }: Props) {
                   <tbody>
                     {rows.map((r) => (
                       <tr key={r.r}>
-                        <td><Link href={`/sale?district=${d.slug}&${r.q}`}>{r.label ?? (r.r === '1+0' ? t('studio') : r.r)}</Link></td>
+                        <td><Link href={catalogHref({ deal: 'sale', district: d.slug, ...r.q })}>{r.label ?? (r.r === '1+0' ? t('studio') : r.r)}</Link></td>
                         <td className="num">{r.n}</td>
                         <td className="num"><Price eur={r.from} /></td>
                         <td className="num"><Price eur={r.ppm} suffix={tcard('perM2')} /></td>
@@ -299,14 +300,14 @@ export default async function DistrictPage({ params }: Props) {
           <p>{rentFrom ? t('seo1', { lead: d.lead || '', pm: pmTxt, rent: eur(rentFrom) }) : t('seo1NoRent', { lead: d.lead || '', pm: pmTxt })}</p>
           <p>{t('seo2', { name: d.name })}</p>
           <div className="links">
-            <Link href={`/sale?district=${d.slug}&type=apartment`}>{t('seoApartments', { where })}</Link>
-            {sale.some((o) => o.type === 'villa') && <Link href={`/sale?district=${d.slug}&type=villa`}>{t('seoVillas', { where })}</Link>}
+            <Link href={catalogBasePath({ deal: 'sale', district: d.slug, type: 'apartment' })}>{t('seoApartments', { where })}</Link>
+            {sale.some((o) => o.type === 'villa') && <Link href={catalogBasePath({ deal: 'sale', district: d.slug, type: 'villa' })}>{t('seoVillas', { where })}</Link>}
             {sale.some((o) => o.type === 'project') ? (
               <Link href={`/projects?district=${d.slug}`}>{t('seoNew', { where })}</Link>
             ) : sale.some((o) => o.condition !== 'resale') ? (
-              <Link href={`/sale?district=${d.slug}&new=1`}>{t('seoNew', { where })}</Link>
+              <Link href={catalogHref({ deal: 'sale', district: d.slug, newBuild: true })}>{t('seoNew', { where })}</Link>
             ) : null}
-            <Link href={`/rent?district=${d.slug}`}>{t('seoRent', { where })}</Link>
+            <Link href={catalogBasePath({ deal: 'rent', district: d.slug })}>{t('seoRent', { where })}</Link>
           </div>
         </div>
       </section>

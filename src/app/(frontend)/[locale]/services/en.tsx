@@ -8,6 +8,7 @@ import { ServiceCard } from '@/components/site/ServiceCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { SITE_URL } from '@/lib/seo'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 // Английская версия страницы; русская — ru.tsx (вёрстка одинаковая, меняется только текст)
 export const meta = { title: 'Real estate agency services in Alanya', description: 'Property selection and viewings, document checks, deal support, residence permits and citizenship, rental management and selling property in Alanya. Service prices.' }
@@ -50,7 +51,7 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">⌕</span><span className="price-tag free">Free</span></div>
               <h3>Selection and viewings</h3><p>We pick properties for your budget and goal, show them in person or by video, and tell you honestly about the drawbacks.</p>
               <ul className="checklist"><li>A shortlist of 5–10 properties in 2–5 days</li><li>Price per m², the date the price was checked and a cost estimate</li><li>In-person viewings with transfer, or by video call</li><li>District comparison for your lifestyle</li></ul>
-              <div className="acts"><Link href="/how-to-buy#step-2" className="btn btn-line btn-sm">How selection works</Link><Link href="/sale" className="btn btn-line btn-sm">Catalogue</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
+              <div className="acts"><Link href="/how-to-buy#step-2" className="btn btn-line btn-sm">How selection works</Link><Link href={catalogBasePath({ deal: 'sale' })} className="btn btn-line btn-sm">Catalogue</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("anna-sokolova", "expert")}
             </article>
             <article className="scard rv" id="legal">
@@ -78,7 +79,7 @@ export default async function ServicesEn({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">⌂</span><span className="price-tag">from 15% of rent</span></div>
               <h3>Rental management</h3><p>We rent out your apartment while you’re away from Turkey: we find and vet tenants, collect rent and look after the apartment.</p>
               <ul className="checklist"><li>Long-term rental: 15% of the rent (demo)</li><li>Seasonal rental: 25% of income (demo)</li><li>Photos, listings, viewings, contract</li><li>Monthly report and minor repairs</li><li>Free yield calculation before you buy</li></ul>
-              <div className="acts"><Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="btn btn-line btn-sm">Rental yield</Link><Link href="/rent" className="btn btn-line btn-sm">Apartments for rent</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
+              <div className="acts"><Link href="/blog/dokhodnost-arendy-v-alanii-skolko-realno-zarabotat" className="btn btn-line btn-sm">Rental yield</Link><Link href={catalogBasePath({ deal: 'rent' })} className="btn btn-line btn-sm">Apartments for rent</Link><a href="#lead" className="btn btn-dark btn-sm">Order</a></div>
               {by("daniel-marten", "expert")}
             </article>
             <article className="scard rv" id="after">

@@ -9,6 +9,7 @@ import { findPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/d
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { SITE_URL } from '@/lib/seo'
+import { catalogHref } from '@/lib/catalog-params'
 
 // Английская версия страницы; русская — ru.tsx (вёрстка одинаковая, меняется только текст)
 export const meta = { title: 'Turkish citizenship by buying property in Alanya', description: 'Terms of the citizenship-by-investment programme through real estate: from $400,000, no sale for 3 years, documents, timelines, costs and suitable properties in Alanya.' }
@@ -139,7 +140,7 @@ export default async function CitizenshipEn({ locale }: { locale: Locale }) {
         <div className="wrap">
           <div className="sec-head"><div><span className="eyebrow">Catalogue {objsTotal ? <span className="hint">{objsTotal} in the catalogue</span> : null}</span><h2>Properties for citizenship</h2></div><p>From $400,000 (<span>≈ <Price eur={minEur} /></span>) or several properties for this amount. The lawyer gives the final confirmation that a property qualifies.</p></div>
           {objsBlock}
-          <div className="res-actions"><Link href={`/sale?min=${Math.round(minEur)}`} className="btn btn-dark">All properties from $400,000</Link><a href="#lead" className="btn btn-line">Pick several properties</a></div>
+          <div className="res-actions"><Link href={catalogHref({ deal: 'sale', min: Math.round(minEur) })} className="btn btn-dark">All properties from $400,000</Link><a href="#lead" className="btn btn-line">Pick several properties</a></div>
         </div>
       </section>
 

@@ -11,7 +11,7 @@ import { LogoMark } from './Logo'
 import { MobileMenu } from './MobileMenu'
 
 const NAV = [
-  ['sale', '/sale'],
+  ['sale', '/turkey/alanya/sale'], // catalogBasePath({ deal: 'sale' })
   ['projects', '/projects'],
   ['districts', '/districts'],
   ['services', '/services'],

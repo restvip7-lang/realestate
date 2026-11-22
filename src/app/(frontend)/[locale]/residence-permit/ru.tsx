@@ -9,6 +9,7 @@ import { findPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/d
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { SITE_URL } from '@/lib/seo'
+import { catalogBasePath, catalogHref } from '@/lib/catalog-params'
 
 // Русская версия страницы; английская — en.tsx (вёрстка одинаковая, меняется только текст)
 export const meta = { title: 'ВНЖ в Турции при покупке жилья в Алании', description: 'ВНЖ по праву собственности: условия, открытые кварталы, документы, сроки и расходы. Объекты в Алании, подходящие для ВНЖ.' }
@@ -85,7 +86,7 @@ export default async function ResidenceRu({ locale }: { locale: Locale }) {
             <ul className="checklist no">
               <li>Часть кварталов закрыта для новых ВНЖ, и список меняется несколько раз в год. Проверяем статус каждого адреса до брони.</li>
               <li>ВНЖ не даёт права работать — для работы нужно отдельное разрешение.</li>
-              <li>Не купили жильё? Можно оформить ВНЖ по договору аренды — подберём <Link href="/rent" className="link">квартиру в аренду</Link>.</li>
+              <li>Не купили жильё? Можно оформить ВНЖ по договору аренды — подберём <Link href={catalogBasePath({ deal: 'rent' })} className="link">квартиру в аренду</Link>.</li>
             </ul>
             <p className="hint" style={{ marginTop: "12px" }}>Новости об изменении правил — в разделе <Link href="/news?cat=%D0%92%D0%9D%D0%96%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%B6%D0%B4%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%BE" className="link">«Новости»</Link>.</p>
           </div>
@@ -134,7 +135,7 @@ export default async function ResidenceRu({ locale }: { locale: Locale }) {
         <div className="wrap">
           <div className="sec-head"><div><span className="eyebrow">Каталог {objsTotal ? <span className="hint">{objsTotal} в каталоге</span> : null}</span><h2>Объекты под ВНЖ</h2></div><p>От 200 000 $ (<span>≈ <Price eur={minEur} /></span>). Статус квартала проверяем на дату сделки. Районы для жизни круглый год — <Link href="/districts?f=life" className="link">в гиде по районам</Link>.</p></div>
           {objsBlock}
-          <div className="res-actions"><Link href={`/sale?min=${Math.round(minEur)}`} className="btn btn-dark">Все объекты от 200 000 $</Link><a href="#lead" className="btn btn-line">Проверить мой объект</a></div>
+          <div className="res-actions"><Link href={catalogHref({ deal: 'sale', min: Math.round(minEur) })} className="btn btn-dark">Все объекты от 200 000 $</Link><a href="#lead" className="btn btn-line">Проверить мой объект</a></div>
         </div>
       </section>
 

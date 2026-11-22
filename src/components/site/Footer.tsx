@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 
 import { Link } from '@/i18n/navigation'
 import type { Company, District } from '@/payload-types'
+import { catalogBasePath } from '@/lib/catalog-params'
 
 const FOOT_DISTRICTS = ['mahmutlar', 'oba', 'kestel', 'kargicak', 'center']
 
@@ -39,11 +40,11 @@ export async function Footer({ company, districts }: { company: Company; distric
           <div>
             <h4>{t('catalog')}</h4>
             <ul>
-              <li><Link href="/sale?type=apartment">{t('apartments')}</Link></li>
-              <li><Link href="/sale?type=penthouse">{t('penthouses')}</Link></li>
-              <li><Link href="/sale?type=villa">{t('villas')}</Link></li>
+              <li><Link href={catalogBasePath({ deal: 'sale', type: 'apartment' })}>{t('apartments')}</Link></li>
+              <li><Link href={catalogBasePath({ deal: 'sale', type: 'penthouse' })}>{t('penthouses')}</Link></li>
+              <li><Link href={catalogBasePath({ deal: 'sale', type: 'villa' })}>{t('villas')}</Link></li>
               <li><Link href="/projects">{t('newBuilds')}</Link></li>
-              <li><Link href="/rent">{t('rent')}</Link></li>
+              <li><Link href={catalogBasePath({ deal: 'rent' })}>{t('rent')}</Link></li>
             </ul>
           </div>
           <div>

@@ -9,6 +9,7 @@ import { findPublished, getCompany, getRates, listTeam, mediaUrl } from '@/lib/d
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { SITE_URL } from '@/lib/seo'
+import { catalogBasePath, catalogHref } from '@/lib/catalog-params'
 
 // Английская версия страницы; русская — ru.tsx (вёрстка одинаковая, меняется только текст)
 export const meta = { title: 'Turkish residence permit when buying a home in Alanya', description: 'Residence permit through property ownership: requirements, open neighbourhoods, documents, timelines and costs. Properties in Alanya that qualify for a residence permit.' }
@@ -85,7 +86,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
             <ul className="checklist no">
               <li>Some neighbourhoods are closed to new residence permits, and the list changes several times a year. We check the status of every address before booking.</li>
               <li>A residence permit doesn’t give the right to work: that requires a separate work permit.</li>
-              <li>Haven’t bought yet? You can get a residence permit with a rental contract: we’ll find you <Link href="/rent" className="link">an apartment to rent</Link>.</li>
+              <li>Haven’t bought yet? You can get a residence permit with a rental contract: we’ll find you <Link href={catalogBasePath({ deal: 'rent' })} className="link">an apartment to rent</Link>.</li>
             </ul>
             <p className="hint" style={{ marginTop: "12px" }}>News about rule changes is in the <Link href="/news?cat=%D0%92%D0%9D%D0%96%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%B6%D0%B4%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%BE" className="link">News</Link> section.</p>
           </div>
@@ -134,7 +135,7 @@ export default async function ResidenceEn({ locale }: { locale: Locale }) {
         <div className="wrap">
           <div className="sec-head"><div><span className="eyebrow">Catalogue {objsTotal ? <span className="hint">{objsTotal} in the catalogue</span> : null}</span><h2>Properties for a residence permit</h2></div><p>From $200,000 (<span>≈ <Price eur={minEur} /></span>). We check the neighbourhood status on the date of the deal. Districts for year-round living are <Link href="/districts?f=life" className="link">in our district guide</Link>.</p></div>
           {objsBlock}
-          <div className="res-actions"><Link href={`/sale?min=${Math.round(minEur)}`} className="btn btn-dark">All properties from $200,000</Link><a href="#lead" className="btn btn-line">Check my property</a></div>
+          <div className="res-actions"><Link href={catalogHref({ deal: 'sale', min: Math.round(minEur) })} className="btn btn-dark">All properties from $200,000</Link><a href="#lead" className="btn btn-line">Check my property</a></div>
         </div>
       </section>
 
