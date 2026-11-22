@@ -85,7 +85,7 @@ export default async function ContactsRu({ locale }: { locale: Locale }) {
           <div className="sec-head"><div><span className="eyebrow">Адреса</span><h2>Офис и шоурум</h2></div><p>Приходите без записи в часы работы или договоритесь о встрече — встретим и покажем объекты.</p></div>
           <div className="offices">
             <div className="box"><h3>Офис в центре</h3><dl><dt>Адрес</dt><dd>{company.address}</dd><dt>Часы</dt><dd>{company.hours}</dd><dt>Рядом</dt><dd>5 минут пешком до пляжа Клеопатры</dd></dl><a href="#lead" className="btn btn-dark btn-sm">Записаться на встречу</a></div>
-            <div className="box"><h3>Шоурум в Махмутларе</h3><dl><dt>Адрес</dt><dd>{company.showroom}</dd><dt>Часы</dt><dd>{company.hours}</dd><dt>Что есть</dt><dd>Презентации новостроек, консультации юриста</dd></dl><Link href="/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">О шоуруме</Link></div>
+            <div className="box"><h3>Шоурум в Махмутларе</h3><dl><dt>Адрес</dt><dd>{company.showroom}</dd><dt>Часы</dt><dd>{company.hours}</dd><dt>Что есть</dt><dd>Презентации новостроек, консультации юриста</dd></dl><Link href="/blog/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">О шоуруме</Link></div>
             <div className="map-box">
               {map}
               <span className="map-note"><span>Схема не в масштабе. Точный маршрут пришлём в WhatsApp.</span></span>

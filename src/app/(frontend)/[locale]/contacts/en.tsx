@@ -85,7 +85,7 @@ export default async function ContactsEn({ locale }: { locale: Locale }) {
           <div className="sec-head"><div><span className="eyebrow">Addresses</span><h2>Office and showroom</h2></div><p>Drop in during opening hours without an appointment, or arrange a meeting: we’ll meet you and show you properties.</p></div>
           <div className="offices">
             <div className="box"><h3>Office in the centre</h3><dl><dt>Address</dt><dd>{company.address}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>Nearby</dt><dd>A 5-minute walk to Cleopatra Beach</dd></dl><a href="#lead" className="btn btn-dark btn-sm">Book a meeting</a></div>
-            <div className="box"><h3>Showroom in Mahmutlar</h3><dl><dt>Address</dt><dd>{company.showroom}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>What’s there</dt><dd>New-build presentations, lawyer consultations</dd></dl><Link href="/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">About the showroom</Link></div>
+            <div className="box"><h3>Showroom in Mahmutlar</h3><dl><dt>Address</dt><dd>{company.showroom}</dd><dt>Hours</dt><dd>{company.hours}</dd><dt>What’s there</dt><dd>New-build presentations, lawyer consultations</dd></dl><Link href="/blog/news/kleo-homes-otkryvaet-shourum-v-makhmutlare-demo" className="btn btn-line btn-sm">About the showroom</Link></div>
             <div className="map-box">
               {map}
               <span className="map-note"><span>The map is not to scale. We’ll send you the exact route on WhatsApp.</span></span>

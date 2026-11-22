@@ -58,7 +58,7 @@ export default async function ServicesRu({ locale }: { locale: Locale }) {
               <div className="top"><span className="ic" aria-hidden="true">§</span><span className="price-tag free">Входит в сделку</span></div>
               <h3>Проверка документов</h3><p>Юрист проверяет объект до брони. Если вы нашли квартиру сами, проверим её отдельно.</p>
               <ul className="checklist"><li>ТАПУ, долги и обременения</li><li>Разрешение на заселение (iskan) и перепланировки</li><li>Статус квартала для ВНЖ</li><li>Репутация и разрешения застройщика</li><li>Отдельная проверка объекта — от 300 € (демо)</li></ul>
-              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">Когда проверяем</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">Юрист агентства</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
+              <div className="acts"><Link href="/how-to-buy#step-4" className="btn btn-line btn-sm">Когда проверяем</Link><Link href="/services/due-diligence" className="btn btn-line btn-sm">Подробнее о проверке</Link><Link href="/team/murat-kaya" className="btn btn-line btn-sm">Юрист агентства</Link><a href="#lead" className="btn btn-dark btn-sm">Заказать</a></div>
               {by("murat-kaya", "lawyer")}
             </article>
             <article className="scard rv" id="deal">

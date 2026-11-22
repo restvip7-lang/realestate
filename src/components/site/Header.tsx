@@ -15,7 +15,7 @@ const NAV = [
   ['projects', '/projects'],
   ['districts', '/districts'],
   ['services', '/services'],
-  ['about', '/team'],
+  ['about', '/about'],
   ['journal', '/blog'],
 ] as const
 

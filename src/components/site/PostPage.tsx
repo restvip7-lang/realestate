@@ -14,7 +14,7 @@ import { pageMeta, SITE_URL } from '@/lib/seo'
 import type { Property } from '@/payload-types'
 
 import { CopyLink } from './CopyLink'
-import { PostCard, postPath } from './PostCard'
+import { CAT_SECTIONS, NEWS_BASE, PostCard, postPath } from './PostCard'
 import { PropertyCard } from './PropertyCard'
 import { Prose, tocOf } from './Prose'
 import { catalogBasePath } from '@/lib/catalog-params'
@@ -34,7 +34,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
     listPosts(locale, { kind: p.kind, exclude: p.id, limit: 20 }),
   ])
   const news = p.kind === 'news'
-  const base = news ? '/news' : '/blog'
+  const base = news ? NEWS_BASE : '/blog'
   const a = p.author && typeof p.author === 'object' ? p.author : null
   const catOk = POST_CATEGORIES.some((c) => c.value === p.category)
   const cover = coverOf(p, 'large')
@@ -72,7 +72,7 @@ export async function PostPage({ locale, slug, kind }: { locale: Locale; slug: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
       <div className="wrap">
         <nav className="crumbs" aria-label={tc('crumbs')}>
-          <Link href="/">{tc('home')}</Link>›<Link href={base}>{t(news ? 'news' : 'blog')}</Link>›<Link href={`${base}?cat=${p.category}`}>{catOk ? tcat(p.category as never) : p.category}</Link>
+          <Link href="/">{tc('home')}</Link>›<Link href={base}>{t(news ? 'news' : 'blog')}</Link>›<Link href={(!news && CAT_SECTIONS[p.category]) || `${base}?cat=${p.category}`}>{catOk ? tcat(p.category as never) : p.category}</Link>
         </nav>
         <header className="post-head">
           <span className="meta-line"><span className="cat">{t(news ? 'kindNews' : 'kindArticle')} · {catOk ? tcat(p.category as never) : p.category}</span></span>

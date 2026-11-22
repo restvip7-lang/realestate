@@ -8,7 +8,11 @@ import { coverOf, mediaUrl } from '@/lib/data'
 import { fmtDate } from '@/lib/format'
 import type { Post } from '@/payload-types'
 
-export const postPath = (p: Pick<Post, 'kind' | 'slug'>) => `/${p.kind === 'news' ? 'news' : 'blog'}/${p.slug}`
+/** Разделы журнала по ТЗ: статьи /blog, новости /blog/news, законы /blog/laws, гиды по районам /blog/area-guides. */
+export const NEWS_BASE = '/blog/news'
+/** Рубрики со своим разделом в журнале (ТЗ): /blog/laws вместо /blog?cat=laws. */
+export const CAT_SECTIONS: Record<string, string> = { laws: '/blog/laws' }
+export const postPath = (p: Pick<Post, 'kind' | 'slug'>) => `${p.kind === 'news' ? NEWS_BASE : '/blog'}/${p.slug}`
 
 export async function PostCard({ p }: { p: Post }) {
   const locale = (await getLocale()) as Locale

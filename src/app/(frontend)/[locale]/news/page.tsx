@@ -1,23 +1,13 @@
-import '@/app/(frontend)/styles/pages.css'
+import { permanentRedirect } from 'next/navigation'
 
-import { getTranslations, setRequestLocale } from 'next-intl/server'
-
-import { JournalList } from '@/components/site/Journal'
+import { getPathname } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
-import { pageMeta } from '@/lib/seo'
 
+// Старый адрес новостей /news → раздел журнала по ТЗ /blog/news (308, рубрика ?cat= сохраняется)
 type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
-
-export async function generateMetadata({ params, searchParams }: Props) {
-  const { locale } = await params
-  const sp = await searchParams
-  const t = await getTranslations({ locale, namespace: 'journal' })
-  return pageMeta(locale, '/news', { title: t('newsTitle'), description: t('newsMetaDesc'), noindex: !!sp.cat })
-}
 
 export default async function Page({ params, searchParams }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
-  const sp = await searchParams
-  return <JournalList kind="news" cat={typeof sp.cat === 'string' ? sp.cat : undefined} />
+  const cat = (await searchParams).cat
+  permanentRedirect(getPathname({ href: `/blog/news${typeof cat === 'string' ? `?cat=${encodeURIComponent(cat)}` : ''}`, locale }))
 }

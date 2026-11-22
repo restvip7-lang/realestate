@@ -1005,5 +1005,13 @@
     "districts": "Bölgeler",
     "properties": "{n} ilan",
     "posts": "Yazılar ve haberler"
+  },
+  "journal": {
+    "lawsTitle": "Türkiye'de gayrimenkul mevzuatı",
+    "lawsMetaDesc": "Yabancı alıcılar için Türkiye'de gayrimenkul kuralları: tapu, vergiler, ikamet, iskan.",
+    "guidesTitle": "Alanya bölge rehberleri",
+    "guidesLead": "Alanya'da nerede yaşanır: deniz, plajlar, m² fiyatları ve altyapı.",
+    "guidesMetaDesc": "Alanya'nın 14 bölgesi için rehberler.",
+    "guidesArticles": "Alanya'da yaşam yazıları"
   }
 }

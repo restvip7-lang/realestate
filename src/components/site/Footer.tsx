@@ -71,7 +71,7 @@ export async function Footer({ company, districts }: { company: Company; distric
               <li><Link href="/team">{t('about')}</Link></li>
               <li><Link href="/reviews">{t('reviews')}</Link></li>
               <li><Link href="/blog">{t('articles')}</Link></li>
-              <li><Link href="/news">{t('news')}</Link></li>
+              <li><Link href="/blog/news">{t('news')}</Link></li>
               <li><Link href="/contacts">{t('contacts')}</Link></li>
             </ul>
           </div>
