@@ -9,6 +9,7 @@ import { PROPERTY_TYPES, type PropertyType } from '@/lib/catalog'
 import { catalogBasePath, catalogHref, hasQueryParams, LANDING_KEYS, LANDINGS, landingFits, landingOf } from '@/lib/catalog-params'
 import { type CatalogQuery, districtOf, landingSamples, listDistricts, listProperties, mapProperties, propertyCover } from '@/lib/data'
 import { propertyPath } from '@/lib/format'
+import { abs, breadcrumbLd, JsonLd } from '@/lib/jsonld'
 import { INDEX_MIN, landingMatrix } from '@/lib/landings'
 
 import { CatalogFilters, SortSelect } from './CatalogFilters'
@@ -79,9 +80,18 @@ export async function Catalog({ locale, q }: { locale: Locale; q: CatalogQuery }
   if (q.pets) chips.push([t('pets'), { pets: false }])
   if (q.pool) chips.push([t('poolChip'), { pool: false }])
   const pages = Array.from({ length: res.totalPages }, (_, i) => i + 1)
+  // ItemList объектов страницы и хлебные крошки (ТЗ, JSON-LD каталога)
+  const ld = [
+    breadcrumbLd([[t('home'), '/'], [t(deal), catalogBasePath({ deal })], ...(d ? [[d.name, catalogBasePath({ deal, district: d.slug })] as [string, string]] : []), ...(q.type || f ? [[title, catalogBasePath({ ...q, page: undefined })] as [string, string]] : [])], locale),
+    {
+      '@context': 'https://schema.org', '@type': 'ItemList', name: title, numberOfItems: res.totalDocs,
+      itemListElement: res.docs.map((p, i) => ({ '@type': 'ListItem', position: (res.page! - 1) * 24 + i + 1, url: abs(propertyPath(p), locale), name: p.title })),
+    },
+  ]
 
   return (
     <>
+      <JsonLd data={ld} />
       <CatalogFilters q={q} districts={districts.map((x) => ({ slug: x.slug, name: x.name }))} />
       <CatalogLayout points={points}>
         <section className="listcol" aria-labelledby="h1">

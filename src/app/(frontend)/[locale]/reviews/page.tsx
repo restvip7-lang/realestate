@@ -9,7 +9,8 @@ import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { getCompany, listReviews, listTeam, mediaUrl } from '@/lib/data'
 import { fmtDate, quoted } from '@/lib/format'
-import { pageMeta, SITE_URL } from '@/lib/seo'
+import { agentLd, breadcrumbLd } from '@/lib/jsonld'
+import { pageMeta } from '@/lib/seo'
 
 type Props = { params: Promise<{ locale: Locale }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
 const SVC = ['buy', 'rent', 'docs', 'sell'] as const
@@ -44,8 +45,18 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
     return `/reviews${q.size ? `?${q}` : ''}`
   }
   const withReviews = team.filter((m) => all.some((r) => expertOf(r)?.id === m.id))
-  // JSON-LD: только хлебные крошки — звёзды за отзывы о себе на своём сайте Google не показывает (docs/PLAN.md)
-  const ld = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [[tc('home'), '/'], [t('crumbs'), '/reviews']].map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: p, locale })}` })) }
+  // JSON-LD по ТЗ: Review + AggregateRating у агентства (тот же @id, что в layout).
+  // Звёзды в выдаче Google за отзывы о себе на своём сайте не показывает, но разметку ТЗ требует — для других поисковиков и ИИ.
+  const ld = [
+    breadcrumbLd([[tc('home'), '/'], [t('crumbs'), '/reviews']], locale),
+    {
+      ...agentLd(company, locale, rated.length ? { value: avg, count: rated.length } : null),
+      review: rated.slice(0, 20).map((r) => ({
+        '@type': 'Review', author: { '@type': 'Person', name: r.who }, datePublished: r.date?.slice(0, 10), reviewBody: r.text,
+        reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+      })),
+    },
+  ]
 
   return (
     <main className="pg">

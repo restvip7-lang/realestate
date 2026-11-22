@@ -20,6 +20,7 @@ import { routing } from '@/i18n/routing'
 import { getCompany, getRates, listDistricts } from '@/lib/data'
 import { INDEXABLE, SITE_URL } from '@/lib/seo'
 import { catalogBasePath } from '@/lib/catalog-params'
+import { agentLd, JsonLd, websiteLd } from '@/lib/jsonld'
 
 export const revalidate = 600
 
@@ -51,6 +52,8 @@ export default async function Layout({ children, params }: { children: React.Rea
   return (
     <html lang={locale}>
       <body>
+        {/* агентство и сайт с поиском — на каждой странице (ТЗ, раздел JSON-LD) */}
+        <JsonLd data={[agentLd(company, locale), websiteLd(locale)]} />
         <NextIntlClientProvider>
           <CurrencyProvider rates={rates}>
             {company.isDemo && <div className="demo-strip">{tm('demo')}</div>}

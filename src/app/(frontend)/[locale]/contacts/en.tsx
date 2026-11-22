@@ -6,6 +6,7 @@ import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/locales'
 import { COAST } from '@/lib/coast'
 import { getCompany, listDistricts, listTeam, mediaUrl } from '@/lib/data'
+import { agentLd } from '@/lib/jsonld'
 import { SITE_URL } from '@/lib/seo'
 
 // Английская версия страницы; русская — ru.tsx (вёрстка одинаковая, меняется только текст). Контакты — из админки
@@ -51,13 +52,7 @@ export default async function ContactsEn({ locale }: { locale: Locale }) {
   )
   const ld = [
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Home', '/'], ['Contacts', '/contacts']].map(([name, p], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${getPathname({ href: p, locale })}` })) },
-    {
-      '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: 'Kleo Homes', legalName: company.legal?.name, telephone: company.phone, email: company.email,
-      address: { '@type': 'PostalAddress', streetAddress: company.address, addressLocality: 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' },
-      ...(company.lat && company.lng ? { geo: { '@type': 'GeoCoordinates', latitude: company.lat, longitude: company.lng } } : {}),
-      openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '09:00', closes: '19:00' }],
-      sameAs: [company.telegram && `https://t.me/${company.telegram}`, ...(company.social || []).map((s) => s.url)].filter(Boolean),
-    },
+    agentLd(company, locale),
   ]
 
   return (

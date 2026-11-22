@@ -521,3 +521,11 @@
 @media print{
   .pg .fbar .contacts,.pg .fchips,.pg .cmp .rm,.pg .fav{display:none!important}
 }
+/* поиск по сайту (/search) */
+.pg-search .sform{display:flex;gap:10px;max-width:640px;padding:18px 0 32px}
+.pg-search .sform input{flex:1;min-width:0;height:48px;border-radius:var(--r);border:1px solid var(--line-d);background:rgba(255,255,255,.08);color:#fff;padding:0 16px;font:inherit}
+.pg-search .sform input::placeholder{color:rgba(255,255,255,.55)}
+.pg-search .sres{margin-bottom:40px}
+.pg-search .sres h2{margin-bottom:16px}
+.pg-search .sres .links{display:flex;flex-wrap:wrap;gap:8px 18px}
+.pg-search .empty{display:grid;gap:12px;justify-items:start}

@@ -20,6 +20,7 @@ import { featureLabel } from '@/lib/catalog'
 import { fmtDate, propertyPath, roomsHint, typeName } from '@/lib/format'
 import { pageMeta, SITE_URL } from '@/lib/seo'
 import { catalogBasePath } from '@/lib/catalog-params'
+import { AGENT_ID, breadcrumbLd, JsonLd } from '@/lib/jsonld'
 
 // Внутренний маршрут страницы объекта. Публичный адрес — /{lang}/turkey/alanya/{район}/{сделка}/id{номер}:
 // src/proxy.ts переписывает его сюда (district «_» — без района), чтобы страница кэшировалась (ISR), а каталог оставался динамическим.
@@ -117,13 +118,21 @@ export default async function PropertyPage({ params }: Props) {
       numberOfRooms: p.rooms,
       floorSize: { '@type': 'QuantitativeValue', value: p.area, unitCode: 'MTK' },
       address: { '@type': 'PostalAddress', addressLocality: 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' },
+      ...(p.lat && p.lng ? { geo: { '@type': 'GeoCoordinates', latitude: p.lat, longitude: p.lng } } : {}),
     },
+    offeredBy: { '@id': AGENT_ID },
   }
+  const crumbs = breadcrumbLd([
+    [tcat('home'), '/'],
+    [t(rent ? 'rent' : 'sale'), catalogBasePath({ deal: p.deal })],
+    ...(d ? [[d.name, catalogBasePath({ deal: p.deal, district: d.slug })] as [string, string]] : []),
+    [p.title, canonical],
+  ], locale)
 
   return (
     <>
       <main className="wrap pg-property">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
+        <JsonLd data={[ld, crumbs]} />
         <nav className="crumbs" aria-label={t('crumbs')}>
           <Link href="/">{t('home')}</Link>›
           {project ? <Link href="/projects">{tp('crumbs')}</Link> : <Link href={catalogBasePath({ deal: p.deal })}>{t(rent ? 'rent' : 'sale')}</Link>}›
