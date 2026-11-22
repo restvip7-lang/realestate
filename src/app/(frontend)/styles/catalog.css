@@ -120,4 +120,6 @@ main.cat.map-only{grid-template-columns:0 1fr}main.cat.map-only .listcol{display
 .chips-act a:hover{border-color:var(--ink)}
 .chips-act a.clear{background:none;border:0;color:var(--sea-deep);font-weight:600}
 main.cat .empty{border:1px dashed var(--line);border-radius:var(--r);padding:40px 24px;text-align:center;display:grid;gap:12px;justify-items:center}
+main.cat .empty .alts{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center}
+main.cat .empty .alts:empty{display:none}
 main.cat.list-only .listcol{max-width:var(--wrap);margin:0 auto;width:100%;padding-left:var(--gut);padding-right:var(--gut)}

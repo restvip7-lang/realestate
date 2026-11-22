@@ -33,6 +33,9 @@ export const FEATURES = [
   'Тёплый пол', 'Кондиционеры', 'Встроенная кухня', 'Солнечный водонагреватель',
 ] as const
 
+/** Фильтр и посадочная «с бассейном» (with-pool). */
+export const POOL_FEATURES: (typeof FEATURES)[number][] = ['Открытый бассейн', 'Закрытый бассейн']
+
 /** Подписи инфраструктуры на EN/TR (в базе хранится русское значение из FEATURES). */
 export const FEATURE_LABELS: Record<(typeof FEATURES)[number], { en: string; tr: string }> = {
   'Открытый бассейн': { en: 'Outdoor pool', tr: 'Açık havuz' },

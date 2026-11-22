@@ -29,6 +29,7 @@ export function parseCatalog(deal: 'sale' | 'rent', sp: SearchParams): CatalogQu
     owner: one(sp.owner) === '1',
     video: one(sp.video) === '1',
     pets: deal === 'rent' && one(sp.pets) === '1',
+    pool: one(sp.pool) === '1',
     sort: (['new', 'cheap', 'expensive', 'sea'] as const).find((s) => s === sort),
     page: int(sp.page),
   }
@@ -53,6 +54,7 @@ export function catalogQueryString(q: CatalogQuery, patch: Partial<CatalogQuery>
   if (x.owner) p.set('owner', '1')
   if (x.video) p.set('video', '1')
   if (x.pets) p.set('pets', '1')
+  if (x.pool) p.set('pool', '1')
   if (x.sort && x.sort !== 'new') p.set('sort', x.sort)
   if (x.page && x.page > 1) p.set('page', String(x.page))
   const s = p.toString()
@@ -71,24 +73,53 @@ export type Deal = (typeof DEALS)[number]
 const TYPE_BY_PATH = Object.fromEntries(Object.entries(PROPERTY_TYPES).map(([k, v]) => [v.path, k])) as Record<string, PropertyType>
 export const typePath = (type?: string) => (type && type in PROPERTY_TYPES ? PROPERTY_TYPES[type as PropertyType].path : undefined)
 
-/** Путь каталога без параметров: район, сделка, тип, страница. */
-export function catalogBasePath(q: Pick<CatalogQuery, 'deal' | 'district' | 'type' | 'page'>): string {
-  const segs = [q.district, q.deal || 'sale', typePath(q.type), q.page && q.page > 1 ? `page-${q.page}` : undefined].filter(Boolean)
+/**
+ * Посадочные страницы по признакам (сегмент {feature} из ТЗ). Белый список: другие сочетания — только параметрами.
+ * В пути — один признак: первый подходящий по порядку списка, остальные фильтры остаются параметрами.
+ */
+export const LANDINGS = {
+  'sea-view': { patch: { seaView: true } },
+  'first-line': { patch: { sea: 100 } },
+  'near-sea': { patch: { sea: 500 } },
+  'with-pool': { patch: { pool: true } },
+  furnished: { patch: { furnished: true } },
+  'new-build': { patch: { newBuild: true } },
+  citizenship: { patch: { citizenship: true }, deal: 'sale' },
+  pets: { patch: { pets: true }, deal: 'rent' },
+} as const satisfies Record<string, { patch: Partial<CatalogQuery>; deal?: Deal }>
+export type Landing = keyof typeof LANDINGS
+export const LANDING_KEYS = Object.keys(LANDINGS) as Landing[]
+
+export const landingFits = (k: Landing, deal: Deal) => !('deal' in LANDINGS[k]) || (LANDINGS[k] as { deal?: Deal }).deal === deal
+
+/** Какой признак из фильтра попадает в путь. */
+export function landingOf(q: CatalogQuery): Landing | undefined {
+  return LANDING_KEYS.find((k) => landingFits(k, q.deal || 'sale') && Object.entries(LANDINGS[k].patch).every(([f, v]) => q[f as keyof CatalogQuery] === v))
+}
+
+/** Путь каталога без параметров: район, сделка, тип, признак, страница. */
+export function catalogBasePath(q: CatalogQuery): string {
+  const segs = [q.district, q.deal || 'sale', typePath(q.type), landingOf(q), q.page && q.page > 1 ? `page-${q.page}` : undefined].filter(Boolean)
   return `${CATALOG_BASE}/${segs.join('/')}`
 }
 
 /** Полный адрес каталога: ЧПУ-путь + остальные фильтры параметрами. */
 export function catalogHref(q: CatalogQuery, patch: Partial<CatalogQuery> = {}): string {
   const x = { ...q, ...patch }
-  const rest = catalogQueryString({ ...x, district: undefined, type: undefined, page: undefined })
+  const f = landingOf(x)
+  const unset = f ? Object.fromEntries(Object.keys(LANDINGS[f].patch).map((k) => [k, undefined])) : {}
+  const rest = catalogQueryString({ ...x, ...unset, district: undefined, type: undefined, page: undefined })
   return catalogBasePath(x) + rest
 }
+
+/** Есть ли фильтры или сортировка сверх ЧПУ-пути (такие страницы не индексируем). */
+export const hasQueryParams = (q: CatalogQuery) => catalogHref(q).includes('?')
 
 /**
  * Разбор сегментов после /turkey/alanya/: [район]/сделка/[тип]/[page-N].
  * null — такого адреса нет (404). Районы передаются списком slug, чтобы отличить район от сделки.
  */
-export function parseCatalogPath(segs: string[], districtSlugs: string[]): { deal: Deal; district?: string; type?: PropertyType; page?: number } | null {
+export function parseCatalogPath(segs: string[], districtSlugs: string[]): { deal: Deal; district?: string; type?: PropertyType; landing?: Landing; page?: number } | null {
   const s = segs.map((x) => decodeURIComponent(x).toLowerCase())
   let i = 0
   let district: string | undefined
@@ -100,6 +131,8 @@ export function parseCatalogPath(segs: string[], districtSlugs: string[]): { dea
   if (!DEALS.includes(deal)) return null
   let type: PropertyType | undefined
   if (s[i] && TYPE_BY_PATH[s[i]]) type = TYPE_BY_PATH[s[i++]]
+  let landing: Landing | undefined
+  if (s[i] && LANDING_KEYS.includes(s[i] as Landing) && landingFits(s[i] as Landing, deal)) landing = s[i++] as Landing
   let page: number | undefined
   const m = s[i]?.match(/^page-(\d{1,4})$/)
   if (m) {
@@ -108,14 +141,11 @@ export function parseCatalogPath(segs: string[], districtSlugs: string[]): { dea
     i++
   }
   if (i !== s.length) return null
-  return { deal, district, type, page }
+  return { deal, district, type, landing, page }
 }
 
-/** Фильтры кроме района и типа (они в ЧПУ-пути): такие страницы не индексируем. */
-export const hasExtraFilters = (q: CatalogQuery) => hasFilters({ ...q, district: undefined, type: undefined })
-
 export const hasFilters = (q: CatalogQuery) =>
-  !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship || q.floor || q.owner || q.video || q.pets)
+  !!(q.type || q.district || q.rooms || q.min || q.max || q.sea || q.area || q.seaView || q.furnished || q.newBuild || q.citizenship || q.floor || q.owner || q.video || q.pets || q.pool)
 
 /** Параметры адреса раздела новостроек (/projects). */
 export function parseProjects(sp: SearchParams): ProjectQuery {
