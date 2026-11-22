@@ -9,9 +9,12 @@ export const typeName = (type: string, locale: Locale) => PROPERTY_TYPES[type as
  * Адрес объекта по ТЗ: /turkey/alanya/{район}/{сделка}/id{номер} (docs/seo-urls.md).
  * Район берётся из связи (нужен slug) или передаётся явно; без района адрес всё равно открывается и ведёт 308 на полный.
  */
-export function propertyPath(p: Pick<Property, 'id' | 'deal'> & { district?: Property['district'] | null }, districtSlug?: string | null) {
+/** Адрес объекта по ТЗ: /turkey/alanya/{район}/{сделка}/id{номер}; новый проект (ЖК) — …/sale/complexes/{slug}-id{номер}. */
+export function propertyPath(p: Pick<Property, 'id' | 'deal'> & Partial<Pick<Property, 'type' | 'slug'>> & { district?: Property['district'] | null }, districtSlug?: string | null) {
   const slug = districtSlug ?? (p.district && typeof p.district === 'object' ? p.district.slug : null)
-  return `/turkey/alanya/${slug ? `${slug}/` : ''}${p.deal === 'rent' ? 'rent' : 'sale'}/id${p.id}`
+  const base = `/turkey/alanya/${slug ? `${slug}/` : ''}`
+  if (p.type === 'project' && p.deal !== 'rent') return `${base}sale/complexes/${p.slug ? `${p.slug}-` : ''}id${p.id}`
+  return `${base}${p.deal === 'rent' ? 'rent' : 'sale'}/id${p.id}`
 }
 
 export const fmtDate = (iso: string | null | undefined, locale: Locale, opts: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }) =>

@@ -63,8 +63,9 @@ export default async function PropertyPage({ params }: Props) {
   if (!p) notFound()
   // адрес с другим районом или сделкой (объект перенесли, ссылка без района) → 308 на правильный
   const canonical = propertyPath(p)
-  if (propertyPath({ id: p.id, deal: deal === 'rent' ? 'rent' : 'sale' }, district === '_' ? null : district) !== canonical || (deal !== 'sale' && deal !== 'rent'))
-    permanentRedirect(getPathname({ href: canonical, locale }))
+  const cx = deal.startsWith('cx-') // адрес ЖК: …/sale/complexes/{slug}-id{N}, slug в сделке после «cx-»
+  const asked = propertyPath(cx ? { id: p.id, deal: 'sale', type: 'project', slug: deal.slice(3) || null } : { id: p.id, deal: deal === 'rent' ? 'rent' : 'sale' }, district === '_' ? null : district)
+  if (asked !== canonical || (!cx && deal !== 'sale' && deal !== 'rent')) permanentRedirect(getPathname({ href: canonical, locale }))
 
   const [t, tc, tcat, tp, company, team, similar] = await Promise.all([
     getTranslations('property'),
@@ -122,17 +123,40 @@ export default async function PropertyPage({ params }: Props) {
     },
     offeredBy: { '@id': AGENT_ID },
   }
+  // ЖК по ТЗ: ApartmentComplex с ценой «от» (AggregateOffer). Квартир внутри проекта в базе нет — число планировок как offerCount.
+  const address = { '@type': 'PostalAddress', addressLocality: d?.name ? `${d.name}, Alanya` : 'Alanya', addressRegion: 'Antalya', addressCountry: 'TR' }
+  const complexLd = project
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ApartmentComplex',
+        name: p.title,
+        url,
+        image: ld.image,
+        address,
+        ...(p.lat && p.lng ? { geo: { '@type': 'GeoCoordinates', latitude: p.lat, longitude: p.lng } } : {}),
+        ...(p.features?.length ? { amenityFeature: p.features.map((f) => ({ '@type': 'LocationFeatureSpecification', name: featureLabel(f, locale), value: true })) } : {}),
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'EUR',
+          ...(p.price ? { lowPrice: p.price } : {}),
+          ...(layouts.length ? { offerCount: layouts.length } : {}),
+          availability: `https://schema.org/${closed ? 'SoldOut' : 'InStock'}`,
+          offeredBy: { '@id': AGENT_ID },
+        },
+      }
+    : null
   const crumbs = breadcrumbLd([
     [tcat('home'), '/'],
     [t(rent ? 'rent' : 'sale'), catalogBasePath({ deal: p.deal })],
     ...(d ? [[d.name, catalogBasePath({ deal: p.deal, district: d.slug })] as [string, string]] : []),
+    ...(project ? [[tp('crumbs'), catalogBasePath({ deal: 'sale', district: d?.slug, type: 'project' })] as [string, string]] : []),
     [p.title, canonical],
   ], locale)
 
   return (
     <>
       <main className="wrap pg-property">
-        <JsonLd data={[ld, crumbs]} />
+        <JsonLd data={complexLd ? [complexLd, crumbs] : [ld, crumbs]} />
         <nav className="crumbs" aria-label={t('crumbs')}>
           <Link href="/">{t('home')}</Link>›
           {project ? <Link href="/projects">{tp('crumbs')}</Link> : <Link href={catalogBasePath({ deal: p.deal })}>{t(rent ? 'rent' : 'sale')}</Link>}›

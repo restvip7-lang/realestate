@@ -6,7 +6,7 @@
 ## Каталог (сделано, PR «Адреса каталога по ТЗ»)
 - `/{lang}/turkey/alanya/sale` и `/rent` — весь каталог.
 - `/{lang}/turkey/alanya/{район}/sale` — район (slug из коллекции «Районы»).
-- `/{lang}/turkey/alanya/[{район}/]sale/{тип}` — тип: `apartments`, `penthouses`, `villas`, `duplex`, `land`, `commercial`, `projects` (`PROPERTY_TYPES[...].path` в `src/lib/catalog.ts`).
+- `/{lang}/turkey/alanya/[{район}/]sale/{тип}` — тип: `apartments`, `penthouses`, `villas`, `duplex`, `land`, `commercial`, `complexes` (`PROPERTY_TYPES[...].path` в `src/lib/catalog.ts`).
 - Страницы списка: `…/page-2`, `…/page-3`. `page-1` → 308 на адрес без номера; номер больше числа страниц → 404.
 - Остальные фильтры (цена, планировка, до моря, мебель…) и сортировка — параметрами `?…`: такие страницы `noindex`, canonical — на ЧПУ без параметров.
 - Неизвестный район, тип или лишний сегмент → 404.
@@ -47,3 +47,8 @@
 - Коллекция `redirects` (`src/collections/Redirects.ts`): применяется в `src/proxy.ts`, список берётся из `/next/redirects` и держится в памяти 10 минут (как список 410).
 - Отчёт `/next/seo-report` (редактор и админ): закрытые вручную, ниже порога, без своего текста.
 - Словари ЧПУ: адреса районов меняются в админке (поле slug района), адреса типов и признаков (`apartments`, `sea-view` …) заданы в коде (`src/lib/catalog-params.ts`), потому что от них зависят редиректы и sitemap.
+
+## ЖК (новые проекты) (сделано, PR «Страницы ЖК»)
+- Отдельной коллекции ЖК нет (`docs/projects.md`): ЖК — объект с типом «Новый проект». Его адрес: `/{lang}/turkey/alanya/{район}/sale/complexes/{slug}-id{номер}`. Номер в конце, как у объектов: slug не уникален и может меняться, а адрес по номеру не ломается. Неверный slug или район, а также старый адрес `…/sale/id{номер}` → 308 на правильный.
+- Список ЖК по ЧПУ: `/turkey/alanya/sale/complexes` и `/turkey/alanya/{район}/sale/complexes` (тип «Новый проект» в каталоге). Раздел `/projects` с фильтрами по году сдачи остаётся.
+- Разметка: `ApartmentComplex` с адресом, координатами, удобствами и `AggregateOffer` (цена «от» = `lowPrice`, число планировок = `offerCount`, предложение от агентства). Крошки: продажа → район → новостройки → ЖК.

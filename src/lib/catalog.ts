@@ -6,7 +6,7 @@ export const PROPERTY_TYPES = {
   duplex: { ru: 'Дуплекс', en: 'Duplex', tr: 'Dubleks', plural: { ru: 'Дуплексы', en: 'Duplexes', tr: 'Dubleksler' }, path: 'duplex' },
   land: { ru: 'Земля', en: 'Land', tr: 'Arsa', plural: { ru: 'Участки', en: 'Land plots', tr: 'Arsalar' }, path: 'land' },
   commercial: { ru: 'Коммерция', en: 'Commercial', tr: 'Ticari', plural: { ru: 'Коммерческая недвижимость', en: 'Commercial property', tr: 'Ticari gayrimenkul' }, path: 'commercial' },
-  project: { ru: 'Новый проект', en: 'New project', tr: 'Yeni proje', plural: { ru: 'Новые проекты', en: 'New projects', tr: 'Yeni projeler' }, path: 'projects' },
+  project: { ru: 'Новый проект', en: 'New project', tr: 'Yeni proje', plural: { ru: 'Новые проекты', en: 'New projects', tr: 'Yeni projeler' }, path: 'complexes' },
 } as const
 export type PropertyType = keyof typeof PROPERTY_TYPES
 
