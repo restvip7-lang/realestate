@@ -7,6 +7,19 @@
 
 ---
 
+## 2026-11-21 · Claude · Sitemap-индекс и robots.txt по ТЗ
+
+- Пятый PR поверх PR #34.
+- `/sitemap.xml` — индекс; файлы по типу и языку `/sitemaps/{pages|catalog|properties|districts|posts|team|services}-{ru|en}.xml`. У каждого адреса hreflang (`xhtml:link`) и x-default. Код — `src/lib/sitemap.ts`, вместо `src/app/sitemap.ts`.
+- `robots.txt` — route handler вместо `robots.ts`:
+  - ИИ-боты (GPTBot, ClaudeBot, PerplexityBot, Google-Extended и др.) разрешены явно;
+  - для Яндекса Clean-param: UTM/gclid/yclid и параметры фильтров каталога;
+  - закрыты `/admin`, `/api`, `/next`, избранное, поиск, внутренний маршрут объекта;
+  - пока `SITE_INDEXABLE` не равен 1, закрыто всё, как раньше.
+- Проверено: build; индекс и файлы отдаются, XML валиден, неизвестный тип или язык — 404.
+
+---
+
 ## 2026-11-21 · Claude · JSON-LD по ТЗ и поиск по сайту /search
 
 - Четвёртый PR поверх PR #33.
